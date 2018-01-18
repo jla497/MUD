@@ -1,12 +1,17 @@
 #include "ConnectionManager.h"
+
+ConnectionManager::ConnectionManager(ConnectionList* list): m_list(list) {
+    m_protocol = std::unique_ptr<Protocol>(new MudProtocol(1024));
+}
+
 /*checks each ConnectionContainers's isConnected state. If isConnected is false, then remove the container and 
 drop connection.*/
 void ConnectionManager::dropConnection(Server& server) {
-    for(auto& c : m_list) {
+    for(auto& c : (*m_list)) {
 
         if((*c).getIsConnected() == false) {
             Connection toBeRmved = (*c).getConnection();
-            m_list.erase(std::remove(m_list.begin(), m_list.end(),c));
+            m_list->erase(std::remove(m_list->begin(), m_list->end(),c));
             server.disconnect(toBeRmved);
         }   
     }
@@ -14,7 +19,7 @@ void ConnectionManager::dropConnection(Server& server) {
 
 void ConnectionManager::addConnection(Connection c) {
     auto ptr = std::unique_ptr<ConnectionContainer>(new ConnectionContainer(c));
-    m_list.push_back(std::move(ptr));
+    m_list->push_back(std::move(ptr));
 }
 
 /*pass clients messages to existing connection containers If client does not exist, 
@@ -26,13 +31,13 @@ void ConnectionManager::passMessages(const std::deque<Message> &incoming) {
         auto text = msg.text;
         std::cout<<"msg from: "<<msg.connection.id<<" "<<msg.text<<std::endl;
 
-        auto connContainer = std::find_if(m_list.begin(),m_list.end(),find_container(conn));
+        auto connContainer = std::find_if(m_list->begin(),m_list->end(),find_container(conn));
 
-        if (connContainer == m_list.end()) {
+        if (connContainer == m_list->end()) {
             ConnectionManager::addConnection(conn);
         }
 
-        connContainer = std::find_if(m_list.begin(), m_list.end(),find_container(conn));
+        connContainer = std::find_if(m_list->begin(), m_list->end(),find_container(conn));
 
         (*connContainer)->receive(text);
     }
@@ -42,7 +47,7 @@ void ConnectionManager::passMessages(const std::deque<Message> &incoming) {
 void ConnectionManager::sendMessages(Server& server) {
     std::deque<Message> messages;
 
-    for(auto& container : m_list) {
+    for(auto& container : (*m_list)) {
         Connection conn = container->getConnection();
         std::string toSend = container->getOutBuffer();
         
@@ -57,10 +62,12 @@ void ConnectionManager::sendMessages(Server& server) {
 
 void ConnectionManager::broadCast(Server& server, std::string& broadcast) {
     std::deque<Message> messages;
+    
+    auto res = m_protocol->broadcast(broadcast);
 
-    for(auto& container : m_list) {
+    for(auto& container : (*m_list)) {
         Connection conn = container->getConnection();
-        Message m_msg = Message{conn,broadcast};
+        Message m_msg = Message{conn,res};
         messages.push_back(m_msg);
     }
 

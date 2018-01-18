@@ -53,11 +53,13 @@ std::string MudProtocol::send() {
 }
 
 //any protocol-specific text formatting here
-std::string MudProtocol::broadcast() {
+std::string MudProtocol::broadcast(std::string broadcast) {
   
-  if(broadcast_buffer.empty())
+  if(broadcast.empty())
     return "";
 
+  broadcast_buffer = broadcast;
+  
   std::string res;
   
   std::stringstream ss;
@@ -68,7 +70,7 @@ std::string MudProtocol::broadcast() {
   
   ss << prefixes << broadcast_buffer << suffixes;
 
-  ss >> res;
+  res = ss.str();
 
   broadcast_buffer.clear();
   

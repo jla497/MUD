@@ -13,6 +13,10 @@
 
 using namespace networking;
 
+typedef std::vector<std::unique_ptr<ConnectionContainer>> ConnectionList;
+
+typedef std::vector<std::unique_ptr<ConnectionContainer>>::iterator it;
+
 /*functor used in searches*/
 struct find_container{
 	find_container(Connection& conn): conn(conn) {}
@@ -26,14 +30,12 @@ private:
  Passes on or broadcasts incoming and outgoing messages*/
 class ConnectionManager {
 
-typedef std::vector<std::unique_ptr<ConnectionContainer>> ConnectionList;
-
-typedef std::vector<std::unique_ptr<ConnectionContainer>>::iterator it;
-
-ConnectionList m_list;
+ConnectionList* m_list;
+std::unique_ptr<Protocol> m_protocol;
 
 public:
-
+  ConnectionManager(ConnectionList* list);
+  
   void dropConnection(Server& server);
 
   void addConnection(Connection c);

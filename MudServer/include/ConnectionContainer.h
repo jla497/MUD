@@ -20,10 +20,20 @@ using namespace networking;
 /*ConnectionContainer is a wrapper for the Connection object, 
 handlers for user's current state, and the application protocol
 object*/
+
+//temporary stub for entityt class
+struct Entity {
+    unsigned int id;
+    std::string in_buffer;
+    std::string out_buffer;
+};
+
+
 class ConnectionContainer {
     Connection m_connection;
     bool isConnected;
-    unique_ptr<Protocol> m_protocol;
+    std::unique_ptr<Protocol> m_protocol;
+    Entity m_entity;
     
     int randid;
     std::string outBuffer;
@@ -34,6 +44,8 @@ class ConnectionContainer {
     std::string username; //temporary fix until we have a user db
 
     ConnectionContainer(const Connection& c);
+
+    Handler* getHandler();
 
     //push a new user state handler onto stack
     void pushToStack(Handler* handler);

@@ -26,6 +26,6 @@ public:
   virtual std::string send() = 0;
 
   //applicaiton specific formatting for broadcasts
-  virtual std::string broadcast() = 0;
+  virtual std::string broadcast(std::string) = 0;
 };
 #endif

@@ -27,14 +27,11 @@ void PlayHandler::handle(ConnectionContainer* container, std::string& str) {
     
     if(it != m_commands.end()) {
         //pass command to game
-        ss<<"command: "<<str<<" passed to game...\n";
+        ss<<"command: "<<str;
         msg = ss.str();
-        container->sendToProtocol(msg);
+        userInput = msg;
     }else{
-
-        ss<<"player "<<container->username<<" says: "<<str<<"\n";
-        msg = ss.str();
-        container->sendToProtocol(msg);
+        userInput = str;
     }
 
     return;
@@ -59,9 +56,9 @@ void PlayHandler::exit(ConnectionContainer* container) {
     container->sendToProtocol(msg);
 }
 
-std::string PlayHandler::getOutBuffer() {
-    std::string temp = outBuffer;
-    outBuffer.clear();
+std::string PlayHandler::getUserInput() {
+    std::string temp = userInput;
+    userInput.clear();
     return temp;
 }
 

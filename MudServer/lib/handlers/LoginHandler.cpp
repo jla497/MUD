@@ -35,11 +35,8 @@ void LoginHandler::handle(ConnectionContainer* container, std::string& str) {
             //create and load PlayHandler() onto container Handler stack
             waitingForName = false;
         } else {
-            std::stringstream ss;
-            std::string msg;
-            ss<<"player "<<container->getConnection().id<<" says: "<<str<<"\n";
-            ss>>msg;
-            container->sendToProtocol(msg);
+            userInput = str;
+            //container->sendToProtocol(msg);
         }
     }
 
@@ -63,9 +60,9 @@ void LoginHandler::exit(ConnectionContainer* container) {
     container->sendToProtocol(msg);
 }
 
-std::string LoginHandler::getOutBuffer() {
-    std::string temp = outBuffer;
-    outBuffer.clear();
-    return temp;
+std::string LoginHandler::getUserInput() {
+    std::string res = userInput;
+    userInput.clear();
+    return res;
 }
 

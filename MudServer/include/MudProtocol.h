@@ -26,6 +26,6 @@ public:
 
   std::string send();
 
-  std::string broadcast();
+  std::string broadcast(std::string);
 };
 #endif

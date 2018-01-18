@@ -3,7 +3,7 @@
 ConnectionContainer::ConnectionContainer(const Connection& c) {
     m_connection = c;
     
-    m_protocol = new MudProtocol(512);
+    m_protocol = std::unique_ptr<Protocol>(new MudProtocol(512));
     
     isConnected = true;
     
@@ -14,12 +14,19 @@ ConnectionContainer::ConnectionContainer(const Connection& c) {
 
     this->pushToStack(loginHandle);
 
+    username = "";
+
    
 }
 
 void ConnectionContainer::pushToStack(Handler* handler) {
   m_handlers.push(handler); 
   m_handlers.top()->welcome(this);
+}
+
+Handler* ConnectionContainer::getHandler() {
+  Handler* handler = m_handlers.top();
+  return handler;
 }
 
 //receives messages from ConnectionManager

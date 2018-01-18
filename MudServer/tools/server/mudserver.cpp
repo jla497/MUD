@@ -12,35 +12,40 @@
 
 using namespace networking;
 
-ConnectionManager m_manager;
+//globals
+ConnectionList connect_list;
+
+ConnectionManager connectionManager = ConnectionManager(&connect_list);
+
+//temporary stub for the GameManager class
+struct GameManager {
+    std::string broadcast_msg;
+
+    std::string echoBack() {
+      broadcast_msg.clear();
+      std::stringstream ss;
+
+      for(auto& conn: connect_list) {
+        std::string user_msg = conn->getHandler()->getUserInput();
+        std::string user_name = conn->username;   
+        if(!user_msg.empty()) 
+          ss << user_name <<": "<<user_msg<<"\n";
+      }
+
+      broadcast_msg = ss.str();
+      return broadcast_msg;
+    }
+};
+
+struct GameManager gameManager;
 
 void onConnect(Connection c) {
   printf("New connection found: %lu\n", c.id);
-  m_manager.addConnection(c);
+  connectionManager.addConnection(c);
 }
 
 void onDisconnect(Connection c) {
   printf("Connection lost: %lu\n", c.id);
-}
-
-// std::deque<Message> buildOutgoing(const std::string& log) {
-//   std::deque<Message> outgoing;
-  
-//   for (auto client : clients) {
-//     outgoing.push_back({client, log});
-//   }
-  
-//   return outgoing;
-// }
-
-
-void testConnectionManager( Server& server, ConnectionManager& c_manager, const std::deque<Message> &incoming) {
-
-  c_manager.passMessages(incoming);
-
-  c_manager.sendMessages(server);
-
-  c_manager.dropConnection(server);
 }
 
 int main(int argc, char* argv[]) {
@@ -66,8 +71,16 @@ int main(int argc, char* argv[]) {
     }
 
     auto incoming = server.receive();
-    
-    testConnectionManager(server, m_manager, incoming);
+
+    connectionManager.passMessages(incoming);
+
+    connectionManager.sendMessages(server);
+
+    auto broadcast_msg = gameManager.echoBack();
+
+    connectionManager.broadCast(server, broadcast_msg);
+
+    connectionManager.dropConnection(server);
     
     sleep(1);
   }
