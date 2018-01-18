@@ -13,8 +13,7 @@
 
 using namespace networking;
 
-/*Connection Manager tracks all Connections from the server.
- Adds new connections and removes connections*/
+/*functor used in searches*/
 struct find_container{
 	find_container(Connection& conn): conn(conn) {}
 	bool operator()(std::unique_ptr<ConnectionContainer>& ptr) {return ptr->getConnection() == conn;}
@@ -22,6 +21,9 @@ private:
 	Connection conn;
 };
 
+/*Connection Manager manages ConnectionContainers.
+ Adds new connections and removes connections. 
+ Passes on or broadcasts incoming and outgoing messages*/
 class ConnectionManager {
 
 typedef std::vector<std::unique_ptr<ConnectionContainer>> ConnectionList;

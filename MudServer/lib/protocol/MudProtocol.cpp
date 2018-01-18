@@ -26,7 +26,6 @@ std::string MudProtocol::receive(std::string& str) {
  
 }
 
-//any protocol-specific text formatting here
 void MudProtocol::sendToBuffer(std::string& str) {
   out_buffer.append(str);
 }

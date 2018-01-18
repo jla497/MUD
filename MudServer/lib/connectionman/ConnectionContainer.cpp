@@ -47,13 +47,17 @@ void ConnectionContainer::receive(std::string& str) {
 }
 
 bool ConnectionContainer::getIsConnected() {
-	return isConnected;
+  return isConnected;
 }
 
 Connection ConnectionContainer::getConnection() {
-	return m_connection;
+  return m_connection;
 }
 
 std::string ConnectionContainer::getOutBuffer() {
   return m_protocol->send();
+}
+
+void ConnectionContainer::sendToProtocol(std::string& str) {
+  m_protocol->sendToBuffer(str);
 }
