@@ -51,12 +51,12 @@ class ConnectionContainer {
     void pushToStack(Handler& handler);
 
     //receives messages from ConnectionManager
-    void receive(std::string& str);
+    void receive(const std::string& str);
 
     bool getIsConnected();
 
     //send raw string to application protocol object
-    void sendToProtocol(std::string& str);
+    void sendToProtocol(const std::string& str);
 
     Connection& getConnection();
 
