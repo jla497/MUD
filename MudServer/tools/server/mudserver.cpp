@@ -26,7 +26,7 @@ struct GameManager {
       std::stringstream ss;
 
       for(auto& conn: connect_list) {
-        std::string user_msg = conn->getHandler()->getUserInput();
+        std::string user_msg = conn->getHandler().getUserInput();
         std::string user_name = conn->username;   
         if(!user_msg.empty()) 
           ss << user_name <<": "<<user_msg<<"\n";

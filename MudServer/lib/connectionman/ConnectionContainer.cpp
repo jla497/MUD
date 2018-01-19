@@ -12,21 +12,21 @@ ConnectionContainer::ConnectionContainer(const Connection& c) {
     //fix this to unique_ptrs
     LoginHandler* loginHandle = new LoginHandler();
 
-    this->pushToStack(loginHandle);
+    this->pushToStack(*loginHandle);
 
     username = "";
 
    
 }
 
-void ConnectionContainer::pushToStack(Handler* handler) {
-  m_handlers.push(handler); 
+void ConnectionContainer::pushToStack(Handler& handler) {
+  m_handlers.push(&handler); 
   m_handlers.top()->welcome(this);
 }
 
-Handler* ConnectionContainer::getHandler() {
+Handler& ConnectionContainer::getHandler() {
   Handler* handler = m_handlers.top();
-  return handler;
+  return *handler;
 }
 
 //receives messages from ConnectionManager
@@ -57,7 +57,7 @@ bool ConnectionContainer::getIsConnected() {
   return isConnected;
 }
 
-Connection ConnectionContainer::getConnection() {
+Connection& ConnectionContainer::getConnection() {
   return m_connection;
 }
 

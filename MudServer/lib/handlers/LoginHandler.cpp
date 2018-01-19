@@ -31,7 +31,7 @@ void LoginHandler::handle(ConnectionContainer* container, std::string& str) {
             //if name is valid go to playHandler
             PlayHandler* playHandler = new PlayHandler();
 
-            container->pushToStack(playHandler);
+            container->pushToStack(*playHandler);
             //create and load PlayHandler() onto container Handler stack
             waitingForName = false;
         } else {

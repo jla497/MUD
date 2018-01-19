@@ -45,10 +45,10 @@ class ConnectionContainer {
 
     ConnectionContainer(const Connection& c);
 
-    Handler* getHandler();
+    Handler& getHandler();
 
     //push a new user state handler onto stack
-    void pushToStack(Handler* handler);
+    void pushToStack(Handler& handler);
 
     //receives messages from ConnectionManager
     void receive(std::string& str);
@@ -58,7 +58,7 @@ class ConnectionContainer {
     //send raw string to application protocol object
     void sendToProtocol(std::string& str);
 
-    Connection getConnection();
+    Connection& getConnection();
 
     std::string getOutBuffer();
 };
