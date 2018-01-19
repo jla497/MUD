@@ -20,12 +20,12 @@ public:
   MudProtocol();
   MudProtocol(int max_buf);
 
-  std::string receive(std::string& str);
+  std::string receive(const std::string& str);
 
-  void sendToBuffer(std::string& str);
+  void sendToBuffer(const std::string& str);
 
   std::string send();
 
-  std::string broadcast();
+  std::string broadcast(std::string);
 };
 #endif

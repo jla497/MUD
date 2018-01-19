@@ -15,10 +15,12 @@ class PlayHandler: public Handler {
 
     Commands m_commands;
     std::string outBuffer;
+    std::string userInput;
+
 public:
     PlayHandler();
     void handle(ConnectionContainer* container, std::string& str);
-    std::string getOutBuffer();
+    std::string getUserInput();
     void welcome(ConnectionContainer* container);
     void exit(ConnectionContainer* container);
 };

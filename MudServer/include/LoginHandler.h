@@ -16,12 +16,11 @@ class LoginHandler: public Handler {
 
     Commands m_commands;
     bool waitingForName;
-    std::string outBuffer;
+    std::string userInput;
 public:
     LoginHandler();
-    std::string getBuffer();
     void handle(ConnectionContainer* container, std::string& str);
-    std::string getOutBuffer();
+    std::string getUserInput();
     void welcome(ConnectionContainer* container);
     void exit(ConnectionContainer* container);
 };

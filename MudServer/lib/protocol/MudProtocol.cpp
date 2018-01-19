@@ -4,7 +4,7 @@ MudProtocol::MudProtocol(): max_buffer_size(512) {}
 
 MudProtocol::MudProtocol(int max_buf): max_buffer_size(max_buf) {}
 
-std::string MudProtocol::receive(std::string& str) {
+std::string MudProtocol::receive(const std::string& str) {
   //pass only alphanumeric characters, backspace nad cr
   
   for(auto& c: str) {
@@ -26,8 +26,7 @@ std::string MudProtocol::receive(std::string& str) {
  
 }
 
-//any protocol-specific text formatting here
-void MudProtocol::sendToBuffer(std::string& str) {
+void MudProtocol::sendToBuffer(const std::string& str) {
   out_buffer.append(str);
 }
 
@@ -54,11 +53,13 @@ std::string MudProtocol::send() {
 }
 
 //any protocol-specific text formatting here
-std::string MudProtocol::broadcast() {
+std::string MudProtocol::broadcast(std::string broadcast) {
   
-  if(broadcast_buffer.empty())
+  if(broadcast.empty())
     return "";
 
+  broadcast_buffer = broadcast;
+  
   std::string res;
   
   std::stringstream ss;
@@ -69,7 +70,7 @@ std::string MudProtocol::broadcast() {
   
   ss << prefixes << broadcast_buffer << suffixes;
 
-  ss >> res;
+  res = ss.str();
 
   broadcast_buffer.clear();
   

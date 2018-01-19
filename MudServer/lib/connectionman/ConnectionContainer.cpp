@@ -3,7 +3,7 @@
 ConnectionContainer::ConnectionContainer(const Connection& c) {
     m_connection = c;
     
-    m_protocol = new MudProtocol(512);
+    m_protocol = std::unique_ptr<Protocol>(new MudProtocol(512));
     
     isConnected = true;
     
@@ -12,18 +12,25 @@ ConnectionContainer::ConnectionContainer(const Connection& c) {
     //fix this to unique_ptrs
     LoginHandler* loginHandle = new LoginHandler();
 
-    this->pushToStack(loginHandle);
+    this->pushToStack(*loginHandle);
+
+    username = "";
 
    
 }
 
-void ConnectionContainer::pushToStack(Handler* handler) {
-  m_handlers.push(handler); 
+void ConnectionContainer::pushToStack(Handler& handler) {
+  m_handlers.push(&handler); 
   m_handlers.top()->welcome(this);
 }
 
+Handler& ConnectionContainer::getHandler() {
+  Handler* handler = m_handlers.top();
+  return *handler;
+}
+
 //receives messages from ConnectionManager
-void ConnectionContainer::receive(std::string& str) {
+void ConnectionContainer::receive(const std::string& str) {
   std::string translated;
 
   // translated = m_protocol.receive(str);
@@ -47,13 +54,17 @@ void ConnectionContainer::receive(std::string& str) {
 }
 
 bool ConnectionContainer::getIsConnected() {
-	return isConnected;
+  return isConnected;
 }
 
-Connection ConnectionContainer::getConnection() {
-	return m_connection;
+Connection& ConnectionContainer::getConnection() {
+  return m_connection;
 }
 
 std::string ConnectionContainer::getOutBuffer() {
   return m_protocol->send();
+}
+
+void ConnectionContainer::sendToProtocol(const std::string& str) {
+  m_protocol->sendToBuffer(str);
 }
