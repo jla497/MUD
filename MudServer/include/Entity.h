@@ -10,8 +10,7 @@
   players, rooms, objects*/
 class Entity {
     // unsigned int id;
-    // std::string longdesc;
-    // std::string shortdesc;
+    // std::string desc;
 
     // what were buffers in entities for?
     // std::string inBuffer;
@@ -21,9 +20,7 @@ public:
 
 	virtual unsigned int getId() = 0;
 
-	virtual std::string getLongdesc() = 0;
-
-	virtual std::string getShortdesc() = 0;
+	virtual std::string getDesc() = 0;
 };
 
 #endif
