@@ -3,24 +3,28 @@
 
 #include <vector>
 #include <string>
+#include <iostream>
+#include <algorithm>
 #include "yaml-cpp/yaml.h"
 
 
 class YamlParser {
 
 private:
-    std::vector<YAML::Node> data;
+    std::vector<YAML::Node> data; //holds all data nodes
     bool is_loaded;
 public:
+    YamlParser();
     //loads the YAML file into data (std::vector of YAML nodes)
     //each entity makes up one node in data (ex. "NPCs" make up one node)
     bool loadYamlFile(const std::string path);
     
     //calls constructors of each object and adds data to each respective object
-    void readNPCS();
+    void readNPC(YAML::Node npcs);
     void readObjects();
     void readResets();
     void readRooms();
+    void readShops();
 };
 
 #endif
