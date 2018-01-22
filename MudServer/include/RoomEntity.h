@@ -64,6 +64,15 @@ public:
 	// Given entity id
 	std::string removeEntity(const unsigned int entityToRemove);
 
+	// This function should be called when Player moves to a new room,
+	// somehow need to ensure this is updated...
+	// Player also keeps track of what room they are in
+	unsigned int addPlayerToRoom(unsigned int playerId);
+	
+	// Would check if player is in this room and remove if true
+	// Note that player can only be in one room at a time
+	unsigned int removePlayerFromRoom(unsigned int playerId);
+
 	// Returns true if player is alone in the room
 	bool isAloneInRoom();
 };

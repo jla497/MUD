@@ -36,6 +36,15 @@ std::string removeEntity(const unsigned int entityToRemove) {
 	return "";
 }
 
+unsigned int addPlayerToRoom(unsigned int playerId) {
+	return 0;
+}
+
+unsigned int removePlayerFromRoom(unsigned int playerId) {
+	return 0;
+}
+
+
 bool isAloneInRoom() {
 	return false;
 }
