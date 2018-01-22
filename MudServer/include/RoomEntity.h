@@ -54,7 +54,7 @@ public:
 	
 	// Reset room according to YML file
 	// DOES NOT purge player from room, only affects non-player entities
-	void reset();
+	void reset(/*parsed YML data*/);
 
 	// Returns success msg if inserts given entity into room succeeds
 	// Given entity id
