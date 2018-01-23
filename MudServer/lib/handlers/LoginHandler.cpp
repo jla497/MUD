@@ -7,12 +7,12 @@ LoginHandler::LoginHandler() {
 }
 
 void LoginHandler::handle(ConnectionContainer* container, std::string& str) {
-    
-    
+
+
     //here should search user db for valid user
-    auto it = std::find_if(m_commands.begin(),m_commands.end(), find_command(str));
-    
-    if(it != m_commands.end()) {
+    auto it = std::find_if(m_commands.begin(), m_commands.end(), find_command(str));
+
+    if (it != m_commands.end()) {
         //pass command to game
         if (str == "new") {
             std::string getName = "Please enter your user name:\n";
@@ -20,10 +20,10 @@ void LoginHandler::handle(ConnectionContainer* container, std::string& str) {
             container->sendToProtocol(getName);
 
             waitingForName = true;
-            
+
             return;
         }
-    }else{
+    } else {
         if (waitingForName) {
             //here we create new user or load user
 
@@ -46,8 +46,8 @@ void LoginHandler::handle(ConnectionContainer* container, std::string& str) {
 void LoginHandler::welcome(ConnectionContainer* container) {
     std::stringstream ss;
     std::string msg;
-    ss<< "---------------Game Login Handler---------------\n";
-    ss<<"Type 'new' to start a new game.";
+    ss << "---------------Game Login Handler---------------\n";
+    ss << "Type 'new' to start a new game.";
     msg = ss.str();
     container->sendToProtocol(msg);
 }
@@ -55,7 +55,7 @@ void LoginHandler::welcome(ConnectionContainer* container) {
 void LoginHandler::exit(ConnectionContainer* container) {
     std::stringstream ss;
     std::string msg;
-    ss<< "Exiting the game...\n";
+    ss << "Exiting the game...\n";
     msg = ss.str();
     container->sendToProtocol(msg);
 }

@@ -1,26 +1,26 @@
 #include "ConnectionContainer.h"
 
 ConnectionContainer::ConnectionContainer(const Connection& c) {
-    m_connection = c;
-    
-    m_protocol = std::unique_ptr<Protocol>(new MudProtocol(512));
-    
-    isConnected = true;
-    
-    randid = rand();
+  m_connection = c;
 
-    //fix this to unique_ptrs
-    LoginHandler* loginHandle = new LoginHandler();
+  m_protocol = std::unique_ptr<Protocol>(new MudProtocol(512));
 
-    this->pushToStack(*loginHandle);
+  isConnected = true;
 
-    username = "";
+  randid = rand();
 
-   
+  //fix this to unique_ptrs
+  LoginHandler* loginHandle = new LoginHandler();
+
+  this->pushToStack(*loginHandle);
+
+  username = "";
+
+
 }
 
 void ConnectionContainer::pushToStack(Handler& handler) {
-  m_handlers.push(&handler); 
+  m_handlers.push(&handler);
   m_handlers.top()->welcome(this);
 }
 
@@ -34,11 +34,11 @@ void ConnectionContainer::receive(const std::string& str) {
   std::string translated;
 
   // translated = m_protocol.receive(str);
-  try{
+  try {
     translated = m_protocol->receive(str);
-  }catch(std::exception& e) {
+  } catch (std::exception& e) {
     //kick user out
-    std::cout<<e.what()<<std::endl;
+    std::cout << e.what() << std::endl;
     isConnected = false;
     return;
   }
@@ -46,10 +46,10 @@ void ConnectionContainer::receive(const std::string& str) {
   // std::cout<<randid<<" msg received: "<<translated<<std::endl;
 
   //pass translated msg to handler
-  if(!translated.empty()) {
-   m_handlers.top()->handle(this,translated);
+  if (!translated.empty()) {
+    m_handlers.top()->handle(this, translated);
   }
-  
+
   return;
 }
 

@@ -1,14 +1,14 @@
 
-add_executable(mudserver
-  mudserver.cpp
+add_executable(connmantest
+  connmantest.cpp
 )
 
-target_link_libraries(mudserver networking)
-target_link_libraries(mudserver connectionman)
-target_link_libraries(mudserver handlers)
-target_link_libraries(mudserver protocols)
+target_link_libraries(connmantest networking)
+target_link_libraries(connmantest connectionman)
+target_link_libraries(connmantest handlers)
+target_link_libraries(connmantest protocols)
 
-set_target_properties(mudserver
+set_target_properties(connmantest
                       PROPERTIES
                       LINKER_LANGUAGE CXX
                       CXX_STANDARD 14
@@ -18,9 +18,9 @@ set_target_properties(mudserver
 # This program requires boost
 find_package(Boost 1.58 COMPONENTS system REQUIRED)
 include_directories(${Boost_INCLUDE_DIR})
-target_link_libraries(mudserver ${Boost_LIBRARIES})
+target_link_libraries(connmantest ${Boost_LIBRARIES})
 
-install(TARGETS mudserver
+install(TARGETS connmantest
   RUNTIME DESTINATION bin
 )
 

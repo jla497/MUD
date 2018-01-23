@@ -14,33 +14,23 @@
 #include "Handler.h"
 #include "LoginHandler.h"
 
-using namespace networking; 
+using namespace networking;
 
 
-/*ConnectionContainer is a wrapper for the Connection object, 
+/*ConnectionContainer is a wrapper for the Connection object,
 handlers for user's current state, and the application protocol
 object*/
-
-//temporary stub for entityt class
-struct Entity {
-    unsigned int id;
-    std::string in_buffer;
-    std::string out_buffer;
-};
-
-
 class ConnectionContainer {
     Connection m_connection;
     bool isConnected;
     std::unique_ptr<Protocol> m_protocol;
-    Entity m_entity;
-    
+
     int randid;
     std::string outBuffer;
     std::stack<Handler*> m_handlers;
 
-    public:
-     // temporary fix until I find a better solution
+public:
+    // temporary fix until I find a better solution
     std::string username; //temporary fix until we have a user db
 
     ConnectionContainer(const Connection& c);

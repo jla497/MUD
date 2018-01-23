@@ -17,7 +17,7 @@ class Protocol {
 
 public:
   //application specific formatting done here for inputs
-  virtual std::string receive(const std::string& str)= 0;
+  virtual std::string receive(const std::string& str) = 0;
 
   //append additional strings to protocol buffer
   virtual void sendToBuffer(const std::string& str) = 0;

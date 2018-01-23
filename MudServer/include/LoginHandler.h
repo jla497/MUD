@@ -12,17 +12,17 @@
 #include "PlayHandler.h"
 
 class LoginHandler: public Handler {
-    typedef std::vector<std::string> Commands;
+	typedef std::vector<std::string> Commands;
 
-    Commands m_commands;
-    bool waitingForName;
-    std::string userInput;
+	Commands m_commands;
+	bool waitingForName;
+	std::string userInput;
 public:
-    LoginHandler();
-    void handle(ConnectionContainer* container, std::string& str);
-    std::string getUserInput();
-    void welcome(ConnectionContainer* container);
-    void exit(ConnectionContainer* container);
+	LoginHandler();
+	void handle(ConnectionContainer* container, std::string& str);
+	std::string getUserInput();
+	void welcome(ConnectionContainer* container);
+	void exit(ConnectionContainer* container);
 };
 
 #endif

@@ -6,11 +6,11 @@ MudProtocol::MudProtocol(int max_buf): max_buffer_size(max_buf) {}
 
 std::string MudProtocol::receive(const std::string& str) {
   //pass only alphanumeric characters, backspace nad cr
-  
-  for(auto& c: str) {
 
-    if((std::isalnum(c) || std::isspace(c)) && in_buffer.length() < max_buffer_size) {
-      in_buffer.append(1,c);
+  for (auto& c : str) {
+
+    if ((std::isalnum(c) || std::isspace(c)) && in_buffer.length() < max_buffer_size) {
+      in_buffer.append(1, c);
     }
 
     if (in_buffer.length() >= max_buffer_size) {
@@ -23,7 +23,7 @@ std::string MudProtocol::receive(const std::string& str) {
   in_buffer.clear();
 
   return res;
- 
+
 }
 
 void MudProtocol::sendToBuffer(const std::string& str) {
@@ -31,48 +31,48 @@ void MudProtocol::sendToBuffer(const std::string& str) {
 }
 
 std::string MudProtocol::send() {
-  
-  if(out_buffer.empty())
+
+  if (out_buffer.empty())
     return "";
-  
+
   std::string res;
   std::stringstream ss;
 
   auto prefixes = "[ MudProtocol-specific formatting happens here: ]\n";
-  
+
   auto suffixes = "\n";
-  
+
   ss << prefixes << out_buffer << suffixes;
-  
+
   res = ss.str();
 
-  std::cout<<res<<std::endl;
+  std::cout << res << std::endl;
   out_buffer.clear();
-  
+
   return res;
 }
 
 //any protocol-specific text formatting here
 std::string MudProtocol::broadcast(std::string broadcast) {
-  
-  if(broadcast.empty())
+
+  if (broadcast.empty())
     return "";
 
   broadcast_buffer = broadcast;
-  
+
   std::string res;
-  
+
   std::stringstream ss;
 
   auto prefixes = "[ MudProtocol-specific broadcast formatting happens here: ]\n";
-  
+
   auto suffixes = "\n";
-  
+
   ss << prefixes << broadcast_buffer << suffixes;
 
   res = ss.str();
 
   broadcast_buffer.clear();
-  
+
   return res;
 }

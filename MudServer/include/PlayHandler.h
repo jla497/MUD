@@ -11,18 +11,18 @@
 #include "Handler.h"
 
 class PlayHandler: public Handler {
-    typedef std::vector<std::string> Commands;
+	typedef std::vector<std::string> Commands;
 
-    Commands m_commands;
-    std::string outBuffer;
-    std::string userInput;
+	Commands m_commands;
+	std::string outBuffer;
+	std::string userInput;
 
 public:
-    PlayHandler();
-    void handle(ConnectionContainer* container, std::string& str);
-    std::string getUserInput();
-    void welcome(ConnectionContainer* container);
-    void exit(ConnectionContainer* container);
+	PlayHandler();
+	void handle(ConnectionContainer* container, std::string& str);
+	std::string getUserInput();
+	void welcome(ConnectionContainer* container);
+	void exit(ConnectionContainer* container);
 };
 
 #endif

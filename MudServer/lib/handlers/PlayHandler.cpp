@@ -10,7 +10,7 @@ PlayHandler::PlayHandler() {
     m_commands.push_back("sleep");
     m_commands.push_back("quit");
     outBuffer = "---------------Game Play Handler---------------\n";
-    
+
 }
 
 void PlayHandler::handle(ConnectionContainer* container, std::string& str) {
@@ -19,18 +19,18 @@ void PlayHandler::handle(ConnectionContainer* container, std::string& str) {
     //  return;
     // }
     //check if str is one of the commands
-    auto it = std::find_if(m_commands.begin(),m_commands.end(), find_command(str));
-    
+    auto it = std::find_if(m_commands.begin(), m_commands.end(), find_command(str));
+
     std::stringstream ss;
-    
+
     std::string msg;
-    
-    if(it != m_commands.end()) {
+
+    if (it != m_commands.end()) {
         //pass command to game
-        ss<<"command: "<<str;
+        ss << "command: " << str;
         msg = ss.str();
         userInput = msg;
-    }else{
+    } else {
         userInput = str;
     }
 
@@ -40,10 +40,10 @@ void PlayHandler::handle(ConnectionContainer* container, std::string& str) {
 void PlayHandler::welcome(ConnectionContainer* container) {
     std::stringstream ss;
     std::string msg;
-    ss<< "---------------Game Play Handler---------------\n";
-    ss<<"Available commands:\n";
-    ss<<" attack, defend, go left, go down, go up, go right, quit\n";
-    ss<<"Any other strings will be treated as chat\n";
+    ss << "---------------Game Play Handler---------------\n";
+    ss << "Available commands:\n";
+    ss << " attack, defend, go left, go down, go up, go right, quit\n";
+    ss << "Any other strings will be treated as chat\n";
     msg = ss.str();
     container->sendToProtocol(msg);
 }
@@ -51,7 +51,7 @@ void PlayHandler::welcome(ConnectionContainer* container) {
 void PlayHandler::exit(ConnectionContainer* container) {
     std::stringstream ss;
     std::string msg;
-    ss<< "Exiting the game...\n";
+    ss << "Exiting the game...\n";
     msg = ss.str();
     container->sendToProtocol(msg);
 }
