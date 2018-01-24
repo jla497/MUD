@@ -21,5 +21,28 @@ set(CMAKE_TEMP_LIBRARY_PATH "${PROJECT_BINARY_DIR}/lib")
 add_subdirectory(lib)
 add_subdirectory(tools)
 
-# append instructions on how to find yaml-cpp library
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
+
+# link yaml-cpp library
+
+include(${CMAKE_ROOT}/Modules/ExternalProject.cmake)
+
+ExternalProject_Add(project_yamlcpp
+  URL https://github.com/jbeder/yaml-cpp/archive/yaml-cpp-0.5.3.tar.gz
+  PREFIX ${CMAKE_CURRENT_BINARY_DIR}/yaml-cpp-0.5.3
+  CONFIGURE_COMMAND ""
+  BUILD_COMMAND ""
+  INSTALL_COMMAND ""
+  PREFIX=${CMAKE_CURRENT_BINARY_DIR}/yaml-cpp-0.5.3
+)
+
+ExternalProject_Get_Property(project_yamlcpp install_dir)
+
+add_library(yaml-cpp STATIC IMPORTED)
+
+set_property(TARGET yaml-cpp PROPERTY IMPORTED_LOCATION ${install_dir}/lib/yaml-cpp-0.5.3)
+
+add_dependencies(yaml-cpp project_yamlcpp)
+
+
+
+
