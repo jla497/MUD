@@ -20,13 +20,15 @@ void YamlParser::readNPC(YAML::Node npcs){
     //need NPC constructor
     //variables below are temporary, will be used for testing purposes
     int armor = npcs["armor"].as<int>();
+
+    /*
     double damage = npcs["damage"].as<double>();
     std::string description = npcs["description"].as<std::string>();
     int exp = npcs["exp"].as<int>();
     int gold = npcs["gold"].as<int>();
     int id = npcs["id"].as<int>();
     std::vector<std::string> keywords;
-    for_each(npcs["keywords"].begin(), npcs["keywords"].end(), 
+    std::for_each(npcs["keywords"].begin(), npcs["keywords"].end(), 
         [&keywords](YAML::Node keyword) {
             keywords.push_back(keyword.as<std::string>());
         });
@@ -34,8 +36,20 @@ void YamlParser::readNPC(YAML::Node npcs){
     std::string longdesc = npcs["longdesc"].as<std::string>();
     std::string shortdesc = npcs["shortdesc"].as<std::string>();
     int thac0 = npcs["thac0"].as<int>();
+    */
 
     std::cout << "Armor: " << armor << "\n";
+}
+
+void YamlParser::readAllNPCS(){
+    //need NPC Object
+    //iterate through all npcs in data and add them to list/vector of npcs
+    for (auto& document : data) {
+        std::for_each(document["NPCS"].begin(), document["NPCS"].end(), 
+            [&](YAML::Node node){
+                readNPC(node);
+            });
+    }
 }
 
 void YamlParser::readObjects(){
