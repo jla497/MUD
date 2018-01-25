@@ -27,19 +27,20 @@ add_subdirectory(tools)
 include(${CMAKE_ROOT}/Modules/ExternalProject.cmake)
 
 ExternalProject_Add(project_yamlcpp
-  URL https://github.com/jbeder/yaml-cpp/archive/yaml-cpp-0.5.3.tar.gz
-  PREFIX ${CMAKE_CURRENT_BINARY_DIR}/yaml-cpp-0.5.3
+  GIT_REPOSITORY "https://github.com/jbeder/yaml-cpp.git"
+  GIT_TAG "master"
+  PREFIX ${CMAKE_CURRENT_BINARY_DIR}/yaml-cpp
   CONFIGURE_COMMAND ""
   BUILD_COMMAND ""
   INSTALL_COMMAND ""
-  PREFIX=${CMAKE_CURRENT_BINARY_DIR}/yaml-cpp-0.5.3
+  PREFIX=${CMAKE_CURRENT_BINARY_DIR}/yaml-cpp
 )
 
 ExternalProject_Get_Property(project_yamlcpp install_dir)
 
 add_library(yaml-cpp STATIC IMPORTED)
 
-set_property(TARGET yaml-cpp PROPERTY IMPORTED_LOCATION ${install_dir}/lib/yaml-cpp-0.5.3)
+set_property(TARGET yaml-cpp PROPERTY IMPORTED_LOCATION ${install_dir}/lib/yaml-cpp)
 
 add_dependencies(yaml-cpp project_yamlcpp)
 
