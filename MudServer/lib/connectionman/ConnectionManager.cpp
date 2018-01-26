@@ -1,13 +1,17 @@
 #include "ConnectionManager.h"
 
+ConnectionManager::ConnectionManager() {
+    m_list = new ConnectionList();
+}
+
 /*checks each ConnectionContainers's isConnected state. If isConnected is false, then remove the container and
 drop connection.*/
 void ConnectionManager::dropConnections() {
-    for (const auto& c : m_list) {
+    for (const auto& c : *m_list) {
 
         if ((*c).getIsConnected() == false) {
             const auto& toBeRmved = (*c).getConnection();
-            m_list.erase(std::remove(m_list.begin(), m_list.end(), c));
+            m_list->erase(std::remove(m_list->begin(), m_list->end(), c));
             server.disconnect(toBeRmved);
         }
     }
@@ -15,27 +19,28 @@ void ConnectionManager::dropConnections() {
 
 void ConnectionManager::addConnection(Connection c) {
     auto ptr = std::make_unique<ConnectionContainer>(c);
-    m_list.push_back(std::move(ptr));
+
+    m_list->push_back(std::move(ptr));
 }
 
 /*pass clients messages to existing connection containers If client does not exist,
 create new connection containers.
 */
-void ConnectionManager::rxFromServer(const std::deque<Message> &incoming) {
-    for (const auto& msg : incoming) {
-        auto& conn = msg.connection;
-        const auto& text = msg.text;
+void ConnectionManager::rxFromServer(std::deque<Message> &incoming) {
+    for (auto& msg : incoming) {
+        auto conn = msg.connection;
+        auto text = msg.text;
         // std::cout << "msg from: " << msg.connection.id << " " << msg.text << std::endl;
 
-        auto connContainer = std::find_if(m_list.begin(), m_list.end(), find_container(conn));
+        auto connContainerItr = std::find_if(m_list->begin(), m_list->end(), find_container(conn));
 
-        if (connContainer == m_list.end()) {
-            ConnectionManager::addConnection(conn);
+        if (connContainerItr == m_list->end()) {
+            addConnection(conn);
         }
-
-        connContainer = std::find_if(m_list.begin(), m_list.end(), find_container(conn));
-
-        (*connContainer)->receive(text);
+        
+        connContainerItr = std::find_if(m_list->begin(), m_list->end(), find_container(conn));
+    
+        (*connContainerItr)->receiveFromServer(text);
     }
 }
 /*Polls the list of connection containers for any buffered messages waiting to be sent
@@ -43,9 +48,9 @@ void ConnectionManager::rxFromServer(const std::deque<Message> &incoming) {
 void ConnectionManager::sendToServer() {
     std::deque<Message> messages;
 
-    for (const auto& container : m_list) {
+    for (const auto& container : *m_list) {
         const auto& conn = container->getConnection();
-        const auto& toSend = container->getOutBuffer();
+        const auto& toSend = container->sendToServer();
 
         if (!toSend.empty()) {
             Message m_msg = Message{conn, toSend};
@@ -57,22 +62,21 @@ void ConnectionManager::sendToServer() {
 }
 
 //collect and pass msgs from protocols to the GameManager
-MsgsPtr ConnectionManager::send2GameManager() {
-    auto ptr = std::make_unique<Msgs>();
-
-    for (const auto& container : m_list) {
-        const auto& user_msg = container->getHandler().getUserInput();
+gameAndUserMsgs& ConnectionManager::send2GameManager() {
+    
+    for (const auto& container : *m_list) {
+        const auto& user_msg = container->sendToGameManager();
         const auto& c = container->getConnection();
 
         if (!user_msg.empty()) {
-            auto msg = std::make_unique<Interface2Game>();
+            auto msg = std::make_unique<gameAndUserInterface>();
             msg->text = user_msg;
             msg->conn = c;
-            ptr->push_back(std::move(msg));
+            msgsToGameManager.push_back(std::move(msg));
         }
     }
 
-    return ptr;
+    return msgsToGameManager;
 }
 
 //receive msgs to send from GameManager
@@ -82,7 +86,7 @@ void ConnectionManager::run() {
     std::cout << "---------------------MUD Server Console---------------------" << std::endl;
 
     done = false;
-   
+
     while (!done) {
         try {
             server.update();
@@ -95,11 +99,11 @@ void ConnectionManager::run() {
 
         rxFromServer(incoming);
 
-        auto msgsPtr = send2GameManager();
+        // auto msgsPtr = send2GameManager();
 
-        for (const auto& msg : *msgsPtr) {
-            std::cout << "GameManager will get msg from: " << msg->conn.id << msg->text << std::endl;
-        }
+        // for (const auto& msg : *msgsPtr) {
+        //     std::cout << "GameManager will get msg from: " << msg->conn.id << msg->text << std::endl;
+        // }
 
         dropConnections();
 

@@ -1,41 +1,20 @@
 #include "ConnectionContainer.h"
+ConnectionContainer::ConnectionContainer(): mProtocol(std::unique_ptr<MudProtocol>(new MudProtocol(512))) {}
 
 ConnectionContainer::ConnectionContainer(const Connection& c) {
-  m_connection = c;
-
-  m_protocol = std::unique_ptr<Protocol>(new MudProtocol(512));
-
+  mConnection = c;
+  mProtocol = std::unique_ptr<MudProtocol>(new MudProtocol(512));
   isConnected = true;
-
-  randid = rand();
-
-  //fix this to unique_ptrs
-  LoginHandler* loginHandle = new LoginHandler();
-
-  this->pushToStack(*loginHandle);
-
-  username = "";
-
-
 }
 
-void ConnectionContainer::pushToStack(Handler& handler) {
-  m_handlers.push(&handler);
-  m_handlers.top()->welcome(this);
-}
+ConnectionContainer::ConnectionContainer(ConnectionContainer &&container): mConnection(container.mConnection), mProtocol(std::move(container.mProtocol)) {}
 
-Handler& ConnectionContainer::getHandler() {
-  Handler* handler = m_handlers.top();
-  return *handler;
-}
-
-//receives messages from ConnectionManager
-void ConnectionContainer::receive(const std::string& str) {
-  std::string translated;
-
-  // translated = m_protocol.receive(str);
+//receives messages from Server -> ConnectionManager->ConnectionContainer->Protocol
+void ConnectionContainer::receiveFromServer(std::string& str) {
+  std::cout<<"connection container received from server: "<<str<<std::endl;
+  // translated = mProtocol.receive(str);
   try {
-    translated = m_protocol->receive(str);
+    mProtocol->receive(str);
   } catch (std::exception& e) {
     //kick user out
     std::cout << e.what() << std::endl;
@@ -43,28 +22,41 @@ void ConnectionContainer::receive(const std::string& str) {
     return;
   }
 
-  // std::cout<<randid<<" msg received: "<<translated<<std::endl;
+  return;
+}
 
-  //pass translated msg to handler
-  if (!translated.empty()) {
-    m_handlers.top()->handle(this, translated);
+std::string ConnectionContainer::sendToGameManager() {
+  return mProtocol->send();
+}
+
+void ConnectionContainer::receiveFromGameManager(std::string& str) {
+  std::cout<<"connection container received from game manager: "<<str<<std::endl;
+  
+  // translated = mProtocol.receive(str);
+  try {
+   mProtocol->receive(str);
+  } catch (std::exception& e) {
+    //kick user out
+    std::cout << e.what() << std::endl;
+    isConnected = false;
+    return;
   }
 
   return;
 }
 
-bool ConnectionContainer::getIsConnected() {
+std::string ConnectionContainer::sendToServer() {
+  return mProtocol->send();
+}
+
+bool ConnectionContainer::getIsConnected() const {
   return isConnected;
 }
 
-Connection& ConnectionContainer::getConnection() {
-  return m_connection;
+Connection ConnectionContainer::getConnection() const {
+  return mConnection;
 }
 
-std::string ConnectionContainer::getOutBuffer() {
-  return m_protocol->send();
-}
-
-void ConnectionContainer::sendToProtocol(const std::string& str) {
-  m_protocol->sendToBuffer(str);
+MudProtocol& ConnectionContainer::getProtocol() const {
+  return *mProtocol;
 }

@@ -1,0 +1,2 @@
+/usr/bin/ar qc ../libprotocols.a  CMakeFiles/protocols.dir/MudProtocol.cpp.o
+/usr/bin/ranlib ../libprotocols.a
