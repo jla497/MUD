@@ -5,7 +5,7 @@
 #include <string>
 #include <iostream>
 #include <algorithm>
-#include "yaml-cpp/yaml.h"
+#include <yaml-cpp/yaml.h>
 
 
 class YamlParser {
@@ -19,9 +19,9 @@ public:
     //loads the YAML file into data (std::vector of YAML nodes)
     //each entity makes up one node in data (ex. "NPCs" make up one node)
     bool loadYamlFile(const std::string path);
-    
+
     void readAllNPCS();
-    
+
     //calls constructors of each object and adds data to each respective object
     void readNPC(YAML::Node npcs);
     void readObjects();

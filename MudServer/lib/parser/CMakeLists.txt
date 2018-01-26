@@ -1,4 +1,4 @@
-
+find_package(yaml-cpp)
 add_library(parser YamlParser.cpp)
 
 set_target_properties(parser
@@ -6,7 +6,6 @@ set_target_properties(parser
                       LINKER_LANGUAGE CXX
                       CXX_STANDARD 14)
 
-include_directories(${install_dir}/include/yaml-cpp/include/yaml-cpp)
 
 target_link_libraries(parser yaml-cpp)
 
