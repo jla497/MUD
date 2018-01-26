@@ -1,10 +1,11 @@
-image: ubuntu:latest
+image: alpine:latest
 stages:
   - build
 
 before_script:
-  - apt-get update -qq
-  - apt-get install -y -qq build-essential cmake libboost-all-dev
+  - apk update
+  - apk upgrade
+  - apk add build-base cmake boost-dev ncurses ncurses-dev
 
 after_script:
   - rm -rf build
