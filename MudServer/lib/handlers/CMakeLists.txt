@@ -1,14 +1,15 @@
 
-add_library(connectionman ConnectionManager.cpp ConnectionContainer.cpp)
+add_library(handlers PlayHandler.cpp LoginHandler.cpp)
 
-set_target_properties(connectionman
+set_target_properties(handlers
                       PROPERTIES
                       LINKER_LANGUAGE CXX
                       CXX_STANDARD 14
 )
 
 
-install(TARGETS connectionman
+
+install(TARGETS handlers
   ARCHIVE DESTINATION lib
 )
 
