@@ -17,12 +17,11 @@ compile:
     - cd build
     - cmake ../MudServer
     - make
-    - cd ..
 
 connection-manager-unit-test:
   stage: test
   script:
-    - cd build/bin
+    - cd bin
     - ./runAllTests | grep "PASSED"
 
 
