@@ -2,13 +2,7 @@ image: dewert/gibanica:base
 stages:
   - build
   - test
-  - deploy
   - cleanup
-
-stages:
-  - build
-  - test
-  - deploy
 
 compile:
   stage: build
@@ -27,7 +21,7 @@ connection-manager-unit-test:
     - cd build/bin
     - ./runAllTests | grep "PASSED"
 
-cleanup build:
+cleanup-build-folder:
   stage: cleanup
   script:
     - rm -rf build
