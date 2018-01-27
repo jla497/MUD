@@ -19,13 +19,7 @@ include_directories(${CMAKE_SOURCE_DIR}/include)
 link_directories(${LIBRARY_OUTPUT_PATH})
 set(CMAKE_TEMP_LIBRARY_PATH "${PROJECT_BINARY_DIR}/lib")
 
-include_directories(
-  ${CMAKE_SOURCE_DIR}/test/lib/googletest/include/
-  ${CMAKE_SOURCE_DIR}/test/lib/googlemock/include/
-)
-
-
 add_subdirectory(lib)
 add_subdirectory(tools)
-add_subdirectory(test)
+
 
