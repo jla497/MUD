@@ -1,6 +1,8 @@
 image: dewert/gibanica:base
 stages:
   - build
+  - test
+  - cleanup
 
 after_script:
   - rm -rf build
@@ -12,4 +14,7 @@ compile:
     - cd build
     - cmake ../MudServer
     - make
-    - cd ..
+  artifacts:
+    paths:
+    - build
+
