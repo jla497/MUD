@@ -9,8 +9,6 @@ Player::Player(PlayerID id, std::string username, std::string password) :
     password{password},
     character{nullptr} {}
 
-Player::~Player() {}
-
 Character* Player::getCharacter() { return character; }
 
 }  // namespace gamemanager

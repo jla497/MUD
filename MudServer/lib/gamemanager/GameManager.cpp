@@ -19,8 +19,6 @@ GameManager::GameManager() :
     gameState{std::make_unique<GameState>()},
     tick{kDefaultGameLoopTick} {}
 
-GameManager::~GameManager() {}
-
 /*
  * Runs a standard game loop, which consists of the following steps:
  *      - get user input (messages from the server)

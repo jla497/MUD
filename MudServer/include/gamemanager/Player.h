@@ -23,11 +23,6 @@ public:
      * Default constructor
      */
     Player(PlayerID id, std::string username, std::string password);
-
-    /**
-     * Destructor
-     */
-    ~Player();
     
     Character* getCharacter();
 };

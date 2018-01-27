@@ -6,10 +6,8 @@ namespace gamemanager {
 /**
  * @todo write docs
  */
-class Character
-{
-};
+class Character {};
 
-} // namespace gamemanager
-} // namespace mudserver
-#endif // CHARACTER_H
+}  // namespace gamemanager
+}  // namespace mudserver
+#endif  // CHARACTER_H

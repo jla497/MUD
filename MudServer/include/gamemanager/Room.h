@@ -6,11 +6,9 @@ namespace gamemanager {
 /**
  * @todo write docs
  */
-class Room
-{
-};
+class Room {};
 
-} // namespace gamemanager
-} // namespace mudserver
+}  // namespace gamemanager
+}  // namespace mudserver
 
-#endif // ROOM_H
+#endif  // ROOM_H

@@ -16,7 +16,7 @@ namespace networking {
 /* Stubs for testing only */
 using ConnectionID = gamemanager::PlayerID;
 using PlayerMessageVal = std::string;
-typedef struct PlayerMessage {
+struct PlayerMessage {
     ConnectionID id;
     PlayerMessageVal value;
     PlayerMessage(ConnectionID id, PlayerMessageVal value) :
@@ -68,7 +68,6 @@ class GameManager {
 public:
     GameManager();
     GameManager(const GameManager& gm) = delete;
-    ~GameManager();
     
     void mainLoop();
 };

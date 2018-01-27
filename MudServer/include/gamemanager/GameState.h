@@ -29,11 +29,6 @@ public:
      * Default constructor
      */
     GameState();
-
-    /**
-     * Destructor
-     */
-    ~GameState();
     
     Player* getPlayerByID(const PlayerID id);
     Room& getCharacterLocation(const Character& character);
