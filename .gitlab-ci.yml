@@ -3,12 +3,13 @@ stages:
   - build
 
 after_script:
-  - rm -rf build
+
   
 stages:
   - build
   - test
   - deploy
+  - cleanup
 
 compile:
   stage: build
@@ -25,3 +26,7 @@ connection-manager-unit-test:
     - ./runAllTests | grep "PASSED"
 
 
+remove build:
+  stage: cleanup
+  script:
+      - rm -rf build
