@@ -22,7 +22,7 @@ compile:
 connection-manager-unit-test:
   stage: test
   script:
-    - cd bin
+    - cd build/bin
     - ./runAllTests | grep "PASSED"
 
 
