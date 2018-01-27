@@ -1,0 +1,15 @@
+image: dewert/gibanica:base
+stages:
+  - build
+
+after_script:
+  - rm -rf build
+
+compile:
+  stage: build
+  script:
+    - mkdir build
+    - cd build
+    - cmake ../MudServer
+    - make
+    - cd ..
