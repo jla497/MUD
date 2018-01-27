@@ -14,11 +14,10 @@ namespace gamemanager {
 using networking::PlayerMessage;
 using std::vector;
 
-GameManager::GameManager() : 
+GameManager::GameManager() :
     connectionManager{std::make_unique<ConnectionManagerStub>()},
     gameState{std::make_unique<GameState>()},
-    tick {kDefaultGameLoopTick}
-    { }
+    tick{kDefaultGameLoopTick} {}
 
 GameManager::~GameManager() {}
 
@@ -29,26 +28,26 @@ GameManager::~GameManager() {}
  *      - render, i.e. send broadcast messages to platers.
  */
 void GameManager::mainLoop() {
-    //TODO: Add a logging system
+    // TODO: Add a logging system
     std::cout << "Entered main game loop\n" << std::endl;
-   
+
     bool done = false;
     using clock = std::chrono::high_resolution_clock;
-    
+
     while (!done) {
         auto startTime = clock::now();
-        
-        unique_ptr<vector<PlayerMessage> > messages = 
+
+        unique_ptr<vector<PlayerMessage> > messages =
             connectionManager->getMessages();
-        
+
         processMessages(*messages);
-        
+
         auto delta = startTime - clock::now();
-        
+
         if (tick > delta) {
-            std::this_thread::sleep_for(tick - delta); 
+            std::this_thread::sleep_for(tick - delta);
         } else {
-            //TODO: report game too slow for tick
+            // TODO: report game too slow for tick
             // we have a problem - game can't update within tick cycle
         }
     }
@@ -65,7 +64,7 @@ void GameManager::processMessages(vector<PlayerMessage>& messages) {
             std::cout << "Player not found" << std::endl;
             continue;
         }
-        
+
         // look up player's character
         // pointer is used as player may not have character yet
         Character* character = player->getCharacter();
@@ -74,21 +73,21 @@ void GameManager::processMessages(vector<PlayerMessage>& messages) {
             // character creation
             continue;
         }
-        
-        // look up character's location            
+
+        // look up character's location
         Room& room = gameState->getCharacterLocation(*character);
-        
+
         // parse message into verb/object
         // auto parsed = parsePlayerMessage(message.value);
-        
+
         // then take action based on parse command
         // Command pattern - objects?
         // or just functions?
-        
+
         // command = Command(gameState, parsed, character, room)
         // command.act()
     }
 }
 
-}   // namespace gamemanager
-}   // namespace mudserver
+}  // namespace gamemanager
+}  // namespace mudserver
