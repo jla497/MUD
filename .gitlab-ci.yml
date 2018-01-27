@@ -1,10 +1,10 @@
 image: dewert/gibanica:base
 stages:
   - build
+  - test
+  - deploy
+  - cleanup
 
-after_script:
-  - rm -rf build
-  
 stages:
   - build
   - test
@@ -19,16 +19,15 @@ compile:
     - make
   artifacts:
     paths:
-    - build/
+    - build
 
 connection-manager-unit-test:
   stage: test
   script:
-    - mkdir build
-    - cd build
-    - cmake ../MudServer
-    - make
-    - cd bin
+    - cd build/bin
     - ./runAllTests | grep "PASSED"
 
-
+cleanup build:
+  stage: cleanup
+  script:
+    - rm -rf build
