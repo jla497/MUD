@@ -4,6 +4,11 @@ stages:
 
 after_script:
   - rm -rf build
+  
+stages:
+  - build
+  - test
+  - deploy
 
 compile:
   stage: build
@@ -14,10 +19,10 @@ compile:
     - make
     - cd ..
 
-test:
+connection-manager-unit-test:
   stage: test
   script:
     - cd build/bin
     - ./runAllTests | grep "PASSED"
 
-    
+
