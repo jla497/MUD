@@ -11,7 +11,6 @@ ConnectionContainer::ConnectionContainer(ConnectionContainer &&container): mConn
 
 //receives messages from Server -> ConnectionManager->ConnectionContainer->Protocol
 void ConnectionContainer::receiveFromServer(std::string& str) {
-  std::cout<<"connection container received from server: "<<str<<std::endl;
   // translated = mProtocol.receive(str);
   try {
     mProtocol->receive(str);
@@ -26,7 +25,8 @@ void ConnectionContainer::receiveFromServer(std::string& str) {
 }
 
 std::string ConnectionContainer::sendToGameManager() {
-  return mProtocol->send();
+  auto str = mProtocol->send(); 
+  return str;
 }
 
 void ConnectionContainer::receiveFromGameManager(std::string& str) {

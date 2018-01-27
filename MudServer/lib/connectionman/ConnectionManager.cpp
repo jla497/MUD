@@ -37,7 +37,7 @@ void ConnectionManager::rxFromServer(std::deque<Message> &incoming) {
         if (connContainerItr == m_list->end()) {
             addConnection(conn);
         }
-        
+
         connContainerItr = std::find_if(m_list->begin(), m_list->end(), find_container(conn));
     
         (*connContainerItr)->receiveFromServer(text);
@@ -45,7 +45,7 @@ void ConnectionManager::rxFromServer(std::deque<Message> &incoming) {
 }
 /*Polls the list of connection containers for any buffered messages waiting to be sent
 */
-void ConnectionManager::sendToServer() {
+std::deque<Message> ConnectionManager::sendToServer() {
     std::deque<Message> messages;
 
     for (const auto& container : *m_list) {
@@ -59,6 +59,8 @@ void ConnectionManager::sendToServer() {
     }
 
     server.send(messages);
+
+    return messages;
 }
 
 //collect and pass msgs from protocols to the GameManager
@@ -67,6 +69,7 @@ gameAndUserMsgs& ConnectionManager::send2GameManager() {
     for (const auto& container : *m_list) {
         const auto& user_msg = container->sendToGameManager();
         const auto& c = container->getConnection();
+        std::cout<<c.id<<": "<<user_msg<<std::endl;
 
         if (!user_msg.empty()) {
             auto msg = std::make_unique<gameAndUserInterface>();
@@ -77,6 +80,30 @@ gameAndUserMsgs& ConnectionManager::send2GameManager() {
     }
 
     return msgsToGameManager;
+}
+
+void ConnectionManager::receiveFromGameManager(gameAndUserMsgs& fromGame) {
+    msgsToGameManager.clear();
+    msgsToGameManager.swap(fromGame);
+
+    std::cout<<"in receiveFromGameManager"<<std::endl;
+    for(auto& container : *m_list) {
+        const auto& c = container->getConnection();
+        std::cout<<"current container in m_list: "<<c.id<<std::endl;
+    }
+
+    for (auto& msg : msgsToGameManager) {
+       auto& connection = msg->conn;
+       auto& text = msg->text;
+       auto connContainerItr = std::find_if(m_list->begin(), m_list->end(), find_container(connection));
+       
+        if (connContainerItr == m_list->end()) {
+            auto errMsg = "ConnectionContainer not found while trying to send msg from the GameManager\n";
+            throw std::runtime_error(errMsg);
+        }
+
+        (*connContainerItr)->receiveFromGameManager(text);
+    }
 }
 
 //receive msgs to send from GameManager

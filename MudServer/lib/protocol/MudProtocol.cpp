@@ -23,7 +23,7 @@ void MudProtocol::receive(std::string str) {
 
 std::string MudProtocol::send() {
 
-  if (out_buffer.empty())
+  if (in_buffer.empty())
     return "";
 
   std::string res;
@@ -33,12 +33,12 @@ std::string MudProtocol::send() {
 
   auto suffixes = "\n";
 
-  ss << prefixes << out_buffer << suffixes;
+  ss << prefixes << in_buffer << suffixes;
 
   res = ss.str();
 
   std::cout << res << std::endl;
-  out_buffer.clear();
+  in_buffer.clear();
 
   return res;
 }

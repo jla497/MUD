@@ -13,16 +13,23 @@
 
 using namespace networking;
 
+struct gameAndUserInterface {
+	std::string text;
+	Connection conn;
+};
+
 /*functor used in searches*/
-struct find_container {
-	find_container(Connection conn): conn(conn) {}
-	bool operator()(const std::unique_ptr<ConnectionContainer>& ptr) {return ptr->getConnection().id == conn.id;}
+struct find_gameAndUserInterface {
+	find_gameAndUserInterface(Connection conn): conn(conn) {}
+	bool operator()(const std::unique_ptr<gameAndUserInterface>& ptr) {return ptr->conn.id == conn.id;}
 private:
 	Connection conn;
 };
 
-struct gameAndUserInterface {
-	std::string text;
+struct find_container {
+	find_container(Connection conn): conn(conn) {}
+	bool operator()(const std::unique_ptr<ConnectionContainer>& ptr) {return ptr->getConnection().id == conn.id;}
+private:
 	Connection conn;
 };
 
@@ -77,10 +84,13 @@ public:
 	void rxFromServer(std::deque<Message> &incoming);
 
 //send Messages to server
-	void sendToServer();
+	std::deque<Message> sendToServer();
 
 //collect and pass msgs from protocols to the GameManager
 	gameAndUserMsgs& send2GameManager();
+
+//collect and pass msgs from GameManager to ConnectionManager
+void receiveFromGameManager(gameAndUserMsgs& fromGame);	
 
 //receive msgs to send from GameManager
 // void rxFromGameManager(MsgsPtr);
