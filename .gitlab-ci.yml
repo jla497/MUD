@@ -17,6 +17,9 @@ compile:
     - cd build
     - cmake ../MudServer
     - make
+  artifacts:
+    paths:
+    - build/
 
 connection-manager-unit-test:
   stage: test
