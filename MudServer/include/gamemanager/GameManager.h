@@ -21,7 +21,8 @@ struct PlayerMessage {
     PlayerMessageVal value;
     PlayerMessage(ConnectionID id, PlayerMessageVal value) :
         id{id}, value{value} {} 
-} PlayerMessage;
+};
+using PlayerMessage = struct PlayerMessage;
 
 using PlayerMessages = std::unique_ptr<std::vector<PlayerMessage> >;
     
