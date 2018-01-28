@@ -4,13 +4,13 @@
 
 Entity::Entity() {
 	//generate entityId
-    entityId = nextUniqueId++;
+    m_entityId = nextUniqueId++;
 }
 
 unsigned int Entity::getEntityId() {
-	return entityId;
+	return m_entityId;
 }
 
-std::string Entity::getDesc() {
-	return desc;
-}
+// std::string Entity::getDesc() {
+// 	return m_desc;
+// }

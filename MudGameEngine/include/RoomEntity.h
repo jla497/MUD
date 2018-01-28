@@ -9,10 +9,10 @@
 #include "Entity.h"
 
 struct Door {
-	std::string desc;	
-	std::string dir; // didn't enum dir, could be arbitrary
+	std::string 		desc;	
+	std::string 		dir; // didn't enum dir, could be arbitrary
 	std::vector<std::string> keywords;
-	unsigned int to; // Room this door leads to
+	unsigned int 		to; // Room this door leads to
 
 	// https://stackoverflow.com/questions/15517991/search-a-vector-of-objects-by-object-attribute
 	// use std::find_if instead
@@ -23,26 +23,23 @@ struct Door {
 };
 
 class RoomEntity {
-    // Room info from files
-    unsigned int id;
-    std::string desc;
-    std::vector<Door> m_doors;
-    std::string extDesc;
-    std::string name;
+private:
+    std::string 		m_desc;
+    std::vector<Door> 	m_doors;
+    std::string 		m_extDesc;
+    std::string 		m_name;
 
     // Tentative organization structure of room contents
-    std::vector<unsigned int> idPlayersInRoom;
+    std::vector<unsigned int> m_idPlayersInRoom;
     // ASSUME ids are unique for ALL entities, entities include npc, obj, equip, give
     // Room holds responsibiliy of item location, not item
-    std::vector<unsigned int> idEntitiesInRoom; 
+    std::vector<unsigned int> m_idEntitiesInRoom; 
     
 public:
     RoomEntity();
 	RoomEntity(std::string desc);
 
 	std::string getDesc();
-
-	unsigned int getId();
 
 	// Returns destinationID to room given dir command while in a room
 	// Returns 0 if dir does not exist for room

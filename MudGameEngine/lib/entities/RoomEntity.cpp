@@ -1,19 +1,14 @@
 #include "RoomEntity.h"
 
-RoomEntity::RoomEntity(): desc("") {};
+RoomEntity::RoomEntity() : m_desc("") {};
 // Sample generic entity, assume properly formatted strings..
 RoomEntity::RoomEntity(std::string desc)
-	: desc(desc) {
-	id = rand();
+	: m_desc(desc) {
 }
 
 std::string RoomEntity::getDesc() {
-	desc = "dummy description";
-	return desc;
-}
-
-unsigned int RoomEntity::getId() {
-	return id;
+	m_desc = "dummy description";
+	return m_desc;
 }
 
 unsigned int getDestRoomIdOf(std::string dir) {

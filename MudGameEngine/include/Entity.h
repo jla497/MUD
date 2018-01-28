@@ -13,16 +13,16 @@ protected:
 	static unsigned int nextUniqueId;
 private:
 	// typeId 
-	int entityId;
+	int 		m_entityId;
 
-	std::string desc;
+	// std::string m_desc;
 
 public:
 	Entity();
 
 	unsigned int getEntityId();
 
-	std::string getDesc();
+	// std::string getDesc();
 
 	//default destructor does nothing
 	virtual ~Entity(){};
