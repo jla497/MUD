@@ -1,7 +1,5 @@
-#ifndef NPCEntity_H
-#define NPCEntity_H
-#include <string>
-#include <vector>
+#ifndef NPC_ENTITY_H
+#define NPC_ENTITY_H
 
 #include "Roll.h"
 #include "Entity.h"
@@ -10,7 +8,7 @@ class NPCEntity : public Entity {
 private:
     int             m_armor;
     Roll            m_damageRollData;
-    int             m_npcTypeId; // what is this?
+    unsigned int    m_npcTypeId; // what is this?
     std::string     m_desc;
     unsigned int    m_exp;
     int             m_gold;

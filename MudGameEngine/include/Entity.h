@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include <memory>
 #include <string>
+#include <vector>
 
 /*Entity Interface for making other types of entities like:
   players, rooms, objects*/

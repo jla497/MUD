@@ -2,7 +2,7 @@
 #include <vector>
 
 #include "Entity.h"
-#include "Reset.h"
+#include "ResetEntity.h"
 
 Reset::Reset(int id,std::string action,std::string comment, int slot,
 			 int limit,int roomId) : 

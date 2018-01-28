@@ -1,7 +1,6 @@
 #include <string>
 #include <vector>
 
-#include "Entity.h"
 #include "NPCEntity.h"
 
 NPCEntity::NPCEntity(int armor, Roll damageRollData, std::string desc,

@@ -1,33 +1,16 @@
 #ifndef ROOM_ENTITY_H
 #define ROOM_ENTITY_H
 
-#include <sstream>
-#include <unistd.h>
-#include <memory>
-#include <string>
-#include <vector>
 #include "Entity.h"
-
-struct Door {
-	std::string 		desc;	
-	std::string 		dir; // didn't enum dir, could be arbitrary
-	std::vector<std::string> keywords;
-	unsigned int 		to; // Room this door leads to
-
-	// https://stackoverflow.com/questions/15517991/search-a-vector-of-objects-by-object-attribute
-	// use std::find_if instead
-	// find_to(std::string dir) : dir_(dir) {}
-	// bool operator()(Door& door) {return door.dir == dir_;}
-// private:
-// 	Door door;
-};
+#include "DoorEntity.h"
 
 class RoomEntity {
 private:
     std::string 		m_desc;
-    std::vector<Door> 	m_doors;
+    std::vector<DoorEntity> 	m_doors;
     std::string 		m_extDesc;
     std::string 		m_name;
+    unsigned int 		m_roomId;
 
     // Tentative organization structure of room contents
     std::vector<unsigned int> m_idPlayersInRoom;
@@ -37,7 +20,8 @@ private:
     
 public:
     RoomEntity();
-	RoomEntity(std::string desc);
+	RoomEntity(std::string desc, std::vector<DoorEntity> doors, std::string extDesc, 
+		std::string name, unsigned int roomId);
 
 	std::string getDesc();
 

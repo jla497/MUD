@@ -2,8 +2,13 @@
 
 RoomEntity::RoomEntity() : m_desc("") {};
 // Sample generic entity, assume properly formatted strings..
-RoomEntity::RoomEntity(std::string desc)
-	: m_desc(desc) {
+RoomEntity::RoomEntity(std::string desc, std::vector<DoorEntity> doors, std::string extDesc, 
+		std::string name, unsigned int roomId) : 
+	m_desc(desc),
+	m_doors(doors),
+	m_extDesc(extDesc),
+	m_name(name),
+	m_roomId(roomId) {
 }
 
 std::string RoomEntity::getDesc() {
