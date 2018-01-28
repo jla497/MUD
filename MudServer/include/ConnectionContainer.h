@@ -11,45 +11,54 @@
 #include "Protocol.h"
 #include "MudProtocol.h"
 #include "Server.h"
-#include "Handler.h"
-#include "LoginHandler.h"
+
 // using namespace networking;
 
-
-/*ConnectionContainer is a wrapper for the Connection object, 
+/*ConnectionContainer is a wrapper for the Connection object,
 handlers for user's current state, and the application protocol
 object*/
-
 class ConnectionContainer {
-
     networking::Connection mConnection;
-
     bool isConnected;
-    std::unique_ptr<Protocol> m_protocol;
+    std::unique_ptr<MudProtocol> mProtocol;
+
+public:
+    ConnectionContainer();
     
     ConnectionContainer(const networking::Connection& c);
 
-    public:
-     // temporary fix until I find a better solution
-    std::string username; //temporary fix until we have a user db
+    ConnectionContainer(ConnectionContainer const &) = delete;
+    
+    ConnectionContainer &operator= (ConnectionContainer const &) = delete;
+  
+    ConnectionContainer(ConnectionContainer &&container);
 
-    ConnectionContainer(const Connection& c);
+    ConnectionContainer &operator=(ConnectionContainer &&container) {
+        if(this != &container) {
+            mProtocol = std::move(container.mProtocol);
+        }
 
-    Handler& getHandler();
+        return *this;
+    } 
 
-    //push a new user state handler onto stack
-    void pushToStack(Handler& handler);
+    bool getIsConnected() const;
 
     //receives messages from ConnectionManager
-    void receive(const std::string& str);
+    void receiveFromServer(std::string& str);
 
-    bool getIsConnected();
+    std::string sendToGameManager();
 
+    void receiveFromGameManager(std::string& str);
+
+    std::string sendToServer();
     //send raw string to application protocol object
     void sendToProtocol(const std::string& str);
 
     networking::Connection getConnection() const;
+
     std::string getOutBuffer();
+
+    MudProtocol& getProtocol() const;
 };
 
 #endif

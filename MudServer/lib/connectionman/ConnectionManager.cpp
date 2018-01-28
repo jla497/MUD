@@ -97,37 +97,3 @@ void ConnectionManager::receiveFromGameManager(std::unique_ptr<gameAndUserMsgs> 
     }
 }
 
-//receive msgs to send from GameManager
-// void rxFromGameManager(std::vector<Interface2Game> msgs);
-
-void ConnectionManager::run() {
-    // std::cout << "---------------------MUD Server Console---------------------" << std::endl;
-
-    done = false;
-
-    while (!done) {
-        try {
-            server.update();
-        } catch (std::exception& e) {
-            printf("Exception from Server update:\n%s\n\n", e.what());
-            done = true;
-        }
-
-        auto incoming = server.receive();
-
-        rxFromServer(incoming);
-
-        // auto msgsPtr = send2GameManager();
-
-        // for (const auto& msg : *msgsPtr) {
-            // std::cout << "GameManager will get msg from: " << msg->conn.id << msg->text << std::endl;
-        // }
-
-        dropConnections();
-
-        sleep(1);
-    }
-
-    server.send(messages);
-}
-

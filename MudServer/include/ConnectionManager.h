@@ -32,6 +32,13 @@ private:
 	networking::Connection conn;
 };
 
+
+typedef std::vector<std::unique_ptr<ConnectionContainer>> ConnectionList;
+
+typedef std::vector<std::unique_ptr<ConnectionContainer>>::iterator it;
+
+typedef std::vector<std::unique_ptr<gameAndUserInterface>> gameAndUserMsgs;
+
 /*Connection Manager manages ConnectionContainers.
  Adds new connections and removes connections. 
  Passes on or broadcasts incoming and outgoing messages*/
