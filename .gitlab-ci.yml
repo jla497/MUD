@@ -13,7 +13,14 @@ compile:
     - make
   artifacts:
     paths:
-    - bu
+    - build
+
+connection-manager-unit-test:
+  stage: test
+  script:
+    - cd build/bin
+    - ./connmantest | grep "PASSED"
+
 cleanup-build-folder:
   stage: cleanup
   script:
