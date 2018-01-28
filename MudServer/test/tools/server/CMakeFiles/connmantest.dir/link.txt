@@ -1,1 +1,0 @@
-/usr/bin/c++    -Wall -fno-rtti   CMakeFiles/connmantest.dir/connmantest.cpp.o  -o ../../bin/connmantest -rdynamic ../../lib/libnetworking.a ../../lib/libconnectionman.a ../../lib/libhandlers.a ../../lib/libprotocols.a -lboost_system 
