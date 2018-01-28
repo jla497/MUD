@@ -11,7 +11,10 @@ compile:
     - cd build
     - cmake ../MudServer
     - make
+<<<<<<< HEAD
 
+=======
+>>>>>>> daadc40f63c104d98d68f948b73681792c9742b3
   artifacts:
     paths:
     - build
@@ -27,4 +30,7 @@ cleanup-build-folder:
   script:
     - rm -rf build
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> daadc40f63c104d98d68f948b73681792c9742b3

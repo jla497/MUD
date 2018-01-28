@@ -28,6 +28,7 @@ private:
 struct findContainer {
 	findContainer(networking::Connection conn): conn(conn) {}
 	bool operator()(const std::unique_ptr<ConnectionContainer>& ptr) {return ptr->getConnection().id == conn.id;}
+<<<<<<< HEAD
 private:
 	networking::Connection conn;
 };
@@ -40,6 +41,8 @@ typedef std::vector<std::unique_ptr<ConnectionContainer>>::iterator it;
 struct find_container {
 	find_container(Connection& conn): conn(conn) {}
 	bool operator()(std::unique_ptr<ConnectionContainer>& ptr) {return ptr->getConnection() == conn;}
+=======
+>>>>>>> daadc40f63c104d98d68f948b73681792c9742b3
 private:
 	networking::Connection conn;
 };
@@ -90,9 +93,15 @@ public:
 	std::unique_ptr<gameAndUserMsgs> sendToGameManager();
 
 //collect and pass msgs from GameManager to ConnectionManager
+<<<<<<< HEAD
 	void receiveFromGameManager(std::unique_ptr<gameAndUserMsgs>fromGame);
 	
 	void passMessages(const std::deque<Message> &incoming);
+=======
+void receiveFromGameManager(std::unique_ptr<gameAndUserMsgs>fromGame);	
+
+  void passMessages(const std::deque<Message> &incoming);
+>>>>>>> daadc40f63c104d98d68f948b73681792c9742b3
 
 	void sendMessages(Server& server);
 

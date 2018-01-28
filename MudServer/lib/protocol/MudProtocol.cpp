@@ -6,6 +6,10 @@ MudProtocol::MudProtocol(int max_buf): max_buffer_size(max_buf) {}
 
 std::string MudProtocol::receive(const std::string& str) {
   //pass only alphanumeric characters, backspace nad cr
+<<<<<<< HEAD
+=======
+  // std::cout<<"protocol received msg: "<<str<<std::endl;
+>>>>>>> daadc40f63c104d98d68f948b73681792c9742b3
   for (auto& c : str) {
 
     if((std::isalnum(c) || std::isspace(c)) && in_buffer.length() < max_buffer_size) {

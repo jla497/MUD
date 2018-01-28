@@ -14,6 +14,11 @@
 #include "Handler.h"
 #include "LoginHandler.h"
 
+<<<<<<< HEAD
+=======
+// using namespace networking;
+
+>>>>>>> daadc40f63c104d98d68f948b73681792c9742b3
 
 /*ConnectionContainer is a wrapper for the Connection object, 
 handlers for user's current state, and the application protocol
