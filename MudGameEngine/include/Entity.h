@@ -9,18 +9,25 @@
 /*Entity Interface for making other types of entities like:
   players, rooms, objects*/
 class Entity {
-    // unsigned int id;
-    // std::string desc;
+protected:
+	static unsigned int nextUniqueId;
+private:
+	// typeId 
+	int entityId;
 
-    // what were buffers in entities for?
-    // std::string inBuffer;
-    // std::string outBuffer;
+	std::string desc;
+
 public:
-	// Entity();
+	Entity();
 
-	virtual unsigned int getId() = 0;
+	unsigned int getEntityId();
 
-	virtual std::string getDesc() = 0;
+	std::string getDesc();
+
+	//default destructor does nothing
+	virtual ~Entity(){};
 };
+
+unsigned int Entity::nextUniqueId = 1;
 
 #endif
