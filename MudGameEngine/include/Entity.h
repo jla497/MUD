@@ -1,32 +1,33 @@
 #ifndef ENTITY_H
 #define ENTITY_H
 
-#include <sstream>
-#include <unistd.h>
 #include <memory>
+#include <sstream>
 #include <string>
+#include <unistd.h>
 #include <vector>
 
 /*Entity Interface for making other types of entities like:
   players, rooms, objects*/
 class Entity {
-protected:
-	static unsigned int nextUniqueId;
-private:
-	// typeId 
-	int 		m_entityId;
+   protected:
+    static unsigned int nextUniqueId;
 
-	// std::string m_desc;
+   private:
+    // typeId
+    int m_entityId;
 
-public:
-	Entity();
+    // std::string m_desc;
 
-	unsigned int getEntityId();
+   public:
+    Entity();
 
-	// std::string getDesc();
+    unsigned int getEntityId();
 
-	//default destructor does nothing
-	virtual ~Entity(){};
+    // std::string getDesc();
+
+    // default destructor does nothing
+    virtual ~Entity(){};
 };
 
 unsigned int Entity::nextUniqueId = 1;

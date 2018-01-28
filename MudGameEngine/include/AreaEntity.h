@@ -4,10 +4,11 @@
 #include "Entity.h"
 
 class AreaEntity : public Entity {
-private:
-	std::string 				m_name;
- 	std::vector<unsigned int> 	m_rooms;
-public:
+   private:
+    std::string m_name;
+    std::vector<unsigned int> m_rooms;
+
+   public:
     AreaEntity(std::string name, std::vector<unsigned int> rooms);
 };
 

@@ -3,6 +3,4 @@
 
 #include "ShopEntity.h"
 
-ShopEntity::ShopEntity() {
-	
-}
+ShopEntity::ShopEntity() {}
