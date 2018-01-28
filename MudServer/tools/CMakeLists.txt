@@ -1,3 +1,6 @@
-add_subdirectory(server)
-add_subdirectory(client)
+<<<<<<< HEAD
+=======
 
+>>>>>>> master
+add_subdirectory(client)
+add_subdirectory(server)

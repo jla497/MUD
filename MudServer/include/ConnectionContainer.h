@@ -11,56 +11,43 @@
 #include "Protocol.h"
 #include "MudProtocol.h"
 #include "Server.h"
-#include "Handler.h"
-#include "LoginHandler.h"
-
-using namespace networking; 
-
-
-/*ConnectionContainer is a wrapper for the Connection object, 
-handlers for user's current state, and the application protocol
-object*/
-
-//temporary stub for entityt class
-struct Entity {
-    unsigned int id;
-    std::string in_buffer;
-    std::string out_buffer;
-};
-
 
 class ConnectionContainer {
-    Connection m_connection;
+    networking::Connection mConnection;
     bool isConnected;
-    std::unique_ptr<Protocol> m_protocol;
-    Entity m_entity;
+    std::unique_ptr<MudProtocol> mProtocol;
+
+public:
+    ConnectionContainer();
     
-    int randid;
-    std::string outBuffer;
-    std::stack<Handler*> m_handlers;
+    ConnectionContainer(const networking::Connection& c);
 
-    public:
-     // temporary fix until I find a better solution
-    std::string username; //temporary fix until we have a user db
+    ConnectionContainer(ConnectionContainer const &) = delete;
+    
+    ConnectionContainer &operator= (ConnectionContainer const &) = delete;
+  
+    ConnectionContainer(ConnectionContainer &&container);
 
-    ConnectionContainer(const Connection& c);
+    ConnectionContainer &operator=(ConnectionContainer &&container) {
+        if(this != &container) {
+            mProtocol = std::move(container.mProtocol);
+        }
+        return *this;
+    } 
 
-    Handler& getHandler();
-
-    //push a new user state handler onto stack
-    void pushToStack(Handler& handler);
+    bool getIsConnected() const;
 
     //receives messages from ConnectionManager
-    void receive(const std::string& str);
+    void receiveFromServer(std::string& str);
 
-    bool getIsConnected();
+    std::string sendToGameManager();
 
-    //send raw string to application protocol object
-    void sendToProtocol(const std::string& str);
+    void receiveFromGameManager(std::string& str);
 
-    Connection& getConnection();
+    std::string sendToServer();
+    
+    networking::Connection getConnection() const;
 
-    std::string getOutBuffer();
 };
 
 #endif
