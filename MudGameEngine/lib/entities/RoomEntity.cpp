@@ -27,7 +27,7 @@ void reset() { return; }
 
 std::string addEntity(const unsigned int entityToAdd) { return ""; }
 
-std::string showEntitiesInRoom() { return ""; }
+std::string getEntitiesInRoom() { return ""; }
 
 std::string removeEntity(const unsigned int entityToRemove) { return ""; }
 
