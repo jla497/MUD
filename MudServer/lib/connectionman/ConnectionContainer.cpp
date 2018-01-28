@@ -30,7 +30,7 @@ Handler& ConnectionContainer::getHandler() {
 }
 
 //receives messages from ConnectionManager
-void ConnectionContainer::receive(std::string& str) {
+void ConnectionContainer::receive(const std::string& str) {
   std::string translated;
 
   // translated = m_protocol.receive(str);
@@ -65,6 +65,6 @@ std::string ConnectionContainer::getOutBuffer() {
   return m_protocol->send();
 }
 
-void ConnectionContainer::sendToProtocol(std::string& str) {
+void ConnectionContainer::sendToProtocol(const std::string& str) {
   m_protocol->sendToBuffer(str);
 }
