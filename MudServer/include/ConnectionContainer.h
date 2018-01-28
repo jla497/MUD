@@ -11,9 +11,8 @@
 #include "Protocol.h"
 #include "MudProtocol.h"
 #include "Server.h"
-#include "Handler.h"
-#include "LoginHandler.h"
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 // using namespace networking;
@@ -25,31 +24,58 @@ handlers for user's current state, and the application protocol
 object*/
 
 
+=======
+// using namespace networking;
+
+/*ConnectionContainer is a wrapper for the Connection object,
+handlers for user's current state, and the application protocol
+object*/
+>>>>>>> master
 class ConnectionContainer {
     networking::Connection mConnection;
     bool isConnected;
-    std::unique_ptr<Protocol> m_protocol;
-    Entity m_entity;
+    std::unique_ptr<MudProtocol> mProtocol;
+
+public:
+    ConnectionContainer();
     
     ConnectionContainer(const networking::Connection& c);
 
-    public:
-     // temporary fix until I find a better solution
-    std::string username; //temporary fix until we have a user db
+    ConnectionContainer(ConnectionContainer const &) = delete;
+    
+    ConnectionContainer &operator= (ConnectionContainer const &) = delete;
+  
+    ConnectionContainer(ConnectionContainer &&container);
 
-    ConnectionContainer(const Connection& c);
+    ConnectionContainer &operator=(ConnectionContainer &&container) {
+        if(this != &container) {
+            mProtocol = std::move(container.mProtocol);
+        }
 
+<<<<<<< HEAD
+=======
+        return *this;
+    } 
+
+    bool getIsConnected() const;
+
+>>>>>>> master
     //receives messages from ConnectionManager
-    void receive(const std::string& str);
+    void receiveFromServer(std::string& str);
 
-    bool getIsConnected();
+    std::string sendToGameManager();
 
+    void receiveFromGameManager(std::string& str);
+
+    std::string sendToServer();
     //send raw string to application protocol object
     void sendToProtocol(const std::string& str);
 
     networking::Connection getConnection() const;
 
     std::string getOutBuffer();
+
+    MudProtocol& getProtocol() const;
 };
 
 #endif

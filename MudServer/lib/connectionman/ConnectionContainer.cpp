@@ -1,9 +1,9 @@
 #include "ConnectionContainer.h"
+ConnectionContainer::ConnectionContainer(): mProtocol(std::unique_ptr<MudProtocol>(new MudProtocol(512))) {}
 
 ConnectionContainer::ConnectionContainer(const networking::Connection& c): mConnection(c), mProtocol(std::unique_ptr<MudProtocol>(new MudProtocol(512))), isConnected(true) {}
 
-    //fix this to unique_ptrs
-    LoginHandler* loginHandle = new LoginHandler();
+ConnectionContainer::ConnectionContainer(ConnectionContainer &&container): mConnection(container.mConnection), mProtocol(std::move(container.mProtocol)) {}
 
 //receives messages from Server -> ConnectionManager->ConnectionContainer->Protocol
 void ConnectionContainer::receiveFromServer(std::string& str) {
@@ -17,6 +17,7 @@ void ConnectionContainer::receiveFromServer(std::string& str) {
     return;
   }
 
+<<<<<<< HEAD
     username = "";
 
    
@@ -30,6 +31,16 @@ void ConnectionContainer::pushToStack(Handler& handler) {
 }
 
 >>>>>>> daadc40f63c104d98d68f948b73681792c9742b3
+=======
+  return;
+}
+
+std::string ConnectionContainer::sendToGameManager() {
+  auto str = mProtocol->send(); 
+  return str;
+}
+
+>>>>>>> master
 void ConnectionContainer::receiveFromGameManager(std::string& str) {
   // std::cout<<"connection container received from game manager: "<<str<<std::endl;
   
@@ -40,6 +51,7 @@ void ConnectionContainer::receiveFromGameManager(std::string& str) {
     //kick user out
     // std::cout << e.what() << std::endl;
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 >>>>>>> daadc40f63c104d98d68f948b73681792c9742b3
@@ -47,10 +59,20 @@ void ConnectionContainer::receiveFromGameManager(std::string& str) {
     return;
   }
   
+=======
+    isConnected = false;
+    return;
+  }
+
+>>>>>>> master
   return;
 }
 
-bool ConnectionContainer::getIsConnected() {
+std::string ConnectionContainer::sendToServer() {
+  return mProtocol->send();
+}
+
+bool ConnectionContainer::getIsConnected() const {
   return isConnected;
 }
 
@@ -58,10 +80,13 @@ networking::Connection ConnectionContainer::getConnection() const {
   return mConnection;
 }
 
-std::string ConnectionContainer::getOutBuffer() {
-  return m_protocol->send();
+MudProtocol& ConnectionContainer::getProtocol() const {
+  return *mProtocol;
 }
+<<<<<<< HEAD
 
 void ConnectionContainer::sendToProtocol(const std::string& str) {
   m_protocol->sendToBuffer(str);
 }
+=======
+>>>>>>> master
