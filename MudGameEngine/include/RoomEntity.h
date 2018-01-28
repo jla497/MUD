@@ -47,6 +47,7 @@ public:
 	// Returns destinationID to room given dir command while in a room
 	// Returns 0 if dir does not exist for room
 	// (use find_to)
+	// Does not check whether that room exists yet
 	unsigned int getDestRoomIdOf(std::string dir);
 
 	// Returns list of doors available in room (e.g for showing options to player)
@@ -59,6 +60,10 @@ public:
 	// Returns success msg if inserts given entity into room succeeds
 	// Given entity id
 	std::string addEntity(const unsigned int entityToAdd);
+
+	// Show all entities in the room
+	// Should it even be strings?
+	std::string showEntitiesInRoom();
 
 	// Returns success or failure msg if removes given entity into room succeeds
 	// Given entity id

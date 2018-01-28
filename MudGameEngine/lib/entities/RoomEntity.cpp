@@ -8,6 +8,7 @@ RoomEntity::RoomEntity(std::string desc)
 }
 
 std::string RoomEntity::getDesc() {
+	desc = "dummy description";
 	return desc;
 }
 
@@ -32,6 +33,10 @@ std::string addEntity(const unsigned int entityToAdd) {
 	return "";
 }
 
+std::string showEntitiesInRoom() {
+	return "";
+}
+
 std::string removeEntity(const unsigned int entityToRemove) {
 	return "";
 }
@@ -43,7 +48,6 @@ unsigned int addPlayerToRoom(unsigned int playerId) {
 unsigned int removePlayerFromRoom(unsigned int playerId) {
 	return 0;
 }
-
 
 bool isAloneInRoom() {
 	return false;
