@@ -11,54 +11,45 @@
 #include "Protocol.h"
 #include "MudProtocol.h"
 #include "Server.h"
-
+#include "Handler.h"
+#include "LoginHandler.h"
 // using namespace networking;
 
-/*ConnectionContainer is a wrapper for the Connection object,
+
+/*ConnectionContainer is a wrapper for the Connection object, 
 handlers for user's current state, and the application protocol
 object*/
-class ConnectionContainer {
-    networking::Connection mConnection;
-    bool isConnected;
-    std::unique_ptr<MudProtocol> mProtocol;
 
-public:
-    ConnectionContainer();
+class ConnectionContainer {
+
+    networking::Connection mConnection;
+
+    bool isConnected;
+    std::unique_ptr<Protocol> m_protocol;
     
     ConnectionContainer(const networking::Connection& c);
 
-    ConnectionContainer(ConnectionContainer const &) = delete;
-    
-    ConnectionContainer &operator= (ConnectionContainer const &) = delete;
-  
-    ConnectionContainer(ConnectionContainer &&container);
+    public:
+     // temporary fix until I find a better solution
+    std::string username; //temporary fix until we have a user db
 
-    ConnectionContainer &operator=(ConnectionContainer &&container) {
-        if(this != &container) {
-            mProtocol = std::move(container.mProtocol);
-        }
+    ConnectionContainer(const Connection& c);
 
-        return *this;
-    } 
+    Handler& getHandler();
 
-    bool getIsConnected() const;
+    //push a new user state handler onto stack
+    void pushToStack(Handler& handler);
 
     //receives messages from ConnectionManager
-    void receiveFromServer(std::string& str);
+    void receive(const std::string& str);
 
-    std::string sendToGameManager();
+    bool getIsConnected();
 
-    void receiveFromGameManager(std::string& str);
-
-    std::string sendToServer();
     //send raw string to application protocol object
     void sendToProtocol(const std::string& str);
 
     networking::Connection getConnection() const;
-
     std::string getOutBuffer();
-
-    MudProtocol& getProtocol() const;
 };
 
 #endif
