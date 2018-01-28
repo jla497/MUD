@@ -32,15 +32,8 @@ private:
 	networking::Connection conn;
 };
 
-typedef std::vector<std::unique_ptr<ConnectionContainer>> ConnectionList;
-
-typedef std::vector<std::unique_ptr<ConnectionContainer>>::iterator it;
-
-typedef std::vector<std::unique_ptr<gameAndUserInterface>> gameAndUserMsgs;
-
-
 /*Connection Manager manages ConnectionContainers.
- Adds new connections and removes connections.
+ Adds new connections and removes connections. 
  Passes on or broadcasts incoming and outgoing messages*/
 class ConnectionManager {
 
@@ -87,13 +80,11 @@ public:
 //collect and pass msgs from GameManager to ConnectionManager
 void receiveFromGameManager(std::unique_ptr<gameAndUserMsgs>fromGame);	
 
-//receive msgs to send from GameManager
-// void rxFromGameManager(MsgsPtr);
+  void passMessages(const std::deque<Message> &incoming);
 
-//run connection manager
-	void run();
+  void sendMessages(Server& server);
 
-	void quit();
+  void broadCast(Server& server, std::string& broadcast);
 };
 
 } //end of namespace connection

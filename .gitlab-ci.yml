@@ -1,8 +1,9 @@
 image: dewert/gibanica:base
 stages:
   - build
-  - test
-  - cleanup
+
+after_script:
+  - rm -rf build
 
 compile:
   stage: build

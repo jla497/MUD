@@ -1,9 +1,9 @@
 #include "ConnectionContainer.h"
-ConnectionContainer::ConnectionContainer(): mProtocol(std::unique_ptr<MudProtocol>(new MudProtocol(512))) {}
 
 ConnectionContainer::ConnectionContainer(const networking::Connection& c): mConnection(c), mProtocol(std::unique_ptr<MudProtocol>(new MudProtocol(512))), isConnected(true) {}
 
-ConnectionContainer::ConnectionContainer(ConnectionContainer &&container): mConnection(container.mConnection), mProtocol(std::move(container.mProtocol)) {}
+    //fix this to unique_ptrs
+    LoginHandler* loginHandle = new LoginHandler();
 
 //receives messages from Server -> ConnectionManager->ConnectionContainer->Protocol
 void ConnectionContainer::receiveFromServer(std::string& str) {
@@ -17,12 +17,14 @@ void ConnectionContainer::receiveFromServer(std::string& str) {
     return;
   }
 
-  return;
+    username = "";
+
+   
 }
 
-std::string ConnectionContainer::sendToGameManager() {
-  auto str = mProtocol->send(); 
-  return str;
+void ConnectionContainer::pushToStack(Handler& handler) {
+  m_handlers.push(&handler); 
+  m_handlers.top()->welcome(this);
 }
 
 void ConnectionContainer::receiveFromGameManager(std::string& str) {
@@ -38,14 +40,17 @@ void ConnectionContainer::receiveFromGameManager(std::string& str) {
     return;
   }
 
+  // std::cout<<randid<<" msg received: "<<translated<<std::endl;
+
+  //pass translated msg to handler
+  if(!translated.empty()) {
+   m_handlers.top()->handle(this,translated);
+  }
+  
   return;
 }
 
-std::string ConnectionContainer::sendToServer() {
-  return mProtocol->send();
-}
-
-bool ConnectionContainer::getIsConnected() const {
+bool ConnectionContainer::getIsConnected() {
   return isConnected;
 }
 
@@ -53,6 +58,10 @@ networking::Connection ConnectionContainer::getConnection() const {
   return mConnection;
 }
 
-MudProtocol& ConnectionContainer::getProtocol() const {
-  return *mProtocol;
+std::string ConnectionContainer::getOutBuffer() {
+  return m_protocol->send();
+}
+
+void ConnectionContainer::sendToProtocol(const std::string& str) {
+  m_protocol->sendToBuffer(str);
 }
