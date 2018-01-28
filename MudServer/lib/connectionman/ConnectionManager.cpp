@@ -4,7 +4,7 @@ using namespace connection;
 
 ConnectionManager::ConnectionManager(): mList() {}
 
-/*checks each ConnectionContainers's isConnected state. If isConnected is false, then remove the container and 
+/*checks each ConnectionContainers's isConnected state. If isConnected is false, then remove the container and
 drop connection.*/
 void ConnectionManager::dropConnections() {
     for (const auto& c : mList) {
@@ -13,7 +13,7 @@ void ConnectionManager::dropConnections() {
             const auto& toBeRmved = (*c).getConnection();
             mList.erase(std::remove(mList.begin(), mList.end(), c));
             server.disconnect(toBeRmved);
-        }   
+        }
     }
 }
 
@@ -23,14 +23,14 @@ void ConnectionManager::addConnection(networking::Connection c) {
     mList.push_back(std::move(ptr));
 }
 
-/*pass clients messages to existing connection containers If client does not exist, 
+/*pass clients messages to existing connection containers If client does not exist,
 create new connection containers.
 */
 void ConnectionManager::rxFromServer(std::deque<networking::Message> &incoming) {
     for (auto& msg : incoming) {
         auto conn = msg.connection;
         auto text = msg.text;
-        std::cout<<"msg from: "<<msg.connection.id<<" "<<msg.text<<std::endl;
+        // std::cout << "msg from: " << msg.connection.id << " " << msg.text << std::endl;
 
         auto connContainerItr = std::find_if(mList.begin(), mList.end(), findContainer(conn));
 
@@ -59,6 +59,8 @@ std::deque<networking::Message> ConnectionManager::sendToServer() {
     }
 
     server.send(messages);
+
+    return messages;
 }
 
 //collect and pass msgs from protocols to the GameManager
@@ -68,7 +70,7 @@ std::unique_ptr<gameAndUserMsgs> ConnectionManager::sendToGameManager() {
     for (const auto& container : mList) {
         const auto& user_msg = container->sendToGameManager();
         const auto& c = container->getConnection();
-        // std::cout<<c.id<<": "<<user_msg<<std::endl;
+        std::cout<<c.id<<": "<<user_msg<<std::endl;
 
         if (!user_msg.empty()) {
             auto msg = std::make_unique<gameAndUserInterface>();
@@ -97,3 +99,5 @@ void ConnectionManager::receiveFromGameManager(std::unique_ptr<gameAndUserMsgs> 
     }
 }
 
+//receive msgs to send from GameManager
+// void rxFromGameManager(std::vector<Interface2Game> msgs);
