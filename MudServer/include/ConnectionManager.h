@@ -28,27 +28,12 @@ private:
 struct findContainer {
 	findContainer(networking::Connection conn): conn(conn) {}
 	bool operator()(const std::unique_ptr<ConnectionContainer>& ptr) {return ptr->getConnection().id == conn.id;}
-<<<<<<< HEAD
-<<<<<<< HEAD
+
 private:
 	networking::Connection conn;
 };
 
-typedef std::vector<std::unique_ptr<ConnectionContainer>> ConnectionList;
 
-typedef std::vector<std::unique_ptr<ConnectionContainer>>::iterator it;
-
-/*functor used in searches*/
-struct find_container {
-	find_container(Connection& conn): conn(conn) {}
-	bool operator()(std::unique_ptr<ConnectionContainer>& ptr) {return ptr->getConnection() == conn;}
-=======
->>>>>>> daadc40f63c104d98d68f948b73681792c9742b3
-=======
->>>>>>> master
-private:
-	networking::Connection conn;
-};
 
 typedef std::vector<std::unique_ptr<ConnectionContainer>> ConnectionList;
 
@@ -103,29 +88,8 @@ public:
 	std::unique_ptr<gameAndUserMsgs> sendToGameManager();
 
 //collect and pass msgs from GameManager to ConnectionManager
-<<<<<<< HEAD
 	void receiveFromGameManager(std::unique_ptr<gameAndUserMsgs>fromGame);
 	
-	void passMessages(const std::deque<Message> &incoming);
-=======
-void receiveFromGameManager(std::unique_ptr<gameAndUserMsgs>fromGame);	
-
-<<<<<<< HEAD
-  void passMessages(const std::deque<Message> &incoming);
->>>>>>> daadc40f63c104d98d68f948b73681792c9742b3
-
-	void sendMessages(Server& server);
-
-	void broadCast(Server& server, std::string& broadcast);
-=======
-//receive msgs to send from GameManager
-// void rxFromGameManager(MsgsPtr);
-
-//run connection manager
-	void run();
-
-	void quit();
->>>>>>> master
 };
 
 } //end of namespace connection
