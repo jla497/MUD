@@ -1,6 +1,10 @@
 #include "ConnectionManager.h"
 #include "gtest/gtest.h"
 namespace {
+
+  using namespace networking;
+  using namespace connection;
+
 // To use a test fixture, derive a class from testing::Test.
 class ConnectionManTest : public testing::Test {
 protected:  // You should make the members protected s.t. they can be
@@ -76,17 +80,17 @@ TEST_F(ConnectionManTest, SendFromConnectionManagerToConnectionContainerProtocol
 
 TEST_F(ConnectionManTest, SendFromConnectionManagerToGameManager) {
  m_manager.rxFromServer(incoming);
-  auto& msgs = m_manager.send2GameManager();
+  auto msgs = m_manager.sendToGameManager();
 
-  auto itr = std::find_if(msgs.begin(), msgs.end(), find_gameAndUserInterface(Connection{39985500}));
+  auto itr = std::find_if(msgs->begin(), msgs->end(), findGameAndUserInterface(Connection{39985500}));
   const auto& text = (*itr)->text;
   ASSERT_EQ(text,"msg1\n");
 
-  itr = std::find_if(msgs.begin(), msgs.end(), find_gameAndUserInterface(Connection{39985499}));
+  itr = std::find_if(msgs->begin(), msgs->end(), findGameAndUserInterface(Connection{39985499}));
   const auto& text2 = (*itr)->text;
   ASSERT_EQ(text2,"msg2\n");
 
-  itr = std::find_if(msgs.begin(), msgs.end(), find_gameAndUserInterface(Connection{39985600}));
+  itr = std::find_if(msgs->begin(), msgs->end(), findGameAndUserInterface(Connection{39985600}));
   const auto& text3 = (*itr)->text;
   ASSERT_EQ(text3,"msg3\n");
 
@@ -94,8 +98,9 @@ TEST_F(ConnectionManTest, SendFromConnectionManagerToGameManager) {
 
   TEST_F(ConnectionManTest, SendFromGameManagerToServer) {
     m_manager.rxFromServer(incoming);
-    auto& msgs = m_manager.send2GameManager();
-    ASSERT_NO_THROW(m_manager.receiveFromGameManager(gameMsgs));
+    auto msgs = m_manager.sendToGameManager();
+    auto gameMsgsPtr = std::make_unique<gameAndUserMsgs>(std::move(gameMsgs));
+    ASSERT_NO_THROW(m_manager.receiveFromGameManager(std::move(gameMsgsPtr)));
     auto msgsToServer = m_manager.sendToServer();
 
     for(auto& msg: msgsToServer) {
@@ -106,7 +111,7 @@ TEST_F(ConnectionManTest, SendFromConnectionManagerToGameManager) {
 
 // Tests Dequeue().
 // TEST_F(ConnectionManTest, SendMessagesToGameManager) {
-//   MsgsPtr messages = m_manager.send2GameManager();
+//   MsgsPtr messages = m_manager.sendToGameManager();
 
 //   const auto& msg = messages->at(0);
 //   // std::cout<<msg->text<<std::endl;

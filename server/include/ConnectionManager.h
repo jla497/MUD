@@ -9,9 +9,8 @@
 #include "Server.h"
 #include "Protocol.h"
 #include "ConnectionContainer.h"
-// #include "Handler.h"
 
-using namespace networking;
+namespace connection {
 
 typedef std::vector<std::unique_ptr<ConnectionContainer>> ConnectionList;
 
@@ -22,7 +21,7 @@ struct find_container{
 	find_container(Connection& conn): conn(conn) {}
 	bool operator()(std::unique_ptr<ConnectionContainer>& ptr) {return ptr->getConnection() == conn;}
 private:
-	Connection conn;
+	networking::Connection conn;
 };
 
 /*Connection Manager manages ConnectionContainers.
@@ -47,5 +46,6 @@ public:
   void broadCast(Server& server, std::string& broadcast);
 };
 
+} //end of namespace connection
 
 #endif
