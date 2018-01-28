@@ -44,9 +44,9 @@ class RoomEntity {
     // Given entity id
     std::string addEntity(const unsigned int entityToAdd);
 
-    // Show all entities in the room
+    // Return all entities in the room
     // Should it even be strings?
-    std::string showEntitiesInRoom();
+    std::string getEntitiesInRoom();
 
     // Returns success or failure msg if removes given entity into room succeeds
     // Given entity id
