@@ -12,4 +12,22 @@ compile:
     - cd build
     - cmake ../MudServer
     - make
+<<<<<<< HEAD
     - cd ..
+=======
+  artifacts:
+    paths:
+    - build
+
+connection-manager-unit-test:
+  stage: test
+  script:
+    - cd build/bin
+    - ./connectionmantest | grep "PASSED"
+
+cleanup-build-folder:
+  stage: cleanup
+  script:
+    - rm -rf build
+
+>>>>>>> saved-gtest
