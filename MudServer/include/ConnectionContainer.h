@@ -12,20 +12,20 @@
 #include "MudProtocol.h"
 #include "Server.h"
 
-using namespace networking;
+// using namespace networking;
 
 /*ConnectionContainer is a wrapper for the Connection object,
 handlers for user's current state, and the application protocol
 object*/
 class ConnectionContainer {
-    Connection mConnection;
+    networking::Connection mConnection;
     bool isConnected;
     std::unique_ptr<MudProtocol> mProtocol;
 
 public:
     ConnectionContainer();
     
-    ConnectionContainer(const Connection& c);
+    ConnectionContainer(const networking::Connection& c);
 
     ConnectionContainer(ConnectionContainer const &) = delete;
     
@@ -54,7 +54,7 @@ public:
     //send raw string to application protocol object
     void sendToProtocol(const std::string& str);
 
-    Connection getConnection() const;
+    networking::Connection getConnection() const;
 
     std::string getOutBuffer();
 
