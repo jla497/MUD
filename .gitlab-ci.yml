@@ -13,8 +13,7 @@ compile:
     - make
   artifacts:
     paths:
-    - build
-
+    - bu
 cleanup-build-folder:
   stage: cleanup
   script:
