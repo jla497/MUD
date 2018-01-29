@@ -19,11 +19,11 @@ class ObjectEntity : public Entity {
     int m_weight;
 
    public:
-    ObjectEntity(std::vector<std::string> attribute, unsigned int cost,
-                 std::vector<std::string> extra, unsigned int objectTypeId,
-                 std::string itemType, std::vector<std::string> keywords,
-                 std::string longDesc, std::string shortDesc,
-                 std::vector<std::string> wearFlags, int weight);
+    ObjectEntity(std::vector<std::string>& attribute, unsigned int cost,
+                 std::vector<std::string>& extra, unsigned int objectTypeId,
+                 std::string& itemType, std::vector<std::string>& keywords,
+                 std::string& longDesc, std::string& shortDesc,
+                 std::vector<std::string>& wearFlags, int weight);
 };
 
 #endif

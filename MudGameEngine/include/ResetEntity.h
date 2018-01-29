@@ -19,7 +19,7 @@ class Reset : public Entity {
     int m_roomId;
 
    public:
-    Reset(int id, std::string action, std::string comment, int slot, int limit,
+    Reset(int id, std::string& action, std::string& comment, int slot, int limit,
           int roomId);
 };
 #endif

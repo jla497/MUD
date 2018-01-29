@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.2)
-project(GameEngine)
+project(MudServer)
 
-set(PACKAGE_NAME GameEngine)
+set(PACKAGE_NAME MudServer)
 set(PACKAGE_VERSION 0.1)
 set(PACKAGE_STRING "${PACKAGE_NAME} ${PACKAGE_VERSION}")
 set(PACKAGE_BUGREPORT "wsumner@sfu.ca")

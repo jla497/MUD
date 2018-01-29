@@ -21,8 +21,8 @@ class RoomEntity {
 
    public:
     RoomEntity();
-    RoomEntity(std::string desc, std::vector<DoorEntity> doors,
-               std::string extDesc, std::string name, unsigned int roomId);
+    RoomEntity(std::string& desc, std::vector<DoorEntity>& doors,
+               std::string& extDesc, std::string& name, unsigned int roomId);
 
     std::string getDesc();
 
@@ -30,7 +30,7 @@ class RoomEntity {
     // Returns 0 if dir does not exist for room
     // (use find_to)
     // Does not check whether that room exists yet
-    unsigned int getDestRoomIdOf(std::string dir);
+    unsigned int getDestRoomIdOf(std::string& dir);
 
     // Returns list of doors available in room (e.g for showing options to
     // player)

@@ -3,11 +3,10 @@
 
 #include "NPCEntity.h"
 
-NPCEntity::NPCEntity(int armor, Roll damageRollData, std::string desc,
-                     unsigned int exp, int gold, Roll hitRollData,
-                     int npcTypeId, std::vector<std::string> keywords,
-                     unsigned int level, std::string longDesc,
-                     std::string shortDesc, int thac0)
+NPCEntity::NPCEntity(int armor, Roll& damageRollData, std::string& desc,
+                     unsigned int exp, int gold, Roll& hitRollData, int npcTypeId,
+                     std::vector<std::string>& keywords, unsigned int level,
+                     std::string &longDesc, std::string& shortDesc, int thac0)
     : m_armor(armor),
       m_damageRollData(damageRollData),
       m_npcTypeId(npcTypeId),

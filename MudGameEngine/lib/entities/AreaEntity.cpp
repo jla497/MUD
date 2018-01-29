@@ -3,5 +3,5 @@
 
 #include "AreaEntity.h"
 
-AreaEntity::AreaEntity(std::string name, std::vector<unsigned int> rooms)
+AreaEntity::AreaEntity(std::string& name, std::vector<unsigned int>& rooms)
     : m_name(name), m_rooms(rooms) {}

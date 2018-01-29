@@ -15,8 +15,8 @@ class DoorEntity : public Entity {
     // find_to(std::string dir) : dir_(dir) {}
     // bool operator()(Door& door) {return door.dir == dir_;}
    public:
-    DoorEntity(std::string desc, std::string dir,
-               std::vector<std::string> keywords, unsigned int to);
+    DoorEntity(std::string& desc, std::string& dir,
+               std::vector<std::string>& keywords, unsigned int to);
 
     unsigned int getDestRoomId();
 };
