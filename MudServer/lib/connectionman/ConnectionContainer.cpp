@@ -20,6 +20,7 @@ void ConnectionContainer::receiveFromServer(std::string& str) {
   return;
 }
 
+// send to GameManager
 std::string ConnectionContainer::sendToGameManager() {
   auto str = mProtocol->send(); 
   return str;
