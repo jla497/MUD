@@ -1,6 +1,7 @@
 #ifndef CONNECTION_MANAGER_H
 #define CONNECTION_MANAGER_H
 
+
 #include <sstream>
 #include <unistd.h>
 #include <memory>

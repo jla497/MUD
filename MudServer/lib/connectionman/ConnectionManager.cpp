@@ -1,5 +1,6 @@
 #include "ConnectionManager.h"
 
+
 using namespace connection;
 
 ConnectionManager::ConnectionManager(): mList() {}

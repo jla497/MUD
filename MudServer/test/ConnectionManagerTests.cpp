@@ -1,5 +1,7 @@
 #include "ConnectionManager.h"
+
 #include "gtest/gtest.h"
+
 namespace {
 
   using namespace networking;
