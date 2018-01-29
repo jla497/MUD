@@ -2,7 +2,17 @@
 
 using namespace connection;
 
-ConnectionManager::ConnectionManager(): mList() {}
+ConnectionManager::ConnectionManager():
+    mList(), server{4000,
+        [this](networking::Connection c) {
+          printf("New connection found: %lu\n", c.id);
+          this->addConnection(c);
+        },
+
+        [this](networking::Connection c) {
+          printf("Connection lost: %lu\n", c.id);
+        }
+    } {}
 
 /*checks each ConnectionContainers's isConnected state. If isConnected is false, then remove the container and
 drop connection.*/
@@ -38,7 +48,7 @@ void ConnectionManager::rxFromServer(std::deque<networking::Message> &incoming) 
         }
 
         connContainerItr = std::find_if(mList.begin(), mList.end(), findContainer(conn));
-    
+
         (*connContainerItr)->receiveFromServer(text);
     }
 }
@@ -87,7 +97,7 @@ void ConnectionManager::receiveFromGameManager(std::unique_ptr<gameAndUserMsgs> 
        auto& connection = msg->conn;
        auto& text = msg->text;
        auto connContainerItr = std::find_if(mList.begin(), mList.end(), findContainer(connection));
-       
+
         if (connContainerItr == mList.end()) {
             auto errMsg = "ConnectionContainer not found while trying to send msg from the GameManager\n";
             throw std::runtime_error(errMsg);

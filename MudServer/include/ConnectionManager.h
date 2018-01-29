@@ -60,16 +60,7 @@ class ConnectionManager {
 
 	bool done; //set to True to stop run()
 
-	networking::Server server{4000,
-	[this](networking::Connection c) {
-		printf("New connection found: %lu\n", c.id);
-		this->addConnection(c);
-	},
-
-	[this](networking::Connection c) {
-		printf("Connection lost: %lu\n", c.id);
-	}
-	                         };
+	networking::Server server;
 
 public:
 	ConnectionManager();

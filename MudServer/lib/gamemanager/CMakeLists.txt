@@ -6,6 +6,8 @@ add_library(gamemanager
     Room.cpp
 )
 
+target_link_libraries(gamemanager connectionman)
+
 set_target_properties(gamemanager
                       PROPERTIES
                       LINKER_LANGUAGE CXX

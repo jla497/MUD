@@ -1,21 +1,18 @@
 #include <iostream>
 #include <memory>
-#include <string>
 #include <thread>
 #include <vector>
 
+#include "ConnectionManager.h"
 #include "gamemanager/GameManager.h"
-#include "gamemanager/GameState.h"
-#include "gamemanager/Room.h"
 
 namespace mudserver {
 namespace gamemanager {
 
-using networking::PlayerMessage;
 using std::vector;
 
 GameManager::GameManager() :
-    connectionManager{std::make_unique<ConnectionManagerStub>()},
+    connectionManager{std::make_unique<connection::ConnectionManager>()},
     gameState{std::make_unique<GameState>()},
     tick{kDefaultGameLoopTick} {}
 
@@ -35,8 +32,7 @@ void GameManager::mainLoop() {
     while (!done) {
         auto startTime = clock::now();
 
-        unique_ptr<vector<PlayerMessage> > messages =
-            connectionManager->getMessages();
+        auto messages = connectionManager->sendToGameManager();
 
         processMessages(*messages);
 
@@ -51,10 +47,10 @@ void GameManager::mainLoop() {
     }
 }
 
-void GameManager::processMessages(vector<PlayerMessage>& messages) {
-    for (auto message : messages) {
+void GameManager::processMessages(gameAndUserMsgs& messages) {
+    for (auto& message : messages) {
         // look up player from ID
-        Player* player = gameState->getPlayerByID(message.id);
+        Player* player = gameState->getPlayerByID(message->conn.id);
         if (!player) {
             // We should add a login service that can deal with
             //      - players not existing
@@ -75,6 +71,9 @@ void GameManager::processMessages(vector<PlayerMessage>& messages) {
         // look up character's location
         Room& room = gameState->getCharacterLocation(*character);
 
+
+        //DEBUG - print the message text
+        std::cout << message->text << std::endl;
         // parse message into verb/object
         // auto parsed = parsePlayerMessage(message.value);
 

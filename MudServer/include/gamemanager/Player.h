@@ -8,7 +8,7 @@
 namespace mudserver {
 namespace gamemanager {
     
-using PlayerID = int;
+using PlayerID = uintptr_t;
 /**
  */
 class Player
