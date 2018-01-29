@@ -82,6 +82,7 @@ std::unique_ptr<gameAndUserMsgs> ConnectionManager::sendToGameManager() {
     return std::move(msgsToGameManager);
 }
 
+/*receive from GameManager then send to protcol for translating before going to the server*/
 void ConnectionManager::receiveFromGameManager(std::unique_ptr<gameAndUserMsgs> fromGame) {
 
     for (auto& msg : *fromGame) {
