@@ -24,14 +24,14 @@ std::vector<std::string> getDirs() {
 
 void reset() { return; }
 
-std::string addEntity(const unsigned int entityToAdd) { return ""; }
+// std::string addEntity(const unsigned int entityToAdd) { return ""; }
 
-std::string getEntitiesInRoom() { return ""; }
+// std::string getEntitiesInRoom() { return ""; }
 
-std::string removeEntity(const unsigned int entityToRemove) { return ""; }
+// std::string removeEntity(const unsigned int entityToRemove) { return ""; }
 
-unsigned int addPlayerToRoom(unsigned int playerId) { return 0; }
+// unsigned int addPlayerToRoom(unsigned int playerId) { return 0; }
 
-unsigned int removePlayerFromRoom(unsigned int playerId) { return 0; }
+// unsigned int removePlayerFromRoom(unsigned int playerId) { return 0; }
 
-bool isAloneInRoom() { return false; }
+// bool isAloneInRoom() { return false; }

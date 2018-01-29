@@ -40,29 +40,29 @@ class RoomEntity {
     // DOES NOT purge player from room, only affects non-player entities
     void reset(/*parsed YML data*/);
 
-    // Returns success msg if inserts given entity into room succeeds
-    // Given entity id
-    std::string addEntity(const unsigned int entityToAdd);
+    // // Returns success msg if inserts given entity into room succeeds
+    // // Given entity id
+    // std::string addEntity(const unsigned int entityToAdd);
 
-    // Return all entities in the room
-    // Should it even be strings?
-    std::string getEntitiesInRoom();
+    // // Return all entities in the room
+    // // Should it even be strings?
+    // std::string getEntitiesInRoom();
 
-    // Returns success or failure msg if removes given entity into room succeeds
-    // Given entity id
-    std::string removeEntity(const unsigned int entityToRemove);
+    // // Returns success or failure msg if removes given entity into room succeeds
+    // // Given entity id
+    // std::string removeEntity(const unsigned int entityToRemove);
 
-    // This function should be called when Player moves to a new room,
-    // somehow need to ensure this is updated...
-    // Player also keeps track of what room they are in
-    unsigned int addPlayerToRoom(unsigned int playerId);
+    // // This function should be called when Player moves to a new room,
+    // // somehow need to ensure this is updated...
+    // // Player also keeps track of what room they are in
+    // unsigned int addPlayerToRoom(unsigned int playerId);
 
-    // Would check if player is in this room and remove if true
-    // Note that player can only be in one room at a time
-    unsigned int removePlayerFromRoom(unsigned int playerId);
+    // // Would check if player is in this room and remove if true
+    // // Note that player can only be in one room at a time
+    // unsigned int removePlayerFromRoom(unsigned int playerId);
 
-    // Returns true if player is alone in the room
-    bool isAloneInRoom();
+    // // Returns true if player is alone in the room
+    // bool isAloneInRoom();
 };
 
 #endif
