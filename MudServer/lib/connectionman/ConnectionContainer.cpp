@@ -13,7 +13,6 @@ void ConnectionContainer::receiveFromServer(std::string& str) {
     mProtocol->receive(str);
   } catch (std::exception& e) {
     //kick user out
-    // std::cout << e.what() << std::endl;
     isConnected = false;
     return;
   }

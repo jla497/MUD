@@ -3,10 +3,11 @@
 
 
 #include <sstream>
+
 #include <unistd.h>
+
 #include <memory>
 #include <string>
-
 #include "Server.h"
 #include "Protocol.h"
 #include "ConnectionContainer.h"

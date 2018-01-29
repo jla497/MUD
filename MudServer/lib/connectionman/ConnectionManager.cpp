@@ -97,6 +97,3 @@ void ConnectionManager::receiveFromGameManager(std::unique_ptr<gameAndUserMsgs> 
         (*connContainerItr)->receiveFromGameManager(text);
     }
 }
-
-//receive msgs to send from GameManager
-// void rxFromGameManager(std::vector<Interface2Game> msgs);

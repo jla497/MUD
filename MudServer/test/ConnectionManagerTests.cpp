@@ -17,8 +17,10 @@ protected:  // You should make the members protected s.t. they can be
   // Otherwise, this can be skipped.
   virtual void SetUp() {
     Message m1{Connection{39985500},"msg1"};
+
     Message m2{Connection{39985499},"msg2"};
     Message m3{Connection{39985600},"msg3"};
+
     incoming.push_back(m1);
     incoming.push_back(m2);
     incoming.push_back(m3);
