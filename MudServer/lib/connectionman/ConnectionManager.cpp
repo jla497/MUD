@@ -1,5 +1,6 @@
 #include "ConnectionManager.h"
 
+
 using namespace connection;
 
 ConnectionManager::ConnectionManager(): mList() {}
@@ -81,6 +82,8 @@ std::unique_ptr<gameAndUserMsgs> ConnectionManager::sendToGameManager() {
     return std::move(msgsToGameManager);
 }
 
+/*receive from GameManager then send to protcol for translating before going to
+ * the server*/
 void ConnectionManager::receiveFromGameManager(std::unique_ptr<gameAndUserMsgs> fromGame) {
 
     for (auto& msg : *fromGame) {
@@ -96,6 +99,3 @@ void ConnectionManager::receiveFromGameManager(std::unique_ptr<gameAndUserMsgs> 
         (*connContainerItr)->receiveFromGameManager(text);
     }
 }
-
-//receive msgs to send from GameManager
-// void rxFromGameManager(std::vector<Interface2Game> msgs);

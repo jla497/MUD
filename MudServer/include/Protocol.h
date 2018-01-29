@@ -1,6 +1,7 @@
 #ifndef PROTOCOL_H
 #define PROTOCOL_H
 
+
 #include <sstream>
 #include <unistd.h>
 #include <memory>
@@ -10,11 +11,6 @@
 
 /*Application protocol interface*/
 class Protocol {
-
-  // std::string in_buffer;
-  // std::string out_buffer;
-  // int max_buffer_size;
-
 public:
   //application specific formatting done here for inputs
   virtual void receive(std::string str) = 0;

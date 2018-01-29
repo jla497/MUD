@@ -17,7 +17,6 @@ BinPackParameters: true
 BreakBeforeBinaryOperators: None
 BreakBeforeBraces: Attach
 BreakBeforeTernaryOperators: true
-BreakConstructorInitializers: AfterColon
 ColumnLimit: 80
 CommentPragmas: '^ IWYU pragma:'
 ConstructorInitializerAllOnOneLineOrOnePerLine: true
