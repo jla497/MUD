@@ -9,29 +9,31 @@
 #include "Server.h"
 #include "Protocol.h"
 #include "ConnectionContainer.h"
-// #include "Handler.h"
 
-using namespace networking;
+namespace connection {
 
 struct gameAndUserInterface {
 	std::string text;
-	Connection conn;
+	networking::Connection conn;
 };
 
 /*functor used in searches*/
-struct find_gameAndUserInterface {
-	find_gameAndUserInterface(Connection conn): conn(conn) {}
+struct findGameAndUserInterface {
+	findGameAndUserInterface(networking::Connection conn): conn(conn) {}
 	bool operator()(const std::unique_ptr<gameAndUserInterface>& ptr) {return ptr->conn.id == conn.id;}
 private:
-	Connection conn;
+	networking::Connection conn;
 };
 
-struct find_container {
-	find_container(Connection conn): conn(conn) {}
+struct findContainer {
+	findContainer(networking::Connection conn): conn(conn) {}
 	bool operator()(const std::unique_ptr<ConnectionContainer>& ptr) {return ptr->getConnection().id == conn.id;}
+
 private:
-	Connection conn;
+	networking::Connection conn;
 };
+
+
 
 typedef std::vector<std::unique_ptr<ConnectionContainer>> ConnectionList;
 
@@ -54,52 +56,42 @@ class ConnectionManager {
 	// 	printf("Connection lost: %lu\n", c.id);
 	// };
 
-	ConnectionList* m_list;
-
-	std::unique_ptr<Protocol> m_protocol;
-
-	gameAndUserMsgs msgsToGameManager;
+	ConnectionList mList;
 
 	bool done; //set to True to stop run()
 
-	Server server{4000, 
-		[this](Connection c) {
-			printf("New connection found: %lu\n", c.id);
-			this->addConnection(c);
-		}, 
+	networking::Server server{4000,
+	[this](networking::Connection c) {
+		printf("New connection found: %lu\n", c.id);
+		this->addConnection(c);
+	},
 
-		[this](Connection c) {
-			printf("Connection lost: %lu\n", c.id);
-		}
-	};
+	[this](networking::Connection c) {
+		printf("Connection lost: %lu\n", c.id);
+	}
+	                         };
 
 public:
 	ConnectionManager();
 //pass signals to server to drop connections
 	void dropConnections();
 
-	void addConnection(const Connection c);
+	void addConnection(const networking::Connection c);
 
 //pass incoming Messages from server to connection containers
-	void rxFromServer(std::deque<Message> &incoming);
+	void rxFromServer(std::deque<networking::Message> &incoming);
 
 //send Messages to server
-	std::deque<Message> sendToServer();
+	std::deque<networking::Message> sendToServer();
 
 //collect and pass msgs from protocols to the GameManager
-	gameAndUserMsgs& send2GameManager();
+	std::unique_ptr<gameAndUserMsgs> sendToGameManager();
 
 //collect and pass msgs from GameManager to ConnectionManager
-void receiveFromGameManager(gameAndUserMsgs& fromGame);	
-
-//receive msgs to send from GameManager
-// void rxFromGameManager(MsgsPtr);
-
-//run connection manager
-	void run();
-
-	void quit();
+	void receiveFromGameManager(std::unique_ptr<gameAndUserMsgs>fromGame);
+	
 };
 
+} //end of namespace connection
 
 #endif

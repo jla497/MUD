@@ -12,20 +12,15 @@
 #include "MudProtocol.h"
 #include "Server.h"
 
-using namespace networking;
-
-/*ConnectionContainer is a wrapper for the Connection object,
-handlers for user's current state, and the application protocol
-object*/
 class ConnectionContainer {
-    Connection mConnection;
+    networking::Connection mConnection;
     bool isConnected;
     std::unique_ptr<MudProtocol> mProtocol;
 
 public:
     ConnectionContainer();
     
-    ConnectionContainer(const Connection& c);
+    ConnectionContainer(const networking::Connection& c);
 
     ConnectionContainer(ConnectionContainer const &) = delete;
     
@@ -37,7 +32,6 @@ public:
         if(this != &container) {
             mProtocol = std::move(container.mProtocol);
         }
-
         return *this;
     } 
 
@@ -51,14 +45,9 @@ public:
     void receiveFromGameManager(std::string& str);
 
     std::string sendToServer();
-    //send raw string to application protocol object
-    void sendToProtocol(const std::string& str);
+    
+    networking::Connection getConnection() const;
 
-    Connection getConnection() const;
-
-    std::string getOutBuffer();
-
-    MudProtocol& getProtocol() const;
 };
 
 #endif
