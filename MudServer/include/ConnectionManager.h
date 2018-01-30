@@ -1,11 +1,13 @@
 #ifndef CONNECTION_MANAGER_H
 #define CONNECTION_MANAGER_H
 
+
 #include <sstream>
+
 #include <unistd.h>
+
 #include <memory>
 #include <string>
-
 #include "Server.h"
 #include "Protocol.h"
 #include "ConnectionContainer.h"
