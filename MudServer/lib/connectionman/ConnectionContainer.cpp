@@ -26,7 +26,6 @@ std::string ConnectionContainer::sendToGameManager() {
   return str;
 }
 
-
 void ConnectionContainer::receiveFromGameManager(std::string& str) {
   // std::cout<<"connection container received from game manager: "<<str<<std::endl;
   
