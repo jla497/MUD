@@ -6,7 +6,7 @@
 class ShopEntity : public Entity {
    private:
    public:
-    ShopEntity();
+    ShopEntity(UniqueId& id);
 };
 
 #endif

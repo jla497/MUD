@@ -21,7 +21,7 @@ class RoomEntity {
 
    public:
     RoomEntity();
-    RoomEntity(std::string& desc, std::vector<DoorEntity>& doors,
+    RoomEntity(std::string& desc, std::vector<DoorEntity> doors,
                std::string& extDesc, std::string& name, unsigned int roomId);
 
     std::string getDesc();
@@ -48,7 +48,8 @@ class RoomEntity {
     // // Should it even be strings?
     // std::string getEntitiesInRoom();
 
-    // // Returns success or failure msg if removes given entity into room succeeds
+    // // Returns success or failure msg if removes given entity into room
+    // succeeds
     // // Given entity id
     // std::string removeEntity(const unsigned int entityToRemove);
 

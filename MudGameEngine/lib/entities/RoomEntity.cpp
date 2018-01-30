@@ -2,10 +2,11 @@
 
 RoomEntity::RoomEntity() : m_desc(""){};
 // Sample generic entity, assume properly formatted strings..
-RoomEntity::RoomEntity(std::string& desc, std::vector<DoorEntity>& doors,
-                       std::string& extDesc, std::string& name, unsigned int roomId)
+RoomEntity::RoomEntity(std::string& desc, std::vector<DoorEntity> doors,
+                       std::string& extDesc, std::string& name,
+                       unsigned int roomId)
     : m_desc(desc),
-      m_doors(doors),
+      m_doors(doors),  // To-do: use std::move here!!!
       m_extDesc(extDesc),
       m_name(name),
       m_roomId(roomId) {}

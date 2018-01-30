@@ -2,13 +2,6 @@
 
 #include "Entity.h"
 
-Entity::Entity() {
-    // generate entityId
-    m_entityId = nextUniqueId++;
-}
+Entity::Entity(UniqueId& id) : m_entityId(id) {}
 
-unsigned int Entity::getEntityId() { return m_entityId; }
-
-// std::string Entity::getDesc() {
-// 	return m_desc;
-// }
+UniqueId Entity::getEntityId() { return m_entityId; }

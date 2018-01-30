@@ -7,29 +7,24 @@
 #include <unistd.h>
 #include <vector>
 
+#include "UniqueId.h"
+
 /*Entity Interface for making other types of entities like:
   players, rooms, objects*/
 class Entity {
-   protected:
-    static unsigned int nextUniqueId;
-
    private:
-    // typeId
-    int m_entityId;
-
-    // std::string m_desc;
+    // Unique id that every created entity has
+    UniqueId& m_entityId;
 
    public:
-    Entity();
+    Entity(UniqueId& id);
 
-    unsigned int getEntityId();
-
-    // std::string getDesc();
+    UniqueId getEntityId();
 
     // default destructor does nothing
+    // if you make a virtual destructor, does compiler
+    // remove your default destructors?
     virtual ~Entity(){};
 };
-
-unsigned int Entity::nextUniqueId = 1;
 
 #endif

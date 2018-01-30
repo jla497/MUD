@@ -3,7 +3,6 @@ add_library(entity Entity.cpp)
 add_library(doorentity DoorEntity.cpp)
 add_library(roomentity RoomEntity.cpp)
 add_library(npcentity NPCEntity.cpp)
-add_library(resetentity ResetEntity.cpp)
 add_library(objectentity ObjectEntity.cpp)
 add_library(areaentity AreaEntity.cpp)
 add_library(shopentity ShopEntity.cpp)
@@ -11,7 +10,6 @@ add_library(shopentity ShopEntity.cpp)
 set_target_properties(entity 
 	doorentity
 	npcentity 
-	resetentity 
 	objectentity 
 	roomentity 
 	areaentity 
@@ -25,7 +23,6 @@ install(TARGETS
 	entity 
 	doorentity
 	npcentity 
-	resetentity 
 	objectentity 
 	roomentity 
 	areaentity 
