@@ -30,6 +30,7 @@ void GameManager::mainLoop() {
 
     while (!done) {
         auto startTime = clock::now();
+        unique_ptr<gameAndUserMsgs> messagesForConnMan;
 
         if (connectionManager.update()) {
             // An error was encountered, stop
@@ -41,8 +42,7 @@ void GameManager::mainLoop() {
 
         processMessages(*messages);
 
-        // send out updates
-        // connectionManager.receiveFromGameManager(...)
+        sendMessagesToPlayers();
 
         auto delta = startTime - clock::now();
 
@@ -61,26 +61,27 @@ void GameManager::processMessages(gameAndUserMsgs& messages) {
         std::cout << message->text;
 
         // look up player from ID
-        auto player = players.find(message->conn.id);
-        if (player == players.end()) {
+        auto playerId = message->conn.id;
+
+        if (players.find(playerId) == players.end()) {
             // We should add a login service that can deal with
             //      - players not existing
             //      - authenticating players
-            std::cout << "Player not found" << std::endl;
-            continue;
+            players.emplace(
+                playerId,
+                Player{playerId, "player" + std::to_string(playerId), ""});
         }
+
+        // Guaranteed not to throw out_of_range - Player has been created
+        auto player = players.at(playerId);
 
         // look up player's character
         // pointer is used as player may not have character yet
-        Character* character = player->second.getCharacter();
-        if (!character) {
-            // for now, we just continue, but we will want to allow new
-            // character creation
-            continue;
+        Character* character = player.getCharacter();
+        if (character) {
+            // look up character's location
+            Room& room = gameState.getCharacterLocation(*character);
         }
-
-        // look up character's location
-        Room& room = gameState.getCharacterLocation(*character);
 
         // parse message into verb/object
         // auto parsed = parsePlayerMessage(message.value);
@@ -91,7 +92,25 @@ void GameManager::processMessages(gameAndUserMsgs& messages) {
 
         // command = Command(gameState, parsed, character, room)
         // command.act()
+
+        enqueueMessage(message->conn, "You said " + message->text);
     }
+}
+
+void GameManager::enqueueMessage(networking::Connection conn, std::string msg) {
+    outgoingMessages.push({std::move(msg), conn});
+}
+
+void GameManager::sendMessagesToPlayers() {
+    auto toSend = std::make_unique<gameAndUserMsgs>();
+
+    while (!outgoingMessages.empty()) {
+        toSend->push_back(std::make_unique<connection::gameAndUserInterface>(
+            outgoingMessages.front()));
+        outgoingMessages.pop();
+    }
+    connectionManager.receiveFromGameManager(std::move(toSend));
+    connectionManager.sendToServer();
 }
 
 }  // namespace gamemanager

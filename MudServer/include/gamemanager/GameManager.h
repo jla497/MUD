@@ -5,6 +5,7 @@
 #include <chrono>
 #include <memory>
 #include <unordered_map>
+#include <queue>
 
 #include "ConnectionManager.h"
 #include "GameState.h"
@@ -24,11 +25,14 @@ using std::vector;
 class GameManager {
     connection::ConnectionManager& connectionManager;
     GameState gameState;
-    std::unordered_map<PlayerID, Player&> players;
+    std::unordered_map<PlayerID, Player> players;
     GameLoopTick tick;
 
-    void processMessages(gameAndUserMsgs& messages);
+    std::queue<connection::gameAndUserInterface> outgoingMessages;
 
+    void processMessages(gameAndUserMsgs& messages);
+    void enqueueMessage(networking::Connection conn, std::string msg);
+    void sendMessagesToPlayers();
 public:
     explicit GameManager(connection::ConnectionManager& connMan);
     GameManager(const GameManager& gm) = delete;
