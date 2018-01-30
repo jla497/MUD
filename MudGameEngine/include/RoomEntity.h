@@ -4,25 +4,29 @@
 #include "DoorEntity.h"
 #include "Entity.h"
 
-class RoomEntity {
+struct ExtendedDesc {
+    std::vector<std::string> desc;
+    std::vector<std::string> keywords;
+};
+
+class RoomEntity : public Entity {
    private:
     std::string m_desc;
     std::vector<DoorEntity> m_doors;
-    std::string m_extDesc;
+    ExtendedDesc m_extDesc;
     std::string m_name;
     unsigned int m_roomId;
 
-    // Tentative organization structure of room contents
-    std::vector<unsigned int> m_idPlayersInRoom;
     // ASSUME ids are unique for ALL entities, entities include npc, obj, equip,
-    // give
-    // Room holds responsibiliy of item location, not item
+    // Room holds responsibility of item location, not item object itself
+    // It is just a vector for look up
     std::vector<unsigned int> m_idEntitiesInRoom;
 
    public:
-    RoomEntity();
-    RoomEntity(std::string& desc, std::vector<DoorEntity> doors,
-               std::string& extDesc, std::string& name, unsigned int roomId);
+    RoomEntity(UniqueId& id, std::string& desc, std::vector<DoorEntity> doors,
+               std::vector<std::string>& descExt, 
+               std::vector<std::string>& keywordsExt,
+               std::string& name, unsigned int roomId);
 
     std::string getDesc();
 
@@ -38,32 +42,21 @@ class RoomEntity {
 
     // Reset room according to YML file
     // DOES NOT purge player from room, only affects non-player entities
-    void reset(/*parsed YML data*/);
+    // TODO: Not sure how resets are handled right now
+    // void reset(/*parsed YML data*/);
 
-    // // Returns success msg if inserts given entity into room succeeds
-    // // Given entity id
-    // std::string addEntity(const unsigned int entityToAdd);
+    // TODO so we really want rooms to keep entities?
+    // Returns success msg if inserts given entity into room succeeds
+    // Given entity id
+    std::string addEntity(const unsigned int entityToAdd);
 
-    // // Return all entities in the room
-    // // Should it even be strings?
-    // std::string getEntitiesInRoom();
+    // Return all entities in the room
+    // Should it even be strings?
+    std::string getEntitiesInRoom();
 
-    // // Returns success or failure msg if removes given entity into room
-    // succeeds
-    // // Given entity id
-    // std::string removeEntity(const unsigned int entityToRemove);
-
-    // // This function should be called when Player moves to a new room,
-    // // somehow need to ensure this is updated...
-    // // Player also keeps track of what room they are in
-    // unsigned int addPlayerToRoom(unsigned int playerId);
-
-    // // Would check if player is in this room and remove if true
-    // // Note that player can only be in one room at a time
-    // unsigned int removePlayerFromRoom(unsigned int playerId);
-
-    // // Returns true if player is alone in the room
-    // bool isAloneInRoom();
+    // Returns success or failure msg if removes given entity into room succeeds
+    // Given entity id
+    std::string removeEntity(const unsigned int entityToRemove);
 };
 
 #endif

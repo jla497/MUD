@@ -1,38 +1,36 @@
 #include "RoomEntity.h"
 
-RoomEntity::RoomEntity() : m_desc(""){};
-// Sample generic entity, assume properly formatted strings..
-RoomEntity::RoomEntity(std::string& desc, std::vector<DoorEntity> doors,
-                       std::string& extDesc, std::string& name,
-                       unsigned int roomId)
-    : m_desc(desc),
-      m_doors(doors),  // To-do: use std::move here!!!
-      m_extDesc(extDesc),
+RoomEntity::RoomEntity(UniqueId& id, std::string& desc, std::vector<DoorEntity> doors,
+                       std::vector<std::string>& descExt, 
+                       std::vector<std::string>& keywordsExt,
+                       std::string& name, unsigned int roomId)
+    : Entity::Entity(id),
+      m_desc(desc),
+      m_doors(std::move(doors)),
       m_name(name),
-      m_roomId(roomId) {}
+      m_roomId(roomId) {
+    m_extDesc = {
+      descExt,
+      keywordsExt
+    };
+}
 
 std::string RoomEntity::getDesc() {
-    m_desc = "dummy description";
     return m_desc;
 }
 
 unsigned int getDestRoomIdOf(std::string& dir) { return 0; }
 
 std::vector<std::string> getDirs() {
+    // TODO: remove this dummy stuff
     std::vector<std::string> res;
     return res;
 }
 
-void reset() { return; }
+// void reset() { return; }
 
-// std::string addEntity(const unsigned int entityToAdd) { return ""; }
+std::string addEntity(const unsigned int entityToAdd) { return ""; }
 
-// std::string getEntitiesInRoom() { return ""; }
+std::string getEntitiesInRoom() { return ""; }
 
-// std::string removeEntity(const unsigned int entityToRemove) { return ""; }
-
-// unsigned int addPlayerToRoom(unsigned int playerId) { return 0; }
-
-// unsigned int removePlayerFromRoom(unsigned int playerId) { return 0; }
-
-// bool isAloneInRoom() { return false; }
+std::string removeEntity(const unsigned int entityToRemove) { return ""; }
