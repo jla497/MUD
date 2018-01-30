@@ -19,7 +19,7 @@ connection-manager-unit-test:
   stage: test
   script:
     - cd build/bin
-    - ./connectionmantest | grep "PASSED"
+    - ./mudtest
 
 cleanup-build-folder:
   stage: cleanup

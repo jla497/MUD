@@ -39,7 +39,7 @@ protected:  // You should make the members protected s.t. they can be
     gameMsgs.push_back(std::move(reply1));
     gameMsgs.push_back(std::move(reply2));
     gameMsgs.push_back(std::move(reply3));
-}
+  }
 
 // virtual void TearDown() will be called after each test is run.
 // You should define it if there is cleanup work to do.  Otherwise,
@@ -49,7 +49,7 @@ protected:  // You should make the members protected s.t. they can be
 // }
 
 // Declares the variables your tests want to use.
-ConnectionManager m_manager;
+ConnectionManager m_manager{4000};
 std::deque<Message> incoming;
 gameAndUserMsgs gameMsgs;
 };

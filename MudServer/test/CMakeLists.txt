@@ -1,29 +1,19 @@
 add_subdirectory(lib/googlemock)
 enable_testing()
 
-add_executable(connectionmantest
-  # Add all new test files to the list here.
-  # Place each file name on a separate line.
-  ConnectionManagerTests.cpp
+add_executable(mudtest
+        ConnectionManagerTests.cpp
+        GameManagerTests.cpp
 )
-
-
-set_target_properties(protocols
-                      PROPERTIES
-                      LINKER_LANGUAGE CXX
-                      CXX_STANDARD 14
+set_target_properties(mudtest
+    PROPERTIES
+    LINKER_LANGUAGE CXX
+    CXX_STANDARD 14
 )
+target_link_libraries(mudtest gmock gtest gtest_main)
+target_link_libraries(mudtest connectionman)
+target_link_libraries(mudtest gamemanager)
+add_test(ConnectionManagerTests mudtest)
+add_test(GameManagerTests mudtest)
 
-
-#find_package(Boost 1.58 COMPONENTS system REQUIRED)
-#include_directories(${Boost_INCLUDE_DIR})
-#target_link_libraries(connectionmantest ${Boost_LIBRARIES})
-
-
-target_link_libraries(connectionmantest gmock gtest gtest_main)
-#target_link_libraries(connectionmantest networking)
-target_link_libraries(connectionmantest connectionman)
-#target_link_libraries(connectionmantest protocols)
-
-add_test(NAME AllTests COMMAND connectionmantest)
 
