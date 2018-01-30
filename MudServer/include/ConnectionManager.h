@@ -80,7 +80,8 @@ public:
 
 //collect and pass msgs from GameManager to ConnectionManager
 	void receiveFromGameManager(std::unique_ptr<gameAndUserMsgs>fromGame);
-	
+
+    bool update();
 };
 
 } //end of namespace connection

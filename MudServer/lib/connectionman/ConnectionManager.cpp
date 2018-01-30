@@ -106,6 +106,21 @@ void ConnectionManager::receiveFromGameManager(std::unique_ptr<gameAndUserMsgs> 
         (*connContainerItr)->receiveFromGameManager(text);
     }
 }
+bool ConnectionManager::update() {
+    try {
+        server.update();
+    } catch (std::exception &e) {
+        printf("Exception from Server update:\n%s\n\n", e.what());
+        return true;
+    }
+
+    auto incoming = server.receive();
+    rxFromServer(incoming);
+    sendToServer();
+    dropConnections();
+
+    return false;
+}
 
 //receive msgs to send from GameManager
 // void rxFromGameManager(std::vector<Interface2Game> msgs);

@@ -2,7 +2,6 @@
 #include <memory>
 #include <thread>
 #include <vector>
-#include <ctime>
 #include <iomanip>
 
 #include "ConnectionManager.h"
@@ -37,9 +36,18 @@ void GameManager::mainLoop() {
         auto tt = clock::to_time_t(startTime);
         std::cout << std::ctime(&tt) << std::endl;
 
+        if (connectionManager.update()) {
+            // An error was encountered, stop
+            done = false;
+            continue;
+        }
+
         auto messages = connectionManager.sendToGameManager();
 
         processMessages(*messages);
+
+        // send out updates
+        // connectionManager.receiveFromGameManager(...)
 
         auto delta = startTime - clock::now();
 
