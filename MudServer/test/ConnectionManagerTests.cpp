@@ -1,5 +1,7 @@
 #include "ConnectionManager.h"
+
 #include "gtest/gtest.h"
+
 namespace {
 
   using namespace networking;
@@ -10,13 +12,12 @@ class ConnectionManTest : public testing::Test {
 protected:  // You should make the members protected s.t. they can be
   // accessed from sub-classes.
 
-  // virtual void SetUp() will be called before each test is run.  You
-  // should define it if you need to initialize the variables.
-  // Otherwise, this can be skipped.
   virtual void SetUp() {
     Message m1{Connection{39985500},"msg1"};
+
     Message m2{Connection{39985499},"msg2"};
     Message m3{Connection{39985600},"msg3"};
+
     incoming.push_back(m1);
     incoming.push_back(m2);
     incoming.push_back(m3);
@@ -53,14 +54,6 @@ std::deque<Message> incoming;
 gameAndUserMsgs gameMsgs;
 };
 
-// When you have a test fixture, you define a test using TEST_F
-// instead of TEST.
-
-// TEST_F(ConnectionManTest, AddConnectionContainer) {
-//   ASSERT_NO_THROW(m_manager->addConnection(Connection{400033}));
-
-//   ASSERT_NO_THROW(m_manager->addConnection(Connection{302348}));
-// }
 
 TEST_F(ConnectionManTest, TestProtocolInConnectionContainer) {
   Connection c{39990000};

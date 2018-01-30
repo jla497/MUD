@@ -1,6 +1,7 @@
 #ifndef MUD_PROTOCOL_H
 #define MUD_PROTOCOL_H
 
+
 #include <sstream>
 #include <unistd.h>
 #include <memory>
@@ -10,20 +11,18 @@
 #include "Protocol.h"
 
 class MudProtocol: public Protocol {
+    std::string inBuffer;
+    std::string broadcastBuffer;
+    int maxBufSize;
 
-  std::string in_buffer;
-  std::string out_buffer;
-  std::string broadcast_buffer;
-  int max_buffer_size;
+   public:
+    MudProtocol();
+    MudProtocol(int maxBuf);
 
-public:
-  MudProtocol();
-  MudProtocol(int max_buf);
+    void receive(std::string str);
 
-  void receive(std::string str);
+    std::string send();
 
-  std::string send();
-
-  std::string broadcast(std::string);
+    std::string broadcast(std::string);
 };
 #endif

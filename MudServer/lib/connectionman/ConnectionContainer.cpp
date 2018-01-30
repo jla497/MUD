@@ -1,4 +1,5 @@
 #include "ConnectionContainer.h"
+
 ConnectionContainer::ConnectionContainer(): mProtocol(std::unique_ptr<MudProtocol>(new MudProtocol(512))) {}
 
 ConnectionContainer::ConnectionContainer(const networking::Connection& c): mConnection(c), mProtocol(std::unique_ptr<MudProtocol>(new MudProtocol(512))), isConnected(true) {}
@@ -12,7 +13,6 @@ void ConnectionContainer::receiveFromServer(std::string& str) {
     mProtocol->receive(str);
   } catch (std::exception& e) {
     //kick user out
-    // std::cout << e.what() << std::endl;
     isConnected = false;
     return;
   }
@@ -20,6 +20,7 @@ void ConnectionContainer::receiveFromServer(std::string& str) {
   return;
 }
 
+// send to GameManager
 std::string ConnectionContainer::sendToGameManager() {
   auto str = mProtocol->send(); 
   return str;
