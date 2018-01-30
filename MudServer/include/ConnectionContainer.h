@@ -11,58 +11,43 @@
 #include "Protocol.h"
 #include "MudProtocol.h"
 #include "Server.h"
-#include "Handler.h"
-#include "LoginHandler.h"
-#include "Entity.h"
-
-using namespace networking; 
-
-
-/*ConnectionContainer is a wrapper for the Connection object, 
-handlers for user's current state, and the application protocol
-object*/
-
-//temporary stub for entity class
-// --moved to an interface of its own
-// struct Entity {
-//     unsigned int id;
-//     std::string in_buffer;
-//     std::string out_buffer;
-// };
-
 
 class ConnectionContainer {
-    networking::Connection m_connection;
+    networking::Connection mConnection;
     bool isConnected;
-    std::unique_ptr<Protocol> m_protocol; 
-    // Entity m_entity; //
-    
-    int randid; //random ID for connection session
-    std::string outBuffer;
-    std::stack<Handler*> m_handlers;
+    std::unique_ptr<MudProtocol> mProtocol;
 
 public:
-     // temporary fix until I find a better solution
-    std::string username; //temporary fix until we have a user db
+    ConnectionContainer();
+    
+    ConnectionContainer(const networking::Connection& c);
 
-    ConnectionContainer(const Connection& c);
+    ConnectionContainer(ConnectionContainer const &) = delete;
+    
+    ConnectionContainer &operator= (ConnectionContainer const &) = delete;
+  
+    ConnectionContainer(ConnectionContainer &&container);
 
-    Handler& getHandler();
+    ConnectionContainer &operator=(ConnectionContainer &&container) {
+        if(this != &container) {
+            mProtocol = std::move(container.mProtocol);
+        }
+        return *this;
+    } 
 
-    //push a new user state handler onto stack
-    void pushToStack(Handler& handler);
+    bool getIsConnected() const;
 
     //receives messages from ConnectionManager
-    void receive(const std::string& str);
+    void receiveFromServer(std::string& str);
 
-    bool getIsConnected();
+    std::string sendToGameManager();
 
-    //send raw string to application protocol object
-    void sendToProtocol(const std::string& str);
+    void receiveFromGameManager(std::string& str);
 
-    Connection& getConnection();
+    std::string sendToServer();
+    
+    networking::Connection getConnection() const;
 
-    std::string getOutBuffer();
 };
 
 #endif

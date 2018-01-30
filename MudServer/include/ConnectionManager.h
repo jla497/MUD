@@ -9,43 +9,89 @@
 #include "Server.h"
 #include "Protocol.h"
 #include "ConnectionContainer.h"
-// #include "Handler.h"
 
-using namespace networking;
+namespace connection {
+
+struct gameAndUserInterface {
+	std::string text;
+	networking::Connection conn;
+};
+
+/*functor used in searches*/
+struct findGameAndUserInterface {
+	findGameAndUserInterface(networking::Connection conn): conn(conn) {}
+	bool operator()(const std::unique_ptr<gameAndUserInterface>& ptr) {return ptr->conn.id == conn.id;}
+private:
+	networking::Connection conn;
+};
+
+struct findContainer {
+	findContainer(networking::Connection conn): conn(conn) {}
+	bool operator()(const std::unique_ptr<ConnectionContainer>& ptr) {return ptr->getConnection().id == conn.id;}
+
+private:
+	networking::Connection conn;
+};
+
+
 
 typedef std::vector<std::unique_ptr<ConnectionContainer>> ConnectionList;
 
 typedef std::vector<std::unique_ptr<ConnectionContainer>>::iterator it;
 
-/*functor used in searches*/
-struct find_container{
-	find_container(Connection& conn): conn(conn) {}
-	bool operator()(std::unique_ptr<ConnectionContainer>& ptr) {return ptr->getConnection() == conn;}
-private:
-	Connection conn;
-};
+typedef std::vector<std::unique_ptr<gameAndUserInterface>> gameAndUserMsgs;
+
 
 /*Connection Manager manages ConnectionContainers.
- Adds new connections and removes connections. 
+ Adds new connections and removes connections.
  Passes on or broadcasts incoming and outgoing messages*/
 class ConnectionManager {
 
-ConnectionList* m_list;
-std::unique_ptr<Protocol> m_protocol;
+	// auto onConnect = [this](Connection c) {
+	// 	printf("New connection found: %lu\n", c.id);
+	// 	this->addConnection(c);
+	// };
+
+	// auto onDisconnect = [this](Connection c) {
+	// 	printf("Connection lost: %lu\n", c.id);
+	// };
+
+	ConnectionList mList;
+
+	bool done; //set to True to stop run()
+
+	networking::Server server{4000,
+	[this](networking::Connection c) {
+		printf("New connection found: %lu\n", c.id);
+		this->addConnection(c);
+	},
+
+	[this](networking::Connection c) {
+		printf("Connection lost: %lu\n", c.id);
+	}
+	                         };
 
 public:
-  ConnectionManager(ConnectionList* list);
-  
-  void dropConnection(Server& server);
+	ConnectionManager();
+//pass signals to server to drop connections
+	void dropConnections();
 
-  void addConnection(Connection c);
+	void addConnection(const networking::Connection c);
 
-  void passMessages(const std::deque<Message> &incoming);
+//pass incoming Messages from server to connection containers
+	void rxFromServer(std::deque<networking::Message> &incoming);
 
-  void sendMessages(Server& server);
+//send Messages to server
+	std::deque<networking::Message> sendToServer();
 
-  void broadCast(Server& server, std::string& broadcast);
+//collect and pass msgs from protocols to the GameManager
+	std::unique_ptr<gameAndUserMsgs> sendToGameManager();
+
+//collect and pass msgs from GameManager to ConnectionManager
+	void receiveFromGameManager(std::unique_ptr<gameAndUserMsgs>fromGame);
+	
 };
 
+} //end of namespace connection
 
 #endif

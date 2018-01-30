@@ -14,15 +14,13 @@ class MudProtocol: public Protocol {
   std::string in_buffer;
   std::string out_buffer;
   std::string broadcast_buffer;
-  int max_buffer_size;;
+  int max_buffer_size;
 
 public:
   MudProtocol();
   MudProtocol(int max_buf);
 
-  std::string receive(const std::string& str);
-
-  void sendToBuffer(const std::string& str);
+  void receive(std::string str);
 
   std::string send();
 
