@@ -7,7 +7,6 @@
 #include <algorithm>
 #include <fstream>
 #include <yaml-cpp/yaml.h>
-#include "boost/filesystem.hpp"
 
 
 class YamlParser {
