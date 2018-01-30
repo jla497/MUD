@@ -23,11 +23,10 @@ class RoomEntity : public Entity {
     std::vector<unsigned int> m_idEntitiesInRoom;
 
    public:
-    RoomEntity(UniqueId& id, std::vector<std::string>& desc, 
-               std::vector<DoorEntity> doors,
-               std::vector<std::string>& descExt, 
-               std::vector<std::string>& keywordsExt,
-               std::string& name, unsigned int roomId);
+    RoomEntity(UniqueId& id, std::vector<std::string>& desc,
+               std::vector<DoorEntity> doors, std::vector<std::string>& descExt,
+               std::vector<std::string>& keywordsExt, std::string& name,
+               unsigned int roomId);
 
     std::vector<std::string> getDesc();
 

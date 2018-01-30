@@ -1,24 +1,19 @@
 #include "RoomEntity.h"
 
-RoomEntity::RoomEntity(UniqueId& id, std::vector<std::string>& desc, 
+RoomEntity::RoomEntity(UniqueId& id, std::vector<std::string>& desc,
                        std::vector<DoorEntity> doors,
-                       std::vector<std::string>& descExt, 
-                       std::vector<std::string>& keywordsExt,
-                       std::string& name, unsigned int roomId)
+                       std::vector<std::string>& descExt,
+                       std::vector<std::string>& keywordsExt, std::string& name,
+                       unsigned int roomId)
     : Entity::Entity(id),
       m_desc(desc),
       m_doors(std::move(doors)),
       m_name(name),
       m_roomId(roomId) {
-    m_extDesc = {
-      descExt,
-      keywordsExt
-    };
+    m_extDesc = {descExt, keywordsExt};
 }
 
-std::vector<std::string> RoomEntity::getDesc() {
-    return m_desc;
-}
+std::vector<std::string> RoomEntity::getDesc() { return m_desc; }
 
 unsigned int getDestRoomIdOf(std::string& dir) { return 0; }
 

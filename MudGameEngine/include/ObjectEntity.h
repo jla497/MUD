@@ -26,8 +26,8 @@ class ObjectEntity : public Entity {
                  unsigned int cost, std::vector<std::string>& descExtra,
                  std::vector<std::string>& keywordsExtra,
                  unsigned int objectTypeId, std::string& itemType,
-                 std::vector<std::string>& keywords, 
-                 std::vector<std::string>& longDesc, std::string& shortDesc, 
+                 std::vector<std::string>& keywords,
+                 std::vector<std::string>& longDesc, std::string& shortDesc,
                  std::vector<std::string>& wearFlags, int weight);
 };
 
