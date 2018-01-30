@@ -1,8 +1,8 @@
+#include <iomanip>
 #include <iostream>
 #include <memory>
 #include <thread>
 #include <vector>
-#include <iomanip>
 
 #include "ConnectionManager.h"
 #include "gamemanager/GameManager.h"
@@ -12,11 +12,8 @@ namespace gamemanager {
 
 using std::vector;
 
-GameManager::GameManager() :
-    connectionManager(),
-    gameState(),
-    players(),
-    tick{kDefaultGameLoopTick} {}
+GameManager::GameManager()
+    : connectionManager(), gameState(), players(), tick{kDefaultGameLoopTick} {}
 
 /*
  * Runs a standard game loop, which consists of the following steps:
@@ -61,7 +58,7 @@ void GameManager::mainLoop() {
 
 void GameManager::processMessages(gameAndUserMsgs& messages) {
     for (auto& message : messages) {
-        //DEBUG - print the message text
+        // DEBUG - print the message text
         std::cout << message->text;
 
         // look up player from ID

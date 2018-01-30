@@ -1,9 +1,9 @@
 #ifndef GAMESTATE_H
 #define GAMESTATE_H
 
+#include <boost/bimap.hpp>
 #include <memory>
 #include <unordered_map>
-#include <boost/bimap.hpp>
 
 #include "Player.h"
 #include "Room.h"
@@ -21,8 +21,7 @@ using std::unordered_map;
  *      - own all the information required to save/serialize a game
  *      - be the source of truth for all state relating to the world
  */
-class GameState
-{
+class GameState {
 public:
     /**
      * Default constructor
@@ -32,6 +31,6 @@ public:
     Room& getCharacterLocation(const Character& character);
 };
 
-}   //namespace gamemanager
-}   //namespace mudserver
-#endif // GAMESTATE_H
+}  // namespace gamemanager
+}  // namespace mudserver
+#endif  // GAMESTATE_H
