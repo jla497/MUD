@@ -1,0 +1,28 @@
+image: dewert/gibanica:base
+stages:
+  - build
+  - test
+  - cleanup
+
+compile:
+  stage: build
+  script:
+    - mkdir build
+    - cd build
+    - cmake ../MudServer
+    - make
+  artifacts:
+    paths:
+    - build
+
+connection-manager-unit-test:
+  stage: test
+  script:
+    - cd build/bin
+    - ./connectionmantest | grep "PASSED"
+
+cleanup-build-folder:
+  stage: cleanup
+  script:
+    - rm -rf build
+

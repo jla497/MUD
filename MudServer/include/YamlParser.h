@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <fstream>
 #include <yaml-cpp/yaml.h>
+#include "boost/filesystem.hpp"
 
 
 class YamlParser {
@@ -14,6 +15,15 @@ class YamlParser {
 private:
     std::vector<YAML::Node> data; //holds all data nodes
     bool is_loaded;
+
+    //calls constructors of each object and adds data to each respective object
+    void parseNPC(YAML::Node npc);
+    void parseObject(YAML::Node object);
+    void parseReset(YAML::Node reset);
+    void parseRoom(YAML::Node room);
+    void parseShop(YAML::Node shop);
+    void parseArea(YAML::Node area);
+    
 public:
     YamlParser();
 
@@ -21,14 +31,13 @@ public:
     //each entity makes up one node in data (ex. "NPCs" make up one node)
     bool loadYamlFile(const std::string path);
 
-    void readAllNPCS();
-
-    //calls constructors of each object and adds data to each respective object
-    void readNPC(YAML::Node npcs);
-    void readObjects();
-    void readResets();
-    void readRooms();
-    void readShops();
+    //Returns vectors of respective entities 
+    void getAllNPCS();
+    void getAllObjects();
+    void getAllResets();
+    void getAllRooms();
+    void getAllShops();
+    void getArea();
 };
 
 #endif
