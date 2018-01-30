@@ -29,16 +29,15 @@ void GameManager::mainLoop() {
     std::cout << "Entered main game loop" << std::endl;
 
     bool done = false;
-    using clock = std::chrono::system_clock;
+    using clock = std::chrono::high_resolution_clock;
 
     while (!done) {
         auto startTime = clock::now();
-        auto tt = clock::to_time_t(startTime);
-        std::cout << std::ctime(&tt) << std::endl;
+        std::cout << "Tick" << std::endl;
 
         if (connectionManager.update()) {
             // An error was encountered, stop
-            done = false;
+            done = true;
             continue;
         }
 
@@ -62,9 +61,11 @@ void GameManager::mainLoop() {
 
 void GameManager::processMessages(gameAndUserMsgs& messages) {
     for (auto& message : messages) {
+        //DEBUG - print the message text
+        std::cout << message->text;
+
         // look up player from ID
         auto player = players.find(message->conn.id);
-        // Player* player = nullptr;
         if (player == players.end()) {
             // We should add a login service that can deal with
             //      - players not existing
@@ -85,9 +86,6 @@ void GameManager::processMessages(gameAndUserMsgs& messages) {
         // look up character's location
         Room& room = gameState.getCharacterLocation(*character);
 
-
-        //DEBUG - print the message text
-        std::cout << message->text << std::endl;
         // parse message into verb/object
         // auto parsed = parsePlayerMessage(message.value);
 

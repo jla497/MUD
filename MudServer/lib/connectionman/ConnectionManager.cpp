@@ -20,7 +20,7 @@ drop connection.*/
 void ConnectionManager::dropConnections() {
     for (const auto& c : mList) {
 
-        if ((*c).getIsConnected() == false) {
+        if (!(*c).getIsConnected()) {
             const auto& toBeRmved = (*c).getConnection();
             mList.erase(std::remove(mList.begin(), mList.end(), c));
             server.disconnect(toBeRmved);
@@ -79,7 +79,7 @@ std::unique_ptr<gameAndUserMsgs> ConnectionManager::sendToGameManager() {
     for (const auto& container : mList) {
         const auto& user_msg = container->sendToGameManager();
         const auto& c = container->getConnection();
-        std::cout<<c.id<<": "<<user_msg<<std::endl;
+        //std::cout<<c.id<<": "<<user_msg<<std::endl;
 
         if (!user_msg.empty()) {
             auto msg = std::make_unique<gameAndUserInterface>();
@@ -120,7 +120,7 @@ bool ConnectionManager::update() {
 
     auto incoming = server.receive();
     rxFromServer(incoming);
-    sendToServer();
+    // sendToServer();
     dropConnections();
 
     return false;
