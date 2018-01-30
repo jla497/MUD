@@ -23,8 +23,8 @@ using connection::gameAndUserMsgs;
     
 class GameManager {
     
-    unique_ptr<connection::ConnectionManager> connectionManager;
-    unique_ptr<GameState> gameState;
+    connection::ConnectionManager connectionManager;
+    GameState gameState;
     std::unordered_map<PlayerID, Player&> players;
     GameLoopTick tick;
     

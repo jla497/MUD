@@ -2,6 +2,8 @@
 #include <memory>
 #include <thread>
 #include <vector>
+#include <ctime>
+#include <iomanip>
 
 #include "ConnectionManager.h"
 #include "gamemanager/GameManager.h"
@@ -12,27 +14,30 @@ namespace gamemanager {
 using std::vector;
 
 GameManager::GameManager() :
-    connectionManager{std::make_unique<connection::ConnectionManager>()},
-    gameState{std::make_unique<GameState>()},
+    connectionManager(),
+    gameState(),
+    players(),
     tick{kDefaultGameLoopTick} {}
 
 /*
  * Runs a standard game loop, which consists of the following steps:
  *      - get user input (messages from the server)
  *      - update the game state using the input
- *      - render, i.e. send broadcast messages to platers.
+ *      - render, i.e. send broadcast messages to players.
  */
 void GameManager::mainLoop() {
     // TODO: Add a logging system
-    std::cout << "Entered main game loop\n" << std::endl;
+    std::cout << "Entered main game loop" << std::endl;
 
     bool done = false;
-    using clock = std::chrono::high_resolution_clock;
+    using clock = std::chrono::system_clock;
 
     while (!done) {
         auto startTime = clock::now();
+        auto tt = clock::to_time_t(startTime);
+        std::cout << std::ctime(&tt) << std::endl;
 
-        auto messages = connectionManager->sendToGameManager();
+        auto messages = connectionManager.sendToGameManager();
 
         processMessages(*messages);
 
@@ -50,8 +55,9 @@ void GameManager::mainLoop() {
 void GameManager::processMessages(gameAndUserMsgs& messages) {
     for (auto& message : messages) {
         // look up player from ID
-        Player* player = gameState->getPlayerByID(message->conn.id);
-        if (!player) {
+        auto player = players.find(message->conn.id);
+        // Player* player = nullptr;
+        if (player == players.end()) {
             // We should add a login service that can deal with
             //      - players not existing
             //      - authenticating players
@@ -61,7 +67,7 @@ void GameManager::processMessages(gameAndUserMsgs& messages) {
 
         // look up player's character
         // pointer is used as player may not have character yet
-        Character* character = player->getCharacter();
+        Character* character = player->second.getCharacter();
         if (!character) {
             // for now, we just continue, but we will want to allow new
             // character creation
@@ -69,7 +75,7 @@ void GameManager::processMessages(gameAndUserMsgs& messages) {
         }
 
         // look up character's location
-        Room& room = gameState->getCharacterLocation(*character);
+        Room& room = gameState.getCharacterLocation(*character);
 
 
         //DEBUG - print the message text

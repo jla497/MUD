@@ -7,13 +7,7 @@ namespace gamemanager {
 
 using std::make_unique;
 
-GameState::GameState() :
-    players{unordered_map<PlayerID, unique_ptr<Player>>()} {}
-
-Player* GameState::getPlayerByID(const PlayerID id) {
-    return new Player{42, "foo", "bar"};
-    // return players[id].get();
-}
+GameState::GameState() {}
 
 Room& GameState::getCharacterLocation(const Character& character) {
     // TODO: implement getCharacterLocation stub

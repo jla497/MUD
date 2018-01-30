@@ -23,14 +23,12 @@ using std::unordered_map;
  */
 class GameState
 {
-    unordered_map<PlayerID, unique_ptr<Player> > players;
 public:
     /**
      * Default constructor
      */
     GameState();
-    
-    Player* getPlayerByID(const PlayerID id);
+
     Room& getCharacterLocation(const Character& character);
 };
 
