@@ -5,7 +5,6 @@
 // for details.
 /////////////////////////////////////////////////////////////////////////////
 
-
 #ifndef CHATWINDOW_H
 #define CHATWINDOW_H
 
@@ -14,49 +13,45 @@
 #include <form.h>
 #include <ncurses.h>
 
-
 class ChatWindow {
-public:
-  explicit ChatWindow(std::function<void(std::string)> onTextEntry)
-    : ChatWindow{onTextEntry, 1}
-      { }
+   public:
+    explicit ChatWindow(std::function<void(std::string)> onTextEntry)
+        : ChatWindow{onTextEntry, 1} {}
 
-  ChatWindow(std::function<void(std::string)> onTextEntry, int updateDelay);
+    ChatWindow(std::function<void(std::string)> onTextEntry, int updateDelay);
 
-  ~ChatWindow();
+    ~ChatWindow();
 
-  ChatWindow(const ChatWindow& cw)      = delete;
-  ChatWindow& operator=(ChatWindow& cw) = delete;
+    ChatWindow(const ChatWindow &cw) = delete;
+    ChatWindow &operator=(ChatWindow &cw) = delete;
 
-  void update();
+    void update();
 
-  void displayText(const std::string& text);
+    void displayText(const std::string &text);
 
-private:
-  void resizeOnShapeChange();
+   private:
+    void resizeOnShapeChange();
 
-  void processInput(int key);
+    void processInput(int key);
 
-  size_t getFieldSize() const;
+    size_t getFieldSize() const;
 
-  std::string getFieldString() const;
+    std::string getFieldString() const;
 
-  std::function<void(std::string)> onTextEntry;
+    std::function<void(std::string)> onTextEntry;
 
-  int parentX   = 0;
-  int parentY   = 0;
-  int entrySize = 3;
+    int parentX = 0;
+    int parentY = 0;
+    int entrySize = 3;
 
-  WINDOW *view     = nullptr;
-  WINDOW *entry    = nullptr;
-  WINDOW *entrySub = nullptr;
+    WINDOW *view = nullptr;
+    WINDOW *entry = nullptr;
+    WINDOW *entrySub = nullptr;
 
-  FIELD *fields[2]  = { nullptr, nullptr };
-  FIELD *entryField = nullptr;
+    FIELD *fields[2] = {nullptr, nullptr};
+    FIELD *entryField = nullptr;
 
-  FORM *entryForm = nullptr;
+    FORM *entryForm = nullptr;
 };
 
-
 #endif
-
