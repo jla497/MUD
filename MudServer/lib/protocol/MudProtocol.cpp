@@ -5,6 +5,7 @@ MudProtocol::MudProtocol() : maxBufSize(512) {}
 MudProtocol::MudProtocol(int max_buf) : maxBufSize(max_buf) {}
 
 void MudProtocol::receive(std::string str) {
+
   //pass only alphanumeric characters, backspace nad cr
 
   for (auto& c : str) {
