@@ -25,4 +25,3 @@ cleanup-build-folder:
   stage: cleanup
   script:
     - rm -rf build
-
