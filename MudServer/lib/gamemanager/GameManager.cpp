@@ -12,8 +12,8 @@ namespace gamemanager {
 
 using std::vector;
 
-GameManager::GameManager()
-    : connectionManager(), gameState(), players(), tick{kDefaultGameLoopTick} {}
+GameManager::GameManager(connection::ConnectionManager &connMan)
+    : connectionManager{connMan}, gameState(), players(), tick{kDefaultGameLoopTick} {}
 
 /*
  * Runs a standard game loop, which consists of the following steps:
@@ -30,7 +30,6 @@ void GameManager::mainLoop() {
 
     while (!done) {
         auto startTime = clock::now();
-        std::cout << "Tick" << std::endl;
 
         if (connectionManager.update()) {
             // An error was encountered, stop

@@ -22,7 +22,7 @@ using std::unique_ptr;
 using std::vector;
 
 class GameManager {
-    connection::ConnectionManager connectionManager;
+    connection::ConnectionManager& connectionManager;
     GameState gameState;
     std::unordered_map<PlayerID, Player&> players;
     GameLoopTick tick;
@@ -30,7 +30,7 @@ class GameManager {
     void processMessages(gameAndUserMsgs& messages);
 
 public:
-    GameManager();
+    explicit GameManager(connection::ConnectionManager& connMan);
     GameManager(const GameManager& gm) = delete;
 
     void mainLoop();

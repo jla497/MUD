@@ -20,6 +20,7 @@
 
 namespace networking {
 
+using Port = unsigned short;
 
 /**
  *  An identifier for a Client connected to a Server. The ID of a Connection is
@@ -84,7 +85,7 @@ public:
    *  connections.
    */
   template <typename C, typename D>
-  Server(unsigned short port, C onConnect, D onDisconnect)
+  Server(Port port, C onConnect, D onDisconnect)
     : connectionHandler{std::make_unique<ConnectionHandlerImpl<C,D>>(onConnect, onDisconnect)},
       endpoint{boost::asio::ip::tcp::v4(), port},
       ioService{},

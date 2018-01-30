@@ -3,8 +3,8 @@
 
 using namespace connection;
 
-ConnectionManager::ConnectionManager():
-    mList(), server{4000,
+ConnectionManager::ConnectionManager(networking::Port port):
+    mList(), server{port,
         [this](networking::Connection c) {
           printf("New connection found: %lu\n", c.id);
           this->addConnection(c);

@@ -58,14 +58,14 @@ class ConnectionManager {
 	// 	printf("Connection lost: %lu\n", c.id);
 	// };
 
-	ConnectionList mList;
+    ConnectionList mList;
 
 	bool done; //set to True to stop run()
 
 	networking::Server server;
 
 public:
-	ConnectionManager();
+	ConnectionManager(networking::Port port);
 //pass signals to server to drop connections
 	void dropConnections();
 
