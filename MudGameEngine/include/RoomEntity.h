@@ -11,7 +11,7 @@ struct ExtendedDesc {
 
 class RoomEntity : public Entity {
    private:
-    std::string m_desc;
+    std::vector<std::string> m_desc;
     std::vector<DoorEntity> m_doors;
     ExtendedDesc m_extDesc;
     std::string m_name;
@@ -23,12 +23,13 @@ class RoomEntity : public Entity {
     std::vector<unsigned int> m_idEntitiesInRoom;
 
    public:
-    RoomEntity(UniqueId& id, std::string& desc, std::vector<DoorEntity> doors,
+    RoomEntity(UniqueId& id, std::vector<std::string>& desc, 
+               std::vector<DoorEntity> doors,
                std::vector<std::string>& descExt, 
                std::vector<std::string>& keywordsExt,
                std::string& name, unsigned int roomId);
 
-    std::string getDesc();
+    std::vector<std::string> getDesc();
 
     // Returns destinationID to room given dir command while in a room
     // Returns 0 if dir does not exist for room

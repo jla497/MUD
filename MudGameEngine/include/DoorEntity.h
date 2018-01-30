@@ -5,7 +5,7 @@
 
 class DoorEntity : public Entity {
    private:
-    std::string m_desc;
+    std::vector<std::string> m_desc;
     std::string m_dir;  // didn't enum dir, could be arbitrary
     std::vector<std::string> m_keywords;
     unsigned int m_to;  // Room this door leads to
@@ -15,7 +15,7 @@ class DoorEntity : public Entity {
     // find_to(std::string dir) : dir_(dir) {}
     // bool operator()(Door& door) {return door.dir == dir_;}
    public:
-    DoorEntity(UniqueId& id, std::string& desc, std::string& dir,
+    DoorEntity(UniqueId& id, std::vector<std::string>& desc, std::string& dir,
                std::vector<std::string>& keywords, unsigned int to);
 
     unsigned int getDestRoomId();
