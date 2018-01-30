@@ -15,7 +15,7 @@ using std::vector;
 GameManager::GameManager(connection::ConnectionManager &connMan)
     : connectionManager{connMan}, gameState(), players(), tick{kDefaultGameLoopTick} {}
 
-/*
+/**
  * Runs a standard game loop, which consists of the following steps:
  *      - get user input (messages from the server)
  *      - update the game state using the input
