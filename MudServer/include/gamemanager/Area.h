@@ -1,18 +1,16 @@
-#ifndef ROOM_H
-#define ROOM_H
+#ifndef AREA_H
+#define AREA_H
 
 namespace mudserver {
 namespace gamemanager {
 /**
  * @todo write docs
  */
-class Room {
+class Area {
 public:
-    Room();
+    Area();
 };
-
 
 }  // namespace gamemanager
 }  // namespace mudserver
-
-#endif  // ROOM_H
+#endif  // AREA_H

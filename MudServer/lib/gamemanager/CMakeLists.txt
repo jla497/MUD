@@ -1,6 +1,7 @@
 add_library(gamemanager
     GameManager.cpp
     GameState.cpp
+    Area.cpp
     Character.cpp
     Player.cpp
     Room.cpp

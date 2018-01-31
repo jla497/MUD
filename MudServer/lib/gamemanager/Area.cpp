@@ -1,9 +1,9 @@
-#include "gamemanager/Room.h"
+#include "gamemanager/Area.h"
 
 namespace mudserver {
 namespace gamemanager {
 
-Room::Room() {
+Area::Area() {
 
 }
 

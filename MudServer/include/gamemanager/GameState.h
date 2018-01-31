@@ -5,15 +5,23 @@
 #include <memory>
 #include <unordered_map>
 
+#include "Area.h"
 #include "Player.h"
 #include "Room.h"
 
 namespace mudserver {
 namespace gamemanager {
 
-// typedef boost::bimap<Character&, Room&> CharacterRoomLookup;
+typedef int RoomId;
+typedef int CharacterId;
+
+typedef std::map<CharacterId, Room&> CharacterRoomLookup;
+typedef std::map<RoomId, Character&> RoomCharacterLookup;
+typedef std::map<int, Room&> RoomLookupTable;
+
 using std::unique_ptr;
 using std::unordered_map;
+using std::vector;
 
 /**
  * The overarching idea of GameState is that it should
@@ -28,8 +36,18 @@ public:
      */
     GameState();
 
+    CharacterRoomLookup characterToRoom;
+    RoomLookupTable roomLookUp;
+    vector<Area> areas;
+
     Room& getCharacterLocation(const Character& character);
-};
+
+    Character& getCharacterFromRoomId(const Room& room);
+    Room& getRoomFromId(const RoomId);
+    Room& getRoomFromCharacterId(const Character& character);
+
+
+    };
 
 }  // namespace gamemanager
 }  // namespace mudserver
