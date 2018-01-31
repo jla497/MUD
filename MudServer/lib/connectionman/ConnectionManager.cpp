@@ -1,7 +1,10 @@
 #include "ConnectionManager.h"
 
 
-using namespace connection;
+
+namespace mudserver {
+namespace connection {
+    
 
 ConnectionManager::ConnectionManager(networking::Port port):
     mList(), server{port,
@@ -126,5 +129,7 @@ bool ConnectionManager::update() {
     return false;
 }
 
+}
+}
 //receive msgs to send from GameManager
 // void rxFromGameManager(std::vector<Interface2Game> msgs);

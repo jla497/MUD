@@ -1,5 +1,9 @@
 #include "MudProtocol.h"
 
+
+namespace mudserver {
+namespace connection {
+  
 MudProtocol::MudProtocol() : maxBufSize(512) {}
 
 MudProtocol::MudProtocol(unsigned int max_buf) : maxBufSize(max_buf) {}
@@ -65,4 +69,7 @@ std::string MudProtocol::broadcast(std::string broadcast) {
   broadcastBuffer.clear();
 
   return res;
+}
+
+}
 }
