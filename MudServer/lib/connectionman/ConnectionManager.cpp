@@ -3,14 +3,24 @@
 
 using namespace connection;
 
-ConnectionManager::ConnectionManager(): mList() {}
+ConnectionManager::ConnectionManager(networking::Port port):
+    mList(), server{port,
+        [this](networking::Connection c) {
+          printf("New connection found: %lu\n", c.id);
+          this->addConnection(c);
+        },
+
+        [this](networking::Connection c) {
+          printf("Connection lost: %lu\n", c.id);
+        }
+    } {}
 
 /*checks each ConnectionContainers's isConnected state. If isConnected is false, then remove the container and
 drop connection.*/
 void ConnectionManager::dropConnections() {
     for (const auto& c : mList) {
 
-        if ((*c).getIsConnected() == false) {
+        if (!(*c).getIsConnected()) {
             const auto& toBeRmved = (*c).getConnection();
             mList.erase(std::remove(mList.begin(), mList.end(), c));
             server.disconnect(toBeRmved);
@@ -39,7 +49,7 @@ void ConnectionManager::rxFromServer(std::deque<networking::Message> &incoming) 
         }
 
         connContainerItr = std::find_if(mList.begin(), mList.end(), findContainer(conn));
-    
+
         (*connContainerItr)->receiveFromServer(text);
     }
 }
@@ -69,7 +79,7 @@ std::unique_ptr<gameAndUserMsgs> ConnectionManager::sendToGameManager() {
     for (const auto& container : mList) {
         const auto& user_msg = container->sendToGameManager();
         const auto& c = container->getConnection();
-        std::cout<<c.id<<": "<<user_msg<<std::endl;
+        //std::cout<<c.id<<": "<<user_msg<<std::endl;
 
         if (!user_msg.empty()) {
             auto msg = std::make_unique<gameAndUserInterface>();
@@ -90,7 +100,7 @@ void ConnectionManager::receiveFromGameManager(std::unique_ptr<gameAndUserMsgs> 
        auto& connection = msg->conn;
        auto& text = msg->text;
        auto connContainerItr = std::find_if(mList.begin(), mList.end(), findContainer(connection));
-       
+
         if (connContainerItr == mList.end()) {
             auto errMsg = "ConnectionContainer not found while trying to send msg from the GameManager\n";
             throw std::runtime_error(errMsg);
@@ -99,3 +109,22 @@ void ConnectionManager::receiveFromGameManager(std::unique_ptr<gameAndUserMsgs> 
         (*connContainerItr)->receiveFromGameManager(text);
     }
 }
+
+bool ConnectionManager::update() {
+    try {
+        server.update();
+    } catch (std::exception &e) {
+        printf("Exception from Server update:\n%s\n\n", e.what());
+        return true;
+    }
+
+    auto incoming = server.receive();
+    rxFromServer(incoming);
+    // sendToServer();
+    dropConnections();
+
+    return false;
+}
+
+//receive msgs to send from GameManager
+// void rxFromGameManager(std::vector<Interface2Game> msgs);

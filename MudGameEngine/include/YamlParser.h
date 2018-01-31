@@ -7,6 +7,13 @@
 #include <algorithm>
 #include <fstream>
 #include <yaml-cpp/yaml.h>
+#include "NPCEntity.h"
+#include "ObjectEntity.h"
+#include "RoomEntity.h"
+#include "ShopEntity.h"
+#include "AreaEntity.h"
+#include "DoorEntity.h"
+#include "UniqueId.h"
 
 
 class YamlParser {
@@ -16,12 +23,15 @@ private:
     bool is_loaded;
 
     //calls constructors of each object and adds data to each respective object
-    void parseNPC(YAML::Node npc);
-    void parseObject(YAML::Node object);
-    void parseReset(YAML::Node reset);
-    void parseRoom(YAML::Node room);
-    void parseShop(YAML::Node shop);
-    void parseArea(YAML::Node area);
+    NPCEntity parseNPC(YAML::Node npcNode);
+    ObjectEntity parseObject(YAML::Node objectNode);
+    void parseReset(YAML::Node resetNode); // needs reset constructor
+    RoomEntity parseRoom(YAML::Node roomNode);
+    ShopEntity parseShop(YAML::Node shopNode);
+    AreaEntity parseArea(YAML::Node areaNode);
+    DoorEntity parseDoor(Yaml::Node doorNode); //gets all doors 
+    //gets all doorEntity objects in the given room
+    std::vector<DoorEntity> getAllDoors(Yaml::Node roomNode);
     
 public:
     YamlParser();
@@ -31,12 +41,12 @@ public:
     bool loadYamlFile(const std::string path);
 
     //Returns vectors of respective entities 
-    void getAllNPCS();
-    void getAllObjects();
+    std::vector<NPCEntity> getAllNPCS();
+    std::vector<ObjectEntity> getAllObjects();
     void getAllResets();
-    void getAllRooms();
-    void getAllShops();
-    void getArea();
+    std::vector<RoomEntity> getAllRooms();
+    std::vector<ShopEntity> getAllShops();
+    AreaEntity getArea();
 };
 
 #endif
