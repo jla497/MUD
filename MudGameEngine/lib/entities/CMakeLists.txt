@@ -27,6 +27,10 @@ set_target_properties(entity
 		CXX_STANDARD 14
 )
 
+target_link_libraries(sayaction gamemanager)
+target_link_libraries(moveaction gamemanager)
+target_link_libraries(attackaction gamemanager)
+
 install(TARGETS 
 	entity 
 	doorentity

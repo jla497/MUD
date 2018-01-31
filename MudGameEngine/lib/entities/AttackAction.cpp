@@ -1,12 +1,10 @@
 #include <string>
 #include <vector>
 #include "AttackAction.h"
-#include "GameManager.h"
 
-
-AttackAction::execute(const String& entityPerformingAction,
-  		const std::vector<String>& entitiesBeingActedUpon,
-  		const GameManager& gameManager){
+void AttackAction::execute(const std::string& entityPerformingAction,
+  		const std::vector<std::string>& entitiesBeingActedUpon,
+  		const mudserver::gamemanager::GameManager& gameManager){
 
 
 

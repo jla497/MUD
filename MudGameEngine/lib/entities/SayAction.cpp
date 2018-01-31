@@ -1,12 +1,10 @@
 #include <string>
 #include <vector>
 #include "SayAction.h"
-#include "GameManager.h"
 
-
-SayAction::execute(const String& entityPerformingAction,
-  		const std::vector<String>& entitiesBeingActedUpon,
-  		const GameManager& gameManager){
+void SayAction::execute(const std::string& entityPerformingAction,
+  		const std::vector<std::string>& entitiesBeingActedUpon,
+  		const mudserver::gamemanager::GameManager& gameManager){
 	//get player who is saying the message
 		//--likely first param
 
