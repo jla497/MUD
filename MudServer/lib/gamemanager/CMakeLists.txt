@@ -1,3 +1,4 @@
+
 add_library(gamemanager
     GameManager.cpp
     GameState.cpp
@@ -7,6 +8,7 @@ add_library(gamemanager
 )
 
 target_link_libraries(gamemanager connectionman)
+target_link_libraries(gamemanager entity)
 
 set_target_properties(gamemanager
                       PROPERTIES
