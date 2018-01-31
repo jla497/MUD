@@ -11,8 +11,8 @@ class AreaEntity : public Entity {
     std::vector<RoomEntity> m_rooms;
 
    public:
-    AreaEntity(UniqueId& id, std::string& name,
-               std::vector<RoomEntity> rooms);
+    AreaEntity(std::string& name,
+               std::vector<unsigned int> rooms);
 };
 
 #endif

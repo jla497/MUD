@@ -27,7 +27,7 @@ class NPCEntity : public Entity {
     Roll m_hitRollData;     // ???
 
    public:
-    NPCEntity(UniqueId& id, int armor, std::string& damage,
+    NPCEntity(int armor, std::string& damage,
               std::vector<std::string>& desc, unsigned int exp, int gold,
               std::string& hit, unsigned int npcTypeId,
               std::vector<std::string>& keywords, unsigned int level,

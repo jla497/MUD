@@ -14,10 +14,10 @@
 class Entity {
    private:
     // Unique id that every created entity has
-    UniqueId& m_entityId;
+    UniqueId m_entityId;
 
    public:
-    Entity(UniqueId& id);
+    Entity();
 
     UniqueId getEntityId();
 
