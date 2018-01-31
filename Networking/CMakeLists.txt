@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.2)
-project(MudServer)
+project(Networking)
 
-set(PACKAGE_NAME MudServer)
+set(PACKAGE_NAME Networking)
 set(PACKAGE_VERSION 0.1)
 set(PACKAGE_STRING "${PACKAGE_NAME} ${PACKAGE_VERSION}")
 
@@ -14,5 +14,3 @@ set(CMAKE_CXX_FLAGS
 link_directories(${LIBRARY_OUTPUT_PATH})
 
 add_subdirectory(lib)
-add_subdirectory(test)
-add_subdirectory(tools)

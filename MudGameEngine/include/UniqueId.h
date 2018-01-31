@@ -12,6 +12,4 @@ class UniqueId {
     UniqueId() : id(nextUniqueId++) {}
 };
 
-unsigned int UniqueId::nextUniqueId = 1;
-
 #endif
