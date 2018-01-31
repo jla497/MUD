@@ -22,7 +22,7 @@ class ObjectEntity : public Entity {
     int m_weight;
 
    public:
-    ObjectEntity(UniqueId& id, std::vector<std::string>& attributes,
+    ObjectEntity(std::vector<std::string>& attributes,
                  unsigned int cost, std::vector<std::string>& descExtra,
                  std::vector<std::string>& keywordsExtra,
                  unsigned int objectTypeId, std::string& itemType,

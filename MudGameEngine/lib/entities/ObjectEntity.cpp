@@ -3,7 +3,7 @@
 
 #include "ObjectEntity.h"
 
-ObjectEntity::ObjectEntity(UniqueId& id, std::vector<std::string>& attributes,
+ObjectEntity::ObjectEntity(std::vector<std::string>& attributes,
                            unsigned int cost,
                            std::vector<std::string>& descExtra,
                            std::vector<std::string>& keywordsExtra,
@@ -12,7 +12,7 @@ ObjectEntity::ObjectEntity(UniqueId& id, std::vector<std::string>& attributes,
                            std::vector<std::string>& longDesc,
                            std::string& shortDesc,
                            std::vector<std::string>& wearFlags, int weight)
-    : Entity::Entity(id),
+    : Entity::Entity(),
       m_attributes(attributes),
       m_cost(cost),
       m_objectTypeId(objectTypeId),
@@ -21,5 +21,5 @@ ObjectEntity::ObjectEntity(UniqueId& id, std::vector<std::string>& attributes,
       m_longDesc(longDesc),
       m_shortDesc(shortDesc),
       m_wearFlags(wearFlags) {
-    m_extra = {descExtra, keywordsExtra};
+      m_extra = {descExtra, keywordsExtra};
 }

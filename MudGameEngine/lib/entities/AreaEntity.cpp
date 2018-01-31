@@ -3,6 +3,6 @@
 
 #include "AreaEntity.h"
 
-AreaEntity::AreaEntity(UniqueId& id, std::string& name,
+AreaEntity::AreaEntity(std::string& name,
                        std::vector<unsigned int> rooms)
-    : Entity::Entity(id), m_name(name), m_rooms(rooms) {}
+    : Entity::Entity(), m_name(name), m_rooms(rooms) {}
