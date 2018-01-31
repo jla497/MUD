@@ -6,7 +6,7 @@ add_library(gamemanager
     Room.cpp
 )
 
-target_link_libraries(gamemanager connectionman)
+target_link_libraries(gamemanager connectionmanager)
 target_link_libraries(gamemanager entity)
 target_link_libraries(gamemanager doorentity)
 target_link_libraries(gamemanager roomentity)

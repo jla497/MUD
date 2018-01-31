@@ -1,11 +1,11 @@
-#include "ConnectionManager.h"
+#include "connectionmanager/ConnectionManager.h"
 
 #include "gtest/gtest.h"
 
 namespace {
 
   using namespace networking;
-  using namespace connection;
+  using namespace mudserver::connection;
 
 // To use a test fixture, derive a class from testing::Test.
 class ConnectionManTest : public testing::Test {

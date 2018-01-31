@@ -1,3 +1,3 @@
-add_subdirectory(connectionman)
+add_subdirectory(connectionmanager)
 add_subdirectory(gamemanager)
 
