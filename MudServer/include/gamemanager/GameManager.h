@@ -8,9 +8,9 @@
 #include <queue>
 
 #include "ConnectionManager.h"
+#include "Entity.h"
 #include "GameState.h"
 #include "Player.h"
-#include "Entity.h"
 
 namespace mudserver {
 namespace gamemanager {
