@@ -10,7 +10,7 @@ class AreaEntity : public Entity {
     std::vector<unsigned int> m_rooms;
 
    public:
-    AreaEntity(UniqueId& id, std::string& name,
+    AreaEntity(std::string& name,
                std::vector<unsigned int> rooms);
 };
 
