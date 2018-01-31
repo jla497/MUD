@@ -4,8 +4,7 @@ enable_testing()
 add_executable(mudtest
         ConnectionManagerTests.cpp
         GameManagerTests.cpp
-        GameStateBuilderTest.cpp
-)
+        )
 set_target_properties(mudtest
     PROPERTIES
     LINKER_LANGUAGE CXX
