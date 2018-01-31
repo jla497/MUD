@@ -14,8 +14,10 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/lib")
 include_directories(${CMAKE_SOURCE_DIR}/MudServer/include)
 include_directories(${CMAKE_SOURCE_DIR}/MudGameEngine/include)
 include_directories(${CMAKE_SOURCE_DIR}/Networking/include)
+include_directories(${CMAKE_SOURCE_DIR}/Client/include)
 
 add_subdirectory(Networking)
 add_subdirectory(MudServer)
 add_subdirectory(MudGameEngine)
+add_subdirectory(Client)
 
