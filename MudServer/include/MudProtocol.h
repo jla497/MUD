@@ -13,11 +13,11 @@
 class MudProtocol: public Protocol {
     std::string inBuffer;
     std::string broadcastBuffer;
-    int maxBufSize;
+    unsigned int maxBufSize;
 
    public:
     MudProtocol();
-    MudProtocol(int maxBuf);
+    MudProtocol(unsigned int maxBuf);
 
     void receive(std::string str);
 
