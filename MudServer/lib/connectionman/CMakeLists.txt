@@ -10,6 +10,7 @@ set_target_properties(connectionman
                       LINKER_LANGUAGE CXX
                       CXX_STANDARD 14
 )
+
 target_link_libraries(connectionman networking)
 target_link_libraries(connectionman protocols)
 target_link_libraries(connectionman ${Boost_LIBRARIES})
