@@ -26,10 +26,13 @@ private:
     NPCEntity parseNPC(YAML::Node npcNode);
     ObjectEntity parseObject(YAML::Node objectNode);
     void parseReset(YAML::Node resetNode); // needs reset constructor
+    void parseHelp(YAML::Node helpNode); //need help constructor
     RoomEntity parseRoom(YAML::Node roomNode);
     ShopEntity parseShop(YAML::Node shopNode);
     AreaEntity parseArea(YAML::Node areaNode);
     DoorEntity parseDoor(Yaml::Node doorNode); //gets all doors 
+
+    std::vector<RoomEntity> getAllRooms();
     //gets all doorEntity objects in the given room
     std::vector<DoorEntity> getAllDoors(Yaml::Node roomNode);
     
@@ -44,7 +47,7 @@ public:
     std::vector<NPCEntity> getAllNPCS();
     std::vector<ObjectEntity> getAllObjects();
     void getAllResets();
-    std::vector<RoomEntity> getAllRooms();
+    void getAllHelps();
     std::vector<ShopEntity> getAllShops();
     AreaEntity getArea();
 };

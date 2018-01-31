@@ -18,8 +18,7 @@ bool YamlParser::loadYamlFile(const std::string path){
     return true;
 }
 
-NPCEntity YamlParser::parseNPC(YAML::Node npcNode){
-
+std::unique_ptr<NPCEntity> YamlParser::parseNPC(YAML::Node npcNode){
     int armor = npcNode["armor"].as<int>();
     std::string damage = npcNode["damage"].as<std::string>();
     
@@ -58,15 +57,72 @@ NPCEntity YamlParser::parseNPC(YAML::Node npcNode){
     return npc;
 }
 
-void YamlParser::parseObject(YAML::Node objectNode){
+std::unique_ptr<ObjectEntity> YamlParser::parseObject(YAML::Node objectNode){
+    std::vector<std::string> attributes;
+    std::for_each(objectNode["attributes"].begin(), objectNode["attributes"].end(),  
+        [&attributes](YAML::Node line) {
+            attributes.push_back(line.as<std::string>());
+        });
 
+    unsigned int cost = objectNode["cost"].as<unsigned int>();
+
+    std::vector<std::string> descExtra;
+    std::std::vector<string> keywordsExtra;
+    if(objectNode["extra"]["desc"]) {
+        std::for_each(objectNode["extra"]["desc"].begin(), 
+            roomNode["extra"]["desc"].end(),  
+            [&descExtra](YAML::Node line) {
+                descExtra.push_back(line.as<std::string>());
+            });
+    }
+    if(objectNode["extra"]["keywords"]) {
+        std::for_each(objectNode["extra"]["keywords"].begin(), 
+            roomNode["extra"]["keywords"].end(),  
+            [&keywordsExtra](YAML::Node line) {
+                keywordsExtra.push_back(line.as<std::string>());
+            });
+    }
+
+    unsigned int objectTypeId = objectNode["id"].as<unsigned int>();
+    std::string itemType = objectNode["item_type"].as<std::string>();
+
+    std::vector<std::string> keywords;
+    std::for_each(objectNode["keywords"].begin(), objectNode["keywords"].end(),  
+        [&keywords](YAML::Node line) {
+            keywords.push_back(line.as<std::string>());
+        });
+
+    std::vector<std::string> longDesc;
+    std::for_each(objectNode["longdesc"].begin(), objectNode["longdesc"].end(),  
+        [&longDesc](YAML::Node line) {
+            longDesc.push_back(line.as<std::string>());
+        });
+
+    std::string shortDesc = objectNode["shortdesc"].as<std::string>();
+
+    std::vector<std::string> wearFlags;
+    std::for_each(objectNode["wear_flags"].begin(), objectNode["wear_flags"].end(),  
+        [&wearFlags](YAML::Node line) {
+            wearFlags.push_back(line.as<std::string>());
+        });
+
+    int weight = objectNode["weight"].as<int>();
+
+    ObjectEntity object = make_unique<ObjectEntity>(id, attributes, cost, descExtra, 
+        keywordsExtra, objectTypeId, itemType, keywords, longDesc, shortDesc, wearFlags, weight);
+
+    return object;
 }
 
 void YamlParser::parseReset(YAML::Node resetNode){
 
 }
 
-DoorEntity YamlParser::parseDoor(YAML::Node doorNode){
+void YamlParser::parseHelp(YAML::Node helpNode){
+
+}
+
+std::unique_ptr<DoorEntity> YamlParser::parseDoor(YAML::Node doorNode){
     std::vector<std::string> desc;
     std::for_each(doorNode["desc"].begin(), doorNode["desc"].end(),  
         [&desc](YAML::Node line) {
@@ -102,12 +158,7 @@ std::vector<DoorEntity> YamlParser::getAllDoors(YAML::Node roomNode){
 
 }
 
-RoomEntity YamlParser::parseRoom(YAML::Node roomNode){
-    RoomEntity(UniqueId& id, std::vector<std::string>& desc,
-               std::vector<DoorEntity> doors, std::vector<std::string>& descExt,
-               std::vector<std::string>& keywordsExt, std::string& name,
-               unsigned int roomId);
-
+std::unique_ptr<RoomEntity> YamlParser::parseRoom(YAML::Node roomNode){
     std::vector<std::string> description;
     std::for_each(roomNode["description"].begin(), roomNode["description"].end(),  
         [&description](YAML::Node line) {
@@ -116,14 +167,38 @@ RoomEntity YamlParser::parseRoom(YAML::Node roomNode){
 
     std::vector<DoorEntity> doors = getAllDoors(roomNode);
 
-    RoomEntity room = make_unique<RoomEntity>(id, description, doors,);
+    std::vector<std::string> descExt;
+    std::vector<std::string> keywordsExt;
+    if(roomNode["extended_descriptions"]["desc"]) {
+        std::for_each(roomNode["extended_descriptions"]["desc"].begin(), 
+            roomNode["extended_descriptions"]["desc"].end(),  
+            [&descExt](YAML::Node line) {
+                descExt.push_back(line.as<std::string>());
+            });
+    }
+    if(roomNode["extended_descriptions"]["keywords"]) {
+        std::for_each(roomNode["extended_descriptions"]["keywords"].begin(), 
+            roomNode["extended_descriptions"]["keywords"].end(),  
+            [&keywordsExt](YAML::Node line) {
+                keywordsExt.push_back(line.as<std::string>());
+            });
+    }
+
+    std::string name = roomNode["name"].as<std::string>();
+    unsigned int roomId = roomNode["id"].as<unsigned int>();
+
+    RoomEntity room = make_unique<RoomEntity>(id, description, doors, descExt,
+        keywordsExt, name, roomId);
+
+    return room;
 }
 
-void YamlParser::parseShop(YAML::Node shopNode){
-
+std::unique_ptr<ShopEntity> YamlParser::parseShop(YAML::Node shopNode){
+    ShopEntity shop = make_unique<ShopEntity>();
+    return shop;
 }
 
-void YamlParser::parseArea(YAML::Node areaNode){
+std::unique_ptr<AreaEntity> YamlParser::parseArea(YAML::Node areaNode){
     std::vector<RoomEntity> rooms = getAllRooms();
     std::string name = areaNode["name"].as<std::string>();
     AreaEntity area = make_unique<AreaEntity>(id, name, rooms);
@@ -133,7 +208,6 @@ void YamlParser::parseArea(YAML::Node areaNode){
 
 std::vector<NPCEntity> YamlParser::getAllNPCS(){
     std::vector<NPCEntity> npcs;
-    //iterate through all npcs in data and add them to list/vector of npcs
     for (auto& document : data) {
         std::for_each(document["NPCS"].begin(), document["NPCS"].end(), 
             [&npcs](YAML::Node node){
@@ -144,15 +218,40 @@ std::vector<NPCEntity> YamlParser::getAllNPCS(){
     return npcs;
 }
 
-void YamlParser::getAllObjects(){
-    //need Object constructor
+std::vector<ObjectEntity> YamlParser::getAllObjects(){
+    std::vector<ObjectEntity> objects;
+    for (auto& document : data) {
+        std::for_each(document["OBJECTS"].begin(), document["OBJECTS"].end(), 
+            [&objects](YAML::Node node){
+                objects.push_back(parseObject(node));
+            });
+    }
+
+    return objects;
 }
 
 void YamlParser::getAllResets(){
     //World original state?
 }
 
-void YamlParser::getAllRooms(){
+void YamlParser::getAllHelps(){
+
+}
+
+std::vector<ShopEntity> getAllShops(){
+    std::vector<ShopEntity> shops;
+    //iterate through all rooms in data and add them to list/vector of rooms
+    for (auto& document : data) {
+        std::for_each(document["SHOPS"].begin(), document["SHOPS"].end(), 
+            [&shops](YAML::Node node){
+                shops.push_back(parseRoom(node));
+            });
+    }
+
+    return rooms;
+}
+
+std::vector<RoomEntity> v; YamlParser::getAllRooms(){
     //need Room constructor
     std::vector<RoomEntity> rooms;
     //iterate through all rooms in data and add them to list/vector of rooms
@@ -166,7 +265,7 @@ void YamlParser::getAllRooms(){
     return rooms;
 }
 
-void YamlParser::getArea(){
+std::unique_ptr<AreaEntity> YamlParser::getArea(){
     AreaEntity area;
     for (auto& document : data) {
         std::for_each(document["AREA"].begin(), document["AREA"].end().
