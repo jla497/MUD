@@ -13,6 +13,8 @@
 #include "MudProtocol.h"
 #include "Server.h"
 
+namespace mudserver {
+namespace connection {
 class ConnectionContainer {
     networking::Connection mConnection;
     bool isConnected;
@@ -50,5 +52,7 @@ public:
     networking::Connection getConnection() const;
 
 };
+}
+}
 
 #endif

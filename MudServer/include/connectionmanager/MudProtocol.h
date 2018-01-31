@@ -9,15 +9,17 @@
 #include <exception>
 #include <iostream>
 #include "Protocol.h"
+namespace mudserver {
+namespace connection {
 
 class MudProtocol: public Protocol {
     std::string inBuffer;
     std::string broadcastBuffer;
-    int maxBufSize;
+    unsigned int maxBufSize;
 
    public:
     MudProtocol();
-    MudProtocol(int maxBuf);
+    MudProtocol(unsigned int maxBuf);
 
     void receive(std::string str);
 
@@ -25,4 +27,7 @@ class MudProtocol: public Protocol {
 
     std::string broadcast(std::string);
 };
+}
+}
+
 #endif

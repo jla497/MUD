@@ -7,7 +7,8 @@
 #include <unordered_map>
 #include <queue>
 
-#include "ConnectionManager.h"
+#include "connectionmanager/ConnectionManager.h"
+#include "Entity.h"
 #include "GameState.h"
 #include "Player.h"
 

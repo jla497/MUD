@@ -9,6 +9,10 @@
 #include <exception>
 #include <iostream>
 
+
+namespace mudserver {
+namespace connection {
+	
 /*Application protocol interface*/
 class Protocol {
 public:
@@ -21,4 +25,7 @@ public:
   //applicaiton specific formatting for broadcasts
   virtual std::string broadcast(std::string) = 0;
 };
+}
+}
+
 #endif
