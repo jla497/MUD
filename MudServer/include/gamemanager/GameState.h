@@ -12,12 +12,8 @@
 namespace mudserver {
 namespace gamemanager {
 
-typedef int RoomId;
-typedef int CharacterId;
-
-typedef std::map<CharacterId, Room&> CharacterRoomLookup;
-typedef std::map<RoomId, Character&> RoomCharacterLookup;
-typedef std::map<int, Room&> RoomLookupTable;
+typedef boost::bimap<CharacterID , RoomID> CharacterRoomLookupTable;
+typedef std::map<RoomID, Room&> RoomLookupTable;
 
 using std::unique_ptr;
 using std::unordered_map;
@@ -36,15 +32,15 @@ public:
      */
     GameState();
 
-    CharacterRoomLookup characterToRoom;
+    CharacterRoomLookupTable characterRoomLookUp;
     RoomLookupTable roomLookUp;
     vector<Area> areas;
 
     Room& getCharacterLocation(const Character& character);
 
-    Character& getCharacterFromRoomId(const Room& room);
-    Room& getRoomFromId(const RoomId);
-    Room& getRoomFromCharacterId(const Character& character);
+    vector<Character> getCharactersFromRoom(const Room& room);
+    Room& getRoomFromID(const RoomID);
+    Room& getRoomFromCharacter(const Character& character);
 
 
     };

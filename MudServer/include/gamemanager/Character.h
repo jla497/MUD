@@ -1,14 +1,20 @@
 #ifndef CHARACTER_H
 #define CHARACTER_H
 
+#include <boost/cstdint.hpp>
+
 namespace mudserver {
 namespace gamemanager {
-/**
- * @todo write docs
- */
+
+using CharacterID = uintptr_t;
+
 class Character {
+
 public:
     Character();
+    CharacterID getID() const;
+private:
+    CharacterID id;
 };
 
 

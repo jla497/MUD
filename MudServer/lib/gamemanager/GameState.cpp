@@ -16,17 +16,18 @@ Room& GameState::getCharacterLocation(const Character& character) {
     return *(new Room());
 }
 
-Room& GameState::getRoomFromCharacterId(const Character& character) {
-//    return characterRoomLookUp.right.at(character);
-    return *(new Room());
+Room& GameState::getRoomFromCharacter(const Character& character) {
+    RoomID id = characterRoomLookUp.left.at(character.getID());
+    return roomLookUp.at(id);
 }
 
-Character& GameState::getCharacterFromRoomId(const Room& room) {
-    return *(new Character());
+vector<Character> GameState::getCharactersFromRoom(const Room& room) {
+    vector<Character> characters;
+    return characters;
 }
 
-Room& GameState::getRoomFromId(const RoomId) {
-    return *(new Room());
+Room& GameState::getRoomFromID(const RoomID id) {
+    return roomLookUp.find(id)->second;
 }
 
 
