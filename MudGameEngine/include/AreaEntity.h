@@ -8,11 +8,11 @@ class AreaEntity : public Entity {
    private:
     // add unique id
     std::string m_name;
-    std::vector<RoomEntity> m_rooms;
+    std::vector<std::unique_ptr<RoomEntity>> m_rooms;
 
    public:
     AreaEntity(std::string& name,
-               std::vector<unsigned int> rooms);
+               std::vector<std::unique_ptr<RoomEntity>> rooms);
 };
 
 #endif

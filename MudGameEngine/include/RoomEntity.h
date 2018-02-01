@@ -12,7 +12,7 @@ struct ExtendedDesc {
 class RoomEntity : public Entity {
    private:
     std::vector<std::string> m_desc;
-    std::vector<DoorEntity> m_doors;
+    std::vector<std::unique_ptr<DoorEntity>> m_doors;
     ExtendedDesc m_extDesc;
     std::string m_name;
     unsigned int m_roomId;
@@ -24,7 +24,7 @@ class RoomEntity : public Entity {
 
    public:
     RoomEntity(std::vector<std::string>& desc,
-               std::vector<DoorEntity> doors, std::vector<std::string>& descExt,
+               std::vector<std::unique_ptr<DoorEntity>> doors, std::vector<std::string>& descExt,
                std::vector<std::string>& keywordsExt, std::string& name,
                unsigned int roomId);
 

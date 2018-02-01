@@ -1,7 +1,7 @@
 #include "RoomEntity.h"
 
 RoomEntity::RoomEntity(std::vector<std::string>& desc,
-                       std::vector<DoorEntity> doors,
+                       std::vector<std::unique_ptr<DoorEntity>> doors,
                        std::vector<std::string>& descExt,
                        std::vector<std::string>& keywordsExt, std::string& name,
                        unsigned int roomId)

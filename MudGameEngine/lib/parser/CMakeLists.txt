@@ -8,13 +8,13 @@ set_target_properties(parser
 
 
 target_link_libraries(parser yaml-cpp)
-target_link_libraries(entity Entity.cpp)
-target_link_libraries(doorentity DoorEntity.cpp)
-target_link_libraries(roomentity RoomEntity.cpp)
-target_link_libraries(npcentity NPCEntity.cpp)
-target_link_libraries(objectentity ObjectEntity.cpp)
-target_link_libraries(areaentity AreaEntity.cpp)
-target_link_libraries(shopentity ShopEntity.cpp)
+target_link_libraries(parser entity)
+target_link_libraries(parser doorentity)
+target_link_libraries(parser roomentity)
+target_link_libraries(parser npcentity)
+target_link_libraries(parser objectentity)
+target_link_libraries(parser areaentity)
+target_link_libraries(parser shopentity)
 
 install(TARGETS parser ARCHIVE DESTINATION lib)
 

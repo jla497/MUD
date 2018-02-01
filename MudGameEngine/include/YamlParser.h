@@ -22,18 +22,18 @@ private:
     bool is_loaded;
 
     //calls constructors of each object and adds data to each respective object
-    NPCEntity parseNPC(YAML::Node npcNode);
-    ObjectEntity parseObject(YAML::Node objectNode);
+    std::unique_ptr<NPCEntity> parseNPC(YAML::Node npcNode);
+    std::unique_ptr<ObjectEntity> parseObject(YAML::Node objectNode);
     void parseReset(YAML::Node resetNode); // needs reset constructor
     void parseHelp(YAML::Node helpNode); //need help constructor
-    RoomEntity parseRoom(YAML::Node roomNode);
-    ShopEntity parseShop(YAML::Node shopNode);
-    AreaEntity parseArea(YAML::Node areaNode);
-    DoorEntity parseDoor(Yaml::Node doorNode); //gets all doors 
+    std::unique_ptr<RoomEntity> parseRoom(YAML::Node roomNode);
+    std::unique_ptr<ShopEntity> parseShop(YAML::Node shopNode);
+    std::unique_ptr<AreaEntity> parseArea(YAML::Node areaNode);
+    std::unique_ptr<DoorEntity> parseDoor(YAML::Node doorNode); //gets all doors 
 
-    std::vector<RoomEntity> getAllRooms();
+    std::vector<std::unique_ptr<RoomEntity>> getAllRooms();
     //gets all doorEntity objects in the given room
-    std::vector<DoorEntity> getAllDoors(Yaml::Node roomNode);
+    std::vector<std::unique_ptr<DoorEntity>> getAllDoors(YAML::Node roomNode);
     
 public:
     YamlParser();
@@ -43,12 +43,12 @@ public:
     bool loadYamlFile(const std::string path);
 
     //Returns vectors of respective entities 
-    std::vector<NPCEntity> getAllNPCS();
-    std::vector<ObjectEntity> getAllObjects();
+    std::vector<std::unique_ptr<NPCEntity>> getAllNPCS();
+    std::vector<std::unique_ptr<ObjectEntity>> getAllObjects();
     void getAllResets();
     void getAllHelps();
-    std::vector<ShopEntity> getAllShops();
-    AreaEntity getArea();
+    std::vector<std::unique_ptr<ShopEntity>> getAllShops();
+    std::unique_ptr<AreaEntity> getArea();
 };
 
 #endif
