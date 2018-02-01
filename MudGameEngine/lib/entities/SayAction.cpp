@@ -1,5 +1,6 @@
 #include <string>
 #include <vector>
+
 #include "SayAction.h"
 
 void SayAction::execute(){
@@ -18,7 +19,7 @@ void SayAction::execute(){
   SayAction::SayAction(const std::string& entityPerformingAction,
   		const std::vector<std::string>* entitiesBeingActedUpon,
   		const mudserver::gamemanager::GameManager& gameManager) 
-  		: Action(entityPerformingAction,entitiesBeingActedUpon,& gameManager){
+  		: Action(entityPerformingAction,entitiesBeingActedUpon,gameManager){
 
 
 

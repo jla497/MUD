@@ -1,5 +1,6 @@
 #ifndef MOVEACTION_H
 #define MOVEACTION_H
+
 #include "Action.h"
 #include "gamemanager/GameManager.h"
 
@@ -8,8 +9,7 @@ class MoveAction : public Action{
   public:
   	MoveAction(const std::string& entityPerformingAction,
   		const std::vector<std::string>* entitiesBeingActedUpon,
-  		const mudserver::gamemanager::GameManager& gameManager)
-  	: Action(entityPerformingAction,entitiesBeingActedUpon,& gameManager);
+  		const mudserver::gamemanager::GameManager& gameManager);
 
    	void execute();
 };

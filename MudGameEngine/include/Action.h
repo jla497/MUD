@@ -17,5 +17,6 @@ class Action{
     std::string& entityPerformingAction;
     std::vector<std::string>* entitiesBeingActedUpon;
     mudserver::gamemanager::GameManager& gameManager;
+    
 };
 #endif
