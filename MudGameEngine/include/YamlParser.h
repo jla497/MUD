@@ -13,7 +13,6 @@
 #include "ShopEntity.h"
 #include "AreaEntity.h"
 #include "DoorEntity.h"
-#include "UniqueId.h"
 
 
 class YamlParser {

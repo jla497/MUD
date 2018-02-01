@@ -50,7 +50,7 @@ std::unique_ptr<NPCEntity> YamlParser::parseNPC(YAML::Node npcNode){
     std::string shortDesc = npcNode["shortdesc"].as<std::string>();
     int thac0 = npcNode["thac0"].as<int>();
 
-    NPCEntity npc = make_unique<NPCEntity>(id, armor, damage, 
+    NPCEntity npc = make_unique<NPCEntity>(armor, damage, 
         description, exp, gold, hit, npcTypeId,
         keywords, level, longdesc, shortDesc, thac0);
 
@@ -108,7 +108,7 @@ std::unique_ptr<ObjectEntity> YamlParser::parseObject(YAML::Node objectNode){
 
     int weight = objectNode["weight"].as<int>();
 
-    ObjectEntity object = make_unique<ObjectEntity>(id, attributes, cost, descExtra, 
+    ObjectEntity object = make_unique<ObjectEntity>(attributes, cost, descExtra, 
         keywordsExtra, objectTypeId, itemType, keywords, longDesc, shortDesc, wearFlags, weight);
 
     return object;
@@ -139,7 +139,7 @@ std::unique_ptr<DoorEntity> YamlParser::parseDoor(YAML::Node doorNode){
 
     unsigned int to = doorNode["to"].as<unsigned int>();
 
-    DoorEntity door = make_unique<DoorEntity>(id, desc, dir, to);
+    DoorEntity door = make_unique<DoorEntity>(desc, dir, to);
 
     return door;
 }
@@ -187,7 +187,7 @@ std::unique_ptr<RoomEntity> YamlParser::parseRoom(YAML::Node roomNode){
     std::string name = roomNode["name"].as<std::string>();
     unsigned int roomId = roomNode["id"].as<unsigned int>();
 
-    RoomEntity room = make_unique<RoomEntity>(id, description, doors, descExt,
+    RoomEntity room = make_unique<RoomEntity>(description, doors, descExt,
         keywordsExt, name, roomId);
 
     return room;
@@ -201,7 +201,7 @@ std::unique_ptr<ShopEntity> YamlParser::parseShop(YAML::Node shopNode){
 std::unique_ptr<AreaEntity> YamlParser::parseArea(YAML::Node areaNode){
     std::vector<RoomEntity> rooms = getAllRooms();
     std::string name = areaNode["name"].as<std::string>();
-    AreaEntity area = make_unique<AreaEntity>(id, name, rooms);
+    AreaEntity area = make_unique<AreaEntity>(name, rooms);
 
     return area;
 }
@@ -251,7 +251,7 @@ std::vector<ShopEntity> getAllShops(){
     return rooms;
 }
 
-std::vector<RoomEntity> v; YamlParser::getAllRooms(){
+std::vector<RoomEntity> YamlParser::getAllRooms(){
     //need Room constructor
     std::vector<RoomEntity> rooms;
     //iterate through all rooms in data and add them to list/vector of rooms
