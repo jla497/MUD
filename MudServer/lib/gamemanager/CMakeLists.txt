@@ -6,7 +6,9 @@ add_library(gamemanager
     Room.cpp
 )
 
-target_link_libraries(gamemanager connectionman)
+target_link_libraries(gamemanager
+        connectionman
+        commandparser)
 
 set_target_properties(gamemanager
                       PROPERTIES

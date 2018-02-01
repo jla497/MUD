@@ -7,6 +7,7 @@
 #include <unordered_map>
 #include <queue>
 
+#include "commandparser/CommandParser.h"
 #include "ConnectionManager.h"
 #include "GameState.h"
 #include "Player.h"
@@ -15,7 +16,9 @@ namespace mudserver {
 namespace gamemanager {
 
 using GameLoopTick = std::chrono::milliseconds;
-constexpr GameLoopTick kDefaultGameLoopTick = GameLoopTick(1000);
+constexpr GameLoopTick DEFAULT_TICK_LENGTH_MS = GameLoopTick(1000);
+
+using CommandParser = commandparser::CommandParser;
 
 /* Type definitions used in GameManager */
 using connection::gameAndUserMsgs;
@@ -29,6 +32,7 @@ class GameManager {
     GameLoopTick tick;
 
     std::queue<connection::gameAndUserInterface> outgoingMessages;
+    CommandParser commandParser;
 
     void processMessages(gameAndUserMsgs& messages);
     void enqueueMessage(networking::Connection conn, std::string msg);

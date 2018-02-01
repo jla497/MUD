@@ -12,8 +12,13 @@ namespace gamemanager {
 
 using std::vector;
 
-GameManager::GameManager(connection::ConnectionManager &connMan)
-    : connectionManager{connMan}, gameState(), players(), tick{kDefaultGameLoopTick} {}
+GameManager::GameManager(connection::ConnectionManager& connMan)
+    : connectionManager{connMan},
+      gameState(),
+      players(),
+      tick{DEFAULT_TICK_LENGTH_MS},
+      outgoingMessages(),
+      commandParser() {}
 
 /**
  * Runs a standard game loop, which consists of the following steps:
@@ -84,16 +89,11 @@ void GameManager::processMessages(gameAndUserMsgs& messages) {
         }
 
         // parse message into verb/object
-        // auto parsed = parsePlayerMessage(message.value);
+        //auto action =
+        auto retMessage =
+            commandParser.actionFromPlayerCommand(character, message->text);
 
-        // then take action based on parse command
-        // Command pattern - objects?
-        // or just functions?
-
-        // command = Command(gameState, parsed, character, room)
-        // command.act()
-
-        enqueueMessage(message->conn, "You said " + message->text);
+        enqueueMessage(message->conn, retMessage);
     }
 }
 
