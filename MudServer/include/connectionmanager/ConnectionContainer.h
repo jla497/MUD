@@ -53,7 +53,7 @@ namespace mudserver {
 
 
         private:
-            static const int kDefaultNumOfMudProtocols;
+            static const int DEFAULT_NUM_OF_MUD_PROTOCOLS;
 
 
         };

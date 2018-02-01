@@ -3,11 +3,11 @@
 namespace mudserver {
   namespace connection {
 
-    const int ConnectionContainer::kDefaultNumOfMudProtocols = 512;
+    const int ConnectionContainer::DEFAULT_NUM_OF_MUD_PROTOCOLS = 512;
 
-    ConnectionContainer::ConnectionContainer(): mProtocol(std::unique_ptr<MudProtocol>(new MudProtocol(kDefaultNumOfMudProtocols))) {}
+    ConnectionContainer::ConnectionContainer(): mProtocol(std::unique_ptr<MudProtocol>(new MudProtocol(DEFAULT_NUM_OF_MUD_PROTOCOLS))) {}
 
-    ConnectionContainer::ConnectionContainer(const networking::Connection& c): mConnection(c), isConnected(true),mProtocol(std::unique_ptr<MudProtocol>(new MudProtocol(kDefaultNumOfMudProtocols))) {}
+    ConnectionContainer::ConnectionContainer(const networking::Connection& c): mConnection(c), isConnected(true),mProtocol(std::unique_ptr<MudProtocol>(new MudProtocol(DEFAULT_NUM_OF_MUD_PROTOCOLS))) {}
 
     ConnectionContainer::ConnectionContainer(ConnectionContainer &&container): mConnection(container.mConnection), mProtocol(std::move(container.mProtocol)) {}
 
