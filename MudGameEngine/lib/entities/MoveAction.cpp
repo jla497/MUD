@@ -3,13 +3,14 @@
 #include "MoveAction.h"
 
 
-void MoveAction::execute(const std::string& entityPerformingAction,
-  		const std::vector<std::string>& entitiesBeingActedUpon,
-  		const mudserver::gamemanager::GameManager& gameManager){
-
-
-
-
-
+void MoveAction::execute(){
 
 }
+
+  MoveAction::MoveAction(const std::string& entityPerformingAction,
+  		const std::vector<std::string>* entitiesBeingActedUpon,
+  		const mudserver::gamemanager::GameManager& gameManager) :
+   		entityPerformingAction{entityPerformingAction},
+   		entitiesBeingActedUpon{entitiesBeingActedUpon},
+   		comment{comment},
+   		gameManager{gameManager}{}

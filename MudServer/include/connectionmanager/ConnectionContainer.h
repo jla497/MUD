@@ -14,45 +14,50 @@
 #include "Server.h"
 
 namespace mudserver {
-namespace connection {
-class ConnectionContainer {
-    networking::Connection mConnection;
-    bool isConnected;
-    std::unique_ptr<MudProtocol> mProtocol;
+    namespace connection {
+        class ConnectionContainer {
+            networking::Connection mConnection;
+            bool isConnected;
+            std::unique_ptr<MudProtocol> mProtocol;
 
-public:
-    ConnectionContainer();
-    
-    ConnectionContainer(const networking::Connection& c);
+        public:
+            ConnectionContainer();
 
-    ConnectionContainer(ConnectionContainer const &) = delete;
-    
-    ConnectionContainer &operator= (ConnectionContainer const &) = delete;
-  
-    ConnectionContainer(ConnectionContainer &&container);
+            ConnectionContainer(const networking::Connection& c);
 
-    ConnectionContainer &operator=(ConnectionContainer &&container) {
-        if(this != &container) {
-            mProtocol = std::move(container.mProtocol);
-        }
-        return *this;
-    } 
+            ConnectionContainer(ConnectionContainer const &) = delete;
 
-    bool getIsConnected() const;
+            ConnectionContainer &operator= (ConnectionContainer const &) = delete;
+
+            ConnectionContainer(ConnectionContainer &&container);
+
+            ConnectionContainer &operator=(ConnectionContainer &&container) {
+                if(this != &container) {
+                    mProtocol = std::move(container.mProtocol);
+                }
+                return *this;
+            } 
+
+            bool getIsConnected() const;
 
     //receives messages from ConnectionManager
-    void receiveFromServer(std::string& str);
+            void receiveFromServer(std::string& str);
 
-    std::string sendToGameManager();
+            std::string sendToGameManager();
 
-    void receiveFromGameManager(std::string& str);
+            void receiveFromGameManager(std::string& str);
 
-    std::string sendToServer();
-    
-    networking::Connection getConnection() const;
+            std::string sendToServer();
 
-};
-}
+            networking::Connection getConnection() const;
+
+
+        private:
+            static const int kDefaultNumOfMudProtocols;
+
+
+        };
+    }
 }
 
 #endif
