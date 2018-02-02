@@ -4,7 +4,7 @@
 #include <thread>
 #include <vector>
 
-#include "ConnectionManager.h"
+#include "connectionmanager/ConnectionManager.h"
 #include "gamemanager/GameManager.h"
 
 namespace mudserver {

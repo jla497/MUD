@@ -2,8 +2,11 @@ add_executable(mudserver
   mudserver.cpp
 )
 
-target_link_libraries(mudserver connectionman)
+target_link_libraries(mudserver networking)
+target_link_libraries(mudserver connectionmanager)
 target_link_libraries(mudserver gamemanager)
+target_link_libraries(mudserver -lpthread)
+
 
 set_target_properties(mudserver
                       PROPERTIES

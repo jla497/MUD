@@ -30,4 +30,3 @@ target_link_libraries(chatclient
 install(TARGETS chatclient
   RUNTIME DESTINATION bin
 )
-
