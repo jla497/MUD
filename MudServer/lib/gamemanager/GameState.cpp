@@ -18,11 +18,11 @@ Room& GameState::getCharacterLocation(const Character& character) {
 
 vector<Character> GameState::getCharactersInRoom(const Room& room) {
     vector<Character> characters;
-    for(auto character : characterRoomLookUp.left) {
-        if (character->second == room.getID()) {
-            characters.push_back(character->first);
-        }
-    }
+//    for(auto id : characterRoomLookUp.left) {
+//        if (characterRoomLookUp.left.at(id) == room.getID()) {
+//            characters.push_back(characterRoomLookUp.right.at(id));
+//        }
+//    }
     return characters;
 }
 

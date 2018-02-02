@@ -13,7 +13,9 @@
 
 namespace mudserver {
 namespace gamemanager {
-typedef boost::bimap<set_of<CharacterID>, list_of<RoomID>> CharacterRoomLookupTable;
+
+using namespace boost::bimaps;
+typedef bimap<set_of<CharacterID>, list_of<RoomID>> CharacterRoomLookupTable;
 typedef std::map<RoomID, Room&> RoomLookupTable;
 
 using std::unique_ptr;
