@@ -1,6 +1,12 @@
 #include <boost/algorithm/string.hpp>
 #include <boost/tokenizer.hpp>
 #include <sstream>
+#include <memory>
+
+#include "actions/AttackAction.h"
+#include "actions/NullAction.h"
+#include "actions/MoveAction.h"
+#include "actions/SayAction.h"
 
 #include "commandparser/CommandParser.h"
 #include "resources/commands.h"
@@ -19,10 +25,9 @@ std::unordered_map<std::string, ActKeyword> CommandParser::actionLookup = {
     {ATTACK, ActKeyword::attack},
     {MOVE, ActKeyword::move}};
 
-CommandParser::CommandParser() {}
-
-std::string CommandParser::actionFromPlayerCommand(gamemanager::Character* character,
-                                                   StrView command) {
+std::unique_ptr<Action> CommandParser::actionFromPlayerCommand(
+    gamemanager::Character* character, StrView command,
+    gamemanager::GameManager& gameManager) {
     Tokenizer tokens{command};
 
     auto tokenIterator = tokens.begin();
@@ -45,31 +50,38 @@ std::string CommandParser::actionFromPlayerCommand(gamemanager::Character* chara
         actionType = actionTypeIter->second;
     }
 
-
     std::stringstream actionDescription;
+    std::unique_ptr<Action> action;
     switch (actionType) {
     case ActKeyword::say: {
         actionDescription << u8"SayAction will be created";
+        action = std::make_unique<SayAction>("fill", remainderOfTokens,
+                                             gameManager);
         break;
     }
-    case ActKeyword::look: {
-        actionDescription << u8"LookAction will be created";
-        break;
-    }
+
     case ActKeyword::move: {
         actionDescription << u8"MoveAction will be created";
+        action = std::make_unique<MoveAction>("fill", remainderOfTokens,
+                                              gameManager);
         break;
     }
     case ActKeyword::attack: {
         actionDescription << u8"AttackAction will be created";
+        action = std::make_unique<AttackAction>("fill", remainderOfTokens,
+                                                gameManager);
         break;
+    }
+    case ActKeyword::look: {
     }
     default:
         actionDescription << u8"Action was not supported";
+        action = std::make_unique<NullAction>("fill", remainderOfTokens,
+                                              gameManager);
     }
 
     actionDescription << ", with remainder tokens [" << tokenRep.str() << "]";
-    return actionDescription.str();
+    return action;
 }
 
 }  // namespace commandparser

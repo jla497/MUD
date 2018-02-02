@@ -1,7 +1,7 @@
 #include <string>
 #include <vector>
 
-#include "DoorEntity.h"
+#include "entities/DoorEntity.h"
 
 DoorEntity::DoorEntity(std::vector<std::string>& desc,
                        std::string& dir, std::vector<std::string>& keywords,

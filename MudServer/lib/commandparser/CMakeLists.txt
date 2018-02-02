@@ -6,9 +6,12 @@ set_target_properties(commandparser
                       CXX_STANDARD 14
 )
 
+target_link_libraries(commandparser actions)
+
 find_package(Boost 1.58 COMPONENTS system REQUIRED)
 include_directories(${Boost_INCLUDE_DIR})
 target_link_libraries(commandparser ${Boost_LIBRARIES})
+
 
 install(TARGETS commandparser ARCHIVE DESTINATION lib)
 

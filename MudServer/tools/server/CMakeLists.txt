@@ -7,7 +7,6 @@ target_link_libraries(mudserver connectionmanager)
 target_link_libraries(mudserver gamemanager)
 target_link_libraries(mudserver -lpthread)
 
-
 set_target_properties(mudserver
                       PROPERTIES
                       LINKER_LANGUAGE CXX

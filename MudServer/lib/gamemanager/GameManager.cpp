@@ -1,5 +1,6 @@
 #include <iomanip>
 #include <iostream>
+#include <sstream>
 #include <memory>
 #include <thread>
 #include <vector>
@@ -15,10 +16,12 @@ using std::vector;
 GameManager::GameManager(connection::ConnectionManager& connMan)
     : connectionManager{connMan},
       gameState(),
-      players(),
+      commandParser(),
       tick{DEFAULT_TICK_LENGTH_MS},
+      done{false},
+      players(),
       outgoingMessages(),
-      commandParser() {}
+      actions() {}
 
 /**
  * Runs a standard game loop, which consists of the following steps:
@@ -30,7 +33,6 @@ void GameManager::mainLoop() {
     // TODO: Add a logging system
     std::cout << "Entered main game loop" << std::endl;
 
-    bool done = false;
     using clock = std::chrono::high_resolution_clock;
 
     while (!done) {
@@ -46,6 +48,8 @@ void GameManager::mainLoop() {
         auto messages = connectionManager.sendToGameManager();
 
         processMessages(*messages);
+
+        performQueuedActions();
 
         sendMessagesToPlayers();
 
@@ -89,11 +93,15 @@ void GameManager::processMessages(gameAndUserMsgs& messages) {
         }
 
         // parse message into verb/object
-        //auto action =
-        auto retMessage =
-            commandParser.actionFromPlayerCommand(character, message->text);
+        std::unique_ptr<Action> action = commandParser.actionFromPlayerCommand(
+            character, message->text, *this);
 
-        enqueueMessage(message->conn, retMessage);
+        std::stringstream retMessage;
+        retMessage << *action;
+
+        enqueueAction(std::move(action));
+
+        enqueueMessage(message->conn, retMessage.str());
     }
 }
 
@@ -111,6 +119,16 @@ void GameManager::sendMessagesToPlayers() {
     }
     connectionManager.receiveFromGameManager(std::move(toSend));
     connectionManager.sendToServer();
+}
+
+void GameManager::enqueueAction(unique_ptr<Action> action) {
+    actions.push(std::move(action));
+}
+void GameManager::performQueuedActions() {
+    while (!actions.empty()) {
+        actions.front()->execute();
+        actions.pop();
+    }
 }
 
 }  // namespace gamemanager

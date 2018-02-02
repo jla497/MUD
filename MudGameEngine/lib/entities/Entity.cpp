@@ -1,6 +1,6 @@
 #include <string>
 
-#include "Entity.h"
+#include "entities/Entity.h"
 
 Entity::Entity() {
 	m_entityId = UniqueId();

@@ -7,9 +7,15 @@
 #include <unordered_map>
 #include <queue>
 
+namespace mudserver {
+namespace gamemanager {
+class GameManager;
+}
+}
+
 #include "commandparser/CommandParser.h"
 #include "connectionmanager/ConnectionManager.h"
-#include "Entity.h"
+#include "entities/Entity.h"
 #include "GameState.h"
 #include "Player.h"
 
@@ -29,20 +35,25 @@ using std::vector;
 class GameManager {
     connection::ConnectionManager& connectionManager;
     GameState gameState;
-    std::unordered_map<PlayerID, Player> players;
     GameLoopTick tick;
-
-    std::queue<connection::gameAndUserInterface> outgoingMessages;
+    bool done;
     CommandParser commandParser;
+
+    std::unordered_map<PlayerID, Player> players;
+    std::queue<connection::gameAndUserInterface> outgoingMessages;
+    std::queue<std::unique_ptr<Action>> actions;
 
     void processMessages(gameAndUserMsgs& messages);
     void enqueueMessage(networking::Connection conn, std::string msg);
     void sendMessagesToPlayers();
+
+    void enqueueAction(unique_ptr<Action> action);
 public:
     explicit GameManager(connection::ConnectionManager& connMan);
     GameManager(const GameManager& gm) = delete;
 
     void mainLoop();
+    void performQueuedActions();
 };
 
 }  // namespace gamemanager
