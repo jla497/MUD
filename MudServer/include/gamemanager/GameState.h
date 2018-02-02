@@ -1,6 +1,7 @@
 #ifndef GAMESTATE_H
 #define GAMESTATE_H
 
+#include <boost/foreach.hpp>
 #include <boost/bimap.hpp>
 #include <boost/bimap/set_of.hpp>
 #include <boost/bimap/list_of.hpp>
@@ -38,7 +39,7 @@ public:
     GameState();
 
     Room& getCharacterLocation(const Character& character);
-    vector<Character> getCharactersInRoom(const Room& room);
+    vector<CharacterID> getCharactersInRoom(const Room& room);
     Room& getRoom(const RoomID);
     void addArea(const Area& area);
     void updateCharacterLocation(Character& character, Room& room);

@@ -16,8 +16,21 @@ Room& GameState::getCharacterLocation(const Character& character) {
     return roomLookUp.at(id);
 }
 
-vector<Character> GameState::getCharactersInRoom(const Room& room) {
-    vector<Character> characters;
+vector<CharacterID> GameState::getCharactersInRoom(const Room& room) {
+    vector<CharacterID> characters;
+
+    BOOST_FOREACH(CharacterRoomLookupTable::left_const_reference p, characterRoomLookUp.left ) {
+        if (p.second == room.getID()) {
+            characters.push_back(p.first);
+        }
+    }
+
+//    for( auto i : characterRoomLookUp.left)
+//    {
+//        if (i.second == room.getID())
+//            characters.push_back(i.first);
+//    }
+
 //    for(auto id : characterRoomLookUp.left) {
 //        if (characterRoomLookUp.left.at(id) == room.getID()) {
 //            characters.push_back(characterRoomLookUp.right.at(id));
