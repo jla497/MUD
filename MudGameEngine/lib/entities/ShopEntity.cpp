@@ -3,4 +3,4 @@
 
 #include "ShopEntity.h"
 
-ShopEntity::ShopEntity(UniqueId& id) : Entity::Entity(id) {}
+ShopEntity::ShopEntity() : Entity::Entity() {}

@@ -2,6 +2,8 @@
 
 #include "Entity.h"
 
-Entity::Entity(UniqueId& id) : m_entityId(id) {}
+Entity::Entity() {
+	m_entityId = UniqueId();
+}
 
 UniqueId Entity::getEntityId() { return m_entityId; }
