@@ -7,9 +7,12 @@ add_library(objectentity ObjectEntity.cpp)
 add_library(areaentity AreaEntity.cpp)
 add_library(shopentity ShopEntity.cpp)
 add_library(reset Reset.cpp)
-add_library(sayaction SayAction.cpp)
-add_library(moveaction MoveAction.cpp)
-add_library(attackaction AttackAction.cpp)
+
+add_library(actions 
+SayAction.cpp
+MoveAction.cpp
+AttackAction.cpp
+)
 
 set_target_properties(entity 
 	doorentity
@@ -19,17 +22,13 @@ set_target_properties(entity
 	areaentity 
 	shopentity
 	reset
-	sayaction
-	moveaction
-	attackaction
+	actions
 		PROPERTIES
 		LINKER_LANGUAGE CXX
 		CXX_STANDARD 14
 )
 
-target_link_libraries(sayaction gamemanager)
-target_link_libraries(moveaction gamemanager)
-target_link_libraries(attackaction gamemanager)
+target_link_libraries(actions gamemanager)
 
 install(TARGETS 
 	entity 
@@ -40,9 +39,7 @@ install(TARGETS
 	areaentity 
 	shopentity
 	reset
-	sayaction
-	moveaction
-	attackaction
+	actions
 		ARCHIVE DESTINATION lib
 )
 
