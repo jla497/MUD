@@ -11,6 +11,7 @@
 #include <memory>
 #include <string>
 
+namespace mudserver {
 namespace connection {
 
 struct gameAndUserInterface {
@@ -84,5 +85,5 @@ public:
 };
 
 }  // end of namespace connection
-
+}
 #endif
