@@ -9,12 +9,12 @@ namespace gamemanager {
 using CharacterID = uintptr_t;
 
 class Character {
+    CharacterID id;
 
 public:
     Character();
     CharacterID getID() const;
-private:
-    CharacterID id;
+
 };
 
 

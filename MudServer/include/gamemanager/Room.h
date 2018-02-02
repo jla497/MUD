@@ -12,7 +12,7 @@ class Room {
     RoomID id;
 
 public:
-    Room();
+    Room(RoomID id);
 };
 
 

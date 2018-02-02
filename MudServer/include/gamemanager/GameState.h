@@ -26,22 +26,22 @@ using std::vector;
  *      - be the source of truth for all state relating to the world
  */
 class GameState {
-public:
-    /**
-     * Default constructor
-     */
-    GameState();
 
     CharacterRoomLookupTable characterRoomLookUp;
     RoomLookupTable roomLookUp;
     vector<Area> areas;
 
+public:
+    GameState();
+
     Room& getCharacterLocation(const Character& character);
+    vector<Character> getCharactersInRoom(const Room& room);
+    Room& getRoom(const RoomID);
 
-    vector<Character> getCharactersFromRoom(const Room& room);
-    Room& getRoomFromID(const RoomID);
-    Room& getRoomFromCharacter(const Character& character);
-
+    //Todo
+    void addArea(const RoomID);
+    void addRoom(Area&, const RoomID);
+    void updateCharacterLocation(const Character& character);
 
     };
 

@@ -3,10 +3,8 @@
 namespace mudserver {
 namespace gamemanager {
 
-Room::Room() {
-
-}
-
+Room::Room(RoomID id) :
+    id{id} {}
 
 }  // namespace gamemanager
 }  // namespace mudserver

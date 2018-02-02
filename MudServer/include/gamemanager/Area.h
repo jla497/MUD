@@ -7,6 +7,7 @@ namespace gamemanager {
  * @todo write docs
  */
 class Area {
+
 public:
     Area();
 };

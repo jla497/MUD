@@ -12,23 +12,22 @@ GameState::GameState() {
 }
 
 Room& GameState::getCharacterLocation(const Character& character) {
-    // TODO: implement getCharacterLocation stub
-    return *(new Room());
-}
-
-Room& GameState::getRoomFromCharacter(const Character& character) {
     RoomID id = characterRoomLookUp.left.at(character.getID());
     return roomLookUp.at(id);
 }
 
-vector<Character> GameState::getCharactersFromRoom(const Room& room) {
+vector<Character> GameState::getCharactersInRoom(const Room& room) {
     vector<Character> characters;
     return characters;
 }
 
-Room& GameState::getRoomFromID(const RoomID id) {
+Room& GameState::getRoom(const RoomID id) {
     return roomLookUp.find(id)->second;
 }
+
+//void GameState::addRoom(const RoomID id) {
+//    roomLookUp[id] = Room(id);
+//}
 
 
 }  // namespace gamemanager
