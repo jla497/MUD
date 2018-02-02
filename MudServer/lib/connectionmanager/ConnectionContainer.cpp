@@ -1,8 +1,11 @@
-#include "ConnectionContainer.h"
+#include "connectionmanager/ConnectionContainer.h"
+
+namespace mudserver {
+namespace connection {
 
 ConnectionContainer::ConnectionContainer(): mProtocol(std::unique_ptr<MudProtocol>(new MudProtocol(512))) {}
 
-ConnectionContainer::ConnectionContainer(const networking::Connection& c): mConnection(c), mProtocol(std::unique_ptr<MudProtocol>(new MudProtocol(512))), isConnected(true) {}
+ConnectionContainer::ConnectionContainer(const networking::Connection& c): mConnection(c), isConnected(true),mProtocol(std::unique_ptr<MudProtocol>(new MudProtocol(512))) {}
 
 ConnectionContainer::ConnectionContainer(ConnectionContainer &&container): mConnection(container.mConnection), mProtocol(std::move(container.mProtocol)) {}
 
@@ -51,4 +54,6 @@ bool ConnectionContainer::getIsConnected() const {
 
 networking::Connection ConnectionContainer::getConnection() const {
   return mConnection;
+}
+}
 }

@@ -5,7 +5,7 @@
 */
 struct Roll {
     int numOfDie;
-    // size = number of sides on the die.
+    // sizeOfDie = number of sides on the die.
     int sizeOfDie;
     int rollModifier;
 };

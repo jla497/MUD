@@ -9,7 +9,7 @@ compile:
   script:
     - mkdir build
     - cd build
-    - cmake ../MudServer
+    - cmake ..
     - make
   artifacts:
     paths:
