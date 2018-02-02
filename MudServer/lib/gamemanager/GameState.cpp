@@ -18,6 +18,11 @@ Room& GameState::getCharacterLocation(const Character& character) {
 
 vector<Character> GameState::getCharactersInRoom(const Room& room) {
     vector<Character> characters;
+    for(auto character : characterRoomLookUp.left) {
+        if (character->second == room.getID()) {
+            characters.push_back(character->first);
+        }
+    }
     return characters;
 }
 
@@ -25,10 +30,13 @@ Room& GameState::getRoom(const RoomID id) {
     return roomLookUp.find(id)->second;
 }
 
-//void GameState::addRoom(const RoomID id) {
-//    roomLookUp[id] = Room(id);
-//}
+void GameState::addArea(const Area& area) {
+    areas.push_back(area);
+}
 
+void GameState::updateCharacterLocation(Character& character, Room& room) {
+    characterRoomLookUp.left[character.getID()] = room.getID();
+}
 
 }  // namespace gamemanager
 }  // namespace mudserver

@@ -13,6 +13,7 @@ class Room {
 
 public:
     Room(RoomID id);
+    RoomID getID() const;
 };
 
 

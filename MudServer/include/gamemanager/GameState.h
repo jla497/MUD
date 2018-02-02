@@ -2,6 +2,8 @@
 #define GAMESTATE_H
 
 #include <boost/bimap.hpp>
+#include <boost/bimap/set_of.hpp>
+#include <boost/bimap/list_of.hpp>
 #include <memory>
 #include <unordered_map>
 
@@ -11,8 +13,7 @@
 
 namespace mudserver {
 namespace gamemanager {
-
-typedef boost::bimap<CharacterID , RoomID> CharacterRoomLookupTable;
+typedef boost::bimap<set_of<CharacterID>, list_of<RoomID>> CharacterRoomLookupTable;
 typedef std::map<RoomID, Room&> RoomLookupTable;
 
 using std::unique_ptr;
@@ -37,11 +38,8 @@ public:
     Room& getCharacterLocation(const Character& character);
     vector<Character> getCharactersInRoom(const Room& room);
     Room& getRoom(const RoomID);
-
-    //Todo
-    void addArea(const RoomID);
-    void addRoom(Area&, const RoomID);
-    void updateCharacterLocation(const Character& character);
+    void addArea(const Area& area);
+    void updateCharacterLocation(Character& character, Room& room);
 
     };
 
