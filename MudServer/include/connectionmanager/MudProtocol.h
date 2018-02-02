@@ -1,23 +1,22 @@
 #ifndef MUD_PROTOCOL_H
 #define MUD_PROTOCOL_H
 
-
-#include <sstream>
-#include <unistd.h>
-#include <memory>
-#include <string>
+#include "Protocol.h"
 #include <exception>
 #include <iostream>
-#include "Protocol.h"
+#include <memory>
+#include <sstream>
+#include <string>
+#include <unistd.h>
 namespace mudserver {
 namespace connection {
 
-class MudProtocol: public Protocol {
+class MudProtocol : public Protocol {
     std::string inBuffer;
     std::string broadcastBuffer;
     unsigned int maxBufSize;
 
-   public:
+public:
     MudProtocol();
     MudProtocol(unsigned int maxBuf);
 
@@ -27,7 +26,7 @@ class MudProtocol: public Protocol {
 
     std::string broadcast(std::string);
 };
-}
-}
+}  // namespace connection
+}  // namespace mudserver
 
 #endif
