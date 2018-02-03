@@ -1,7 +1,7 @@
 #include <string>
 #include <vector>
 
-#include "AreaEntity.h"
+#include "entities/AreaEntity.h"
 
 AreaEntity::AreaEntity(std::string& name,
                        std::vector<unsigned int> rooms)

@@ -1,6 +1,6 @@
 #include <string>
 #include <vector>
 
-#include "ShopEntity.h"
+#include "entities/ShopEntity.h"
 
 ShopEntity::ShopEntity() : Entity::Entity() {}

@@ -26,7 +26,7 @@ Cpp11BracedListStyle: true
 DerivePointerAlignment: true
 DisableFormat: false
 ExperimentalAutoDetectBinPacking: false
-IndentCaseLabels: true
+IndentCaseLabels: false
 IndentWidth: 4
 IndentWrappedFunctionNames: false
 KeepEmptyLinesAtTheStartOfBlocks: false

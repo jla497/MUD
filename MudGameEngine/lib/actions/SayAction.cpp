@@ -1,7 +1,7 @@
 #include <string>
 #include <vector>
 
-#include "SayAction.h"
+#include "actions/SayAction.h"
 
 void SayAction::execute() {
     // get player who is saying the message
@@ -16,7 +16,3 @@ void SayAction::execute() {
     //--send the message to all the players except the one who sent it
 }
 
-SayAction::SayAction(const std::string& entityPerformingAction,
-                     const std::vector<std::string>* entitiesBeingActedUpon,
-                     const mudserver::gamemanager::GameManager& gameManager)
-    : Action(entityPerformingAction, entitiesBeingActedUpon, gameManager) {}
