@@ -47,6 +47,7 @@ TEST_F(ParserTests, TestGetAllObjects) {
 
 TEST_F(ParserTests, TestParseArea) {
   auto area = parser.getArea();
+  EXPECT_EQ("MotherGoose", area->getName());
 }
 
 int main(int argc, char **argv) {
