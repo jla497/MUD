@@ -55,13 +55,13 @@ TEST_F(ParserTests, TestLutBuilder) {
   mudserver::gamemanager::LutBuilder lutBuilder{};
   auto mMap = lutBuilder.createLUT(rooms);
 
-  auto room = mMap[2900];
-
-  EXPECT_EQ(2900, room->getId());
+  unsigned int roomNum = 2900;
+  auto room = mMap[roomNum];
+  EXPECT_EQ(roomNum, room->getId());
   
   auto descriptions = room->getDesc();
 
-  std::cout<<"desc: "<<descriptions[0]<<std::endl;
+  // std::cout<<"desc: "<<descriptions[0]<<std::endl;
 }
 
 int main(int argc, char **argv) {
