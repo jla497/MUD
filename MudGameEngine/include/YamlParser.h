@@ -28,7 +28,6 @@ private:
     void parseHelp(YAML::Node helpNode); //need help constructor
     std::unique_ptr<RoomEntity> parseRoom(YAML::Node roomNode);
     std::unique_ptr<ShopEntity> parseShop(YAML::Node shopNode);
-    std::unique_ptr<AreaEntity> parseArea(YAML::Node areaNode);
     std::unique_ptr<DoorEntity> parseDoor(YAML::Node doorNode); //gets all doors 
 
     std::vector<std::unique_ptr<RoomEntity>> getAllRooms();

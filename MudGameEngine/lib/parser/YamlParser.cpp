@@ -128,6 +128,7 @@ std::unique_ptr<DoorEntity> YamlParser::parseDoor(YAML::Node doorNode){
         [&desc](YAML::Node line) {
             desc.push_back(line.as<std::string>());
         });
+        
 
     std::string dir = doorNode["dir"].as<std::string>();
 
@@ -175,6 +176,7 @@ std::unique_ptr<RoomEntity> YamlParser::parseRoom(YAML::Node roomNode){
 
     std::vector<std::string> descExt;
     std::vector<std::string> keywordsExt;
+    
     if(roomNode["extended_descriptions"]["desc"]) {
         std::for_each(roomNode["extended_descriptions"]["desc"].begin(), 
             roomNode["extended_descriptions"]["desc"].end(),  
@@ -202,14 +204,6 @@ std::unique_ptr<RoomEntity> YamlParser::parseRoom(YAML::Node roomNode){
 std::unique_ptr<ShopEntity> YamlParser::parseShop(YAML::Node shopNode){
     auto shop = std::make_unique<ShopEntity>();
     return shop;
-}
-
-std::unique_ptr<AreaEntity> YamlParser::parseArea(YAML::Node areaNode){
-    std::vector<std::unique_ptr<RoomEntity>> rooms = getAllRooms();
-    std::string name = areaNode["name"].as<std::string>();
-    auto area = std::make_unique<AreaEntity>(name, std::move(rooms));
-
-    return area;
 }
 
 std::vector<std::unique_ptr<NPCEntity>> YamlParser::getAllNPCS(){
@@ -272,13 +266,11 @@ std::vector<std::unique_ptr<RoomEntity>> YamlParser::getAllRooms(){
 
 std::unique_ptr<AreaEntity> YamlParser::getArea(){
     std::unique_ptr<AreaEntity> area;
+    std::vector<std::unique_ptr<RoomEntity>> rooms = getAllRooms();
     for (auto& document : data) {
-        std::for_each(document["AREA"].begin(), document["AREA"].end(),
-            [&](YAML::Node node){
-                area = parseArea(std::move(node));
-            });
+        std::string name = document["AREA"]["name"].as<std::string>();
+        area = std::make_unique<AreaEntity>(name, std::move(rooms));      
     }
-
     return area;
 }
 
