@@ -1,11 +1,11 @@
-#include "LutBuilder.h"
+#include "gamemanager/LutBuilder.h"
 
 namespace mudserver {
 namespace gamemanager {
-    std::map<UniqueId, RoomEntity&> LutBuilder::createLUT(std::vector<std::unique_ptr<RoomEntity>> rooms) {
-    	std::map<UniqueId, RoomEntity&> mMap{};
-    	for (const auto& room : rooms ) {
-    		mMap.insert(std::make_pair<room->getEntityId(),RoomEntity&>(std::rand(),*room));
+    std::map<roomId, RoomEntity*> LutBuilder::createLUT(std::vector<std::unique_ptr<RoomEntity>>& rooms) {
+    	std::map<roomId, RoomEntity*> mMap{};
+    	for (auto& room : rooms ) {
+    		mMap.insert(std::make_pair<roomId, RoomEntity*>(room->getId(),room.get()));
     	}
 
     	return mMap;

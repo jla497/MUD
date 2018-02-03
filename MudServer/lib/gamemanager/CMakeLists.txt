@@ -4,6 +4,7 @@ add_library(gamemanager
     Character.cpp
     Player.cpp
     Room.cpp
+    LutBuilder.cpp
 )
 
 target_link_libraries(gamemanager connectionmanager)

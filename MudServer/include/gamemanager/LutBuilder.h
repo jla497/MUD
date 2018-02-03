@@ -18,6 +18,7 @@ namespace gamemanager {
 // typedef boost::bimap<Character&, Room&> CharacterRoomLookup;
 using std::unique_ptr;
 using std::unordered_map;
+using roomId = unsigned int;
 
 /**
  * The overarching idea of GameState is that it should
@@ -28,7 +29,7 @@ using std::unordered_map;
 class LutBuilder {
 public:
 
-    std::map<UniqueId, RoomEntity&> createLUT(std::vector<std::unique_ptr<RoomEntity>> mVector); 
+    std::map<roomId, RoomEntity*> createLUT(std::vector<std::unique_ptr<RoomEntity>>& mVector); 
 
     
 };

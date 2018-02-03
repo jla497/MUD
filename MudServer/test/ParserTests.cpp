@@ -3,7 +3,7 @@
 #include "NPCEntity.h"
 #include "YamlParser.h"
 #include "Entity.h"
-
+#include "gamemanager/LutBuilder.h"
 
 std::string filename {};
 
@@ -47,6 +47,21 @@ TEST_F(ParserTests, TestGetAllObjects) {
 
 TEST_F(ParserTests, TestParseArea) {
   auto area = parser.getArea();
+}
+
+TEST_F(ParserTests, TestLutBuilder) {
+  auto area = parser.getArea();
+  std::vector<std::unique_ptr<RoomEntity>>& rooms = area->getAllRooms();
+  mudserver::gamemanager::LutBuilder lutBuilder{};
+  auto mMap = lutBuilder.createLUT(rooms);
+
+  auto room = mMap[2900];
+
+  EXPECT_EQ(2900, room->getId());
+  
+  auto descriptions = room->getDesc();
+
+  std::cout<<"desc: "<<descriptions[0]<<std::endl;
 }
 
 int main(int argc, char **argv) {
