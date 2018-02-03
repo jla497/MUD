@@ -25,7 +25,7 @@ namespace gamemanager {
 using GameLoopTick = std::chrono::milliseconds;
 constexpr GameLoopTick DEFAULT_TICK_LENGTH_MS = GameLoopTick(1000);
 
-using CommandParser = commandparser::CommandParser;
+using CommandParser = mudserver::commandparser::CommandParser;
 
 /* Type definitions used in GameManager */
 using connection::gameAndUserMsgs;

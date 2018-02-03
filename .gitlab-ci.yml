@@ -15,7 +15,7 @@ compile:
     paths:
     - build
 
-connection-manager-unit-test:
+mudserver-unit-test:
   stage: test
   script:
     - cd build/bin
