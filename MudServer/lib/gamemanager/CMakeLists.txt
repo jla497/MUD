@@ -7,8 +7,11 @@ add_library(gamemanager
     LutBuilder.cpp
 )
 
-target_link_libraries(gamemanager connectionmanager)
-target_link_libraries(gamemanager entity)
+target_link_libraries(gamemanager
+        connectionmanager
+        logging
+        entity
+        )
 
 set_target_properties(gamemanager
                       PROPERTIES
