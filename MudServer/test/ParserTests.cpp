@@ -47,6 +47,7 @@ TEST_F(ParserTests, TestGetAllObjects) {
 
 TEST_F(ParserTests, TestParseArea) {
   auto area = parser.getArea();
+  EXPECT_EQ("MotherGoose", area->getName());
 }
 
 TEST_F(ParserTests, TestLutBuilder) {

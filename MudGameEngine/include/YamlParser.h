@@ -21,6 +21,8 @@ private:
     std::vector<YAML::Node> data; //holds all data nodes
     bool is_loaded;
 
+    static std::string parseString(YAML::Node node);
+
     //calls constructors of each object and adds data to each respective object
     std::unique_ptr<NPCEntity> parseNPC(YAML::Node npcNode);
     std::unique_ptr<ObjectEntity> parseObject(YAML::Node objectNode);

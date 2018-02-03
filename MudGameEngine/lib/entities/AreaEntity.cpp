@@ -10,3 +10,6 @@ AreaEntity::AreaEntity(std::string& name,
  std::vector<std::unique_ptr<RoomEntity>>& AreaEntity::getAllRooms() {
  	return m_rooms;
  }
+std::string AreaEntity::getName() {
+	return m_name;
+}
