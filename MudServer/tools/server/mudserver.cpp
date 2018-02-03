@@ -5,9 +5,10 @@
 #include <sstream>
 #include <unistd.h>
 
-#include "ConnectionManager.h"
 #include "Server.h"
+#include "connectionmanager/ConnectionManager.h"
 #include "gamemanager/GameManager.h"
+#include "logging.h"
 
 using networking::Port;
 
@@ -18,8 +19,9 @@ int main(int argc, char* argv[]) {
     }
 
     Port port{(Port)std::stoi(argv[1])};
+    mudserver::logging::setLogLevel(mudserver::logging::LogLevel::debug);
 
-    connection::ConnectionManager connectionManager{port};
+    mudserver::connection::ConnectionManager connectionManager{port};
     mudserver::gamemanager::GameManager gameManager{connectionManager};
 
     std::cout << "---------------------MUD Server Console---------------------"

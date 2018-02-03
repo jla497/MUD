@@ -1,13 +1,14 @@
+add_library(logging
+        logging.cpp
+        ConsoleLogger.cpp
+)
 
-add_library(protocols MudProtocol.cpp)
-
-set_target_properties(protocols
+set_target_properties(logging
                       PROPERTIES
                       LINKER_LANGUAGE CXX
                       CXX_STANDARD 14
 )
 
-install(TARGETS protocols
+install(TARGETS logging
   ARCHIVE DESTINATION lib
 )
-
