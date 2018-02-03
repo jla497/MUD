@@ -37,15 +37,6 @@ public:
   YamlParser parser{};
 };
 
-
-// TEST_F(LutBuilderTests, TestParseArea) {
-//   auto area = parser.getArea();
-//   // std::vector<std::unique_ptr<RoomEntity>>& rooms = area->getRooms();
-
-//   //    mudserver::gamemanager::LutBuilder lutBuilder{};
-//   //    // auto mMap = lutBuilder.createLUT(rooms);
-//   //    lutBuilder.createLUT(rooms);
-// }  
 TEST_F(ParserTests, TestGetAllNPCS) {
   auto npcs = parser.getAllNPCS();
 }
