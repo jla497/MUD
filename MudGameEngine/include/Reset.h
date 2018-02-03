@@ -7,8 +7,8 @@
 
 class Reset {
 public:
-    Reset(int id, std::string action, std::string comment, int slot, int limit,
-          int roomID);
+    Reset(int id, std::string action, std::string comment, std::string state, 
+    	int slot, int limit,int roomID);
 
 private:
     // TODO: figure out Id, it seems that Id may refer to different things
@@ -18,6 +18,7 @@ private:
     // maybe change action from string to its own type
     std::string action;
     std::string comment;
+    std::string state;
     int slot;
     int limit;
     int roomID;
