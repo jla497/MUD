@@ -6,12 +6,13 @@
 namespace mudserver {
 namespace gamemanager {
 
-using RoomID = uintptr_t;
+using RoomID = int;
 
 class Room {
     RoomID id;
 
 public:
+    Room();
     Room(RoomID id);
     RoomID getID() const;
 };

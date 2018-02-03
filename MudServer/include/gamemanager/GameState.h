@@ -17,7 +17,7 @@ namespace gamemanager {
 
 using namespace boost::bimaps;
 typedef bimap<set_of<CharacterID>, list_of<RoomID>> CharacterRoomLookupTable;
-typedef std::map<RoomID, Room&> RoomLookupTable;
+typedef std::unordered_map<RoomID, Room> RoomLookupTable;
 
 using std::unique_ptr;
 using std::unordered_map;
@@ -40,10 +40,14 @@ public:
 
     Room& getCharacterLocation(const Character& character);
     vector<CharacterID> getCharactersInRoom(const Room& room);
-    Room& getRoom(const RoomID);
-    void addArea(const Area& area);
-    void updateCharacterLocation(Character& character, Room& room);
 
+    void addRoomToLUT(const Room&);
+    Room& getRoomFromLUT(const RoomID);
+
+    void addArea(const Area& area);
+    vector<Area> getAreas();
+
+    void addCharacterToLookUp(Character& character, Room& room);
     };
 
 }  // namespace gamemanager

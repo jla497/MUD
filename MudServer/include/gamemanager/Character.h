@@ -6,13 +6,13 @@
 namespace mudserver {
 namespace gamemanager {
 
-using CharacterID = uintptr_t;
+using CharacterID = int;
 
 class Character {
     CharacterID id;
 
 public:
-    Character();
+    Character(CharacterID id);
     CharacterID getID() const;
 
 };

@@ -3,6 +3,8 @@
 namespace mudserver {
 namespace gamemanager {
 
+Room::Room() {}
+
 Room::Room(RoomID id) :
     id{id} {}
 
