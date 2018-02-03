@@ -7,13 +7,6 @@ add_library(entity Entity.cpp
 		 ShopEntity.cpp)
 
 add_library(uniqueid UniqueId.cpp)
-add_library(entity Entity.cpp
- 				   	 DoorEntity.cpp
-					 RoomEntity.cpp
-					 NPCEntity.cpp
-					 ObjectEntity.cpp
-					 AreaEntity.cpp
-					 ShopEntity.cpp)
 
 add_library(reset Reset.cpp)
 
