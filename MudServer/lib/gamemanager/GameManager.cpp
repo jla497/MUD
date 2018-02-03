@@ -6,6 +6,7 @@
 
 #include "connectionmanager/ConnectionManager.h"
 #include "gamemanager/GameManager.h"
+#include "logging.h"
 
 namespace mudserver {
 namespace gamemanager {
@@ -22,8 +23,8 @@ GameManager::GameManager(connection::ConnectionManager &connMan)
  *      - render, i.e. send broadcast messages to players.
  */
 void GameManager::mainLoop() {
-    // TODO: Add a logging system
-    std::cout << "Entered main game loop" << std::endl;
+    static auto logger = logging::getLogger("GameManager::mainLoop");
+    logger->info("Entered main game loop");
 
     bool done = false;
     using clock = std::chrono::high_resolution_clock;
@@ -56,12 +57,11 @@ void GameManager::mainLoop() {
 }
 
 void GameManager::processMessages(gameAndUserMsgs& messages) {
+    static auto logger = logging::getLogger("GameManager::processMessages");
     for (auto& message : messages) {
-        // DEBUG - print the message text
-        std::cout << message->text;
-
         // look up player from ID
         auto playerId = message->conn.id;
+        logger->debug(std::to_string(playerId) + ": " + message->text);
 
         if (players.find(playerId) == players.end()) {
             // We should add a login service that can deal with
