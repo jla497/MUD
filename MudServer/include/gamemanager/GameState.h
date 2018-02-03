@@ -48,6 +48,11 @@ public:
     vector<Area> getAreas();
 
     void addCharacterToLookUp(Character& character, Room& room);
+
+    void clearAreas();
+    void clearRoomLUT();
+    void clearCharacterRoomLUT();
+
     };
 
 }  // namespace gamemanager

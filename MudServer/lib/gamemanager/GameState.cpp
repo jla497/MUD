@@ -11,7 +11,28 @@ GameState::GameState() {
 
 }
 
+/**
+ * Add Methods
+ */
+void GameState::addCharacterToLookUp(Character& character, Room& room) {
+    characterRoomLookUp.left[character.getID()] = room.getID();
+}
 
+void GameState::addRoomToLUT(const Room& room) {
+    roomLookUp[room.getID()] = room;
+}
+
+void GameState::addArea(const Area& area) {
+    areas.push_back(area);
+}
+
+
+/**
+ * Get Methods
+ */
+Room& GameState::getRoomFromLUT(const RoomID id) {
+    return roomLookUp.find(id)->second;
+}
 
 Room& GameState::getCharacterLocation(const Character& character) {
     RoomID id = characterRoomLookUp.left.find(character.getID())->second;
@@ -28,29 +49,26 @@ vector<CharacterID> GameState::getCharactersInRoom(const Room& room) {
     return characters;
 }
 
-void GameState::addRoomToLUT(const Room& room) {
-    roomLookUp[room.getID()] = room;
-}
-
-Room& GameState::getRoomFromLUT(const RoomID id) {
-    return roomLookUp.find(id)->second;
-}
-
-void GameState::addArea(const Area& area) {
-    areas.push_back(area);
-}
-
 vector<Area> GameState::getAreas() {
     return areas;
 }
 
-void GameState::addCharacterToLookUp(Character& character, Room& room) {
-    characterRoomLookUp.left[character.getID()] = room.getID();
+
+    /**
+ * Clear Methods
+ */
+void GameState::clearCharacterRoomLUT() {
+    characterRoomLookUp.clear();
 }
 
-//void GameState::updateCharacterLocation(Character& character, Room& room) {
-//    characterRoomLookUp.left[character.getID()] = room.getID();
-//}
+void GameState::clearRoomLUT() {
+    roomLookUp.clear();
+}
+
+void GameState::clearAreas() {
+    roomLookUp.clear();
+}
+
 
 }  // namespace gamemanager
 }  // namespace mudserver
