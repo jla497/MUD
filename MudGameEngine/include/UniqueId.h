@@ -10,6 +10,8 @@ class UniqueId {
 
    public:
     UniqueId() : id(nextUniqueId++) {}
+
+    bool operator==(const UniqueId& rhs);
 };
 
 #endif

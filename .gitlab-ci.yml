@@ -1,8 +1,13 @@
 image: dewert/gibanica:base
+
 stages:
   - build
   - test
   - cleanup
+
+before_script:
+  - apk update
+  - apk add yaml-cpp-dev
 
 compile:
   stage: build
@@ -18,8 +23,8 @@ compile:
 connection-manager-unit-test:
   stage: test
   script:
-    - cd build/bin
-    - ./mudtest
+    - cd build
+    - bin/mudtest MudGameEngine/lib/dataFiles/detailed_mgoose.yml
 
 cleanup-build-folder:
   stage: cleanup

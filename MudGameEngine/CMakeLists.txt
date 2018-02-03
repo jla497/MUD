@@ -14,3 +14,10 @@ link_directories(${LIBRARY_OUTPUT_PATH})
 add_subdirectory(lib)
 add_subdirectory(tools)
 
+
+# link yaml-cpp library
+
+
+add_library(yaml-cpp STATIC IMPORTED)
+
+add_dependencies(yaml-cpp project_yamlcpp)

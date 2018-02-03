@@ -6,6 +6,8 @@ add_library(entity Entity.cpp
 		 AreaEntity.cpp
 		 ShopEntity.cpp)
 
+add_library(uniqueid UniqueId.cpp)
+
 add_library(reset Reset.cpp)
 
 add_library(actions 
@@ -14,7 +16,7 @@ MoveAction.cpp
 AttackAction.cpp
 )
 
-set_target_properties( 
+set_target_properties( uniqueid
 	entity 
 	reset
 	actions
@@ -23,9 +25,12 @@ set_target_properties(
 		CXX_STANDARD 14
 )
 
+target_link_libraries(entity uniqueid)
+
 target_link_libraries(actions gamemanager)
 
 install(TARGETS 
+	uniqueid
 	entity 
 	reset
 	actions
