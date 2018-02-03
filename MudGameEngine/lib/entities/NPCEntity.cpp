@@ -10,8 +10,7 @@ NPCEntity::NPCEntity(int armor, std::string& damage,
                      std::vector<std::string>& longDesc, std::string& shortDesc,
                      int thac0)
 
-    : Entity::Entity(),
-      m_armor(armor),
+    : m_armor(armor),
       m_damage(damage),
       m_desc(desc),
       m_exp(exp),
