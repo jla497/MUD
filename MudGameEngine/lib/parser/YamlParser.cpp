@@ -153,14 +153,6 @@ std::vector<std::unique_ptr<DoorEntity>> YamlParser::getAllDoors(YAML::Node room
         [&](YAML::Node node){
             doors.push_back(std::move(parseDoor(node)));
         });
-/*
-    for (auto& doorNode : roomNode) {
-        std::for_each(doorNode["doors"].begin(), document["doors"].end(), 
-            [&doors](YAML::Node node){
-                doors.push_back(parseDoor(node));
-            });
-    }
-    */
 
     return doors;
 }
