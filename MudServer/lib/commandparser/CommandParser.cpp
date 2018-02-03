@@ -7,9 +7,9 @@
 #include "actions/NullAction.h"
 #include "actions/MoveAction.h"
 #include "actions/SayAction.h"
-
 #include "commandparser/CommandParser.h"
 #include "resources/commands.h"
+#include "logging.h"
 
 namespace mudserver {
 namespace commandparser {
@@ -28,27 +28,21 @@ std::unordered_map<std::string, ActKeyword> CommandParser::actionLookup = {
 std::unique_ptr<Action> CommandParser::actionFromPlayerCommand(
     gamemanager::Character* character, StrView command,
     gamemanager::GameManager& gameManager) {
+
+    auto logger = logging::getLogger("CommandParser::actionFromPlayerCommand");
+
     Tokenizer tokens{command};
-
     auto tokenIterator = tokens.begin();
-
     auto actionTypeIter = actionLookup.find(to_lower_copy(*tokenIterator));
 
-    std::vector<std::string> remainderOfTokens{};
     std::stringstream tokenRep;
-    for (++tokenIterator; tokenIterator != tokens.end(); ++tokenIterator) {
-        // choosing not to lowercase remainder of tokens as some commands may
-        // wish to retain user formatting
-        remainderOfTokens.push_back(*tokenIterator);
-        tokenRep << *tokenIterator << ", ";
-    }
+    std::vector<std::string> remainderOfTokens(++tokenIterator, tokens.end());
+    std::copy(remainderOfTokens.begin(), remainderOfTokens.end(),
+              std::ostream_iterator<std::string>(tokenRep, ", "));
 
-    ActKeyword actionType;
-    if (actionTypeIter == actionLookup.end()) {
-        actionType = ActKeyword::undefined;
-    } else {
-        actionType = actionTypeIter->second;
-    }
+    ActKeyword actionType = (actionTypeIter == actionLookup.end())
+                                ? ActKeyword::undefined
+                                : actionTypeIter->second;
 
     std::stringstream actionDescription;
     std::unique_ptr<Action> action;
@@ -81,6 +75,8 @@ std::unique_ptr<Action> CommandParser::actionFromPlayerCommand(
     }
 
     actionDescription << ", with remainder tokens [" << tokenRep.str() << "]";
+    logger->debug(actionDescription.str());
+
     return action;
 }
 
