@@ -9,32 +9,31 @@ add_library(entity Entity.cpp
 					 ShopEntity.cpp)
 
 add_library(reset Reset.cpp)
-add_library(sayaction SayAction.cpp)
-add_library(moveaction MoveAction.cpp)
-add_library(attackaction AttackAction.cpp)
+
+add_library(actions 
+SayAction.cpp
+MoveAction.cpp
+AttackAction.cpp
+)
+
 set_target_properties( uniqueid
 	entity 
 	reset
-	sayaction
-	moveaction
-	attackaction
+	actions
 		PROPERTIES
 		LINKER_LANGUAGE CXX
 		CXX_STANDARD 14
 )
 
 target_link_libraries(entity uniqueid)
-target_link_libraries(sayaction gamemanager)
-target_link_libraries(moveaction gamemanager)
-target_link_libraries(attackaction gamemanager)
+
+target_link_libraries(actions gamemanager)
 
 install(TARGETS 
 	uniqueid
 	entity 
 	reset
-	sayaction
-	moveaction
-	attackaction
+	actions
 		ARCHIVE DESTINATION lib
 )
 
