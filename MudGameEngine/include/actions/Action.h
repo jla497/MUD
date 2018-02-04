@@ -1,10 +1,11 @@
 #ifndef ACTION_H
 #define ACTION_H
 
-class Action;
+namespace mudserver {
+namespace gamemanager { class GameManager; }
+}
 
 #include "entities/Entity.h"
-#include "gamemanager/GameManager.h"
 
 // The Action class defines the interface that all actions conform to.
 class Action {
