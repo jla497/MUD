@@ -27,7 +27,7 @@ std::unordered_map<std::string, ActKeyword> CommandParser::actionLookup = {
     {MOVE, ActKeyword::move}};
 
 std::unique_ptr<Action> CommandParser::actionFromPlayerCommand(
-    gamemanager::Character* character, StrView command,
+     CharacterEntity* character, StrView command,
     gamemanager::GameManager& gameManager) {
 
     auto logger = logging::getLogger("CommandParser::actionFromPlayerCommand");

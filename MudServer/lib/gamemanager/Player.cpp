@@ -9,7 +9,7 @@ Player::Player(PlayerID id, std::string username, std::string password) :
     password{password},
     character{nullptr} {}
 
-Character* Player::getCharacter() { return character; }
+ CharacterEntity* Player::getCharacter() { return character; }
 
 }  // namespace gamemanager
 }  // namespace mudserver
