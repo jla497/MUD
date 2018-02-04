@@ -91,6 +91,6 @@ bool Character::hasGold() {
 
 void Character::incExp(unsigned int expPoints) {
    m_exp += expPoints;
-   Character::calculateLevel();
+   // calculateLevel();
 }
 

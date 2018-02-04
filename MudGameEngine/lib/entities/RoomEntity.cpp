@@ -19,6 +19,18 @@ unsigned int RoomEntity::getId() {
   return m_roomId;
 }
 
+std::vector<std::string> RoomEntity::getDesc() const {
+  return m_desc;
+}
+
+std::vector<std::string> RoomEntity::getExtendedDesc() const {
+  return m_extDesc.desc;
+}
+
+std::vector<std::string> RoomEntity::getExtendedKeywords() const {
+  return m_extDesc.keywords;
+}
+
 // TODO, should be able to make this method const...
 unsigned int RoomEntity::getDestRoomIdOf(std::string& dir) { 
   std::vector<std::unique_ptr<DoorEntity>>::iterator door = 

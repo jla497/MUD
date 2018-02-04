@@ -28,9 +28,13 @@ class RoomEntity : public Entity {
                std::vector<std::string>& keywordsExt, std::string& name,
                unsigned int roomId);
 
+    unsigned int getId();
+
     std::vector<std::string> getDesc() const;
 
-    unsigned int getId();
+    std::vector<std::string> getExtendedDesc() const;
+
+    std::vector<std::string> getExtendedKeywords() const;
 
     // Returns destinationID to room given dir command while in a room
     // Returns 0 if dir does not exist for room
