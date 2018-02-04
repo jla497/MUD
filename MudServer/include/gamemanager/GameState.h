@@ -54,7 +54,6 @@ public:
     RoomEntity* getCharacterLocation(const Character& character);
     RoomEntity* getRoomFromLUT(const RoomID);
     void clearAreas();
-    void clearRoomLUT();
     void clearCharacterRoomLUT();
 
     };
