@@ -24,7 +24,7 @@ mudserver-unit-test:
   stage: test
   script:
     - cd build
-    - bin/mudtest MudGameEngine/lib/dataFiles/detailed_mgoose.yml
+    - bin/mudtest
 
 cleanup-build-folder:
   stage: cleanup

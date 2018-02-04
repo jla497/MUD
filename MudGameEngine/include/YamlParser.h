@@ -10,7 +10,7 @@
 #include "entities/ShopEntity.h"
 #include "entities/AreaEntity.h"
 #include "entities/DoorEntity.h"
-#include "entities/NPCEntity.h"
+#include "entities/NonPlayerCharacter.h"
 #include "entities/ObjectEntity.h"
 #include "entities/RoomEntity.h"
 #include "resources/DataFields.h"
@@ -25,7 +25,7 @@ private:
     static std::string parseString(YAML::Node node);
 
     //calls constructors of each object and adds data to each respective object
-    std::unique_ptr<NPCEntity> parseNPC(YAML::Node npcNode);
+    std::unique_ptr<NonPlayerCharacter> parseNPC(YAML::Node npcNode);
     std::unique_ptr<ObjectEntity> parseObject(YAML::Node objectNode);
     void parseReset(YAML::Node resetNode); // needs reset constructor
     void parseHelp(YAML::Node helpNode); //need help constructor
@@ -45,7 +45,7 @@ public:
     bool loadYamlFile(const std::string path);
 
     //Returns vectors of respective entities 
-    std::vector<std::unique_ptr<NPCEntity>> getAllNPCS();
+    std::vector<std::unique_ptr<NonPlayerCharacter>> getAllNPCS();
     std::vector<std::unique_ptr<ObjectEntity>> getAllObjects();
     void getAllResets();
     void getAllHelps();

@@ -3,6 +3,8 @@
 namespace mudserver {
 namespace gamemanager {
 
+Character::Character() {}
+
 Character::Character(CharacterID id) :
     id{id} {}
 

@@ -12,6 +12,7 @@ class Character {
     CharacterID id;
 
 public:
+    Character();
     Character(CharacterID id);
     CharacterID getID() const;
 

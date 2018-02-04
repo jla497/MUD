@@ -1,9 +1,9 @@
 #ifndef PLAYER_CHARACTER_H
 #define PLAYER_CHARACTER_H
 
-#include "Character.h"
+#include "CharacterEntity.h"
 
-class PlayerCharacter : public Character {
+class PlayerCharacter : public CharacterEntity {
  
 };
 

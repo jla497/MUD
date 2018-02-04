@@ -1,14 +1,14 @@
 #ifndef NPC_H
 #define NPC_H
 
-#include "Character.h"
+#include "CharacterEntity.h"
 #include "Roll.h"
 
 // TODO: add character entity that derives from entity and then npc and player
 // characters
 // Reset is not entity
 
-class NonPlayerCharacter : public Character {
+class NonPlayerCharacter : public CharacterEntity {
    private:
     int m_armor;
     std::string m_damage;  // TODO: string for now

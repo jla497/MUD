@@ -1,11 +1,11 @@
 #include <string>
 #include <vector>
 
-#include "entities/Character.h"
+#include "entities/CharacterEntity.h"
 
 //TODO: push up common state from NPC and PlayerCharacter classes
 
-Character::Character(){
+CharacterEntity::CharacterEntity(){
 	combatState = CombatStates::NOT_FIGHTING;
 
 
