@@ -8,9 +8,12 @@ add_library(entity Entity.cpp
 		 AreaEntity.cpp
 		 ShopEntity.cpp)
 
+add_library(uniqueid UniqueId.cpp)
+
 add_library(reset Reset.cpp)
 
 set_target_properties(
+	uniqueid
 	entity
 	reset
 		PROPERTIES
@@ -18,8 +21,11 @@ set_target_properties(
 		CXX_STANDARD 14
 )
 
+target_link_libraries(entity uniqueid)
+
 install(TARGETS 
-	entity
+	uniqueid
+	entity 
 	reset
 		ARCHIVE DESTINATION lib
 )

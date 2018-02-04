@@ -4,6 +4,7 @@ add_library(gamemanager
     Character.cpp
     Player.cpp
     Room.cpp
+    LutBuilder.cpp
 )
 
 target_link_libraries(gamemanager
@@ -12,7 +13,6 @@ target_link_libraries(gamemanager
     entity
     commandparser
 )
-
 
 set_target_properties(gamemanager
                       PROPERTIES

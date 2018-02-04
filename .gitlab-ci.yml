@@ -1,8 +1,13 @@
 image: dewert/gibanica:base
+
 stages:
   - build
   - test
   - cleanup
+
+before_script:
+  - apk update
+  - apk add yaml-cpp-dev
 
 compile:
   stage: build
@@ -18,8 +23,8 @@ compile:
 mudserver-unit-test:
   stage: test
   script:
-    - cd build/bin
-    - ./mudtest
+    - cd build
+    - bin/mudtest
 
 cleanup-build-folder:
   stage: cleanup

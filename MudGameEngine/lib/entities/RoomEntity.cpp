@@ -1,7 +1,7 @@
 #include "entities/RoomEntity.h"
 
 RoomEntity::RoomEntity(std::vector<std::string>& desc,
-                       std::vector<DoorEntity> doors,
+                       std::vector<std::unique_ptr<DoorEntity>> doors,
                        std::vector<std::string>& descExt,
                        std::vector<std::string>& keywordsExt, std::string& name,
                        unsigned int roomId)
@@ -11,6 +11,10 @@ RoomEntity::RoomEntity(std::vector<std::string>& desc,
       m_name(name),
       m_roomId(roomId) {
       m_extDesc = {descExt, keywordsExt};
+}
+
+unsigned int RoomEntity::getId() {
+  return m_roomId;
 }
 
 std::vector<std::string> RoomEntity::getDesc() { return m_desc; }
