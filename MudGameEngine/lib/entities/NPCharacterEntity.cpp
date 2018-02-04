@@ -11,5 +11,6 @@ NPCharacterEntity::NPCharacterEntity(int armor, std::string& damage,
                      int thac0)
 
     : CharacterEntity::CharacterEntity(armor, damage, desc, exp, gold,
-         hit, npcTypeId, keywords, level, longDesc,
-         shortDesc, thac0) {}
+         hit, keywords, level, longDesc,
+         shortDesc, thac0),
+      m_npcTypeId(npcTypeId) {}

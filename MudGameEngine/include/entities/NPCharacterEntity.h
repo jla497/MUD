@@ -5,6 +5,7 @@
 
 class NPCharacterEntity : public CharacterEntity {
    private:
+   	unsigned int m_npcTypeId;
 
    public:
     NPCharacterEntity(int armor, std::string& damage,
