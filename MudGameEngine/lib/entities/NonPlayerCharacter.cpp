@@ -1,7 +1,11 @@
 #include <string>
 #include <vector>
 
+<<<<<<< HEAD:MudGameEngine/lib/entities/NonPlayerCharacter.cpp
 #include "NonPlayerCharacter.h"
+=======
+#include "entities/NPCEntity.h"
+>>>>>>> master:MudGameEngine/lib/entities/NPCEntity.cpp
 
 NonPlayerCharacter::NonPlayerCharacter(int armor, std::string& damage,
                      std::vector<std::string>& desc, unsigned int exp, int gold,

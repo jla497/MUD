@@ -7,8 +7,10 @@
 #include <unordered_map>
 #include <queue>
 
+#include "commandparser/CommandParser.h"
 #include "connectionmanager/ConnectionManager.h"
-#include "Entity.h"
+#include "entities/Entity.h"
+#include "actions/Action.h"
 #include "GameState.h"
 #include "Player.h"
 
@@ -16,7 +18,9 @@ namespace mudserver {
 namespace gamemanager {
 
 using GameLoopTick = std::chrono::milliseconds;
-constexpr GameLoopTick kDefaultGameLoopTick = GameLoopTick(1000);
+constexpr GameLoopTick DEFAULT_TICK_LENGTH_MS = GameLoopTick(1000);
+
+using mudserver::commandparser::CommandParser;
 
 /* Type definitions used in GameManager */
 using connection::gameAndUserMsgs;
@@ -24,24 +28,30 @@ using std::unique_ptr;
 using std::vector;
 
 class GameManager {
-    connection::ConnectionManager& connectionManager;
     GameState gameState;
-    std::unordered_map<PlayerID, Player> players;
     GameLoopTick tick;
+    bool done;
+    CommandParser commandParser;
+    connection::ConnectionManager& connectionManager;
 
+    std::unordered_map<PlayerID, Player> players;
     std::queue<connection::gameAndUserInterface> outgoingMessages;
+    std::queue<std::unique_ptr<Action>> actions;
 
     void processMessages(gameAndUserMsgs& messages);
     void enqueueMessage(networking::Connection conn, std::string msg);
     void sendMessagesToPlayers();
+
+    void enqueueAction(unique_ptr<Action> action);
 public:
-    explicit GameManager(connection::ConnectionManager& connMan);
+    GameManager(connection::ConnectionManager& connMan);
     GameManager(const GameManager& gm) = delete;
 
     void mainLoop();
+    void performQueuedActions();
 };
 
-}  // namespace gamemanager
 }  // namespace mudserver
+}  // namespace gamemanager
 
 #endif

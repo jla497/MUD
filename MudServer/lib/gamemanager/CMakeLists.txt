@@ -7,10 +7,12 @@ add_library(gamemanager
 )
 
 target_link_libraries(gamemanager
-        connectionmanager
-        logging
-        entity
-        )
+    connectionmanager
+    logging
+    entity
+    commandparser
+)
+
 
 set_target_properties(gamemanager
                       PROPERTIES
