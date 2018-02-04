@@ -9,17 +9,17 @@
 #include <unordered_map>
 
 #include "entities/AreaEntity.h"
-#include "Player.h"
+#include "entities/PlayerCharacter.h"
 //#include "Room.h"
 #include "gamemanager/LutBuilder.h"
 #include "YamlParser.h"
+#include "UniqueId.h"
 
 namespace mudserver {
 namespace gamemanager {
 
 using namespace boost::bimaps;
-typedef unsigned int RoomID;
-typedef bimap<set_of<CharacterID>, list_of<RoomID>> CharacterRoomLookupTable;
+typedef bimap<set_of<UniqueId>, list_of<roomId>> CharacterRoomLookupTable;
 //typedef std::unordered_map<RoomID, Room> RoomLookupTable;
 typedef std::map<roomId, RoomEntity*> RoomLookupTable;
 using std::unique_ptr;
@@ -47,13 +47,13 @@ public:
     void initRoomLUT();
 
     void addAreaFromParser();
-    void addCharacterToLookUp(Character& character, RoomEntity* room);
+    void addCharacterToLookUp(PlayerCharacter* character, RoomEntity* room);
     void addRoomToLUT(RoomEntity*);
     AreaEntity* getAreaFromParser();
     vector<AreaEntity*> getAreasVector();
-    vector<CharacterID> getCharactersInRoom(RoomEntity* room);
-    RoomEntity* getCharacterLocation(const Character& character);
-    RoomEntity* getRoomFromLUT(const RoomID);
+    vector<UniqueId> getCharactersInRoom(RoomEntity* room);
+    RoomEntity* getCharacterLocation(PlayerCharacter* character);
+    RoomEntity* getRoomFromLUT(const roomId);
     void clearAreas();
     void clearCharacterRoomLUT();
 

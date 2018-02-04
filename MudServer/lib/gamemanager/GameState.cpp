@@ -26,8 +26,8 @@ void GameState::initRoomLUT() {
 /**
  * Add Methods
  */
-void GameState::addCharacterToLookUp(Character& character, RoomEntity* room) {
-    characterRoomLookUp.left[character.getID()] = room->getId();
+void GameState::addCharacterToLookUp(PlayerCharacter* character, RoomEntity* room) {
+    characterRoomLookUp.left[character->getEntityId()] = room->getId();
 }
 
 void GameState::addRoomToLUT(RoomEntity* room) {
@@ -42,17 +42,17 @@ void GameState::addAreaFromParser() {
 /**
  * Get Methods
  */
-RoomEntity* GameState::getRoomFromLUT(const RoomID id) {
+RoomEntity* GameState::getRoomFromLUT(const roomId id) {
     return roomLookUp.find(id)->second;
 }
 
-RoomEntity* GameState::getCharacterLocation(const Character& character) {
-    auto id = characterRoomLookUp.left.find(character.getID())->second;
+RoomEntity* GameState::getCharacterLocation(PlayerCharacter* character) {
+    auto id = characterRoomLookUp.left.find(character->getEntityId())->second;
     return roomLookUp.find(id)->second;
 }
 
-vector<CharacterID> GameState::getCharactersInRoom(RoomEntity* room) {
-    vector<CharacterID> characters;
+vector<UniqueId> GameState::getCharactersInRoom(RoomEntity* room) {
+    vector<UniqueId> characters;
     BOOST_FOREACH(CharacterRoomLookupTable::left_const_reference p, characterRoomLookUp.left ) {
         if (p.second == room->getId()) {
             characters.push_back(p.first);

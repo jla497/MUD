@@ -17,24 +17,64 @@ protected:
         state.clearAreas();
     }
 
-    RoomID roomId = 101;
-    Character character1{1};
-    Character character2{2};
+    unsigned int roomId = 101;
+//    PlayerCharacter character1{1};
+//    Character character2{2};
     GameState state;
 };
 
 TEST_F(GameStateTest, AddCharacterWithLocation) {
+    int armor = 1;
+    std::string damage = "1";
+    std::vector<std::string> desc {};
+    desc.push_back("desc1");
+    unsigned int exp = 1;
+    int gold = 1;
+    std::string hit = "1";
+    std::vector<std::string> keywords {};
+    keywords.push_back("keyword1");
+    unsigned int level = 1;
+    std::vector<std::string> longDesc {};
+    longDesc.push_back("desc1");
+    std::string shortDesc = "test";
+    int thac0 = 1;
+    auto character1 = std::make_unique<PlayerCharacter>(
+            armor, damage, desc, exp, gold, hit,
+            keywords, level,longDesc, shortDesc, thac0
+    );
     RoomEntity* room = state.getRoomFromLUT(roomId);
-    state.addCharacterToLookUp(character1, room);
-    RoomEntity* returnedRoom = state.getCharacterLocation(character1);
+    state.addCharacterToLookUp(character1.get(), room);
+    RoomEntity* returnedRoom = state.getCharacterLocation(character1.get());
     EXPECT_EQ(returnedRoom->getId(), room->getId());
 }
 
 TEST_F(GameStateTest, GetAllCharactersInRoom) {
+    int armor = 1;
+    std::string damage = "1";
+    std::vector<std::string> desc {};
+    desc.push_back("desc1");
+    unsigned int exp = 1;
+    int gold = 1;
+    std::string hit = "1";
+    std::vector<std::string> keywords {};
+    keywords.push_back("keyword1");
+    unsigned int level = 1;
+    std::vector<std::string> longDesc {};
+    longDesc.push_back("desc1");
+    std::string shortDesc = "test";
+    int thac0 = 1;
+    auto character1 = std::make_unique<PlayerCharacter>(
+            armor, damage, desc, exp, gold, hit,
+            keywords, level,longDesc, shortDesc, thac0
+    );
+    auto character2 = std::make_unique<PlayerCharacter>(
+            armor, damage, desc, exp, gold, hit,
+            keywords, level,longDesc, shortDesc, thac0
+    );
     RoomEntity* room = state.getRoomFromLUT(roomId);
-    state.addCharacterToLookUp(character1, room);
-    state.addCharacterToLookUp(character2, room);
-    vector<CharacterID> charIDs = state.getCharactersInRoom(room);
+    state.addCharacterToLookUp(character1.get(), room);
+    state.addCharacterToLookUp(character2.get(), room);
+    vector<UniqueId> charIDs = state.getCharactersInRoom(room);
     EXPECT_EQ(charIDs.size(), 2);
 }
 
@@ -52,7 +92,7 @@ TEST_F(GameStateTest, AddNewRoom) {
     std::vector<std::string> keywordsExt {};
     keywordsExt.push_back("keyword1");
     std::string name("room1");
-    RoomID newRoomId = 1;
+    auto newRoomId = 1;
     auto room = std::make_unique<RoomEntity>(desc, std::move(doors), descExt, keywordsExt, name, newRoomId);
     state.addRoomToLUT(room.get());
     RoomEntity* addedRoom = state.getRoomFromLUT(newRoomId);
