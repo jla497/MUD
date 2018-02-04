@@ -26,9 +26,8 @@ add_test(GameManagerTests mudtest)
 add_test(GameStateTests mudtest)
 #add_test(ParserTests mudtest)
 #add_test(LutBuilderTests mudtest)
-add_test(ConnectionManagerTests mudtest)
-add_test(GameManagerTests mudtest)
 add_test(CommandParserTests mudtest)
 
 include_directories(include)
+
 
