@@ -1,5 +1,5 @@
-#ifndef NPCHARACTER_H
-#define NPCHARACTER_H
+#ifndef NPC_H
+#define NPC_H
 
 #include "entities/Character.h"
 
