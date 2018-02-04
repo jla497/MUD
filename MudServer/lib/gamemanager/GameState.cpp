@@ -73,10 +73,6 @@ void GameState::clearCharacterRoomLUT() {
     characterRoomLookUp.clear();
 }
 
-//void GameState::clearRoomLUT() {
-//    roomLookUp.clear();
-//}
-
 void GameState::clearAreas() {
     roomLookUp.clear();
 }

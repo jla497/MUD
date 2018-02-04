@@ -17,7 +17,7 @@ protected:
         state.clearAreas();
     }
     std::vector<std::unique_ptr<RoomEntity>> rooms;
-    unsigned int roomId = 101;
+    RoomID roomId = 101;
     Character character1{1};
     Character character2{2};
     GameState state;
@@ -45,6 +45,21 @@ TEST_F(GameStateTest, AddAreaToAreasVector) {
     EXPECT_EQ(areas.size(), 1);
 }
 
+TEST_F(GameStateTest, AddNewRoom) {
+    std::vector<std::string> desc {};
+    desc.push_back("desc1");
+    std::vector<std::string> descExt {};
+    descExt.push_back("extended desc1");
+    std::vector<std::unique_ptr<DoorEntity>> doors {};
+    std::vector<std::string> keywordsExt {};
+    keywordsExt.push_back("keyword1");
+    std::string name("room1");
+    RoomID newRoomId = 1;
+    auto room = std::make_unique<RoomEntity>(desc, std::move(doors), descExt, keywordsExt, name, newRoomId);
+    state.addRoomToLUT(room.get());
+    RoomEntity* addedRoom = state.getRoomFromLUT(newRoomId);
+    EXPECT_EQ(room->getId(), addedRoom->getId());
+}
 
 }  // namespace gamemanager
 }  // namespace mudserver

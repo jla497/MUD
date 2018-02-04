@@ -5,8 +5,9 @@ add_executable(mudtest
         ConnectionManagerTests.cpp
         GameManagerTests.cpp
         GameStateTests.cpp
-#        LutBuilderTests.cpp
 #        ParserTests.cpp
+#        LutBuilderTests.cpp
+
         )
 
 set_target_properties(mudtest
@@ -23,6 +24,5 @@ target_link_libraries(mudtest parser)
 add_test(ConnectionManagerTests mudtest)
 add_test(GameManagerTests mudtest)
 add_test(GameStateTests mudtest)
-#add_test(LutBuilderTests mudtest)
 #add_test(ParserTests mudtest)
-
+#add_test(LutBuilderTests mudtest)
