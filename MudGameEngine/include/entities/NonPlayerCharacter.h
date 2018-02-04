@@ -1,9 +1,14 @@
 #ifndef NPC_H
 #define NPC_H
 
-#include "entities/Character.h"
+#include "CharacterEntity.h"
+#include "Roll.h"
 
-class NonPlayerCharacter : public Character {
+// TODO: add character entity that derives from entity and then npc and player
+// characters
+// Reset is not entity
+
+class NonPlayerCharacter : public CharacterEntity {
    private:
    	unsigned int m_npcTypeId;
 

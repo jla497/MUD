@@ -10,7 +10,7 @@ NonPlayerCharacter::NonPlayerCharacter(int armor, std::string& damage,
                      std::vector<std::string>& longDesc, std::string& shortDesc,
                      int thac0)
 
-    : Character::Character(armor, damage, desc, exp, gold,
+    : CharacterEntity::CharacterEntity(armor, damage, desc, exp, gold,
          hit, keywords, level, longDesc,
          shortDesc, thac0),
       m_npcTypeId(npcTypeId) {}

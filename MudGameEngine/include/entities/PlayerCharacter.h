@@ -1,9 +1,10 @@
 #ifndef PLAYER_CHARACTER_H
 #define PLAYER_CHARACTER_H
 
-#include "entities/Character.h"
+#include "CharacterEntity.h"
 
-class PlayerCharacter : public Character {
+class PlayerCharacter : public CharacterEntity {
+
    private:
    	// Possibly race here later
    public:
