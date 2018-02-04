@@ -3,7 +3,7 @@
 #include "entities/RoomEntity.h"
 
 RoomEntity::RoomEntity(std::vector<std::string>& desc,
-                       std::vector<DoorEntity> doors,
+                       std::vector<std::unique_ptr<DoorEntity>> doors,
                        std::vector<std::string>& descExt,
                        std::vector<std::string>& keywordsExt, std::string& name,
                        unsigned int roomId)
@@ -15,24 +15,26 @@ RoomEntity::RoomEntity(std::vector<std::string>& desc,
       m_extDesc = {descExt, keywordsExt};
 }
 
-std::vector<std::string> RoomEntity::getDesc() const { 
-  return m_desc; 
+unsigned int RoomEntity::getId() {
+  return m_roomId;
 }
 
 // TODO, should be able to make this method const...
 unsigned int RoomEntity::getDestRoomIdOf(std::string& dir) { 
-  std::vector<DoorEntity>::iterator door = std::find_if(std::begin(m_doors), std::end(m_doors), 
-    [&] (DoorEntity const& d) { 
-      return d.getDir() == dir; 
+  std::vector<std::unique_ptr<DoorEntity>>::iterator door = 
+  // auto& door =
+     std::find_if(std::begin(m_doors), std::end(m_doors), 
+    [&] (std::unique_ptr<DoorEntity> & d) { 
+      return d->getDir() == dir; 
     });  
-  return door->getDestRoomId();
+  return (*door)->getDestRoomId();
 }
 
 std::vector<std::string> RoomEntity::getDirs() const {    
     std::vector<std::string> dirList;
-    for (const auto& door : m_doors)
+    for (auto& door : m_doors)
     {  
-        dirList.push_back(door.getDir());
+        dirList.push_back(door->getDir());
     }
     return dirList;
 }

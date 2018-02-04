@@ -2,20 +2,21 @@
 #define AREA_ENTITY_H
 
 #include "Entity.h"
+#include "RoomEntity.h"
 
 class AreaEntity : public Entity {
    private:
     // add unique id
     std::string m_name;
-    std::vector<unsigned int> m_rooms;
+    std::vector<std::unique_ptr<RoomEntity>> m_rooms;
 
    public:
     AreaEntity(std::string& name,
-               std::vector<unsigned int> rooms);
+        std::vector<std::unique_ptr<RoomEntity>> rooms);
 
-    std::string getName() const;
+    std::vector<std::unique_ptr<RoomEntity>>& getAllRooms();
 
-    std::vector<unsigned int> getRooms() const;
+    std::string getName();
 };
 
 #endif

@@ -3,12 +3,12 @@
 
 #include "entities/Character.h"
 
-class NPC : public Character {
+class NonPlayerCharacter : public Character {
    private:
    	unsigned int m_npcTypeId;
 
    public:
-    NPC(int armor, std::string& damage,
+    NonPlayerCharacter(int armor, std::string& damage,
               std::vector<std::string>& desc, unsigned int exp, int gold,
               std::string& hit, unsigned int npcTypeId,
               std::vector<std::string>& keywords, unsigned int level,

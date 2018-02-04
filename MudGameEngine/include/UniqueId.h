@@ -11,7 +11,7 @@ class UniqueId {
    public:
     UniqueId() : id(nextUniqueId++) {}
 
-    unsigned int getUniqueId();
+    bool operator==(const UniqueId& rhs);
 };
 
 #endif

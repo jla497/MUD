@@ -1,9 +1,9 @@
 #include <string>
 #include <vector>
 
-#include "entities/NPC.h"
+#include "entities/NonPlayerCharacter.h"
 
-NPC::NPC(int armor, std::string& damage,
+NonPlayerCharacter::NonPlayerCharacter(int armor, std::string& damage,
                      std::vector<std::string>& desc, unsigned int exp, int gold,
                      std::string& hit, unsigned int npcTypeId,
                      std::vector<std::string>& keywords, unsigned int level,
@@ -15,6 +15,6 @@ NPC::NPC(int armor, std::string& damage,
          shortDesc, thac0),
       m_npcTypeId(npcTypeId) {}
 
-unsigned int NPC::getNpcTypeId() const {
+unsigned int NonPlayerCharacter::getNpcTypeId() const {
 	return m_npcTypeId;
 }
