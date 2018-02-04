@@ -1,6 +1,6 @@
 #include <string>
 #include <vector>
 
-#include "Character.h"
+#include "entities/Character.h"
 
 //TODO: push up common state from NPC and PlayerCharacter classes
