@@ -4,6 +4,10 @@ stages:
   - test
   - cleanup
 
+before_script:
+  - apk update
+  - apk add yaml-cpp-dev
+
 compile:
   stage: build
   script:

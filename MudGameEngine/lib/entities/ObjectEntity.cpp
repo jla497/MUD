@@ -1,7 +1,7 @@
 #include <string>
 #include <vector>
 
-#include "ObjectEntity.h"
+#include "entities/ObjectEntity.h"
 
 ObjectEntity::ObjectEntity(std::vector<std::string>& attributes,
                            unsigned int cost,

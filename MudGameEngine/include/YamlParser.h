@@ -7,12 +7,13 @@
 #include <algorithm>
 #include <fstream>
 #include <yaml-cpp/yaml.h>
-#include "NPCEntity.h"
-#include "ObjectEntity.h"
-#include "RoomEntity.h"
-#include "ShopEntity.h"
-#include "AreaEntity.h"
-#include "DoorEntity.h"
+#include "entities/ShopEntity.h"
+#include "entities/AreaEntity.h"
+#include "entities/DoorEntity.h"
+#include "entities/NPCEntity.h"
+#include "entities/ObjectEntity.h"
+#include "entities/RoomEntity.h"
+#include "resources/DataFields.h"
 
 
 class YamlParser {

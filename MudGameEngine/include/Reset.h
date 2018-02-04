@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 
-#include "Entity.h"
+#include "entities/Entity.h"
 
 class Reset {
 public:

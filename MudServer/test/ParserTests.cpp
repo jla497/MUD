@@ -1,8 +1,8 @@
 #include <gtest/gtest.h>
-#include "RoomEntity.h"
-#include "NPCEntity.h"
+#include "entities/RoomEntity.h"
+#include "entities/NPCEntity.h"
 #include "YamlParser.h"
-#include "Entity.h"
+#include "entities/Entity.h"
 
 
 std::string filename {};
@@ -47,7 +47,7 @@ TEST_F(ParserTests, TestGetAllObjects) {
 
 TEST_F(ParserTests, TestParseArea) {
   auto area = parser.getArea();
-  EXPECT_EQ("MotherGoose", area->getName());
+  EXPECT_EQ("Smurf Village", area->getName());
 }
 
 int main(int argc, char **argv) {

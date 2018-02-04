@@ -3,9 +3,7 @@
 
 namespace mudserver {
 namespace gamemanager {
-/**
- * @todo write docs
- */
+
 class Character {};
 
 }  // namespace gamemanager

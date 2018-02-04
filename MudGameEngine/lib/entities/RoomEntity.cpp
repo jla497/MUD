@@ -1,4 +1,4 @@
-#include "RoomEntity.h"
+#include "entities/RoomEntity.h"
 
 RoomEntity::RoomEntity(std::vector<std::string>& desc,
                        std::vector<std::unique_ptr<DoorEntity>> doors,
