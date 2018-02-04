@@ -23,3 +23,45 @@ ObjectEntity::ObjectEntity(std::vector<std::string>& attributes,
       m_wearFlags(wearFlags) {
       m_extra = {descExtra, keywordsExtra};
 }
+
+// Need to change this to somehow give a different one
+// each time
+std::vector<std::string> ObjectEntity::getAttributes() const {
+   return m_attributes;
+}
+
+unsigned int ObjectEntity::getCost() const {
+   return m_cost;
+}
+
+unsigned int ObjectEntity::getObjectTypeId() const {
+   return m_objectTypeId;
+}
+
+std::string ObjectEntity::getItemType() const {
+   return m_itemType;
+}
+
+std::vector<std::string> ObjectEntity::getKeywords() const {
+   return m_keywords;
+}
+
+std::vector<std::string> ObjectEntity::getLongDesc() const {
+   return m_longDesc;
+}
+
+std::string ObjectEntity::getShortDesc() const {
+   return m_shortDesc;
+}
+
+std::vector<std::string> ObjectEntity::getWearFlags() const {
+   return m_wearFlags;
+}
+
+std::vector<std::string> ObjectEntity::getExtraKeyword() const {
+   return m_extra.keywords;
+}
+
+std::vector<std::string> ObjectEntity::getExtraDesc() const {
+   return m_extra.desc;
+}

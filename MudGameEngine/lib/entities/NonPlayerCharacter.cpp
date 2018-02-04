@@ -10,15 +10,11 @@ NonPlayerCharacter::NonPlayerCharacter(int armor, std::string& damage,
                      std::vector<std::string>& longDesc, std::string& shortDesc,
                      int thac0)
 
-    : m_armor(armor),
-      m_damage(damage),
-      m_desc(desc),
-      m_exp(exp),
-      m_gold(gold),
-      m_hit(hit),
-      m_npcTypeId(npcTypeId),
-      m_keywords(keywords),
-      m_level(level),
-      m_longDesc(longDesc),
-      m_shortDesc(shortDesc),
-      m_thac0(thac0) {}
+    : CharacterEntity::CharacterEntity(armor, damage, desc, exp, gold,
+         hit, keywords, level, longDesc,
+         shortDesc, thac0),
+      m_npcTypeId(npcTypeId) {}
+
+unsigned int NonPlayerCharacter::getNpcTypeId() const {
+	return m_npcTypeId;
+}

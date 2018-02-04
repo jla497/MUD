@@ -18,7 +18,13 @@ class DoorEntity : public Entity {
     DoorEntity(std::vector<std::string>& desc, std::string& dir,
                std::vector<std::string>& keywords, unsigned int to);
 
-    unsigned int getDestRoomId();
+    unsigned int getDestRoomId() const;
+
+    std::vector<std::string> getDesc() const;
+
+    std::string getDir() const;
+
+    std::vector<std::string> getKeywords() const;
 };
 
 #endif

@@ -29,6 +29,31 @@ class ObjectEntity : public Entity {
                  std::vector<std::string>& keywords,
                  std::vector<std::string>& longDesc, std::string& shortDesc,
                  std::vector<std::string>& wearFlags, int weight);
+
+    // Need to change this to somehow give a different one
+    // each time
+    std::vector<std::string> getAttributes() const;
+
+    unsigned int getCost() const;
+
+    unsigned int getObjectTypeId() const;
+
+    std::string getItemType() const;
+
+    std::vector<std::string> getKeywords() const;
+    
+    std::vector<std::string> getLongDesc() const;
+    
+    std::string getShortDesc() const;
+    
+    std::vector<std::string> getWearFlags() const;
+    
+    int getWeight() const;
+
+    std::vector<std::string> getExtraKeyword() const;
+
+    std::vector<std::string> getExtraDesc() const;
+
 };
 
 #endif
