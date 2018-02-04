@@ -11,7 +11,12 @@ class UniqueId {
    public:
     UniqueId() : id(nextUniqueId++) {}
 
-    bool operator==(const UniqueId& rhs);
+    bool operator==(const UniqueId& rhs ) const {
+        return ( id == rhs.id );
+    }
+    bool operator<(const UniqueId& rhs ) const {
+        return ( id < rhs.id );
+    }
 };
 
 #endif

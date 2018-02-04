@@ -18,8 +18,8 @@ include_directories(${CMAKE_SOURCE_DIR}/Client/include)
 include_directories(${CMAKE_SOURCE_DIR}/Logging/include)
 
 add_subdirectory(Networking)
-add_subdirectory(MudServer)
 add_subdirectory(MudGameEngine)
+add_subdirectory(MudServer)
 add_subdirectory(Client)
 add_subdirectory(Logging)
 

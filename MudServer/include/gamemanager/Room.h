@@ -1,12 +1,22 @@
 #ifndef ROOM_H
 #define ROOM_H
 
+#include <boost/cstdint.hpp>
+
 namespace mudserver {
 namespace gamemanager {
-/**
- * @todo write docs
- */
-class Room {};
+
+//using RoomID = int;
+
+class Room {
+//    RoomID id;
+
+public:
+    Room();
+//    Room(RoomID id);
+//    RoomID getID() const;
+};
+
 
 }  // namespace gamemanager
 }  // namespace mudserver

@@ -89,7 +89,7 @@ void GameManager::processMessages(gameAndUserMsgs& messages) {
         Character* character = player.getCharacter();
         if (character) {
             // look up character's location
-            Room& room = gameState.getCharacterLocation(*character);
+//            Room& room = gameState.getCharacterLocation(*character);
         }
 
         // parse message into verb/object
