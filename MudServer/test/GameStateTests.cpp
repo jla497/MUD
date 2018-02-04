@@ -117,8 +117,8 @@ TEST_F(GameStateTest, GetCharacterFromString) {
             keywords, level,longDesc, shortDesc, thac0
     );
     state.addCharacterToLUT(character.get());
-    std::string sid = std::to_string(character->getEntityId().getId());
-    PlayerCharacter* returnedChar = state.getCharacterFromLUT(sid);
+    UniqueId id = character->getEntityId();
+    PlayerCharacter* returnedChar = state.getCharacterFromLUT(id);
     EXPECT_EQ(returnedChar->getEntityId(), character->getEntityId());
 }
 
