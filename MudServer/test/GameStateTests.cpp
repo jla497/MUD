@@ -18,8 +18,6 @@ protected:
     }
 
     unsigned int roomId = 101;
-//    PlayerCharacter character1{1};
-//    Character character2{2};
     GameState state;
 };
 
@@ -43,7 +41,7 @@ TEST_F(GameStateTest, AddCharacterWithLocation) {
             keywords, level,longDesc, shortDesc, thac0
     );
     RoomEntity* room = state.getRoomFromLUT(roomId);
-    state.addCharacterToLookUp(character1.get(), room);
+    state.addCharacterRoomRelationToLUT(character1.get(), room);
     RoomEntity* returnedRoom = state.getCharacterLocation(character1.get());
     EXPECT_EQ(returnedRoom->getId(), room->getId());
 }
@@ -72,8 +70,8 @@ TEST_F(GameStateTest, GetAllCharactersInRoom) {
             keywords, level,longDesc, shortDesc, thac0
     );
     RoomEntity* room = state.getRoomFromLUT(roomId);
-    state.addCharacterToLookUp(character1.get(), room);
-    state.addCharacterToLookUp(character2.get(), room);
+    state.addCharacterRoomRelationToLUT(character1.get(), room);
+    state.addCharacterRoomRelationToLUT(character2.get(), room);
     vector<UniqueId> charIDs = state.getCharactersInRoom(room);
     EXPECT_EQ(charIDs.size(), 2);
 }
@@ -97,6 +95,31 @@ TEST_F(GameStateTest, AddNewRoom) {
     state.addRoomToLUT(room.get());
     RoomEntity* addedRoom = state.getRoomFromLUT(newRoomId);
     EXPECT_EQ(room->getId(), addedRoom->getId());
+}
+
+TEST_F(GameStateTest, GetCharacterFromString) {
+    int armor = 1;
+    std::string damage = "1";
+    std::vector<std::string> desc {};
+    desc.push_back("desc1");
+    unsigned int exp = 1;
+    int gold = 1;
+    std::string hit = "1";
+    std::vector<std::string> keywords {};
+    keywords.push_back("keyword1");
+    unsigned int level = 1;
+    std::vector<std::string> longDesc {};
+    longDesc.push_back("desc1");
+    std::string shortDesc = "test";
+    int thac0 = 1;
+    auto character = std::make_unique<PlayerCharacter>(
+            armor, damage, desc, exp, gold, hit,
+            keywords, level,longDesc, shortDesc, thac0
+    );
+    state.addCharacterToLUT(character.get());
+    std::string sid = std::to_string(character->getEntityId().getId());
+    PlayerCharacter* returnedChar = state.getCharacterFromLUT(sid);
+    EXPECT_EQ(returnedChar->getEntityId(), character->getEntityId());
 }
 
 }  // namespace gamemanager
