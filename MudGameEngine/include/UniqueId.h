@@ -10,6 +10,8 @@ class UniqueId {
 
    public:
     UniqueId() : id(nextUniqueId++) {}
+
+    unsigned int getUniqueId();
 };
 
 #endif

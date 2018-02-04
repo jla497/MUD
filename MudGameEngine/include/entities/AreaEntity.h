@@ -12,6 +12,10 @@ class AreaEntity : public Entity {
    public:
     AreaEntity(std::string& name,
                std::vector<unsigned int> rooms);
+
+    std::string getName() const;
+
+    std::vector<unsigned int> getRooms() const;
 };
 
 #endif

@@ -13,11 +13,11 @@ RoomEntity::RoomEntity(std::vector<std::string>& desc,
       m_extDesc = {descExt, keywordsExt};
 }
 
-std::vector<std::string> RoomEntity::getDesc() { return m_desc; }
+std::vector<std::string> RoomEntity::getDesc() const { return m_desc; }
 
-unsigned int getDestRoomIdOf(std::string& dir) { return 0; }
+unsigned int RoomEntity::getDestRoomIdOf(std::string& dir) const { return 0; }
 
-std::vector<std::string> getDirs() {
+std::vector<std::string> RoomEntity::getDirs() const {
     // TODO: remove this dummy stuff
     std::vector<std::string> res;
     return res;
@@ -25,8 +25,8 @@ std::vector<std::string> getDirs() {
 
 // void reset() { return; }
 
-std::string addEntity(const unsigned int entityToAdd) { return ""; }
+std::string RoomEntity::addEntity(const unsigned int entityToAdd) { return ""; }
 
-std::string getEntitiesInRoom() { return ""; }
+std::string RoomEntity::getEntitiesInRoom() const { return ""; }
 
-std::string removeEntity(const unsigned int entityToRemove) { return ""; }
+std::string RoomEntity::removeEntity(const unsigned int entityToRemove) { return ""; }
