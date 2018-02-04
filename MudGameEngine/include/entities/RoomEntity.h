@@ -30,6 +30,8 @@ class RoomEntity : public Entity {
 
     std::vector<std::string> getDesc();
 
+    unsigned int getId();
+
     // Returns destinationID to room given dir command while in a room
     // Returns 0 if dir does not exist for room
     // (use find_to)

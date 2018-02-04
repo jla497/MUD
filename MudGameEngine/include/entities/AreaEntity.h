@@ -14,6 +14,9 @@ class AreaEntity : public Entity {
     AreaEntity(std::string& name,
                std::vector<std::unique_ptr<RoomEntity>> rooms);
 
+
+    std::vector<std::unique_ptr<RoomEntity>>& getAllRooms();
+
     std::string getName();
 };
 

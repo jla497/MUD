@@ -13,6 +13,10 @@ RoomEntity::RoomEntity(std::vector<std::string>& desc,
       m_extDesc = {descExt, keywordsExt};
 }
 
+unsigned int RoomEntity::getId() {
+  return m_roomId;
+}
+
 std::vector<std::string> RoomEntity::getDesc() { return m_desc; }
 
 unsigned int getDestRoomIdOf(std::string& dir) { return 0; }

@@ -4,8 +4,9 @@ enable_testing()
 add_executable(mudtest
         ConnectionManagerTests.cpp
         GameManagerTests.cpp
-        ParserTests.cpp
+        ParserTests.cpp 
         )
+
 set_target_properties(mudtest
     PROPERTIES
     LINKER_LANGUAGE CXX
@@ -19,5 +20,4 @@ target_link_libraries(mudtest parser)
 
 add_test(ConnectionManagerTests mudtest)
 add_test(GameManagerTests mudtest)
-
 add_test(ParserTests mudtest)
