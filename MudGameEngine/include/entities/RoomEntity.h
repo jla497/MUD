@@ -34,7 +34,7 @@ class RoomEntity : public Entity {
     // Returns 0 if dir does not exist for room
     // (use find_to)
     // Does not check whether that room exists yet
-    unsigned int getDestRoomIdOf(std::string& dir) const;
+    unsigned int getDestRoomIdOf(std::string& dir);
 
     // Returns list of doors available in room (e.g for showing options to
     // player)
@@ -45,14 +45,12 @@ class RoomEntity : public Entity {
     // TODO: Not sure how resets are handled right now
     // void reset(/*parsed YML data*/);
 
-    // TODO so we really want rooms to keep entities?
     // Returns success msg if inserts given entity into room succeeds
     // Given entity id
     std::string addEntity(const unsigned int entityToAdd);
 
     // Return all entities in the room
-    // Should it even be strings?
-    std::string getEntitiesInRoom() const;
+    std::vector<unsigned int> getEntitiesInRoom() const;
 
     // Returns success or failure msg if removes given entity into room succeeds
     // Given entity id

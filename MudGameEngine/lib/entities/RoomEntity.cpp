@@ -1,3 +1,5 @@
+#include <algorithm>
+
 #include "entities/RoomEntity.h"
 
 RoomEntity::RoomEntity(std::vector<std::string>& desc,
@@ -13,20 +15,37 @@ RoomEntity::RoomEntity(std::vector<std::string>& desc,
       m_extDesc = {descExt, keywordsExt};
 }
 
-std::vector<std::string> RoomEntity::getDesc() const { return m_desc; }
+std::vector<std::string> RoomEntity::getDesc() const { 
+  return m_desc; 
+}
 
-unsigned int RoomEntity::getDestRoomIdOf(std::string& dir) const { return 0; }
+// TODO, should be able to make this method const...
+unsigned int RoomEntity::getDestRoomIdOf(std::string& dir) { 
+  std::vector<DoorEntity>::iterator door = std::find_if(std::begin(m_doors), std::end(m_doors), 
+    [&] (DoorEntity const& d) { 
+      return d.getDir() == dir; 
+    });  
+  return door->getDestRoomId();
+}
 
-std::vector<std::string> RoomEntity::getDirs() const {
-    // TODO: remove this dummy stuff
-    std::vector<std::string> res;
-    return res;
+std::vector<std::string> RoomEntity::getDirs() const {    
+    std::vector<std::string> dirList;
+    for (const auto& door : m_doors)
+    {  
+        dirList.push_back(door.getDir());
+    }
+    return dirList;
 }
 
 // void reset() { return; }
 
-std::string RoomEntity::addEntity(const unsigned int entityToAdd) { return ""; }
+std::string RoomEntity::addEntity(const unsigned int entityToAdd) { 
+  // TODO error checking?
+  return ""; 
+}
 
-std::string RoomEntity::getEntitiesInRoom() const { return ""; }
+std::vector<unsigned int> RoomEntity::getEntitiesInRoom() const {
+  return m_idEntitiesInRoom; 
+}
 
 std::string RoomEntity::removeEntity(const unsigned int entityToRemove) { return ""; }
