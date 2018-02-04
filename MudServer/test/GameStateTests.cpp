@@ -16,7 +16,7 @@ protected:
         state.clearCharacterRoomLUT();
         state.clearAreas();
     }
-    std::vector<std::unique_ptr<RoomEntity>> rooms;
+
     RoomID roomId = 101;
     Character character1{1};
     Character character2{2};
@@ -39,10 +39,8 @@ TEST_F(GameStateTest, GetAllCharactersInRoom) {
 }
 
 TEST_F(GameStateTest, AddAreaToAreasVector) {
-    Area area;
-    state.addArea(area);
-    vector<Area> areas = state.getAreas();
-    EXPECT_EQ(areas.size(), 1);
+    state.addAreaFromParser();
+    EXPECT_EQ(state.getAreasVector().size(), 1);
 }
 
 TEST_F(GameStateTest, AddNewRoom) {

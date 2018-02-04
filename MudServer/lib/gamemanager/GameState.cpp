@@ -34,8 +34,8 @@ void GameState::addRoomToLUT(RoomEntity* room) {
     roomLookUp[room->getId()] = room;
 }
 
-void GameState::addArea(const Area& area) {
-    areas.push_back(area);
+void GameState::addAreaFromParser() {
+    areas.push_back(parser.getArea().get());
 }
 
 
@@ -61,7 +61,11 @@ vector<CharacterID> GameState::getCharactersInRoom(RoomEntity* room) {
     return characters;
 }
 
-vector<Area> GameState::getAreas() {
+AreaEntity* GameState::getAreaFromParser() {
+    return parser.getArea().get();
+}
+
+vector<AreaEntity*> GameState::getAreasVector() {
     return areas;
 }
 

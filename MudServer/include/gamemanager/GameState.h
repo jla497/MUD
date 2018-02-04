@@ -8,7 +8,7 @@
 #include <memory>
 #include <unordered_map>
 
-#include "Area.h"
+#include "entities/AreaEntity.h"
 #include "Player.h"
 //#include "Room.h"
 #include "gamemanager/LutBuilder.h"
@@ -36,7 +36,7 @@ class GameState {
 
     CharacterRoomLookupTable characterRoomLookUp;
     RoomLookupTable roomLookUp;
-    vector<Area> areas;
+    vector<AreaEntity*> areas;
     YamlParser parser;
 
 public:
@@ -46,10 +46,11 @@ public:
     void parseYamlFile(std::string string);
     void initRoomLUT();
 
-    void addArea(const Area& area);
+    void addAreaFromParser();
     void addCharacterToLookUp(Character& character, RoomEntity* room);
     void addRoomToLUT(RoomEntity*);
-    vector<Area> getAreas();
+    AreaEntity* getAreaFromParser();
+    vector<AreaEntity*> getAreasVector();
     vector<CharacterID> getCharactersInRoom(RoomEntity* room);
     RoomEntity* getCharacterLocation(const Character& character);
     RoomEntity* getRoomFromLUT(const RoomID);
