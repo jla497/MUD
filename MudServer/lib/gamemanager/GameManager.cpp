@@ -131,5 +131,9 @@ void GameManager::performQueuedActions() {
     }
 }
 
+GameState& GameManager::getState() {
+    return gameState;
+}
+
 }  // namespace gamemanager
 }  // namespace mudserver

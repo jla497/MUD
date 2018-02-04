@@ -1,5 +1,6 @@
 #include <boost/algorithm/string.hpp>
 #include <boost/tokenizer.hpp>
+#include <iostream>
 #include <sstream>
 #include <memory>
 
@@ -46,23 +47,27 @@ std::unique_ptr<Action> CommandParser::actionFromPlayerCommand(
 
     std::stringstream actionDescription;
     std::unique_ptr<Action> action;
+    std::ostringstream os;
+    os<<character->getEntityId();
+    // os << character->getId();
+    auto idStr = os.str(); 
     switch (actionType) {
     case ActKeyword::say: {
         actionDescription << u8"SayAction will be created";
-        action = std::make_unique<SayAction>("fill", remainderOfTokens,
+        action = std::make_unique<SayAction>(idStr, remainderOfTokens,
                                              gameManager);
         break;
     }
 
     case ActKeyword::move: {
         actionDescription << u8"MoveAction will be created";
-        action = std::make_unique<MoveAction>("fill", remainderOfTokens,
+        action = std::make_unique<MoveAction>(idStr, remainderOfTokens,
                                               gameManager);
         break;
     }
     case ActKeyword::attack: {
         actionDescription << u8"AttackAction will be created";
-        action = std::make_unique<AttackAction>("fill", remainderOfTokens,
+        action = std::make_unique<AttackAction>(idStr, remainderOfTokens,
                                                 gameManager);
         break;
     }
@@ -70,7 +75,7 @@ std::unique_ptr<Action> CommandParser::actionFromPlayerCommand(
     }
     default:
         actionDescription << u8"Action was not supported";
-        action = std::make_unique<NullAction>("fill", remainderOfTokens,
+        action = std::make_unique<NullAction>(idStr, remainderOfTokens,
                                               gameManager);
     }
 

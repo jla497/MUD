@@ -49,6 +49,7 @@ public:
 
     void mainLoop();
     void performQueuedActions();
+    GameState& getState();
 };
 
 }  // namespace mudserver
