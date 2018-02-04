@@ -5,12 +5,13 @@
 #include <unordered_map>
 #include <string>
 
-#include "gamemanager/GameManager.h"
 #include "gamemanager/Character.h"
 #include "actions/Action.h"
 
+
+class Action;                                     // forward declaration
 namespace mudserver {
-namespace gamemanager { class GameManager; }      // fix for circular dependency
+namespace gamemanager { class GameManager; }      // forward declaration
 
 namespace commandparser {
 

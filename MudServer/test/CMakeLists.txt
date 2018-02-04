@@ -4,8 +4,8 @@ enable_testing()
 add_executable(mudtest
         ConnectionManagerTests.cpp
         GameManagerTests.cpp
-        ParserTests.cpp 
-        )
+        ParserTests.cpp
+        CommandParserTests.cpp)
 
 set_target_properties(mudtest
     PROPERTIES
@@ -18,6 +18,10 @@ target_link_libraries(mudtest gamemanager)
 target_link_libraries(mudtest entity)
 target_link_libraries(mudtest parser)
 
+target_link_libraries(mudtest commandparser)
 add_test(ConnectionManagerTests mudtest)
 add_test(GameManagerTests mudtest)
 add_test(ParserTests mudtest)
+add_test(CommandParserTests mudtest)
+
+include_directories(include)
