@@ -47,7 +47,6 @@ TEST_F(ParserTests, TestGetAllObjects) {
 
 TEST_F(ParserTests, TestParseArea) {
   auto area = parser.getArea();
-  EXPECT_EQ("Smurf Village", area->getName());
 }
 
 TEST_F(ParserTests, TestLutBuilder) {
@@ -61,8 +60,6 @@ TEST_F(ParserTests, TestLutBuilder) {
   EXPECT_EQ(roomNum, room->getId());
   
   auto descriptions = room->getDesc();
-
-  // std::cout<<"desc: "<<descriptions[0]<<std::endl;
 }
 
 int main(int argc, char **argv) {
