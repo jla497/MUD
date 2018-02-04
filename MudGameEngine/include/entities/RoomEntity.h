@@ -28,9 +28,13 @@ class RoomEntity : public Entity {
                std::vector<std::string>& keywordsExt, std::string& name,
                unsigned int roomId);
 
-    std::vector<std::string> getDesc();
-
     unsigned int getId();
+
+    std::vector<std::string> getDesc() const;
+
+    std::vector<std::string> getExtendedDesc() const;
+
+    std::vector<std::string> getExtendedKeywords() const;
 
     // Returns destinationID to room given dir command while in a room
     // Returns 0 if dir does not exist for room
@@ -40,21 +44,19 @@ class RoomEntity : public Entity {
 
     // Returns list of doors available in room (e.g for showing options to
     // player)
-    std::vector<std::string> getDirs();
+    std::vector<std::string> getDirs() const;
 
     // Reset room according to YML file
     // DOES NOT purge player from room, only affects non-player entities
     // TODO: Not sure how resets are handled right now
     // void reset(/*parsed YML data*/);
 
-    // TODO so we really want rooms to keep entities?
     // Returns success msg if inserts given entity into room succeeds
     // Given entity id
     std::string addEntity(const unsigned int entityToAdd);
 
     // Return all entities in the room
-    // Should it even be strings?
-    std::string getEntitiesInRoom();
+    std::vector<unsigned int> getEntitiesInRoom() const;
 
     // Returns success or failure msg if removes given entity into room succeeds
     // Given entity id
