@@ -1,9 +1,9 @@
 add_library(entity Entity.cpp
 	   	 DoorEntity.cpp
 		 RoomEntity.cpp
-		 CharacterEntity.cpp		 
-		 NPCharacterEntity.cpp
-		 PlayerCharacterEntity.cpp
+		 Character.cpp		 
+		 NPC.cpp
+		 PlayerCharacter.cpp
 		 ObjectEntity.cpp
 		 AreaEntity.cpp
 		 ShopEntity.cpp)
