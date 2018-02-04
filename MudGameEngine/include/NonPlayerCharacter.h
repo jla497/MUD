@@ -1,14 +1,14 @@
-#ifndef NPC_ENTITY_H
-#define NPC_ENTITY_H
+#ifndef NPC_H
+#define NPC_H
 
-#include "CharacterEntity.h"
+#include "Character.h"
 #include "Roll.h"
 
 // TODO: add character entity that derives from entity and then npc and player
 // characters
 // Reset is not entity
 
-class NPCEntity : public CharacterEntity {
+class NonPlayerCharacter : public Character {
    private:
     int m_armor;
     std::string m_damage;  // TODO: string for now
@@ -27,7 +27,7 @@ class NPCEntity : public CharacterEntity {
     Roll m_hitRollData;     // ???
 
    public:
-    NPCEntity(int armor, std::string& damage,
+    NonPlayerCharacter(int armor, std::string& damage,
               std::vector<std::string>& desc, unsigned int exp, int gold,
               std::string& hit, unsigned int npcTypeId,
               std::vector<std::string>& keywords, unsigned int level,

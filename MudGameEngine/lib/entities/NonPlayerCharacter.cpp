@@ -1,9 +1,9 @@
 #include <string>
 #include <vector>
 
-#include "NPCEntity.h"
+#include "NonPlayerCharacter.h"
 
-NPCEntity::NPCEntity(int armor, std::string& damage,
+NonPlayerCharacter::NonPlayerCharacter(int armor, std::string& damage,
                      std::vector<std::string>& desc, unsigned int exp, int gold,
                      std::string& hit, unsigned int npcTypeId,
                      std::vector<std::string>& keywords, unsigned int level,
