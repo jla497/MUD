@@ -8,10 +8,9 @@
 // Room to another.
 class MoveAction : public Action {
 public:
-    MoveAction(const std::string& entityPerformingAction,
-               const std::vector<std::string>* entitiesBeingActedUpon,
-               const mudserver::gamemanager::GameManager& gameManager);
-
-    void execute();
+    using Action::Action;
+    void execute() override;
+protected:
+    std::string description() const override { return u8"Move action"; }
 };
 #endif

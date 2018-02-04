@@ -10,16 +10,10 @@ add_library(uniqueid UniqueId.cpp)
 
 add_library(reset Reset.cpp)
 
-add_library(actions 
-SayAction.cpp
-MoveAction.cpp
-AttackAction.cpp
-)
-
-set_target_properties( uniqueid
-	entity 
+set_target_properties(
+	uniqueid
+	entity
 	reset
-	actions
 		PROPERTIES
 		LINKER_LANGUAGE CXX
 		CXX_STANDARD 14
@@ -27,13 +21,10 @@ set_target_properties( uniqueid
 
 target_link_libraries(entity uniqueid)
 
-target_link_libraries(actions gamemanager)
-
 install(TARGETS 
 	uniqueid
 	entity 
 	reset
-	actions
 		ARCHIVE DESTINATION lib
 )
 

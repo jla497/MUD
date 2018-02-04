@@ -16,12 +16,12 @@ void GameState::parseYamlFile(std::string filename) {
     parser.loadYamlFile(filename);
 }
 
-//RoomLookupTable GameState::initRoomLUT() {
-//    auto area = parser.getArea();
-//    auto& rooms = area->getAllRooms();
-//    LutBuilder lutBuilder;
-//    return lutBuilder.createLUT(rooms);
-//}
+void GameState::initRoomLUT() {
+    auto area = parser.getArea();
+    auto& rooms = area->getAllRooms();
+    LutBuilder lutBuilder;
+    roomLookUp = lutBuilder.createLUT(rooms);
+}
 
 /**
  * Add Methods
@@ -51,10 +51,10 @@ RoomEntity* GameState::getCharacterLocation(const Character& character) {
     return roomLookUp.find(id)->second;
 }
 
-vector<CharacterID> GameState::getCharactersInRoom(const Room& room) {
+vector<CharacterID> GameState::getCharactersInRoom(RoomEntity* room) {
     vector<CharacterID> characters;
     BOOST_FOREACH(CharacterRoomLookupTable::left_const_reference p, characterRoomLookUp.left ) {
-        if (p.second == room.getID()) {
+        if (p.second == room->getId()) {
             characters.push_back(p.first);
         }
     }

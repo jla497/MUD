@@ -8,9 +8,9 @@
 
 #include "Player.h"
 #include "Room.h"
-#include "Entity.h"
+#include "entities/Entity.h"
 #include "UniqueId.h"
-#include "RoomEntity.h"
+#include "entities/RoomEntity.h"
 
 namespace mudserver {
 namespace gamemanager {

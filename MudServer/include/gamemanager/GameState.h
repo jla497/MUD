@@ -10,7 +10,7 @@
 
 #include "Area.h"
 #include "Player.h"
-#include "Room.h"
+//#include "Room.h"
 #include "gamemanager/LutBuilder.h"
 #include "YamlParser.h"
 
@@ -18,6 +18,7 @@ namespace mudserver {
 namespace gamemanager {
 
 using namespace boost::bimaps;
+typedef unsigned int RoomID;
 typedef bimap<set_of<CharacterID>, list_of<RoomID>> CharacterRoomLookupTable;
 //typedef std::unordered_map<RoomID, Room> RoomLookupTable;
 typedef std::map<roomId, RoomEntity*> RoomLookupTable;
@@ -35,33 +36,26 @@ class GameState {
 
     CharacterRoomLookupTable characterRoomLookUp;
     RoomLookupTable roomLookUp;
-
-//    parser.loadYamlFile("detailed_mongoose.yml");
     vector<Area> areas;
-//    std::map<roomId, RoomEntity*> roomLookUp = createLUT();
+    YamlParser parser;
 
 public:
 
     GameState();
-    YamlParser parser;
 
-    RoomEntity* getCharacterLocation(const Character& character);
-    vector<CharacterID> getCharactersInRoom(const Room& room);
-
-    void addRoomToLUT(RoomEntity*);
-    RoomEntity* getRoomFromLUT(const RoomID);
+    void parseYamlFile(std::string string);
+    void initRoomLUT();
 
     void addArea(const Area& area);
-    vector<Area> getAreas();
-
     void addCharacterToLookUp(Character& character, RoomEntity* room);
-
+    void addRoomToLUT(RoomEntity*);
+    vector<Area> getAreas();
+    vector<CharacterID> getCharactersInRoom(RoomEntity* room);
+    RoomEntity* getCharacterLocation(const Character& character);
+    RoomEntity* getRoomFromLUT(const RoomID);
     void clearAreas();
     void clearRoomLUT();
     void clearCharacterRoomLUT();
-
-    void parseYamlFile(std::string string);
-    RoomLookupTable initRoomLUT();
 
     };
 

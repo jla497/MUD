@@ -5,6 +5,7 @@ add_executable(mudtest
         ConnectionManagerTests.cpp
         GameManagerTests.cpp
         GameStateTests.cpp
+#        LutBuilderTests.cpp
 #        ParserTests.cpp
         )
 
@@ -16,11 +17,12 @@ set_target_properties(mudtest
 target_link_libraries(mudtest gmock gtest gtest_main)
 target_link_libraries(mudtest connectionmanager)
 target_link_libraries(mudtest gamemanager)
-#target_link_libraries(mudtest entity)
-#target_link_libraries(mudtest parser)
+target_link_libraries(mudtest entity)
+target_link_libraries(mudtest parser)
 
 add_test(ConnectionManagerTests mudtest)
 add_test(GameManagerTests mudtest)
 add_test(GameStateTests mudtest)
+#add_test(LutBuilderTests mudtest)
 #add_test(ParserTests mudtest)
 

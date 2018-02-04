@@ -1,7 +1,7 @@
 #include <string>
 #include <vector>
 
-#include "NPCEntity.h"
+#include "entities/NPCEntity.h"
 
 NPCEntity::NPCEntity(int armor, std::string& damage,
                      std::vector<std::string>& desc, unsigned int exp, int gold,

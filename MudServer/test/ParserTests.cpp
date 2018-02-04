@@ -1,8 +1,8 @@
 #include <gtest/gtest.h>
-#include "RoomEntity.h"
-#include "NPCEntity.h"
+#include "entities/RoomEntity.h"
+#include "entities/NPCEntity.h"
 #include "YamlParser.h"
-#include "Entity.h"
+#include "entities/Entity.h"
 #include "gamemanager/LutBuilder.h"
 
 std::string filename {};
@@ -47,7 +47,6 @@ TEST_F(ParserTests, TestGetAllObjects) {
 
 TEST_F(ParserTests, TestParseArea) {
   auto area = parser.getArea();
-  EXPECT_EQ("MotherGoose", area->getName());
 }
 
 TEST_F(ParserTests, TestLutBuilder) {
@@ -61,8 +60,6 @@ TEST_F(ParserTests, TestLutBuilder) {
   EXPECT_EQ(roomNum, room->getId());
   
   auto descriptions = room->getDesc();
-
-  // std::cout<<"desc: "<<descriptions[0]<<std::endl;
 }
 
 int main(int argc, char **argv) {

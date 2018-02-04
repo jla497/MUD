@@ -1,5 +1,6 @@
 #include <iomanip>
 #include <iostream>
+#include <sstream>
 #include <memory>
 #include <thread>
 #include <vector>
@@ -13,8 +14,15 @@ namespace gamemanager {
 
 using std::vector;
 
-GameManager::GameManager(connection::ConnectionManager &connMan)
-    : connectionManager{connMan}, gameState(), players(), tick{kDefaultGameLoopTick} {}
+GameManager::GameManager(connection::ConnectionManager& connMan)
+    : connectionManager{connMan},
+      gameState(),
+      commandParser(),
+      tick{DEFAULT_TICK_LENGTH_MS},
+      done{false},
+      players(),
+      outgoingMessages(),
+      actions() {}
 
 /**
  * Runs a standard game loop, which consists of the following steps:
@@ -26,7 +34,6 @@ void GameManager::mainLoop() {
     static auto logger = logging::getLogger("GameManager::mainLoop");
     logger->info("Entered main game loop");
 
-    bool done = false;
     using clock = std::chrono::high_resolution_clock;
 
     while (!done) {
@@ -42,6 +49,8 @@ void GameManager::mainLoop() {
         auto messages = connectionManager.sendToGameManager();
 
         processMessages(*messages);
+
+        performQueuedActions();
 
         sendMessagesToPlayers();
 
@@ -84,16 +93,15 @@ void GameManager::processMessages(gameAndUserMsgs& messages) {
         }
 
         // parse message into verb/object
-        // auto parsed = parsePlayerMessage(message.value);
+        std::unique_ptr<Action> action = commandParser.actionFromPlayerCommand(
+            character, message->text, *this);
 
-        // then take action based on parse command
-        // Command pattern - objects?
-        // or just functions?
+        std::stringstream retMessage;
+        retMessage << *action;
 
-        // command = Command(gameState, parsed, character, room)
-        // command.act()
+        enqueueAction(std::move(action));
 
-        enqueueMessage(message->conn, "You said " + message->text);
+        enqueueMessage(message->conn, retMessage.str());
     }
 }
 
@@ -111,6 +119,16 @@ void GameManager::sendMessagesToPlayers() {
     }
     connectionManager.receiveFromGameManager(std::move(toSend));
     connectionManager.sendToServer();
+}
+
+void GameManager::enqueueAction(unique_ptr<Action> action) {
+    actions.push(std::move(action));
+}
+void GameManager::performQueuedActions() {
+    while (!actions.empty()) {
+        actions.front()->execute();
+        actions.pop();
+    }
 }
 
 }  // namespace gamemanager
