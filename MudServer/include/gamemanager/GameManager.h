@@ -16,6 +16,8 @@
 #include "GameState.h"
 #include "Character.h"
 #include "Player.h"
+#include "GameState.h"
+#include "UniqueId.h"
 
 namespace mudserver {
 namespace gamemanager {
@@ -49,9 +51,10 @@ class GameManager {
 public:
     GameManager(connection::ConnectionManager& connMan);
     GameManager(const GameManager& gm) = delete;
-
     void mainLoop();
     void performQueuedActions();
+    GameState& getState();
+    void sendCharacterMessage(UniqueId characterId, std::string message);
 };
 
 }  // namespace mudserver
