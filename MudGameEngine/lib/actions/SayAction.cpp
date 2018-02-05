@@ -1,7 +1,7 @@
 #include <string>
 #include <vector>
 #include <numeric>
-
+#include <sstream>
 
 #include "actions/SayAction.h"
 #include "logging.h"
@@ -10,7 +10,7 @@ void SayAction::execute() {
     static auto logger = mudserver::logging::getLogger("SayAction::execute");
     logger->info("Entered SayAction");
 
-	auto gameState = gameManager.getState();
+    auto gameState = gameManager.getState();
 
     // get player who is saying the message
     auto playerSayingMessage = playerCharacter;
@@ -18,7 +18,7 @@ void SayAction::execute() {
     if(playerSayingMessage == NULL){
         //output error (DEBUG LOG)
         logger->error("Player does not exist");
-    	return;
+        return;
     }
 
     //TODO: make CommandParser send the whole string, 
@@ -26,8 +26,11 @@ void SayAction::execute() {
     //it would be better to do this when the action is created.
 
     // get the message the player wants to send
-    std::string messageSentByPlayer = accumulate(begin(playersMessageTokens),end(playersMessageTokens),messageSentByPlayer);
-
+    std::ostringstream stringStream;
+    for(auto const& stringToken : playersMessageTokens){
+        stringStream << stringToken;
+    }
+    auto messageSentByPlayer = stringStream.str();
     if(messageSentByPlayer.empty()){
         //do nothing on an empty messsage
         return;
