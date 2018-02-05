@@ -13,11 +13,13 @@
 #include "actions/Action.h"
 #include "GameState.h"
 #include "Player.h"
+#include "UniqueId.h"
 
 namespace mudserver {
 namespace gamemanager {
 
 using GameLoopTick = std::chrono::milliseconds;
+using PcBmType = boost::bimap<PlayerId, UniqueId>;
 constexpr GameLoopTick DEFAULT_TICK_LENGTH_MS = GameLoopTick(1000);
 
 using mudserver::commandparser::CommandParser;
@@ -34,7 +36,8 @@ class GameManager {
     CommandParser commandParser;
     connection::ConnectionManager& connectionManager;
 
-    std::unordered_map<PlayerID, Player> players;
+    std::unordered_map<PlayerId, Player> players;
+    PcBmType playerCharacterBimap;
     std::queue<connection::gameAndUserInterface> outgoingMessages;
     std::queue<std::unique_ptr<Action>> actions;
 
@@ -43,12 +46,21 @@ class GameManager {
     void sendMessagesToPlayers();
 
     void enqueueAction(unique_ptr<Action> action);
+    void performQueuedActions();
+
+    PlayerCharacter* playerToCharacter(const Player& player);
+    PlayerCharacter* playerIdToCharacter(PlayerId playerId);
+    Player& characterToPlayer(const PlayerCharacter& character);
+    Player& characterIdToPlayer(UniqueId characterId);
 public:
-    GameManager(connection::ConnectionManager& connMan);
+    explicit GameManager(connection::ConnectionManager& connMan);
     GameManager(const GameManager& gm) = delete;
 
     void mainLoop();
-    void performQueuedActions();
+    GameState& getState();
+
+    void sendCharacterMessage(UniqueId characterId, std::string message);
+    void addPlayerCharacter(PlayerId playerId);
 };
 
 }  // namespace mudserver

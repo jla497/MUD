@@ -7,6 +7,7 @@
 
 #include "gamemanager/Character.h"
 #include "actions/Action.h"
+#include "entities/CharacterEntity.h"
 
 
 class Action;                                     // forward declaration
@@ -31,7 +32,7 @@ class CommandParser {
 public:
     CommandParser() = default;
     std::unique_ptr<Action> actionFromPlayerCommand(
-        gamemanager::Character* character, StrView command,
+        PlayerCharacter& character, StrView command,
         gamemanager::GameManager& gameManager);
 };
 

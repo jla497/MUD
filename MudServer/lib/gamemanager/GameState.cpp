@@ -34,8 +34,8 @@ void GameState::addRoomToLUT(RoomEntity* room) {
     roomLookUp[room->getId()] = room;
 }
 
-void GameState::addCharacterToLUT(PlayerCharacter* character) {
-    characterLookUp[character->getEntityId()] = character;
+void GameState::addCharacter(unique_ptr<PlayerCharacter> character) {
+    characterLookUp[character->getEntityId()] = std::move(character);
 }
 
 void GameState::addAreaFromParser() {
@@ -51,9 +51,7 @@ RoomEntity* GameState::getRoomFromLUT(const roomId id) {
 }
 
 PlayerCharacter* GameState::getCharacterFromLUT(UniqueId id) {
-//    unsigned int uid = std::stoul(id, nullptr, 0);
-    return characterLookUp.find(id)->second;
-
+    return characterLookUp.find(id)->second.get();
 }
 
 RoomEntity* GameState::getCharacterLocation(PlayerCharacter* character) {
@@ -63,6 +61,7 @@ RoomEntity* GameState::getCharacterLocation(PlayerCharacter* character) {
 
 vector<UniqueId> GameState::getCharactersInRoom(RoomEntity* room) {
     vector<UniqueId> characters;
+    //TODO: can we use native foreach loop here?
     BOOST_FOREACH(CharacterRoomLookupTable::left_const_reference p, characterRoomLookUp.left ) {
         if (p.second == room->getId()) {
             characters.push_back(p.first);

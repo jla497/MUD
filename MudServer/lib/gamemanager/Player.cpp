@@ -3,13 +3,13 @@
 namespace mudserver {
 namespace gamemanager {
 
-Player::Player(PlayerID id, std::string username, std::string password) :
-    id{id},
-    username{username},
-    password{password},
-    character{nullptr} {}
+Player::Player(PlayerId id, std::string username, std::string password)
+    : id{id},
+      username{std::move(username)},
+      password{std::move(password)},
+      character{nullptr} {}
 
-Character* Player::getCharacter() { return character; }
+PlayerId Player::getId() const { return id; }
 
 }  // namespace gamemanager
 }  // namespace mudserver

@@ -2,27 +2,26 @@
 #define PLAYER_H
 
 #include <string>
-
-#include "Character.h"
+#include "entities/CharacterEntity.h"
 
 namespace mudserver {
 namespace gamemanager {
 
-using PlayerID = uintptr_t;
+using PlayerId = uintptr_t;
 
 class Player {
-    PlayerID id;
+    PlayerId id;
     std::string username;
     std::string password;
-    Character* character;
+    CharacterEntity* character;
 
 public:
     /**
      * Default constructor
      */
-    Player(PlayerID id, std::string username, std::string password);
+    Player(PlayerId id, std::string username, std::string password);
 
-    Character* getCharacter();
+    PlayerId getId() const;
 };
 
 }  // namespace gamemanager
