@@ -5,7 +5,7 @@
 
 void AttackAction::execute() {
 	//get gamestate
-	auto gameState = gameManager.getState();
+	auto& gameState = gameManager.getState();
 
 	//get my character
 	// auto myChar = gameState.getCharacter(entityPerformingAction);

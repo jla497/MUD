@@ -4,7 +4,7 @@
 #include "gmock/gmock.h"
 
 #include "commandparser/CommandParser.h"
-#include "MockCharacter.h"
+#include "entities/PlayerCharacter.h"
 #include "MockGameManager.h"
 #include "MockConnectionManager.h"
 
@@ -18,12 +18,33 @@ using mudserver::commandparser::CommandParser;
 class CommandParserTest : public ::testing::Test {
 public:
     CommandParserTest()
-        : cp{}, cm{}, gm{cm}, ch{} {}
+        : cp{}, cm{}, gm{cm} {
+
+        int armor = 1;
+        std::string damage = "1";
+        std::vector<std::string> desc {};
+        desc.push_back("desc1");
+        unsigned int exp = 1;
+        int gold = 1;
+        std::string hit = "1";
+        std::vector<std::string> keywords {};
+        keywords.push_back("keyword1");
+        unsigned int level = 1;
+        std::vector<std::string> longDesc {};
+        longDesc.push_back("desc1");
+        std::string shortDesc = "test";
+        int thac0 = 1;
+
+        ch = PlayerCharacter{
+            armor, damage, desc, exp, gold, hit,
+            keywords, level, longDesc, shortDesc, thac0
+        };
+    }
 
     CommandParser cp;
     MockConnectionManager cm;
     MockGameManager gm;
-    MockCharacter ch;
+    PlayerCharacter ch;
 };
 
 

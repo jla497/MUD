@@ -4,15 +4,22 @@
 #include <memory>
 #include <thread>
 #include <vector>
+#include <boost/format.hpp>
 
 #include "connectionmanager/ConnectionManager.h"
 #include "gamemanager/GameManager.h"
+#include "entities/PlayerCharacter.h"
+#include "resources/PlayerCharacterDefaults.h"
 #include "logging.h"
 
 namespace mudserver {
 namespace gamemanager {
 
+namespace pc = mudserver::resources::playercharacter;
+
 using std::vector;
+using boost::str;
+using boost::format;
 
 GameManager::GameManager(connection::ConnectionManager& connMan)
     : connectionManager{connMan},
@@ -59,8 +66,9 @@ void GameManager::mainLoop() {
         if (tick > delta) {
             std::this_thread::sleep_for(tick - delta);
         } else {
-            // TODO: report game too slow for tick
-            // we have a problem - game can't update within tick cycle
+            logger->warning(str(format("%s %d %s") %
+                                "Game loop length exceeded tick time of" %
+                                tick.count() % "ms"));
         }
     }
 }
@@ -86,11 +94,13 @@ void GameManager::processMessages(gameAndUserMsgs& messages) {
 
         // look up player's character
         // pointer is used as player may not have character yet
-        auto character = player.getCharacter();
-        if (character) {
-            // look up character's location
-//            Room& room = gameState.getCharacterLocation(*character);
+        auto character = playerToCharacter(player);
+        if (!character) {
+            // create a new character for the player and add it to the game state
+            addPlayerCharacter(playerId);
+            character = playerToCharacter(player);
         }
+        //auto room = gameState.getCharacterLocation(character);
 
         // parse message into verb/object
         std::unique_ptr<Action> action = commandParser.actionFromPlayerCommand(
@@ -133,6 +143,52 @@ void GameManager::performQueuedActions() {
 
 GameState& GameManager::getState() {
     return gameState;
+}
+
+void GameManager::sendCharacterMessage(UniqueId characterId,
+                                       std::string message) {
+    auto player = characterIdToPlayer(characterId);
+    auto conn = networking::Connection{player.getId()};
+    enqueueMessage(conn, std::move(message));
+}
+
+//TODO: Factor out into a new class
+// Technical debt alert:
+// I believe the player-character mapping is complex enough to factor out into
+// a new class - possibly will be the LoginManager once we get that far
+
+PlayerCharacter* GameManager::playerToCharacter(const Player& player) {
+    return playerIdToCharacter(player.getId());
+}
+
+PlayerCharacter* GameManager::playerIdToCharacter(PlayerId playerId) {
+    auto entry = playerCharacterBimap.left.find(playerId);
+    if (entry != playerCharacterBimap.left.end()) {
+        auto characterId = entry->second;
+        return gameState.getCharacterFromLUT(characterId);
+    }
+
+    return nullptr;
+}
+
+Player& GameManager::characterToPlayer(const PlayerCharacter& character) {
+    return characterIdToPlayer(character.getEntityId());
+}
+
+Player& GameManager::characterIdToPlayer(UniqueId characterId) {
+    auto playerId = playerCharacterBimap.right.find(characterId)->second;
+    return players.at(playerId);
+}
+
+void GameManager::addPlayerCharacter(PlayerId playerId) {
+    auto character = std::make_unique<PlayerCharacter>(
+        pc::ARMOR, std::string{pc::DAMAGE}, std::vector<std::string>{}, pc::EXP,
+        pc::GOLD, std::string{pc::HIT}, std::vector<std::string>{}, pc::LEVEL,
+        std::vector<std::string>{}, std::string{}, pc::THAC0);
+
+    playerCharacterBimap.insert(
+        PcBmType::value_type(playerId, character->getEntityId()));
+    gameState.addCharacter(std::move(character));
 }
 
 }  // namespace gamemanager

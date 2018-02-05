@@ -7,10 +7,10 @@
 namespace mudserver {
 namespace gamemanager {
 
-using PlayerID = uintptr_t;
+using PlayerId = uintptr_t;
 
 class Player {
-    PlayerID id;
+    PlayerId id;
     std::string username;
     std::string password;
     CharacterEntity* character;
@@ -19,9 +19,9 @@ public:
     /**
      * Default constructor
      */
-    Player(PlayerID id, std::string username, std::string password);
+    Player(PlayerId id, std::string username, std::string password);
 
-    CharacterEntity* getCharacter();
+    PlayerId getId() const;
 };
 
 }  // namespace gamemanager

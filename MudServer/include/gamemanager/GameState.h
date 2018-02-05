@@ -19,12 +19,14 @@ namespace mudserver {
 namespace gamemanager {
 
 using namespace boost::bimaps;
-typedef bimap<set_of<UniqueId>, list_of<roomId>> CharacterRoomLookupTable;
-typedef std::map<roomId, RoomEntity*> RoomLookupTable;
-typedef std::map<UniqueId, PlayerCharacter*> CharacterLookUp;
+
 using std::unique_ptr;
 using std::unordered_map;
 using std::vector;
+
+using CharacterRoomLookupTable = bimap<set_of<UniqueId>, list_of<roomId>> ;
+using RoomLookupTable = std::map<roomId, RoomEntity*> ;
+using CharacterLookUp = std::map<UniqueId, unique_ptr<PlayerCharacter>> ;
 
 /**
  * The overarching idea of GameState is that it should
@@ -48,7 +50,7 @@ public:
     void initRoomLUT();
 
     void addAreaFromParser();
-    void addCharacterToLUT(PlayerCharacter* character);
+    void addCharacter(unique_ptr<PlayerCharacter> character);
     void addCharacterRoomRelationToLUT(PlayerCharacter* character, RoomEntity* room);
     void addRoomToLUT(RoomEntity*);
     AreaEntity* getAreaFromParser();
