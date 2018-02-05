@@ -1,5 +1,7 @@
 #include <string>
 #include <vector>
+#include <numeric>
+
 
 #include "actions/SayAction.h"
 #include "logging.h"
@@ -19,16 +21,12 @@ void SayAction::execute() {
     	return;
     }
 
-    //TODO: make ActionParser send the whole string, 
+    //TODO: make CommandParser send the whole string, 
     //currently we are doing a lot of work right before executing the game logic,
     //it would be better to do this when the action is created.
 
     // get the message the player wants to send
-    std::string messageSentByPlayer;
-    for(auto const& stringToken : playersMessageTokens ){
-        messageSentByPlayer += stringToken;
-    }
-    //auto messageSentByPlayer = playersMessageTokens.at(0);
+    std::string messageSentByPlayer = accumulate(begin(playersMessageTokens),end(playersMessageTokens),messageSentByPlayer);
 
     if(messageSentByPlayer.empty()){
         //do nothing on an empty messsage
@@ -44,12 +42,13 @@ void SayAction::execute() {
     //--get list of players in the room
     auto IDsOfPlayersInRoom = gameState.getCharactersInRoom(roomPlayerIsIn);
     auto sayingPlayersId = playerSayingMessage->getEntityId().getId();
+    auto sayingPlayersShortDesc = playerSayingMessage->getShortDesc();
 
     //--send the message to all the players except the one who sent it
     for(auto characterID : IDsOfPlayersInRoom){
         if(characterID.getId() != sayingPlayersId){
             gameManager.sendCharacterMessage(characterID,
-                playerSayingMessage->getShortDesc() + " says: " + messageSentByPlayer
+                sayingPlayersShortDesc + " says: " + messageSentByPlayer
                 );
 
         }
