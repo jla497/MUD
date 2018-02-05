@@ -135,7 +135,8 @@ void GameManager::performQueuedActions() {
         actions.pop();
     }
 }
-GameState& GameManager::getState() { return gameState; }
+
+GameState &GameManager::getState() { return gameState; }
 
 void GameManager::sendCharacterMessage(UniqueId characterId,
                                        std::string message) {

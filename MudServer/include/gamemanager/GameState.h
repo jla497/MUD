@@ -58,6 +58,7 @@ public:
     vector<UniqueId> getCharactersInRoom(RoomEntity* room);
     PlayerCharacter* getCharacterFromLUT(UniqueId id);
     RoomEntity* getCharacterLocation(PlayerCharacter* character);
+    RoomEntity* getCharacterLocation(PlayerCharacter& character);
     RoomEntity* getRoomFromLUT(const roomId);
     void clearAreas();
     void clearCharacterRoomLUT();

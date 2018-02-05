@@ -61,7 +61,7 @@ public:
                     GameState& gameState);
     GameManager(const GameManager& gm) = delete;
     void mainLoop();
-    GameState& getState();
+    GameState &getState();
 
     void sendCharacterMessage(UniqueId characterId, std::string message);
     void addPlayerCharacter(PlayerId playerId);

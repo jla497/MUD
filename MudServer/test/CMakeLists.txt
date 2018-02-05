@@ -6,7 +6,7 @@ add_executable(mudtest
         GameManagerTests.cpp
         GameStateTests.cpp
         ParserTests.cpp
-        CommandParserTests.cpp
+        #CommandParserTests.cpp
 )
 
 set_target_properties(mudtest
@@ -25,6 +25,6 @@ add_test(ConnectionManagerTests mudtest)
 add_test(GameManagerTests mudtest)
 add_test(GameStateTests mudtest)
 add_test(ParserTests mudtest)
-add_test(CommandParserTests mudtest)
+#add_test(CommandParserTests mudtest)
 
 include_directories(include)

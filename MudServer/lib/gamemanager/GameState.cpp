@@ -65,6 +65,11 @@ RoomEntity* GameState::getCharacterLocation(PlayerCharacter* character) {
     return roomLookUp.find(id)->second;
 }
 
+RoomEntity* GameState::getCharacterLocation(PlayerCharacter& character) {
+    auto id = characterRoomLookUp.left.find(character.getEntityId())->second;
+    return roomLookUp.find(id)->second;
+}
+
 vector<UniqueId> GameState::getCharactersInRoom(RoomEntity* room) {
     vector<UniqueId> characters;
     //TODO: can we use native foreach loop here?
