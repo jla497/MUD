@@ -66,6 +66,10 @@ RoomEntity* GameState::getCharacterLocation(PlayerCharacter* character) {
 }
 
 vector<UniqueId> GameState::getCharactersInRoom(RoomEntity* room) {
+    if(room == nullptr){
+        //return an empty vector
+        return {};
+    }
     vector<UniqueId> characters;
     //TODO: can we use native foreach loop here?
     BOOST_FOREACH(CharacterRoomLookupTable::left_const_reference p, characterRoomLookUp.left ) {
