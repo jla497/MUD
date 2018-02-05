@@ -1,5 +1,6 @@
 #include <boost/algorithm/string.hpp>
 #include <boost/tokenizer.hpp>
+#include <iostream>
 #include <sstream>
 #include <memory>
 
@@ -26,7 +27,7 @@ std::unordered_map<std::string, ActKeyword> CommandParser::actionLookup = {
     {MOVE, ActKeyword::move}};
 
 std::unique_ptr<Action> CommandParser::actionFromPlayerCommand(
-    PlayerCharacter* character, StrView command,
+    PlayerCharacter& character, StrView command,
     gamemanager::GameManager& gameManager) {
 
     auto logger = logging::getLogger("CommandParser::actionFromPlayerCommand");
@@ -46,6 +47,7 @@ std::unique_ptr<Action> CommandParser::actionFromPlayerCommand(
 
     std::stringstream actionDescription;
     std::unique_ptr<Action> action;
+
     switch (actionType) {
     case ActKeyword::say: {
         actionDescription << u8"SayAction will be created";

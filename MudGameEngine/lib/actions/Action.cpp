@@ -3,10 +3,10 @@
 
 #include "actions/Action.h"
 
-Action::Action(PlayerCharacter* playerCharacter,
+Action::Action(PlayerCharacter& characterPerformingAction,
                std::vector<std::string> entitiesBeingActedUpon,
                mudserver::gamemanager::GameManager& gameManager)
-    : playerCharacter{playerCharacter},
+    : characterPerformingAction{characterPerformingAction},
       entitiesBeingActedUpon{std::move(entitiesBeingActedUpon)},
       gameManager{gameManager} {}
 

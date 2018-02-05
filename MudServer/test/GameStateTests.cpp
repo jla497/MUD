@@ -116,10 +116,10 @@ TEST_F(GameStateTest, GetCharacterFromString) {
             armor, damage, desc, exp, gold, hit,
             keywords, level,longDesc, shortDesc, thac0
     );
-    state.addCharacterToLUT(character.get());
     UniqueId id = character->getEntityId();
+    state.addCharacter(std::move(character));
     PlayerCharacter* returnedChar = state.getCharacterFromLUT(id);
-    EXPECT_EQ(returnedChar->getEntityId(), character->getEntityId());
+    EXPECT_EQ(returnedChar->getEntityId(), id);
 }
 
 }  // namespace gamemanager

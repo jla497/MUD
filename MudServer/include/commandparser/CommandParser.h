@@ -5,6 +5,9 @@
 #include <unordered_map>
 #include <string>
 
+#include "gamemanager/Character.h"
+#include "actions/Action.h"
+#include "entities/CharacterEntity.h"
 
 #include "actions/Action.h"
 #include "entities/PlayerCharacter.h"
@@ -31,7 +34,7 @@ class CommandParser {
 public:
     CommandParser() = default;
     std::unique_ptr<Action> actionFromPlayerCommand(
-        PlayerCharacter* character, StrView command,
+        PlayerCharacter& character, StrView command,
         gamemanager::GameManager& gameManager);
 };
 
