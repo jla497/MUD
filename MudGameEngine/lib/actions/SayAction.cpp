@@ -8,7 +8,7 @@
 
 void SayAction::execute() {
     static auto logger = mudserver::logging::getLogger("SayAction::execute");
-    logger->info("Entered SayAction");
+    logger->debug("Entered SayAction");
 
     auto& gameState = gameManager.getState();
 
@@ -16,7 +16,7 @@ void SayAction::execute() {
     auto playerSayingMessage = this->characterPerformingAction;
     auto playersMessageTokens = this->entitiesBeingActedUpon;
 
-    //TODO: make CommandParser send the whole string, 
+    //TODO: make CommandParser send the whole string,
     //currently we are doing a lot of work right before executing the game logic,
     //it would be better to do this when the action is created.
 
@@ -56,6 +56,6 @@ void SayAction::execute() {
     }
 
 
-    logger->info("Exiting SayAction");
+    logger->debug("Exiting SayAction");
 
 }

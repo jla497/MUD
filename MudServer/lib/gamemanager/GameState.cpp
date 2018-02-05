@@ -26,7 +26,8 @@ void GameState::initRoomLUT() {
 /**
  * Add Methods
  */
-void GameState::addCharacterRoomRelationToLUT(PlayerCharacter* character, RoomEntity* room) {
+void GameState::addCharacterRoomRelationToLUT(PlayerCharacter* character,
+                                              RoomEntity* room) {
     characterRoomLookUp.left[character->getEntityId()] = room->getId();
 }
 
@@ -35,7 +36,12 @@ void GameState::addRoomToLUT(RoomEntity* room) {
 }
 
 void GameState::addCharacter(unique_ptr<PlayerCharacter> character) {
-    characterLookUp[character->getEntityId()] = std::move(character);
+    auto id = character->getEntityId();
+    characterLookUp[id] = std::move(character);
+    //TODO: implement a configurable default spawn point
+    //currently just takes the first room loaded
+    addCharacterRoomRelationToLUT(characterLookUp[id].get(),
+                                  roomLookUp.begin()->second);
 }
 
 void GameState::addAreaFromParser() {

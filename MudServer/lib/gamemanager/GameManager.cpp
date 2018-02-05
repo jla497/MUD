@@ -21,9 +21,10 @@ using boost::format;
 using boost::str;
 using std::vector;
 
-GameManager::GameManager(connection::ConnectionManager& connMan)
+GameManager::GameManager(connection::ConnectionManager& connMan,
+                         GameState& gameState)
     : connectionManager{connMan},
-      gameState(),
+      gameState{gameState},
       commandParser(),
       tick{DEFAULT_TICK_LENGTH_MS},
       done{false},
@@ -43,8 +44,8 @@ void GameManager::mainLoop() {
 
     using clock = std::chrono::high_resolution_clock;
 
+    auto startTime = clock::now();
     while (!done) {
-        auto startTime = clock::now();
         unique_ptr<gameAndUserMsgs> messagesForConnMan;
 
         if (connectionManager.update()) {
@@ -57,19 +58,13 @@ void GameManager::mainLoop() {
 
         processMessages(*messages);
 
-        performQueuedActions();
-
-        sendMessagesToPlayers();
-
-        auto delta = startTime - clock::now();
-
-        if (tick > delta) {
-            std::this_thread::sleep_for(tick - delta);
-        } else {
-            logger->warning(str(format("%s %d %s") %
-                                "Game loop length exceeded tick time of" %
-                                tick.count() % "ms"));
+        auto delta = clock::now() - startTime;
+        if (delta >= tick) {
+            startTime = clock::now();
+            performQueuedActions();
+            sendMessagesToPlayers();
         }
+
     }
 }
 
@@ -94,7 +89,6 @@ void GameManager::processMessages(gameAndUserMsgs& messages) {
 
         // look up player's character
         // pointer is used as player may not have character yet
-
         auto character = playerToCharacter(player);
         if (!character) {
             // create a new character for the player and add it to the game
@@ -103,14 +97,12 @@ void GameManager::processMessages(gameAndUserMsgs& messages) {
         }
         auto& playerCharacter = *playerToCharacter(player);
 
-        // auto room = gameState.getCharacterLocation(character);
-
         // parse message into verb/object
         std::unique_ptr<Action> action = commandParser.actionFromPlayerCommand(
             playerCharacter, message->text, *this);
 
         std::stringstream retMessage;
-        retMessage << *action;
+        retMessage << "DEBUG: " << *action;
 
         enqueueAction(std::move(action));
 
