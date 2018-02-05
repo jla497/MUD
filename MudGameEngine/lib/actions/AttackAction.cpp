@@ -8,7 +8,7 @@ void AttackAction::execute() {
 	auto& gameState = gameManager.getState();
 
 	//get my character
-	// auto myChar = gameState.getCharacter(entityPerformingAction);
+	// auto myChar = gameState.getCharacter(characterPerformingAction);
 
 	// //get my room
 	// auto room = gameState.getCharacterLocation(myChar);

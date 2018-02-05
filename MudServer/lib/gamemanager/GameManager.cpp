@@ -96,15 +96,17 @@ void GameManager::processMessages(gameAndUserMsgs& messages) {
         // pointer is used as player may not have character yet
         auto character = playerToCharacter(player);
         if (!character) {
-            // create a new character for the player and add it to the game state
+            // create a new character for the player and add it to the game
+            // state
             addPlayerCharacter(playerId);
-            character = playerToCharacter(player);
         }
+        auto& playerCharacter = *playerToCharacter(player);
+
         //auto room = gameState.getCharacterLocation(character);
 
         // parse message into verb/object
         std::unique_ptr<Action> action = commandParser.actionFromPlayerCommand(
-            character, message->text, *this);
+            playerCharacter, message->text, *this);
 
         std::stringstream retMessage;
         retMessage << *action;

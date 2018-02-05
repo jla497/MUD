@@ -32,7 +32,7 @@ class CommandParser {
 public:
     CommandParser() = default;
     std::unique_ptr<Action> actionFromPlayerCommand(
-       CharacterEntity* character, StrView command,
+        PlayerCharacter& character, StrView command,
         gamemanager::GameManager& gameManager);
 };
 
