@@ -5,9 +5,9 @@
 #include <unordered_map>
 #include <string>
 
-#include "gamemanager/Character.h"
-#include "actions/Action.h"
 
+#include "actions/Action.h"
+#include "entities/PlayerCharacter.h"
 
 class Action;                                     // forward declaration
 namespace mudserver {
@@ -31,7 +31,7 @@ class CommandParser {
 public:
     CommandParser() = default;
     std::unique_ptr<Action> actionFromPlayerCommand(
-        gamemanager::Character* character, StrView command,
+        PlayerCharacter* character, StrView command,
         gamemanager::GameManager& gameManager);
 };
 

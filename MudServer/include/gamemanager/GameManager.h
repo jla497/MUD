@@ -10,8 +10,11 @@
 #include "commandparser/CommandParser.h"
 #include "connectionmanager/ConnectionManager.h"
 #include "entities/Entity.h"
+#include "entities/CharacterEntity.h"
+#include "entities/PlayerCharacter.h"
 #include "actions/Action.h"
 #include "GameState.h"
+#include "Character.h"
 #include "Player.h"
 
 namespace mudserver {

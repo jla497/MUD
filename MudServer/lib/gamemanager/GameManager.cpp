@@ -86,7 +86,7 @@ void GameManager::processMessages(gameAndUserMsgs& messages) {
 
         // look up player's character
         // pointer is used as player may not have character yet
-        Character* character = player.getCharacter();
+        PlayerCharacter* character = player.getCharacter();
         if (character) {
             // look up character's location
 //            Room& room = gameState.getCharacterLocation(*character);
