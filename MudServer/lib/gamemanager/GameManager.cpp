@@ -43,8 +43,8 @@ void GameManager::mainLoop() {
 
     using clock = std::chrono::high_resolution_clock;
 
+    auto startTime = clock::now();
     while (!done) {
-        auto startTime = clock::now();
         unique_ptr<gameAndUserMsgs> messagesForConnMan;
 
         if (connectionManager.update()) {
@@ -57,19 +57,13 @@ void GameManager::mainLoop() {
 
         processMessages(*messages);
 
-        performQueuedActions();
-
-        sendMessagesToPlayers();
-
-        auto delta = startTime - clock::now();
-
-        if (tick > delta) {
-            std::this_thread::sleep_for(tick - delta);
-        } else {
-            logger->warning(str(format("%s %d %s") %
-                                "Game loop length exceeded tick time of" %
-                                tick.count() % "ms"));
+        auto delta = clock::now() - startTime;
+        if (delta >= tick) {
+            startTime = clock::now();
+            performQueuedActions();
+            sendMessagesToPlayers();
         }
+
     }
 }
 
@@ -101,8 +95,6 @@ void GameManager::processMessages(gameAndUserMsgs& messages) {
             addPlayerCharacter(playerId);
         }
         auto& playerCharacter = *playerToCharacter(player);
-
-        //auto room = gameState.getCharacterLocation(character);
 
         // parse message into verb/object
         std::unique_ptr<Action> action = commandParser.actionFromPlayerCommand(
