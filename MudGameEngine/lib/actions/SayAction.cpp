@@ -10,16 +10,11 @@ void SayAction::execute() {
     static auto logger = mudserver::logging::getLogger("SayAction::execute");
     logger->info("Entered SayAction");
 
-    auto gameState = gameManager.getState();
+    auto& gameState = gameManager.getState();
 
     // get player who is saying the message
-    auto playerSayingMessage = playerCharacter;
-    auto playersMessageTokens = entitiesBeingActedUpon;
-    if(playerSayingMessage == NULL){
-        //output error (DEBUG LOG)
-        logger->error("Player does not exist");
-        return;
-    }
+    auto playerSayingMessage = this->characterPerformingAction;
+    auto playersMessageTokens = this->entitiesBeingActedUpon;
 
     //TODO: make CommandParser send the whole string, 
     //currently we are doing a lot of work right before executing the game logic,
@@ -37,15 +32,15 @@ void SayAction::execute() {
     }
 
     //--get the room the player is in
-    auto roomPlayerIsIn = gameState.getCharacterLocation(playerSayingMessage);
+    auto roomPlayerIsIn = gameState.getCharacterLocation(&playerSayingMessage);
     if(roomPlayerIsIn == nullptr){
         logger->error("roomPlayerIsIn does not exist");
     }
 
     //--get list of players in the room
     auto IDsOfPlayersInRoom = gameState.getCharactersInRoom(roomPlayerIsIn);
-    auto sayingPlayersId = playerSayingMessage->getEntityId().getId();
-    auto sayingPlayersShortDesc = playerSayingMessage->getShortDesc();
+    auto sayingPlayersId = playerSayingMessage.getEntityId().getId();
+    auto sayingPlayersShortDesc = playerSayingMessage.getShortDesc();
 
     //--send the message to all the players except the one who sent it
     for(auto characterID : IDsOfPlayersInRoom){
