@@ -15,6 +15,6 @@ std::ostream& operator<<(std::ostream& os, const Action& action) {
     for (const auto& entity : action.entitiesBeingActedUpon) {
         os << entity << ", ";
     }
-    os << "]";
+    os << "]" << std::endl;
     return os;
 }
