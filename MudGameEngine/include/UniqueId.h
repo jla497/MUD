@@ -13,6 +13,8 @@ class UniqueId {
    public:
     UniqueId() : id(nextUniqueId++) {}
 
+    unsigned int getId();
+
     bool operator==(const UniqueId& rhs ) const {
         return ( id == rhs.id );
     }

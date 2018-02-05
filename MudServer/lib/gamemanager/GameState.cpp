@@ -26,12 +26,16 @@ void GameState::initRoomLUT() {
 /**
  * Add Methods
  */
-void GameState::addCharacterToLookUp(PlayerCharacter* character, RoomEntity* room) {
+void GameState::addCharacterRoomRelationToLUT(PlayerCharacter* character, RoomEntity* room) {
     characterRoomLookUp.left[character->getEntityId()] = room->getId();
 }
 
 void GameState::addRoomToLUT(RoomEntity* room) {
     roomLookUp[room->getId()] = room;
+}
+
+void GameState::addCharacterToLUT(PlayerCharacter* character) {
+    characterLookUp[character->getEntityId()] = character;
 }
 
 void GameState::addAreaFromParser() {
@@ -44,6 +48,12 @@ void GameState::addAreaFromParser() {
  */
 RoomEntity* GameState::getRoomFromLUT(const roomId id) {
     return roomLookUp.find(id)->second;
+}
+
+PlayerCharacter* GameState::getCharacterFromLUT(UniqueId id) {
+//    unsigned int uid = std::stoul(id, nullptr, 0);
+    return characterLookUp.find(id)->second;
+
 }
 
 RoomEntity* GameState::getCharacterLocation(PlayerCharacter* character) {
