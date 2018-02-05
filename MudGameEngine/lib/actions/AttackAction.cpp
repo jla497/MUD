@@ -13,7 +13,7 @@ void AttackAction::execute() {
 
  //    // get player who is attacking
  //    auto playerAttacking = this->characterPerformingAction;
- //    auto attackTargetNames = this->entitiesBeingActedUpon;
+ //    auto attackTargetNames = this->actionArguments;
 
  //    //--get the room the player is in
  //    auto roomPlayerIsIn = gameState.getCharacterLocation(&playerAttacking);

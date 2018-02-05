@@ -23,7 +23,7 @@ public:
 protected:
     virtual std::string description() const = 0;
     PlayerCharacter& characterPerformingAction;
-    std::vector<std::string> entitiesBeingActedUpon;
+    std::vector<std::string> actionArguments;
     mudserver::gamemanager::GameManager& gameManager;
 };
 #endif
