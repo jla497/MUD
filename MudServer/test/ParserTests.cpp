@@ -4,6 +4,7 @@
 #include "YamlParser.h"
 #include "entities/Entity.h"
 #include "gamemanager/LutBuilder.h"
+#include "Reset.h"
 
 class ParserTests : public testing::Test {
     virtual void SetUp() {
@@ -41,6 +42,10 @@ TEST_F(ParserTests, TestGetAllNPCS) {
 
 TEST_F(ParserTests, TestGetAllObjects) {
   auto objects = parser.getAllObjects();
+}
+
+TEST_F(ParserTests, TestGetAllResets) {
+  auto resets = parser.getAllResets();
 }
 
 TEST_F(ParserTests, TestParseArea) {
