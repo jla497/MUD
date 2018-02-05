@@ -4,8 +4,10 @@
 #include "Action.h"
 #include "gamemanager/GameManager.h"
 
-// The SayAction class defines the behavior for when an player sends a message
-// to every other player in the room.
+/**
+ * The SayAction class defines the behavior for when an player sends a message
+ * to every other player in the room.
+ */
 class SayAction : public Action {
 public:
     using Action::Action;

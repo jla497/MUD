@@ -4,8 +4,10 @@
 #include "Action.h"
 #include "gamemanager/GameManager.h"
 
-// The MoveAction class defines the behavior for when an Player moves from one
-// Room to another.
+/**
+ * The MoveAction class defines the behavior for when a player character moves
+ * from one room to another.
+ */
 class MoveAction : public Action {
 public:
     using Action::Action;
