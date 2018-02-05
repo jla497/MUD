@@ -5,13 +5,15 @@ namespace mudserver {
 namespace gamemanager { class GameManager; }
 }
 
+#include <string>
+#include <vector>
 #include "entities/Entity.h"
 #include "entities/PlayerCharacter.h"
 
 // The Action class defines the interface that all actions conform to.
 class Action {
 public:
-    Action(PlayerCharacter& entityPerformingAction,
+    Action(PlayerCharacter& characterPerformingAction,
            std::vector<std::string> entitiesBeingActedUpon,
            mudserver::gamemanager::GameManager& gameManager);
 

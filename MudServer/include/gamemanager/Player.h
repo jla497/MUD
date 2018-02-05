@@ -5,24 +5,24 @@
 #include "entities/CharacterEntity.h"
 
 namespace mudserver {
-namespace gamemanager {
+    namespace gamemanager {
 
-using PlayerId = uintptr_t;
+        using PlayerId = uintptr_t;
 
-class Player {
-    PlayerId id;
-    std::string username;
-    std::string password;
-    CharacterEntity* character;
+        class Player {
+            PlayerId id;
+            std::string username;
+            std::string password;
+            CharacterEntity* character;
 
-public:
+        public:
     /**
      * Default constructor
      */
-    Player(PlayerId id, std::string username, std::string password);
+            Player(PlayerId id, std::string username, std::string password);
 
-    PlayerId getId() const;
-};
+            PlayerId getId() const;
+        };
 
 }  // namespace gamemanager
 }  // namespace mudserver
