@@ -19,6 +19,7 @@ target_link_libraries(mudtest connectionmanager)
 target_link_libraries(mudtest gamemanager)
 target_link_libraries(mudtest entity)
 target_link_libraries(mudtest parser)
+target_link_libraries(mudtest reset)
 
 target_link_libraries(mudtest commandparser)
 add_test(ConnectionManagerTests mudtest)

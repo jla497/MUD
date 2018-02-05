@@ -99,8 +99,33 @@ std::unique_ptr<ObjectEntity> YamlParser::parseObject(YAML::Node objectNode){
     return object;
 }
 
-void YamlParser::parseReset(YAML::Node resetNode){
+std::unique_ptr<Reset> YamlParser::parseReset(YAML::Node resetNode){
+    int id = resetNode[ID].as<int>();
+    std::string action = resetNode[ACTION].as<std::string>();
+    std::string comment = "";
+    if (resetNode[COMMENT]){
+        comment = resetNode[COMMENT].as<std::string>(); 
+    }
+    std::string state = "";
+    if (resetNode[STATE]) {
+        state = resetNode[STATE].as<std::string>();
+    }
+    int slot = -1;
+    if (resetNode[SLOT]) {
+        slot = resetNode[SLOT].as<int>();
+    }
+    int limit = -1;
+    if (resetNode[LIMIT]) {
+        limit = resetNode[LIMIT].as<int>();
+    }
+    int roomID = -1;
+    if (resetNode[ROOM]) {
+        roomID = resetNode[ROOM].as<int>();
+    }
 
+    auto reset = std::make_unique<Reset>(id, action, comment, state, slot, limit, roomID);
+
+    return reset;
 }
 
 void YamlParser::parseHelp(YAML::Node helpNode){
@@ -194,8 +219,16 @@ std::vector<std::unique_ptr<ObjectEntity>> YamlParser::getAllObjects(){
     return objects;
 }
 
-void YamlParser::getAllResets(){
-    //World original state?
+std::vector<std::unique_ptr<Reset>> YamlParser::getAllResets(){
+    std::vector<std::unique_ptr<Reset>> resets;
+    for (auto& document : data) {
+        std::for_each(document[RESETS_ENT].begin(), document[RESETS_ENT].end(), 
+            [&](YAML::Node node){
+                resets.push_back(std::move(parseReset(node)));
+            });
+    }
+
+    return resets;
 }
 
 void YamlParser::getAllHelps(){
