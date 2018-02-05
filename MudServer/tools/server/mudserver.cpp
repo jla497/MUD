@@ -24,6 +24,7 @@ int main(int argc, char* argv[]) {
     mudserver::connection::ConnectionManager connectionManager{port};
     mudserver::gamemanager::GameState gameState{};
     gameState.parseYamlFile(argv[2]);
+    gameState.initRoomLUT();
     mudserver::gamemanager::GameManager gameManager{connectionManager, gameState};
 
     std::cout << "---------------------MUD Server Console---------------------"
