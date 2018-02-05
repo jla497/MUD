@@ -9,6 +9,8 @@
 #include "actions/Action.h"
 #include "entities/CharacterEntity.h"
 
+#include "actions/Action.h"
+#include "entities/PlayerCharacter.h"
 
 class Action;                                     // forward declaration
 namespace mudserver {

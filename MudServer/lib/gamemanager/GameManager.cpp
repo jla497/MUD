@@ -1,29 +1,30 @@
+#include <boost/format.hpp>
 #include <iomanip>
 #include <iostream>
-#include <sstream>
 #include <memory>
+#include <sstream>
 #include <thread>
 #include <vector>
-#include <boost/format.hpp>
 
 #include "connectionmanager/ConnectionManager.h"
-#include "gamemanager/GameManager.h"
 #include "entities/PlayerCharacter.h"
-#include "resources/PlayerCharacterDefaults.h"
+#include "gamemanager/GameManager.h"
 #include "logging.h"
+#include "resources/PlayerCharacterDefaults.h"
 
 namespace mudserver {
 namespace gamemanager {
 
 namespace pc = mudserver::resources::playercharacter;
 
-using std::vector;
-using boost::str;
 using boost::format;
+using boost::str;
+using std::vector;
 
-GameManager::GameManager(connection::ConnectionManager& connMan)
+GameManager::GameManager(connection::ConnectionManager& connMan,
+                         GameState& gameState)
     : connectionManager{connMan},
-      gameState(),
+      gameState{gameState},
       commandParser(),
       tick{DEFAULT_TICK_LENGTH_MS},
       done{false},
@@ -101,7 +102,7 @@ void GameManager::processMessages(gameAndUserMsgs& messages) {
             playerCharacter, message->text, *this);
 
         std::stringstream retMessage;
-        retMessage << *action;
+        retMessage << "DEBUG: " << *action;
 
         enqueueAction(std::move(action));
 
@@ -134,10 +135,7 @@ void GameManager::performQueuedActions() {
         actions.pop();
     }
 }
-
-GameState& GameManager::getState() {
-    return gameState;
-}
+GameState& GameManager::getState() { return gameState; }
 
 void GameManager::sendCharacterMessage(UniqueId characterId,
                                        std::string message) {
@@ -146,7 +144,7 @@ void GameManager::sendCharacterMessage(UniqueId characterId,
     enqueueMessage(conn, std::move(message));
 }
 
-//TODO: Factor out into a new class
+// TODO: Factor out into a new class
 // Technical debt alert:
 // I believe the player-character mapping is complex enough to factor out into
 // a new class - possibly will be the LoginManager once we get that far

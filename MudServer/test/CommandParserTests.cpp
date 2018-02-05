@@ -7,6 +7,7 @@
 #include "entities/PlayerCharacter.h"
 #include "MockGameManager.h"
 #include "MockConnectionManager.h"
+#include "gamemanager/GameState.h"
 
 #include "actions/AttackAction.h"
 #include "actions/MoveAction.h"
@@ -14,11 +15,12 @@
 #include "actions/SayAction.h"
 
 using mudserver::commandparser::CommandParser;
+using mudserver::gamemanager::GameState;
 
 class CommandParserTest : public ::testing::Test {
 public:
     CommandParserTest()
-        : cp{}, cm{}, gm{cm} {
+        : cp{}, cm{}, gs{}, gm{cm, gs} {
 
         int armor = 1;
         std::string damage = "1";
@@ -43,6 +45,7 @@ public:
 
     CommandParser cp;
     MockConnectionManager cm;
+    GameState gs;
     MockGameManager gm;
     PlayerCharacter ch;
 };

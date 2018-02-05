@@ -4,16 +4,19 @@
 #include <boost/bimap.hpp>
 #include <chrono>
 #include <memory>
-#include <unordered_map>
 #include <queue>
+#include <unordered_map>
 
-#include "commandparser/CommandParser.h"
-#include "connectionmanager/ConnectionManager.h"
-#include "entities/Entity.h"
-#include "actions/Action.h"
+#include "Character.h"
 #include "GameState.h"
 #include "Player.h"
 #include "UniqueId.h"
+#include "actions/Action.h"
+#include "commandparser/CommandParser.h"
+#include "connectionmanager/ConnectionManager.h"
+#include "entities/CharacterEntity.h"
+#include "entities/Entity.h"
+#include "entities/PlayerCharacter.h"
 
 namespace mudserver {
 namespace gamemanager {
@@ -30,7 +33,7 @@ using std::unique_ptr;
 using std::vector;
 
 class GameManager {
-    GameState gameState;
+    GameState& gameState;
     GameLoopTick tick;
     bool done;
     CommandParser commandParser;
@@ -52,10 +55,11 @@ class GameManager {
     PlayerCharacter* playerIdToCharacter(PlayerId playerId);
     Player& characterToPlayer(const PlayerCharacter& character);
     Player& characterIdToPlayer(UniqueId characterId);
-public:
-    explicit GameManager(connection::ConnectionManager& connMan);
-    GameManager(const GameManager& gm) = delete;
 
+public:
+    GameManager(connection::ConnectionManager& connMan,
+                    GameState& gameState);
+    GameManager(const GameManager& gm) = delete;
     void mainLoop();
     GameState& getState();
 
@@ -63,7 +67,7 @@ public:
     void addPlayerCharacter(PlayerId playerId);
 };
 
-}  // namespace mudserver
 }  // namespace gamemanager
+}  // namespace mudserver
 
 #endif

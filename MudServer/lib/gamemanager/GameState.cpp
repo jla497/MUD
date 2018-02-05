@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "gamemanager/GameState.h"
+#include "logging.h"
 
 namespace mudserver {
 namespace gamemanager {
@@ -26,7 +27,8 @@ void GameState::initRoomLUT() {
 /**
  * Add Methods
  */
-void GameState::addCharacterRoomRelationToLUT(PlayerCharacter* character, RoomEntity* room) {
+void GameState::addCharacterRoomRelationToLUT(PlayerCharacter* character,
+                                              RoomEntity* room) {
     characterRoomLookUp.left[character->getEntityId()] = room->getId();
 }
 
@@ -35,10 +37,22 @@ void GameState::addRoomToLUT(RoomEntity* room) {
 }
 
 void GameState::addCharacter(unique_ptr<PlayerCharacter> character) {
-    characterLookUp[character->getEntityId()] = std::move(character);
+    auto id = character->getEntityId();
+    characterLookUp[id] = std::move(character);
+    //TODO: implement a configurable default spawn point
+    //currently just takes the first room loaded
+    auto roomLookupBegin = roomLookUp.begin();
+    if (roomLookupBegin != roomLookUp.end()) {
+        addCharacterRoomRelationToLUT(characterLookUp[id].get(),
+                                      roomLookupBegin->second);
+    } else {
+        auto logger = logging::getLogger("GameState::addCharacter");
+        logger->error("No rooms found, character not added to room");
+    }
 }
 
 void GameState::addAreaFromParser() {
+    //TODO: GameState should *own* Areas, not just have raw pointers to them
     areas.push_back(parser.getArea().get());
 }
 
@@ -60,9 +74,12 @@ RoomEntity* GameState::getCharacterLocation(PlayerCharacter* character) {
 }
 
 vector<UniqueId> GameState::getCharactersInRoom(RoomEntity* room) {
+    if(room == nullptr){
+        //return an empty vector
+        return {};
+    }
     vector<UniqueId> characters;
-    //TODO: can we use native foreach loop here?
-    BOOST_FOREACH(CharacterRoomLookupTable::left_const_reference p, characterRoomLookUp.left ) {
+    for (auto& p : characterRoomLookUp.left ) {
         if (p.second == room->getId()) {
             characters.push_back(p.first);
         }

@@ -1,8 +1,8 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include <string>
 #include "entities/CharacterEntity.h"
+#include <string>
 
 namespace mudserver {
 namespace gamemanager {
