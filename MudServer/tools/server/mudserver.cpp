@@ -14,7 +14,7 @@ using networking::Port;
 
 int main(int argc, char* argv[]) {
     if (argc < 2) {
-        printf("Usage:\n%s <port>\ne.g. %s 4002\n", argv[0], argv[0]);
+        printf("Usage:\n%s <port> [world file]\ne.g. %s 4002 mgoose.yml\n", argv[0], argv[0]);
         return 1;
     }
 
@@ -22,7 +22,9 @@ int main(int argc, char* argv[]) {
     mudserver::logging::setLogLevel(mudserver::logging::LogLevel::debug);
 
     mudserver::connection::ConnectionManager connectionManager{port};
-    mudserver::gamemanager::GameManager gameManager{connectionManager};
+    mudserver::gamemanager::GameState gameState{};
+    gameState.parseYamlFile(argv[2]);
+    mudserver::gamemanager::GameManager gameManager{connectionManager, gameState};
 
     std::cout << "---------------------MUD Server Console---------------------"
               << std::endl;

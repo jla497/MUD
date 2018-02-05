@@ -30,7 +30,7 @@ using std::unique_ptr;
 using std::vector;
 
 class GameManager {
-    GameState gameState;
+    GameState& gameState;
     GameLoopTick tick;
     bool done;
     CommandParser commandParser;
@@ -53,7 +53,8 @@ class GameManager {
     Player& characterToPlayer(const PlayerCharacter& character);
     Player& characterIdToPlayer(UniqueId characterId);
 public:
-    explicit GameManager(connection::ConnectionManager& connMan);
+    GameManager(connection::ConnectionManager& connMan,
+                    GameState& gameState);
     GameManager(const GameManager& gm) = delete;
 
     void mainLoop();

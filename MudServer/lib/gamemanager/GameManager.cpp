@@ -21,9 +21,10 @@ using std::vector;
 using boost::str;
 using boost::format;
 
-GameManager::GameManager(connection::ConnectionManager& connMan)
+GameManager::GameManager(connection::ConnectionManager& connMan,
+                         GameState& gameState)
     : connectionManager{connMan},
-      gameState(),
+      gameState{gameState},
       commandParser(),
       tick{DEFAULT_TICK_LENGTH_MS},
       done{false},
