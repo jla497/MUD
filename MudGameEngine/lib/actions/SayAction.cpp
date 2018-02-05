@@ -25,6 +25,7 @@ void SayAction::execute() {
     for(auto const& stringToken : playersMessageTokens){
         stringStream << stringToken;
     }
+
     auto messageSentByPlayer = stringStream.str();
     if(messageSentByPlayer.empty()){
         //do nothing on an empty messsage
@@ -44,11 +45,17 @@ void SayAction::execute() {
 
     //--send the message to all the players except the one who sent it
     for(auto characterID : IDsOfPlayersInRoom){
-        if(characterID.getId() != sayingPlayersId){
+        logger->info("calling gameManager.sendCharacterMessage()");
+        //if(characterID.getId() != sayingPlayersId){
             gameManager.sendCharacterMessage(characterID,
-                sayingPlayersShortDesc + " says: " + messageSentByPlayer
+                sayingPlayersShortDesc + ": " + messageSentByPlayer
                 );
 
-        }
-    }   
+
+      //  }
+    }
+
+
+    logger->info("Exiting SayAction");
+
 }
