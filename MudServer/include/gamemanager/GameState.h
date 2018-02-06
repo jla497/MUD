@@ -43,6 +43,7 @@ class GameState {
     CharacterLookUp characterLookUp;
     deque<unique_ptr<AreaEntity>> areas;
     YamlParser parser;
+    std::unique_ptr<AreaEntity> area;
 
 public:
 
@@ -62,6 +63,7 @@ public:
     vector<UniqueId> getCharactersInRoom(RoomEntity* room);
     PlayerCharacter* getCharacterFromLUT(UniqueId id);
     RoomEntity* getCharacterLocation(PlayerCharacter* character);
+    RoomEntity* getCharacterLocation(PlayerCharacter& character);
     RoomEntity* getRoomFromLUT(const roomId);
     void clearAreas();
     void clearCharacterRoomLUT();

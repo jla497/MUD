@@ -89,7 +89,6 @@ class GameManager {
      * @param playerId the player's id
      * @return the player's character (may be null)
      */
-    PlayerCharacter* playerIdToCharacter(PlayerId playerId);
     /**
      * Given a character, return a reference to the character's player.
      * @param character the character
@@ -103,11 +102,14 @@ class GameManager {
      */
     Player& characterIdToPlayer(UniqueId characterId);
 
+    PlayerCharacter* playerIdToCharacter(PlayerId playerId);
+
     /**
      * Create and add a new player character to the game state.
      * @param playerId the player's id
      */
     void addPlayerCharacter(PlayerId playerId);
+
 public:
     /**
      * The GameManager is constructed with references to a ConnectionManager and
@@ -131,6 +133,7 @@ public:
      * @return the game state
      */
     GameState& getState();
+
 
     /**
      * Send a message to a given character. This will translate to sending a

@@ -29,8 +29,8 @@ void GameState::initRoomLUT() {
 /**
  * Add Methods
  */
-void GameState::addCharacterRoomRelationToLUT(UniqueId characterId,
-                                              unsigned int roomId) {
+
+void GameState::addCharacterRoomRelationToLUT(UniqueId characterId,unsigned int roomId) {
     characterRoomLookUp.left[characterId] = roomId;
 }
 
@@ -43,7 +43,7 @@ void GameState::addCharacter(unique_ptr<PlayerCharacter> character) {
     characterLookUp[id] = std::move(character);
     //TODO: implement a configurable default spawn point
     //currently just takes the first room loaded
-    auto roomLookupBegin = roomLookUp.begin();
+        auto roomLookupBegin = roomLookUp.begin();
     if (roomLookupBegin != roomLookUp.end()) {
         addCharacterRoomRelationToLUT(id, roomLookupBegin->second->getId());
     } else {
@@ -73,8 +73,16 @@ RoomEntity* GameState::getCharacterLocation(PlayerCharacter* character) {
     return roomLookUp.find(id)->second;
 }
 
+RoomEntity* GameState::getCharacterLocation(PlayerCharacter& character) {
+    auto roomid = characterRoomLookUp.left.find(character.getEntityId())->second;
+    
+    auto room = roomLookUp.find(roomid)->second;
+    // std::cout<<"room's id: "<<room->getId()<<std::endl;
+    return roomLookUp.find(roomid)->second;
+}
+
 vector<UniqueId> GameState::getCharactersInRoom(RoomEntity* room) {
-    if(room == nullptr){
+    if (room == nullptr) {
         //return an empty vector
         return {};
     }

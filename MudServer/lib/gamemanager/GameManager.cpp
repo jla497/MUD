@@ -45,15 +45,15 @@ void GameManager::mainLoop() {
     using clock = std::chrono::high_resolution_clock;
 
     auto startTime = clock::now();
+
     while (!done) {
         unique_ptr<gameAndUserMsgs> messagesForConnMan;
-
-        if (connectionManager.update()) {
+         if (connectionManager.update()) {
             // An error was encountered, stop
             done = true;
             continue;
         }
-
+    
         auto messages = connectionManager.sendToGameManager();
 
         processMessages(*messages);
@@ -70,7 +70,9 @@ void GameManager::mainLoop() {
 
 void GameManager::processMessages(gameAndUserMsgs& messages) {
     static auto logger = logging::getLogger("GameManager::processMessages");
+  
     for (auto& message : messages) {
+
         // look up player from ID
         auto playerId = message->conn.id;
         logger->debug(std::to_string(playerId) + ": " + message->text);
@@ -135,7 +137,8 @@ void GameManager::performQueuedActions() {
         actions.pop();
     }
 }
-GameState& GameManager::getState() { return gameState; }
+
+GameState &GameManager::getState() { return gameState; }
 
 void GameManager::sendCharacterMessage(UniqueId characterId,
                                        std::string message) {
@@ -149,9 +152,6 @@ void GameManager::sendCharacterMessage(UniqueId characterId,
 // I believe the player-character mapping is complex enough to factor out into
 // a new class - possibly will be the LoginManager once we get that far
 
-PlayerCharacter* GameManager::playerToCharacter(const Player& player) {
-    return playerIdToCharacter(player.getId());
-}
 
 PlayerCharacter* GameManager::playerIdToCharacter(PlayerId playerId) {
     auto entry = playerCharacterBimap.left.find(playerId);
@@ -161,6 +161,10 @@ PlayerCharacter* GameManager::playerIdToCharacter(PlayerId playerId) {
     }
 
     return nullptr;
+}
+
+PlayerCharacter* GameManager::playerToCharacter(const Player& player) {
+    return playerIdToCharacter(player.getId());
 }
 
 Player& GameManager::characterToPlayer(const PlayerCharacter& character) {
@@ -184,6 +188,7 @@ void GameManager::addPlayerCharacter(PlayerId playerId) {
     playerCharacterBimap.insert(
         PcBmType::value_type(playerId, character->getEntityId()));
     gameState.addCharacter(std::move(character));
+
 }
 
 }  // namespace gamemanager
