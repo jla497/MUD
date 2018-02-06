@@ -13,7 +13,6 @@
 #include "entities/NonPlayerCharacter.h"
 #include "entities/ObjectEntity.h"
 #include "entities/RoomEntity.h"
-#include "resources/DataFields.h"
 
 
 class YamlParser {

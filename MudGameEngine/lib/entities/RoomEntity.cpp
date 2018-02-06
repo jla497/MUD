@@ -19,6 +19,10 @@ unsigned int RoomEntity::getId() {
   return m_roomId;
 }
 
+std::string RoomEntity::getName() {
+  return m_name;
+}
+
 std::vector<std::string> RoomEntity::getDesc() const {
   return m_desc;
 }
@@ -39,6 +43,10 @@ unsigned int RoomEntity::getDestRoomIdOf(std::string& dir) {
     [&] (std::unique_ptr<DoorEntity> & d) { 
       return d->getDir() == dir; 
     });  
+  //error checking
+  if(door == m_doors.end()) {
+    return -1;
+  }
   return (*door)->getDestRoomId();
 }
 

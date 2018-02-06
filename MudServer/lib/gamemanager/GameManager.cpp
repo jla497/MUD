@@ -20,6 +20,7 @@ namespace pc = mudserver::resources::playercharacter;
 using boost::format;
 using boost::str;
 using std::vector;
+int count = 0;
 
 GameManager::GameManager(connection::ConnectionManager& connMan,
                          GameState& gameState)
@@ -45,15 +46,20 @@ void GameManager::mainLoop() {
     using clock = std::chrono::high_resolution_clock;
 
     auto startTime = clock::now();
+
+    gameState.printLut("in mainLoop...");
+
     while (!done) {
         unique_ptr<gameAndUserMsgs> messagesForConnMan;
-
+        // gameState.printLut("before connectionmanager.update...");
         if (connectionManager.update()) {
             // An error was encountered, stop
             done = true;
             continue;
         }
 
+        // gameState.printLut("after connectionmanager.update...");
+            
         auto messages = connectionManager.sendToGameManager();
 
         processMessages(*messages);
@@ -70,7 +76,9 @@ void GameManager::mainLoop() {
 
 void GameManager::processMessages(gameAndUserMsgs& messages) {
     static auto logger = logging::getLogger("GameManager::processMessages");
+  
     for (auto& message : messages) {
+
         // look up player from ID
         auto playerId = message->conn.id;
         logger->debug(std::to_string(playerId) + ": " + message->text);
@@ -89,6 +97,7 @@ void GameManager::processMessages(gameAndUserMsgs& messages) {
 
         // look up player's character
         // pointer is used as player may not have character yet
+         gameState.printLut("before  playerToCharacter ...");
         auto character = playerToCharacter(player);
         if (!character) {
             // create a new character for the player and add it to the game
@@ -164,11 +173,11 @@ PlayerCharacter* GameManager::playerIdToCharacter(PlayerId playerId) {
     return nullptr;
 }
 
-Player& GameManager::characterToPlayer(const PlayerCharacter& character) {
+Player& GameManager::characterToPlayer(PlayerCharacter& character) {
     return characterIdToPlayer(character.getEntityId());
 }
 
-Player& GameManager::characterIdToPlayer(UniqueId characterId) {
+Player& GameManager::characterIdToPlayer(UniqueId& characterId) {
     auto playerId = playerCharacterBimap.right.find(characterId)->second;
     return players.at(playerId);
 }
@@ -182,6 +191,7 @@ void GameManager::addPlayerCharacter(PlayerId playerId) {
     playerCharacterBimap.insert(
         PcBmType::value_type(playerId, character->getEntityId()));
     gameState.addCharacter(std::move(character));
+
 }
 
 }  // namespace gamemanager

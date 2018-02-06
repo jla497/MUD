@@ -25,7 +25,7 @@ using std::unordered_map;
 using std::vector;
 
 using CharacterRoomLookupTable = bimap<set_of<UniqueId>, list_of<roomId>> ;
-using RoomLookupTable = std::map<roomId, RoomEntity*> ;
+using RoomLookupTable = std::unordered_map<roomId, RoomEntity*> ;
 using CharacterLookUp = std::map<UniqueId, unique_ptr<PlayerCharacter>> ;
 
 /**
@@ -41,6 +41,7 @@ class GameState {
     CharacterLookUp characterLookUp;
     vector<AreaEntity*> areas;
     YamlParser parser;
+    std::unique_ptr<AreaEntity> area;
 
 public:
 
@@ -62,6 +63,7 @@ public:
     RoomEntity* getRoomFromLUT(const roomId);
     void clearAreas();
     void clearCharacterRoomLUT();
+    void printLut(std::string str);
 
     };
 

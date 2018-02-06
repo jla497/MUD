@@ -53,8 +53,8 @@ class GameManager {
 
     PlayerCharacter* playerToCharacter(const Player& player);
     PlayerCharacter* playerIdToCharacter(PlayerId playerId);
-    Player& characterToPlayer(const PlayerCharacter& character);
-    Player& characterIdToPlayer(UniqueId characterId);
+    Player& characterToPlayer(PlayerCharacter& character);
+    Player& characterIdToPlayer(UniqueId& characterId);
 
 public:
     GameManager(connection::ConnectionManager& connMan,

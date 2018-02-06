@@ -19,7 +19,7 @@ private:
 public:
     Entity();
 
-    UniqueId getEntityId()const;
+    UniqueId& getEntityId();
 
     // default destructor does nothing
     // if you make a virtual destructor, does compiler

@@ -6,4 +6,4 @@ Entity::Entity() {
 	m_entityId = UniqueId();
 }
 
-UniqueId Entity::getEntityId() const { return m_entityId; }
+UniqueId& Entity::getEntityId() { return m_entityId; }

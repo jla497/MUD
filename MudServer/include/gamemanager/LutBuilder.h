@@ -29,7 +29,7 @@ using roomId = unsigned int;
 class LutBuilder {
 public:
 
-    std::map<roomId, RoomEntity*> createLUT(std::vector<std::unique_ptr<RoomEntity>>& mVector); 
+    std::unordered_map<roomId, RoomEntity*> createLUT(std::vector<std::unique_ptr<RoomEntity>>& mVector); 
 
     
 };

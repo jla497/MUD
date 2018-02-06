@@ -30,6 +30,8 @@ class RoomEntity : public Entity {
 
     unsigned int getId();
 
+    std::string getName();
+
     std::vector<std::string> getDesc() const;
 
     std::vector<std::string> getExtendedDesc() const;

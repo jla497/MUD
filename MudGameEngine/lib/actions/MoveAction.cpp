@@ -6,10 +6,11 @@ void MoveAction::execute() {
 	std::cout<<"in execute..."<<std::endl;
 	auto& gameState = gameManager.getState();
 	std::cout<<"character id: "<<characterPerformingAction.getEntityId().getId()<<std::endl;
-	auto room = gameState.getCharacterLocation(characterPerformingAction);
+	RoomEntity* room = gameState.getCharacterLocation(characterPerformingAction);
 	
 	if (room == NULL) {
 		std::cout<<"character not found in any room..."<<std::endl;
+		return;
 	}
 
 	std::cout<<"room id is : "<<room->getId()<<std::endl;
@@ -30,9 +31,18 @@ void MoveAction::execute() {
 
 		auto nextRoomId = room->getDestRoomIdOf(*direction);
 
+		//not a valid direction	
+		if(nextRoomId == -1) {
+			return;
+		}
+
 		std::cout<<"got nextRoomId..."<<std::endl;
 		//get nextroom
 		auto nextRoom = gameState.getRoomFromLUT(nextRoomId);
+		//Room with nextRoomId does not exist
+		if(nextRoom == NULL) {
+			return;
+		}
 
 		std::cout<<"got nextRoom..."<<std::endl;
 		//move the playerCharacter from the current room to the next room
@@ -41,6 +51,10 @@ void MoveAction::execute() {
 		room->removeEntity(characterId);
 
 		nextRoom->addEntity(characterId);
+
+		auto mCharacterPtr = &characterPerformingAction;
+		gameState.addCharacterRoomRelationToLUT(mCharacterPtr, nextRoom);
+
 		return;
 	}
 
