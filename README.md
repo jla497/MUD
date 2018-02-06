@@ -19,6 +19,6 @@ Client:
 ### Actions Supported
 - say 
 - move 
-- attack (attacj player by indicating shortDesc)
+- attack (attack player by indicating shortDesc)
 - look (at the room)
 
