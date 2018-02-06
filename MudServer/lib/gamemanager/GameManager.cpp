@@ -20,7 +20,6 @@ namespace pc = mudserver::resources::playercharacter;
 using boost::format;
 using boost::str;
 using std::vector;
-int count = 0;
 
 GameManager::GameManager(connection::ConnectionManager& connMan,
                          GameState& gameState)
@@ -153,9 +152,6 @@ void GameManager::sendCharacterMessage(UniqueId characterId,
 // I believe the player-character mapping is complex enough to factor out into
 // a new class - possibly will be the LoginManager once we get that far
 
-PlayerCharacter* GameManager::playerToCharacter(const Player& player) {
-    return playerIdToCharacter(player.getId());
-}
 
 PlayerCharacter* GameManager::playerIdToCharacter(PlayerId playerId) {
     auto entry = playerCharacterBimap.left.find(playerId);
@@ -165,6 +161,10 @@ PlayerCharacter* GameManager::playerIdToCharacter(PlayerId playerId) {
     }
 
     return nullptr;
+}
+
+PlayerCharacter* GameManager::playerToCharacter(const Player& player) {
+    return playerIdToCharacter(player.getId());
 }
 
 Player& GameManager::characterToPlayer(const PlayerCharacter& character) {

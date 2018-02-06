@@ -67,7 +67,6 @@ public:
     RoomEntity* getRoomFromLUT(const roomId);
     void clearAreas();
     void clearCharacterRoomLUT();
-    void printLut(std::string str);
 
     };
 

@@ -19,9 +19,7 @@ unsigned int RoomEntity::getId() {
   return m_roomId;
 }
 
-std::string RoomEntity::getName() {
-  return m_name;
-}
+std::string RoomEntity::getName() const { return m_name; }
 
 std::vector<std::string> RoomEntity::getDesc() const {
   return m_desc;
