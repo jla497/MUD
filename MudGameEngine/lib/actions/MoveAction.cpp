@@ -9,7 +9,7 @@ void MoveAction::execute() {
 	auto& gameState = gameManager.getState();
 	RoomEntity* room = gameState.getCharacterLocation(characterPerformingAction);
 	
-	if (room == NULL) {
+	if (!room) {
 		std::cout<<"character not found in any room..."<<std::endl;
 		return;
 	}
