@@ -31,23 +31,23 @@ void LookAction::execute() {
     
     if (actionArguments.empty()) {
         // default: player looking at room
-        auto roomName = characterCurrentRoom->getName();
-        auto roomDesc = characterCurrentRoom->getDesc();
+        // TODO: should it show list of npc and objects too?
+        std::string roomName = characterCurrentRoom->getName();
+        std::vector<std::string> roomDesc = characterCurrentRoom->getDesc();
         std::vector<std::string> roomDirs = characterCurrentRoom->getDirs();
+        std::string roomDescs = join(roomDesc, " ");
         std::string roomExits = join(roomDirs, " ");
 
-        // gameManager.sendCharacterMessage(
-        //     characterPerformingAction.getEntityId(),
-        //     boost::str(boost::format{"%s: %s\n%s: %s\n%s: %s"} %
-        //                    "Room Name" % roomName %
-        //                    "Description" % roomDesc %
-        //                    "Exits" % roomExits));
-
-         gameManager.sendCharacterMessage(
-            characterPerformingAction.getEntityId(), "looked at room");
+        gameManager.sendCharacterMessage(
+            characterPerformingAction.getEntityId(),
+            boost::str(boost::format{"%s: %s\n%s: %s\n%s: %s"} %
+                           "Room Name" % roomName %
+                           "Description" % roomDescs %
+                           "Exits" % roomExits));
 
     } else if (actionArguments.size() == MAX_LOOK_ARGS){
-        // look at object        
+        // TODO: look at object        
+        // Can you look at players?
         gameManager.sendCharacterMessage(
             characterPerformingAction.getEntityId(),
             "looked at object " + actionArguments.front());
@@ -59,13 +59,5 @@ void LookAction::execute() {
     }
 
 
-    // TODO: can players "look" at players?
-    //--get list of players in the room
-    // auto characterIdsInRoom =
-    //     gameState.getCharactersInRoom(characterCurrentRoom);
-    // if (characterIdsInRoom.empty()) {
-    //     logger->debug("There are no characters in the room, exiting");
-    //     return;
-    // }
 
 }
