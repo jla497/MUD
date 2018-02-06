@@ -4,8 +4,10 @@
 #include "Action.h"
 #include "gamemanager/GameManager.h"
 
-// The AttackAction class defines the behavior for when a player attacks a
-// creature
+/**
+ * The AttackAction class defines the behavior for when a player character
+ * attacks a creature or other character.
+ */
 class AttackAction : public Action {
 public:
     using Action::Action;

@@ -5,7 +5,6 @@
 #include <unordered_map>
 #include <string>
 
-#include "gamemanager/Character.h"
 #include "actions/Action.h"
 #include "entities/CharacterEntity.h"
 
@@ -29,10 +28,26 @@ enum class ActKeyword {
     actions
 };
 
+/**
+ * Uses Factory pattern to create correct derived type of Action depending on
+ * input.
+ */
 class CommandParser {
     static std::unordered_map<std::string, ActKeyword> actionLookup;
 public:
     CommandParser() = default;
+
+    /**
+     * Creates an Action from a player's command string. Called by GameManager
+     * when handling input from server.
+     *
+     * @param character reference to the player's character who is performing
+     *                  the action
+     * @param command a string containing the command ex. "attack shopkeeper"
+     * @param gameManager reference to the game manager so that actions can
+     *                    queue messages or alter game state
+     * @return the generated Action (will be a derived class)
+     */
     std::unique_ptr<Action> actionFromPlayerCommand(
         PlayerCharacter& character, StrView command,
         gamemanager::GameManager& gameManager);

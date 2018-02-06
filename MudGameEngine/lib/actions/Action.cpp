@@ -4,10 +4,10 @@
 #include "actions/Action.h"
 
 Action::Action(PlayerCharacter& characterPerformingAction,
-               std::vector<std::string> entitiesBeingActedUpon,
+               std::vector<std::string> actionArguments,
                mudserver::gamemanager::GameManager& gameManager)
     : characterPerformingAction{characterPerformingAction},
-      actionArguments{std::move(entitiesBeingActedUpon)},
+      actionArguments{std::move(actionArguments)},
       gameManager{gameManager} {}
 
 std::ostream& operator<<(std::ostream& os, const Action& action) {

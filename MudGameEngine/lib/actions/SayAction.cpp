@@ -48,12 +48,16 @@ void SayAction::execute() {
     }
 
     auto speakingCharacterDesc = playerSayingMessage.getShortDesc();
+    auto speakingCharacterId = playerSayingMessage.getEntityId();
 
-    //--send the message to all the players except the one who sent it
+    // send the message to all the players in the room
     for (auto characterID : characterIdsInRoom) {
         gameManager.sendCharacterMessage(
             characterID,
-            boost::str(boost::format{"%s: %s"} % speakingCharacterDesc %
+            boost::str(boost::format{"%s: %s"} %
+                       (speakingCharacterId == characterID
+                            ? "you"
+                            : speakingCharacterDesc) %
                        messageSentByPlayer));
     }
 }
