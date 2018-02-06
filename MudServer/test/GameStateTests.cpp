@@ -8,8 +8,7 @@ namespace gamemanager {
 class GameStateTest : public testing::Test {
 protected:
     virtual void SetUp() {
-        state.parseYamlFile("MudGameEngine/lib/dataFiles/detailed_smurf.yml");
-        state.initRoomLUT();
+        state.initFromYaml("MudGameEngine/lib/dataFiles/detailed_smurf.yml");
     }
 
     virtual void TearDown() {
@@ -41,7 +40,8 @@ TEST_F(GameStateTest, AddCharacterWithLocation) {
             keywords, level,longDesc, shortDesc, thac0
     );
     RoomEntity* room = state.getRoomFromLUT(roomId);
-    state.addCharacterRoomRelationToLUT(character1.get(), room);
+    state.addCharacterRoomRelationToLUT(character1->getEntityId(),
+                                        room->getId());
     RoomEntity* returnedRoom = state.getCharacterLocation(character1.get());
     EXPECT_EQ(returnedRoom->getId(), room->getId());
 }
@@ -70,15 +70,15 @@ TEST_F(GameStateTest, GetAllCharactersInRoom) {
             keywords, level,longDesc, shortDesc, thac0
     );
     RoomEntity* room = state.getRoomFromLUT(roomId);
-    state.addCharacterRoomRelationToLUT(character1.get(), room);
-    state.addCharacterRoomRelationToLUT(character2.get(), room);
+    state.addCharacterRoomRelationToLUT(character1->getEntityId(), room->getId());
+    state.addCharacterRoomRelationToLUT(character2->getEntityId(), room->getId());
     vector<UniqueId> charIDs = state.getCharactersInRoom(room);
     EXPECT_EQ(charIDs.size(), 2);
 }
 
 TEST_F(GameStateTest, AddAreaToAreasVector) {
     state.addAreaFromParser();
-    EXPECT_EQ(state.getAreas().size(), 1);
+    EXPECT_EQ(state.getAreas().size(), 2);
 }
 
 TEST_F(GameStateTest, AddNewRoom) {
