@@ -11,10 +11,10 @@ You may need to install these packages
 ### Usage
 
 Server:
-- ./mudserver <port> <yaml_files(s)>
+- ./mudserver \<port> \<yaml_files(s)>
 
 Client:
-- ./chatclient <host_ip> <port>
+- ./chatclient \<host_ip> \<port>
 
 ### Actions Supported
 - say 
