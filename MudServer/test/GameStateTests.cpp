@@ -122,5 +122,35 @@ TEST_F(GameStateTest, GetCharacterFromString) {
     EXPECT_EQ(returnedChar->getEntityId(), id);
 }
 
+TEST_F(GameStateTest, TestUpdatePlayerRoom) {
+    int armor = 1;
+    std::string damage = "1";
+    std::vector<std::string> desc {};
+    desc.push_back("desc1");
+    unsigned int exp = 1;
+    int gold = 1;
+    std::string hit = "1";
+    std::vector<std::string> keywords {};
+    keywords.push_back("keyword1");
+    unsigned int level = 1;
+    std::vector<std::string> longDesc {};
+    longDesc.push_back("desc1");
+    std::string shortDesc = "test";
+    int thac0 = 1;
+    auto character = std::make_unique<PlayerCharacter>(
+            armor, damage, desc, exp, gold, hit,
+            keywords, level,longDesc, shortDesc, thac0
+    );
+    RoomEntity* room = state.getRoomFromLUT(roomId);
+    state.addCharacterRoomRelationToLUT(character->getEntityId(), room->getId());
+    vector<UniqueId> charIDs = state.getCharactersInRoom(room);
+    EXPECT_EQ(charIDs.size(), 1);
+    room = state.getRoomFromLUT(roomId+1);
+    state.addCharacterRoomRelationToLUT(character->getEntityId(), room->getId());
+    charIDs = state.getCharactersInRoom(room);
+    EXPECT_EQ(charIDs.size(), 1);
+}
+
+
 }  // namespace gamemanager
 }  // namespace mudserver
