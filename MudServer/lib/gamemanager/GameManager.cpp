@@ -173,11 +173,11 @@ PlayerCharacter* GameManager::playerIdToCharacter(PlayerId playerId) {
     return nullptr;
 }
 
-Player& GameManager::characterToPlayer(PlayerCharacter& character) {
+Player& GameManager::characterToPlayer(const PlayerCharacter& character) {
     return characterIdToPlayer(character.getEntityId());
 }
 
-Player& GameManager::characterIdToPlayer(UniqueId& characterId) {
+Player& GameManager::characterIdToPlayer(UniqueId characterId) {
     auto playerId = playerCharacterBimap.right.find(characterId)->second;
     return players.at(playerId);
 }

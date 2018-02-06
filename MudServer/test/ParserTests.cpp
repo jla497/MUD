@@ -4,6 +4,7 @@
 #include "YamlParser.h"
 #include "entities/Entity.h"
 #include "gamemanager/LutBuilder.h"
+#include "Reset.h"
 
 class ParserTests : public testing::Test {
     virtual void SetUp() {
@@ -43,13 +44,17 @@ TEST_F(ParserTests, TestGetAllObjects) {
   auto objects = parser.getAllObjects();
 }
 
+TEST_F(ParserTests, TestGetAllResets) {
+  auto resets = parser.getAllResets();
+}
+
 TEST_F(ParserTests, TestParseArea) {
   auto area = parser.getArea();
 }
 
 TEST_F(ParserTests, TestLutBuilder) {
   auto area = parser.getArea();
-  std::vector<std::unique_ptr<RoomEntity>>& rooms = area->getAllRooms();
+  std::deque<std::unique_ptr<RoomEntity>>& rooms = area->getAllRooms();
   mudserver::gamemanager::LutBuilder lutBuilder{};
   auto mMap = lutBuilder.createLUT(rooms);
 

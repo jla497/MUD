@@ -3,11 +3,6 @@
 
 #include <string>
 
-//namespace MudGameEngine {
-
-//namespace Resources {
-
-//namespace YamlParser {
 
     //define static const chars here:
     static const char *AREA_ENT = "AREA";
@@ -48,9 +43,7 @@
     static const char *DIR = "dir";
     static const char *TO = "to";
     static const char *EXTENDED_DESCRIPTIONS = "extended_descriptions";
-//}
-//}
-//}
+
 
 
 #endif

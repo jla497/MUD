@@ -10,6 +10,7 @@ set_target_properties(parser
 target_link_libraries(parser yaml-cpp)
 target_link_libraries(parser entity)
 target_link_libraries(parser uniqueid)
+target_link_libraries(parser reset)
 
 install(TARGETS parser ARCHIVE DESTINATION lib)
 

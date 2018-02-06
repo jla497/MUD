@@ -1,3 +1,4 @@
+#include <deque>
 #include "YamlParser.h"
 #include "resources/DataFields.h"
 
@@ -99,8 +100,33 @@ std::unique_ptr<ObjectEntity> YamlParser::parseObject(YAML::Node objectNode){
     return object;
 }
 
-void YamlParser::parseReset(YAML::Node resetNode){
+std::unique_ptr<Reset> YamlParser::parseReset(YAML::Node resetNode){
+    int id = resetNode[ID].as<int>();
+    std::string action = resetNode[ACTION].as<std::string>();
+    std::string comment = "";
+    if (resetNode[COMMENT]){
+        comment = resetNode[COMMENT].as<std::string>(); 
+    }
+    std::string state = "";
+    if (resetNode[STATE]) {
+        state = resetNode[STATE].as<std::string>();
+    }
+    int slot = -1;
+    if (resetNode[SLOT]) {
+        slot = resetNode[SLOT].as<int>();
+    }
+    int limit = -1;
+    if (resetNode[LIMIT]) {
+        limit = resetNode[LIMIT].as<int>();
+    }
+    int roomID = -1;
+    if (resetNode[ROOM]) {
+        roomID = resetNode[ROOM].as<int>();
+    }
 
+    auto reset = std::make_unique<Reset>(id, action, comment, state, slot, limit, roomID);
+
+    return reset;
 }
 
 void YamlParser::parseHelp(YAML::Node helpNode){
@@ -194,8 +220,16 @@ std::vector<std::unique_ptr<ObjectEntity>> YamlParser::getAllObjects(){
     return objects;
 }
 
-void YamlParser::getAllResets(){
-    //World original state?
+std::vector<std::unique_ptr<Reset>> YamlParser::getAllResets(){
+    std::vector<std::unique_ptr<Reset>> resets;
+    for (auto& document : data) {
+        std::for_each(document[RESETS_ENT].begin(), document[RESETS_ENT].end(), 
+            [&](YAML::Node node){
+                resets.push_back(std::move(parseReset(node)));
+            });
+    }
+
+    return resets;
 }
 
 void YamlParser::getAllHelps(){
@@ -215,9 +249,9 @@ std::vector<std::unique_ptr<ShopEntity>> YamlParser::getAllShops(){
     return shops;
 }
 
-std::vector<std::unique_ptr<RoomEntity>> YamlParser::getAllRooms(){
+std::deque<std::unique_ptr<RoomEntity>> YamlParser::getAllRooms(){
     //need Room constructor
-    std::vector<std::unique_ptr<RoomEntity>> rooms;
+    std::deque<std::unique_ptr<RoomEntity>> rooms;
     //iterate through all rooms in data and add them to list/vector of rooms
     for (auto& document : data) {
         std::for_each(document[ROOMS_ENT].begin(), document[ROOMS_ENT].end(), 
@@ -231,10 +265,11 @@ std::vector<std::unique_ptr<RoomEntity>> YamlParser::getAllRooms(){
 
 std::unique_ptr<AreaEntity> YamlParser::getArea(){
     std::unique_ptr<AreaEntity> area;
-    std::vector<std::unique_ptr<RoomEntity>> rooms = getAllRooms();
+    auto rooms = getAllRooms();
     for (auto& document : data) {
         std::string name = document[AREA_ENT][NAME].as<std::string>();
-        area = std::make_unique<AreaEntity>(name, std::move(rooms));      
+        //TODO: remove std::move if looping over multiple dcouments
+        area = std::make_unique<AreaEntity>(name, std::move(rooms));
     }
     return area;
 }

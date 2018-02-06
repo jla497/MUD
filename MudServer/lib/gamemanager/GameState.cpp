@@ -1,19 +1,21 @@
 #include <iostream>
 
 #include "gamemanager/GameState.h"
+#include "logging.h"
 
 namespace mudserver {
 namespace gamemanager {
 
 using std::make_unique;
 
-GameState::GameState() {
-
+void GameState::initFromYaml(std::string filename) {
+    parseYamlFile(std::move(filename));
+    addAreaFromParser();
+    initRoomLUT();
 }
 
-
 void GameState::parseYamlFile(std::string filename) {
-    parser.loadYamlFile(filename);
+    parser.loadYamlFile(std::move(filename));
 }
 
 // void GameState::initRoomLUT() {
@@ -26,38 +28,19 @@ void GameState::parseYamlFile(std::string filename) {
 // }
 
 void GameState::initRoomLUT() {
-    area = parser.getArea(); //this is a variable on stack. WIll get deleted after function ends
-    auto& rooms = area->getAllRooms();
-    LutBuilder lutBuilder;
-    roomLookUp = lutBuilder.createLUT(rooms);
-
-    printLut("all rooms listed in roomLookUp initRoomLUT: ");
-}
-
-void GameState::printLut(std::string where) {
-    std::cout<<where<<std::endl;
-    for( auto it = roomLookUp.begin(); it!= roomLookUp.end(); ++it) {
-        std::cout<<"room key: "<<it->first<<std::endl;
-        std::cout<<"room's actual id: "<<it->second->getId()<<std::endl;
-        std::cout<<"room short: "<<it->second->getName()<<std::endl;
-        if(it->first != it->second->getId()) {
-            throw ("room key and id changed!");
-        }
+    for (auto& area : areas) {
+        auto& rooms = area->getAllRooms();
+        LutBuilder lutBuilder;
+        roomLookUp = lutBuilder.createLUT(rooms);
     }
 }
 
 /**
  * Add Methods
  */
-void GameState::addCharacterRoomRelationToLUT(PlayerCharacter* character,
-                                              RoomEntity* room) {
-    std::cout<<"added new character: "<<character->getEntityId()<<std::endl;
 
-    std::cout<<"char supposed to be placed in room: "<<room->getId()<<std::endl;
-    characterRoomLookUp.left[character->getEntityId()] = room->getId();
-    std::cout<<"char place in room: "<<characterRoomLookUp.left[character->getEntityId()]<<std::endl;
-
-    printLut("all rooms listed in roomLookUp after adding character: ");
+void GameState::addCharacterRoomRelationToLUT(UniqueId characterId,unsigned int roomId) {
+    characterRoomLookUp.left[characterId] = roomId;
 }
 
 void GameState::addRoomToLUT(RoomEntity* room) {
@@ -69,14 +52,17 @@ void GameState::addCharacter(unique_ptr<PlayerCharacter> character) {
     characterLookUp[id] = std::move(character);
     //TODO: implement a configurable default spawn point
     //currently just takes the first room loaded
-    printLut("all rooms listed in roomLookUp before adding char: ");
-
-    addCharacterRoomRelationToLUT(characterLookUp[id].get(),
-                                  roomLookUp.begin()->second);
+        auto roomLookupBegin = roomLookUp.begin();
+    if (roomLookupBegin != roomLookUp.end()) {
+        addCharacterRoomRelationToLUT(id, roomLookupBegin->second->getId());
+    } else {
+        auto logger = logging::getLogger("GameState::addCharacter");
+        logger->error("No rooms found, character not added to room");
+    }
 }
 
 void GameState::addAreaFromParser() {
-    areas.push_back(parser.getArea().get());
+    areas.push_back(std::move(parser.getArea()));
 }
 
 
@@ -97,10 +83,10 @@ RoomEntity* GameState::getCharacterLocation(PlayerCharacter* character) {
 }
 
 RoomEntity* GameState::getCharacterLocation(PlayerCharacter& character) {
-    std::cout<<"character id: "<<character.getEntityId().getId()<<std::endl;
+    std::cout << "character id: " << character.getEntityId().getId() << std::endl;
     auto roomid = characterRoomLookUp.left.find(character.getEntityId())->second;
-    std::cout<<"characterroom id: "<<roomid<<std::endl;
-    
+    std::cout << "characterroom id: " << roomid << std::endl;
+
     printLut("all rooms listed in roomLookUp for getCharacterLocation: ");
 
     auto room = roomLookUp.find(roomid)->second;
@@ -109,9 +95,12 @@ RoomEntity* GameState::getCharacterLocation(PlayerCharacter& character) {
 }
 
 vector<UniqueId> GameState::getCharactersInRoom(RoomEntity* room) {
+    if (room == nullptr) {
+        //return an empty vector
+        return {};
+    }
     vector<UniqueId> characters;
-    //TODO: can we use native foreach loop here?
-    BOOST_FOREACH(CharacterRoomLookupTable::left_const_reference p, characterRoomLookUp.left ) {
+    for (auto& p : characterRoomLookUp.left ) {
         if (p.second == room->getId()) {
             characters.push_back(p.first);
         }
@@ -123,7 +112,7 @@ AreaEntity* GameState::getAreaFromParser() {
     return parser.getArea().get();
 }
 
-vector<AreaEntity*> GameState::getAreasVector() {
+deque<unique_ptr<AreaEntity>>& GameState::getAreas() {
     return areas;
 }
 

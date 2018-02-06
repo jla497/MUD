@@ -4,7 +4,9 @@
 #include "Action.h"
 #include "gamemanager/GameManager.h"
 
-// The NullAction class is instantiated to indicate a no-op
+/**
+ * The NullAction class is instantiated to indicate a no-op
+ */
 class NullAction : public Action {
 public:
     using Action::Action;

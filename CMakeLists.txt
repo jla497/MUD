@@ -13,6 +13,10 @@ set (CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -fno-omit-frame-pointer -fs
 set (CMAKE_LINKER_FLAGS_DEBUG "${CMAKE_STATIC_LINKER_FLAGS_DEBUG} -fno-omit-frame-pointer -fsanitize=address")
 
 
+set (CMAKE_CXX_FLAGS_DEBUG
+     "${CMAKE_CXX_FLAGS_DEBUG} -fno-omit-frame-pointer -fsanitize=address -fno-limit-debug-info")
+set (CMAKE_LINKER_FLAGS_DEBUG
+     "${CMAKE_STATIC_LINKER_FLAGS_DEBUG} -fno-omit-frame-pointer -fsanitize=address")
 
 include_directories(${CMAKE_SOURCE_DIR}/MudServer/include)
 include_directories(${CMAKE_SOURCE_DIR}/MudGameEngine/include)
