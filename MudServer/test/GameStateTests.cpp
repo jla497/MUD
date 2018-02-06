@@ -78,7 +78,7 @@ TEST_F(GameStateTest, GetAllCharactersInRoom) {
 
 TEST_F(GameStateTest, AddAreaToAreasVector) {
     state.addAreaFromParser();
-    EXPECT_EQ(state.getAreasVector().size(), 1);
+    EXPECT_EQ(state.getAreas().size(), 1);
 }
 
 TEST_F(GameStateTest, AddNewRoom) {

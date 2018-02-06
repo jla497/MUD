@@ -7,6 +7,7 @@
 #include <boost/bimap/list_of.hpp>
 #include <memory>
 #include <unordered_map>
+#include <deque>
 
 #include "entities/AreaEntity.h"
 #include "entities/PlayerCharacter.h"
@@ -22,6 +23,7 @@ using namespace boost::bimaps;
 
 using std::unique_ptr;
 using std::unordered_map;
+using std::deque;
 using std::vector;
 
 using CharacterRoomLookupTable = bimap<set_of<UniqueId>, list_of<roomId>> ;
@@ -39,22 +41,24 @@ class GameState {
     CharacterRoomLookupTable characterRoomLookUp;
     RoomLookupTable roomLookUp;
     CharacterLookUp characterLookUp;
-    vector<AreaEntity*> areas;
+    deque<unique_ptr<AreaEntity>> areas;
     YamlParser parser;
 
 public:
 
-    GameState();
+    GameState() = default;
 
+    void initFromYaml(std::string filename);
     void parseYamlFile(std::string string);
     void initRoomLUT();
 
     void addAreaFromParser();
     void addCharacter(unique_ptr<PlayerCharacter> character);
-    void addCharacterRoomRelationToLUT(PlayerCharacter* character, RoomEntity* room);
+    void addCharacterRoomRelationToLUT(UniqueId characterId,
+                                       unsigned int roomId);
     void addRoomToLUT(RoomEntity*);
     AreaEntity* getAreaFromParser();
-    vector<AreaEntity*> getAreasVector();
+    deque<unique_ptr<AreaEntity>>& getAreas();
     vector<UniqueId> getCharactersInRoom(RoomEntity* room);
     PlayerCharacter* getCharacterFromLUT(UniqueId id);
     RoomEntity* getCharacterLocation(PlayerCharacter* character);

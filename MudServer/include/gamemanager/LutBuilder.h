@@ -4,7 +4,7 @@
 #include <boost/bimap.hpp>
 #include <memory>
 #include <unordered_map>
-#include <vector>
+#include <deque>
 
 #include "Player.h"
 #include "entities/Entity.h"
@@ -21,7 +21,8 @@ using roomId = unsigned int;
 class LutBuilder {
 public:
 
-    std::map<roomId, RoomEntity*> createLUT(std::vector<std::unique_ptr<RoomEntity>>& mVector); 
+    std::map<roomId, RoomEntity*> createLUT(std::deque<
+        unique_ptr<RoomEntity>>& mVector);
 
     
 };

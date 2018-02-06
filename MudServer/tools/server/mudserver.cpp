@@ -24,8 +24,7 @@ int main(int argc, char* argv[]) {
     mudserver::connection::ConnectionManager connectionManager{port};
     mudserver::gamemanager::GameState gameState{};
     if (argc > 2) {
-        gameState.parseYamlFile(argv[2]);
-        gameState.initRoomLUT();
+        gameState.initFromYaml(argv[2]);
     }
     mudserver::gamemanager::GameManager gameManager{connectionManager, gameState};
 
