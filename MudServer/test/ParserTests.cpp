@@ -54,7 +54,7 @@ TEST_F(ParserTests, TestParseArea) {
 
 TEST_F(ParserTests, TestLutBuilder) {
   auto area = parser.getArea();
-  std::vector<std::unique_ptr<RoomEntity>>& rooms = area->getAllRooms();
+  std::deque<std::unique_ptr<RoomEntity>>& rooms = area->getAllRooms();
   mudserver::gamemanager::LutBuilder lutBuilder{};
   auto mMap = lutBuilder.createLUT(rooms);
 

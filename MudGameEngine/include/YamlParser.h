@@ -33,7 +33,7 @@ private:
     std::unique_ptr<ShopEntity> parseShop(YAML::Node shopNode);
     std::unique_ptr<DoorEntity> parseDoor(YAML::Node doorNode); //gets all doors 
 
-    std::vector<std::unique_ptr<RoomEntity>> getAllRooms();
+    std::deque<std::unique_ptr<RoomEntity>> getAllRooms();
     //gets all doorEntity objects in the given room
     std::vector<std::unique_ptr<DoorEntity>> getAllDoors(YAML::Node roomNode);
     

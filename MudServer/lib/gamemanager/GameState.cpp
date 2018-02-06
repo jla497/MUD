@@ -8,28 +8,30 @@ namespace gamemanager {
 
 using std::make_unique;
 
-GameState::GameState() {
-
+void GameState::initFromYaml(std::string filename) {
+    parseYamlFile(std::move(filename));
+    addAreaFromParser();
+    initRoomLUT();
 }
 
-
 void GameState::parseYamlFile(std::string filename) {
-    parser.loadYamlFile(filename);
+    parser.loadYamlFile(std::move(filename));
 }
 
 void GameState::initRoomLUT() {
-    auto area = parser.getArea();
-    auto& rooms = area->getAllRooms();
-    LutBuilder lutBuilder;
-    roomLookUp = lutBuilder.createLUT(rooms);
+    for (auto& area : areas) {
+        auto& rooms = area->getAllRooms();
+        LutBuilder lutBuilder;
+        roomLookUp = lutBuilder.createLUT(rooms);
+    }
 }
 
 /**
  * Add Methods
  */
-void GameState::addCharacterRoomRelationToLUT(PlayerCharacter* character,
-                                              RoomEntity* room) {
-    characterRoomLookUp.left[character->getEntityId()] = room->getId();
+void GameState::addCharacterRoomRelationToLUT(UniqueId characterId,
+                                              unsigned int roomId) {
+    characterRoomLookUp.left[characterId] = roomId;
 }
 
 void GameState::addRoomToLUT(RoomEntity* room) {
@@ -43,8 +45,7 @@ void GameState::addCharacter(unique_ptr<PlayerCharacter> character) {
     //currently just takes the first room loaded
     auto roomLookupBegin = roomLookUp.begin();
     if (roomLookupBegin != roomLookUp.end()) {
-        addCharacterRoomRelationToLUT(characterLookUp[id].get(),
-                                      roomLookupBegin->second);
+        addCharacterRoomRelationToLUT(id, roomLookupBegin->second->getId());
     } else {
         auto logger = logging::getLogger("GameState::addCharacter");
         logger->error("No rooms found, character not added to room");
@@ -52,8 +53,7 @@ void GameState::addCharacter(unique_ptr<PlayerCharacter> character) {
 }
 
 void GameState::addAreaFromParser() {
-    //TODO: GameState should *own* Areas, not just have raw pointers to them
-    areas.push_back(parser.getArea().get());
+    areas.push_back(std::move(parser.getArea()));
 }
 
 
@@ -91,7 +91,7 @@ AreaEntity* GameState::getAreaFromParser() {
     return parser.getArea().get();
 }
 
-vector<AreaEntity*> GameState::getAreasVector() {
+deque<unique_ptr<AreaEntity>>& GameState::getAreas() {
     return areas;
 }
 

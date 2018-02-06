@@ -1,3 +1,4 @@
+#include <deque>
 #include "YamlParser.h"
 #include "resources/DataFields.h"
 
@@ -248,9 +249,9 @@ std::vector<std::unique_ptr<ShopEntity>> YamlParser::getAllShops(){
     return shops;
 }
 
-std::vector<std::unique_ptr<RoomEntity>> YamlParser::getAllRooms(){
+std::deque<std::unique_ptr<RoomEntity>> YamlParser::getAllRooms(){
     //need Room constructor
-    std::vector<std::unique_ptr<RoomEntity>> rooms;
+    std::deque<std::unique_ptr<RoomEntity>> rooms;
     //iterate through all rooms in data and add them to list/vector of rooms
     for (auto& document : data) {
         std::for_each(document[ROOMS_ENT].begin(), document[ROOMS_ENT].end(), 
@@ -264,10 +265,11 @@ std::vector<std::unique_ptr<RoomEntity>> YamlParser::getAllRooms(){
 
 std::unique_ptr<AreaEntity> YamlParser::getArea(){
     std::unique_ptr<AreaEntity> area;
-    std::vector<std::unique_ptr<RoomEntity>> rooms = getAllRooms();
+    auto rooms = getAllRooms();
     for (auto& document : data) {
         std::string name = document[AREA_ENT][NAME].as<std::string>();
-        area = std::make_unique<AreaEntity>(name, std::move(rooms));      
+        //TODO: remove std::move if looping over multiple dcouments
+        area = std::make_unique<AreaEntity>(name, std::move(rooms));
     }
     return area;
 }
