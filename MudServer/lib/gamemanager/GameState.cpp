@@ -18,15 +18,6 @@ void GameState::parseYamlFile(std::string filename) {
     parser.loadYamlFile(std::move(filename));
 }
 
-// void GameState::initRoomLUT() {
-//     auto area = parser.getArea(); //this is a variable on stack. WIll get deleted after function ends
-//     auto& rooms = area->getAllRooms();
-//     LutBuilder lutBuilder;
-//     roomLookUp = lutBuilder.createLUT(rooms);
-
-//     printLut("all rooms listed in roomLookUp initRoomLUT: ");
-// }
-
 void GameState::initRoomLUT() {
     for (auto& area : areas) {
         auto& rooms = area->getAllRooms();
@@ -83,12 +74,8 @@ RoomEntity* GameState::getCharacterLocation(PlayerCharacter* character) {
 }
 
 RoomEntity* GameState::getCharacterLocation(PlayerCharacter& character) {
-    std::cout << "character id: " << character.getEntityId().getId() << std::endl;
     auto roomid = characterRoomLookUp.left.find(character.getEntityId())->second;
-    std::cout << "characterroom id: " << roomid << std::endl;
-
-    printLut("all rooms listed in roomLookUp for getCharacterLocation: ");
-
+    
     auto room = roomLookUp.find(roomid)->second;
     // std::cout<<"room's id: "<<room->getId()<<std::endl;
     return roomLookUp.find(roomid)->second;

@@ -27,7 +27,7 @@ using std::deque;
 using std::vector;
 
 using CharacterRoomLookupTable = bimap<set_of<UniqueId>, list_of<roomId>> ;
-using RoomLookupTable = std::unordered_map<roomId, RoomEntity*> ;
+using RoomLookupTable = std::map<roomId, RoomEntity*> ;
 using CharacterLookUp = std::map<UniqueId, unique_ptr<PlayerCharacter>> ;
 
 /**

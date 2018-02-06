@@ -3,9 +3,10 @@
 std::vector<std::string> MoveAction::moveLookup = {"north","south","east","west"};
 
 void MoveAction::execute() {
-	std::cout<<"in execute..."<<std::endl;
+	std::cout<<"in MoveAction execute..."<<std::endl;
+	std::cout << "character id: " << characterPerformingAction.getEntityId().getId() << std::endl;
+    
 	auto& gameState = gameManager.getState();
-	std::cout<<"character id: "<<characterPerformingAction.getEntityId().getId()<<std::endl;
 	RoomEntity* room = gameState.getCharacterLocation(characterPerformingAction);
 	
 	if (room == NULL) {
@@ -13,9 +14,9 @@ void MoveAction::execute() {
 		return;
 	}
 
-	std::cout<<"room id is : "<<room->getId()<<std::endl;
+	std::cout<<"room id: "<<room->getId()<<std::endl;
 
-	auto cmd = entitiesBeingActedUpon[0];
+	auto cmd = actionArguments[0];
 
 	boost::algorithm::to_lower(cmd);
 
@@ -25,7 +26,6 @@ void MoveAction::execute() {
 		std::cout<<"not a valid direction..."<<std::endl;
 		return;
 	}else {
-		std::cout<<"getting next room id..."<<std::endl;
 		
 		//get next room id from current room
 
@@ -44,16 +44,16 @@ void MoveAction::execute() {
 			return;
 		}
 
-		std::cout<<"got nextRoom..."<<std::endl;
+		std::cout<<"next room id: " <<nextRoom->getId()<<std::endl;
 		//move the playerCharacter from the current room to the next room
 		auto characterId = characterPerformingAction.getEntityId().getId();
-		std::cout<<"got chararcterID..."<<std::endl;
+		
 		room->removeEntity(characterId);
 
 		nextRoom->addEntity(characterId);
 
 		auto mCharacterPtr = &characterPerformingAction;
-		gameState.addCharacterRoomRelationToLUT(mCharacterPtr, nextRoom);
+		gameState.addCharacterRoomRelationToLUT(mCharacterPtr->getEntityId(), nextRoom->getId());
 
 		return;
 	}

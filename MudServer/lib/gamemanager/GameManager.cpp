@@ -47,19 +47,14 @@ void GameManager::mainLoop() {
 
     auto startTime = clock::now();
 
-    gameState.printLut("in mainLoop...");
-
     while (!done) {
         unique_ptr<gameAndUserMsgs> messagesForConnMan;
-        // gameState.printLut("before connectionmanager.update...");
-        if (connectionManager.update()) {
+         if (connectionManager.update()) {
             // An error was encountered, stop
             done = true;
             continue;
         }
-
-        // gameState.printLut("after connectionmanager.update...");
-            
+    
         auto messages = connectionManager.sendToGameManager();
 
         processMessages(*messages);
@@ -97,7 +92,6 @@ void GameManager::processMessages(gameAndUserMsgs& messages) {
 
         // look up player's character
         // pointer is used as player may not have character yet
-         gameState.printLut("before  playerToCharacter ...");
         auto character = playerToCharacter(player);
         if (!character) {
             // create a new character for the player and add it to the game
