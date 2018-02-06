@@ -20,7 +20,6 @@ namespace pc = mudserver::resources::playercharacter;
 using boost::format;
 using boost::str;
 using std::vector;
-int count = 0;
 
 GameManager::GameManager(connection::ConnectionManager& connMan,
                          GameState& gameState)
