@@ -12,6 +12,8 @@
 using boost::algorithm::join;
 // namespace actmess = mudserver::resources::actions;
 
+LookAction *LookAction::clone() { return new LookAction(*this); }
+
 void LookAction::execute_impl() {
     static auto logger = mudserver::logging::getLogger("LookAction::execute");
 
@@ -21,7 +23,7 @@ void LookAction::execute_impl() {
     // TODO: Feel like this error checking could be rolled into the
     //       getCharacterLocation method?
     auto characterCurrentRoom =
-        gameState.getCharacterLocation(characterPerformingAction);
+        gameState.getCharacterLocation(*characterPerformingAction);
     if (!characterCurrentRoom) {
         logger->error(
             "Character is not in a room! Suspect incorrect world init");
@@ -42,7 +44,7 @@ void LookAction::execute_impl() {
         std::string roomExits = join(roomDirs, " ");
 
         gameManager.sendCharacterMessage(
-            characterPerformingAction.getEntityId(),
+            characterPerformingAction->getEntityId(),
             boost::str(
                 boost::format{"%s: %s\n%s: %s\n%s: %s\n%s:\n %s\n%s:\n %s"} %
                 "Room Name" % roomName % "Description" % roomDescs % "Exits" %
@@ -53,12 +55,12 @@ void LookAction::execute_impl() {
         // TODO: look at object
         // Can you look at players?
         gameManager.sendCharacterMessage(
-            characterPerformingAction.getEntityId(),
+            characterPerformingAction->getEntityId(),
             "looked at object " + actionArguments.front());
     } else {
         // too many objects to look at, error message to player
         gameManager.sendCharacterMessage(
-            characterPerformingAction.getEntityId(),
+            characterPerformingAction->getEntityId(),
             "Please type /'look/' or /'look <object>/'");
     }
 }

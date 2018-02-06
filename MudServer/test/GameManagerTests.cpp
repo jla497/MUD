@@ -33,9 +33,10 @@ TEST_F(GameManagerTests, StartGameManager) {
 
     incoming.push_back(m1);
 
+    mudserver::persistence::PersistenceService ps{""};
+
     state.parseYamlFile("MudGameEngine/lib/dataFiles/detailed_smurf.yml");
     state.initRoomLUT();
     m_manager.rxFromServer(incoming);
-    mudserver::gamemanager::GameManager gameManager{m_manager, state};
-    // gameManager.mainLoop();
+    mudserver::gamemanager::GameManager gameManager{m_manager, state, ps};
 }
