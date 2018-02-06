@@ -9,7 +9,6 @@
 
 void AttackAction::execute() {
 	static auto logger = mudserver::logging::getLogger("AttackAction::execute");
-    logger->info("Entered AttackAction");
 
 	//get gamestate
 	auto& gameState = gameManager.getState();
@@ -41,7 +40,7 @@ void AttackAction::execute() {
     	return;
     }
     auto nameOfAttackTarget = actionArguments.at(0);
-   	logger->info("Name of attacker: " + nameOfAttackTarget);
+   	logger->info("nameOfAttackTarget: " + nameOfAttackTarget);
 
 
     //TODO: make changes so that the player can attack any arbritrary entity.
@@ -51,7 +50,7 @@ void AttackAction::execute() {
     	if(!currentEntity)
     		return;
     	auto shortDescOfCurrentPlayer = currentEntity->getShortDesc();
-    		if(boost::to_upper_copy(shortDescOfCurrentPlayer).compare(boost::to_upper_copy(nameOfAttackTarget)) == 0){
+    		if(boost::to_lower_copy(shortDescOfCurrentPlayer).compare(boost::to_lower_copy(nameOfAttackTarget)) == 0){
     			//TODO: change this to allow attacking any entity rather than just players
     			//TODO: implement proper use of combat states
 				//TODO: implement proper combat(in a seperate class)
@@ -71,5 +70,4 @@ void AttackAction::execute() {
 	logger->info("No Target found");
     gameManager.sendCharacterMessage(attackingPlayersUniqueId,
     	"Attack failed: could not find " + nameOfAttackTarget);
-    logger->info("Exiting AttackAction");
 }
