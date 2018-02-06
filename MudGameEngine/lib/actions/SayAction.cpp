@@ -37,8 +37,6 @@ void SayAction::execute() {
         messageSentByPlayer = join(actionArguments, " ");
     }
 
-    auto roomDesc = characterCurrentRoom->getDesc();
-
     //--get list of players in the room
     auto characterIdsInRoom =
         gameState.getCharactersInRoom(characterCurrentRoom);
@@ -56,7 +54,7 @@ void SayAction::execute() {
             characterID,
             boost::str(boost::format{"%s: %s"} %
                        (speakingCharacterId == characterID
-                            ? "you"
+                            ? "You"
                             : speakingCharacterDesc) %
                        messageSentByPlayer));
     }

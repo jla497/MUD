@@ -17,9 +17,11 @@ class RoomEntity : public Entity {
     std::string m_name;
     unsigned int m_roomId;
 
-    // ASSUME ids are unique for ALL entities, entities include npc, obj, equip,
-    // Room holds responsibility of item location, not item object itself
-    // It is just a vector for look up
+    /*
+     * ASSUME ids are unique for ALL entities, entities include npc, obj, equip,
+     * Room holds responsibility of item location, not item object itself
+     * It is just a vector for look up
+     */
     std::vector<unsigned int> m_idEntitiesInRoom;
 
    public:
@@ -38,14 +40,18 @@ class RoomEntity : public Entity {
 
     std::vector<std::string> getExtendedKeywords() const;
 
-    // Returns destinationID to room given dir command while in a room
-    // Returns 0 if dir does not exist for room
-    // (use find_to)
-    // Does not check whether that room exists yet
+    /** 
+     * Returns destinationID to room given dir command while in a room
+     * Returns 0 if dir does not exist for room
+     * (use find_to)
+     * Does not check whether that room exists yet 
+     */
     unsigned int getDestRoomIdOf(std::string& dir);
 
-    // Returns list of doors available in room (e.g for showing options to
-    // player)
+    /**
+     * Returns list of doors available in room (e.g for showing options to
+     * player)
+     */
     std::vector<std::string> getDirs() const;
 
     // Reset room according to YML file
@@ -53,15 +59,21 @@ class RoomEntity : public Entity {
     // TODO: Not sure how resets are handled right now
     // void reset(/*parsed YML data*/);
 
-    // Returns success msg if inserts given entity into room succeeds
-    // Given entity id
+    /*
+     * Returns success msg if inserts given entity into room succeeds
+     * Given entity id
+     */
     std::string addEntity(const unsigned int entityToAdd);
 
-    // Return all entities in the room
+    /** 
+     *Return all entities in the room
+     */
     std::vector<unsigned int> getEntitiesInRoom() const;
 
-    // Returns success or failure msg if removes given entity into room succeeds
-    // Given entity id
+    /** 
+     *Returns success or failure msg if removes given entity into room succeeds
+     * Given entity id
+     */
     std::string removeEntity(const unsigned int entityToRemove);
 };
 

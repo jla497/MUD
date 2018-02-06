@@ -8,6 +8,7 @@
 #include "actions/NullAction.h"
 #include "actions/MoveAction.h"
 #include "actions/SayAction.h"
+#include "actions/LookAction.h"
 #include "commandparser/CommandParser.h"
 #include "resources/commands.h"
 #include "logging.h"
@@ -69,11 +70,14 @@ std::unique_ptr<Action> CommandParser::actionFromPlayerCommand(
         break;
     }
     case ActKeyword::look: {
+        actionDescription << u8"LookAction will be created";
+        action = std::make_unique<LookAction>(character, remainderOfTokens, gameManager);
+
+        break;
     }
     default:
         actionDescription << u8"Action was not supported";
-        action = std::make_unique<NullAction>(character, remainderOfTokens,
-                                              gameManager);
+        action = std::make_unique<NullAction>(character, remainderOfTokens, gameManager);
     }
 
     actionDescription << ", with remainder tokens [" << tokenRep.str() << "]";
