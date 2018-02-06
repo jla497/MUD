@@ -1,19 +1,18 @@
+#include <boost/algorithm/string.hpp>
 #include <string>
 #include <vector>
-#include <boost/algorithm/string.hpp>
 
 #include "actions/AttackAction.h"
-#include "logging.h"
 #include "gamemanager/GameManager.h"
-
+#include "logging.h"
 
 void AttackAction::execute() {
-	static auto logger = mudserver::logging::getLogger("AttackAction::execute");
+    static auto logger = mudserver::logging::getLogger("AttackAction::execute");
 
-	//get gamestate
-	auto& gameState = gameManager.getState();
+    // get gamestate
+    auto& gameState = gameManager.getState();
 
-	// get player who is attacking
+    // get player who is attacking
     auto playerWhoIsAttacking = characterPerformingAction;
 
     //--get the room the player is in
@@ -27,47 +26,53 @@ void AttackAction::execute() {
     }
 
     //--get list of entities in the room
-    auto IDsOfPlayersInRoom = gameState.getCharactersInRoom(characterCurrentRoom);
-    if(IDsOfPlayersInRoom.empty()){
-    	return;
+    auto IDsOfPlayersInRoom =
+        gameState.getCharactersInRoom(characterCurrentRoom);
+    if (IDsOfPlayersInRoom.empty()) {
+        return;
     }
     auto attackingPlayersUniqueId = playerWhoIsAttacking.getEntityId();
-    if(actionArguments.empty()){
-    	//user did not pass an attack target
-    	gameManager.sendCharacterMessage(attackingPlayersUniqueId,
-    	"Attack what?");
-    	logger->info("No Target found");
-    	return;
+    if (actionArguments.empty()) {
+        // user did not pass an attack target
+        gameManager.sendCharacterMessage(attackingPlayersUniqueId,
+                                         "Attack what?");
+        logger->info("No Target found");
+        return;
     }
     auto nameOfAttackTarget = actionArguments.at(0);
-   	logger->info("nameOfAttackTarget: " + nameOfAttackTarget);
+    logger->info("nameOfAttackTarget: " + nameOfAttackTarget);
 
-
-    //TODO: make changes so that the player can attack any arbritrary entity.
-	//see if my target is in the same room
+    // TODO: make changes so that the player can attack any arbritrary entity.
+    // see if my target is in the same room
     for (auto characterID : IDsOfPlayersInRoom) {
-    	auto currentEntity = gameState.getCharacterFromLUT(characterID);
-    	if(!currentEntity)
-    		return;
-    	auto shortDescOfCurrentPlayer = currentEntity->getShortDesc();
-    		if(boost::to_lower_copy(shortDescOfCurrentPlayer).compare(boost::to_lower_copy(nameOfAttackTarget)) == 0){
-    			//TODO: change this to allow attacking any entity rather than just players
-    			//TODO: implement proper use of combat states
-				//TODO: implement proper combat(in a seperate class)
+        auto currentEntity = gameState.getCharacterFromLUT(characterID);
+        if (!currentEntity) return;
+        auto shortDescOfCurrentPlayer = currentEntity->getShortDesc();
+        if (boost::to_lower_copy(shortDescOfCurrentPlayer)
+                .compare(boost::to_lower_copy(nameOfAttackTarget)) == 0) {
+            // TODO: change this to allow attacking any entity rather than just
+            // players
+            // TODO: implement proper use of combat states
+            // TODO: implement proper combat(in a seperate class)
 
-				//send messages to characters fighting
-				auto playerWhoIsBeingAttacking = currentEntity;
-				gameManager.sendCharacterMessage(playerWhoIsAttacking.getEntityId(),
-			       "You attack " + playerWhoIsBeingAttacking->getShortDesc() + "and do 1 damage");
+            // send messages to characters fighting
+            auto playerWhoIsBeingAttacking = currentEntity;
+            gameManager.sendCharacterMessage(
+                playerWhoIsAttacking.getEntityId(),
+                "You attack " + playerWhoIsBeingAttacking->getShortDesc() +
+                    "and do 1 damage");
 
-				gameManager.sendCharacterMessage(playerWhoIsBeingAttacking->getEntityId(),
-			       "You are attacked by " + playerWhoIsAttacking.getShortDesc() + "and take 1 damage");
-    			return;
-    		}
-    	}
-  
-	//if we didnt find the target we tell the player
-	logger->info("No Target found");
-    gameManager.sendCharacterMessage(attackingPlayersUniqueId,
-    	"Attack failed: could not find " + nameOfAttackTarget);
+            gameManager.sendCharacterMessage(
+                playerWhoIsBeingAttacking->getEntityId(),
+                "You are attacked by " + playerWhoIsAttacking.getShortDesc() +
+                    "and take 1 damage");
+            return;
+        }
+    }
+
+    // if we didnt find the target we tell the player
+    logger->info("No Target found");
+    gameManager.sendCharacterMessage(
+        attackingPlayersUniqueId,
+        "Attack failed: could not find " + nameOfAttackTarget);
 }
