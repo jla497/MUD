@@ -12,16 +12,16 @@ void AttackAction::execute_impl() {
     // get gamestate
     auto &gameState = gameManager.getState();
 
-    // get player who is attacking
-    auto playerWhoIsAttacking = characterPerformingAction;
+    // get character who is attacking
+    auto characterWhoIsAttacking = characterPerformingAction;
 
-    //--get the room the player is in
+    //--get the room the character is in
     auto characterCurrentRoom =
-        gameState.getCharacterLocation(playerWhoIsAttacking);
+        gameState.getCharacterLocation(characterWhoIsAttacking);
     if (!characterCurrentRoom) {
         logger->error(
             "Character is not in a room! Suspect incorrect world init");
-        // return early, as we are in a bad state - the player is not in a room!
+        // return early, as we are in a bad state - the character is not in a room!
         return;
     }
 
@@ -31,10 +31,10 @@ void AttackAction::execute_impl() {
     if (IDsOfPlayersInRoom.empty()) {
         return;
     }
-    auto attackingPlayersUniqueId = playerWhoIsAttacking.getEntityId();
+    auto attackingCharactersUniqueId = characterWhoIsAttacking.getEntityId();
     if (actionArguments.empty()) {
         // user did not pass an attack target
-        gameManager.sendCharacterMessage(attackingPlayersUniqueId,
+        gameManager.sendCharacterMessage(attackingCharactersUniqueId,
                                          "Attack what?");
         logger->info("No Target found");
         return;
@@ -42,7 +42,7 @@ void AttackAction::execute_impl() {
     auto nameOfAttackTarget = actionArguments.at(0);
     logger->info("nameOfAttackTarget: " + nameOfAttackTarget);
 
-    // TODO: make changes so that the player can attack any arbritrary entity.
+    // TODO: implement combat component
     // see if my target is in the same room
     for (auto characterID : IDsOfPlayersInRoom) {
         auto currentEntity = gameState.getCharacterFromLUT(characterID);
@@ -51,21 +51,20 @@ void AttackAction::execute_impl() {
         auto shortDescOfCurrentPlayer = currentEntity->getShortDesc();
         if (boost::to_lower_copy(shortDescOfCurrentPlayer)
                 .compare(boost::to_lower_copy(nameOfAttackTarget)) == 0) {
-            // TODO: change this to allow attacking any entity rather than just
-            // players
+            // TODO: change this to allow attacking any character
             // TODO: implement proper use of combat states
             // TODO: implement proper combat(in a seperate class)
 
             // send messages to characters fighting
             auto playerWhoIsBeingAttacking = currentEntity;
             gameManager.sendCharacterMessage(
-                playerWhoIsAttacking.getEntityId(),
+                characterWhoIsAttacking.getEntityId(),
                 "You attack " + playerWhoIsBeingAttacking->getShortDesc() +
                     "and do 1 damage");
 
             gameManager.sendCharacterMessage(
                 playerWhoIsBeingAttacking->getEntityId(),
-                "You are attacked by " + playerWhoIsAttacking.getShortDesc() +
+                "You are attacked by " + characterWhoIsAttacking.getShortDesc() +
                     "and take 1 damage");
             return;
         }
@@ -73,7 +72,7 @@ void AttackAction::execute_impl() {
 
     // if we didnt find the target we tell the player
     logger->info("No Target found");
-    gameManager.sendCharacterMessage(attackingPlayersUniqueId,
+    gameManager.sendCharacterMessage(attackingCharactersUniqueId,
                                      "Attack failed: could not find " +
                                          nameOfAttackTarget);
 }
