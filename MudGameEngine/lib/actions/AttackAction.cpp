@@ -50,28 +50,22 @@ void AttackAction::execute() {
     	auto currentEntity = gameState.getCharacterFromLUT(characterID);
     	if(!currentEntity)
     		return;
-    	//auto keyWordsOfCurrentEntity = currentEntity->getKeywords();
     	auto shortDescOfCurrentPlayer = currentEntity->getShortDesc();
-    	//for(auto keyword : keyWordsOfCurrentEntity){
-    		//if(boost::to_upper_copy(keyword).compare(boost::to_upper_copy(nameOfAttackTarget)) == 0){
     		if(boost::to_upper_copy(shortDescOfCurrentPlayer).compare(boost::to_upper_copy(nameOfAttackTarget)) == 0){
-    			//we found the entity the player wants to fight.
-    			//TODO: change this to allow attacking any entity
-    			//startPVPAttack(playerWhoIsAttacking,currentEntity,gameManager);
-
+    			//TODO: change this to allow attacking any entity rather than just players
     			//TODO: implement proper use of combat states
 				//TODO: implement proper combat(in a seperate class)
+
 				//send messages to characters fighting
 				auto playerWhoIsBeingAttacking = currentEntity;
 				gameManager.sendCharacterMessage(playerWhoIsAttacking.getEntityId(),
-			       "You attack" + playerWhoIsBeingAttacking->getShortDesc() + "and do 0.00000000000001 damage");
+			       "You attack " + playerWhoIsBeingAttacking->getShortDesc() + "and do 1 damage");
 
 				gameManager.sendCharacterMessage(playerWhoIsBeingAttacking->getEntityId(),
-			       "You are attacked by " + playerWhoIsAttacking.getShortDesc() + "and take 0.00000000000001 damage");
+			       "You are attacked by " + playerWhoIsAttacking.getShortDesc() + "and take 1 damage");
     			return;
     		}
     	}
-   // }
   
 	//if we didnt find the target we tell the player
 	logger->info("No Target found");
