@@ -6,6 +6,31 @@ namespace mudserver {
 namespace gamemanager {
 
 class GameStateTest : public testing::Test {
+
+public:
+
+unique_ptr<PlayerCharacter> createCharacter() {
+    int armor = 1;
+    std::string damage = "1";
+    std::vector<std::string> desc{};
+    desc.push_back("desc1");
+    unsigned int exp = 1;
+    int gold = 1;
+    std::string hit = "1";
+    std::vector<std::string> keywords{};
+    keywords.push_back("keyword1");
+    unsigned int level = 1;
+    std::vector<std::string> longDesc{};
+    longDesc.push_back("desc1");
+    std::string shortDesc = "test";
+    int thac0 = 1;
+    auto character = std::make_unique<PlayerCharacter>(
+            armor, damage, desc, exp, gold, hit,
+            keywords, level, longDesc, shortDesc, thac0
+    );
+    return character;
+}
+
 protected:
     virtual void SetUp() {
         state.initFromYaml("MudGameEngine/lib/dataFiles/detailed_smurf.yml");
@@ -21,54 +46,17 @@ protected:
 };
 
 TEST_F(GameStateTest, AddCharacterWithLocation) {
-    int armor = 1;
-    std::string damage = "1";
-    std::vector<std::string> desc {};
-    desc.push_back("desc1");
-    unsigned int exp = 1;
-    int gold = 1;
-    std::string hit = "1";
-    std::vector<std::string> keywords {};
-    keywords.push_back("keyword1");
-    unsigned int level = 1;
-    std::vector<std::string> longDesc {};
-    longDesc.push_back("desc1");
-    std::string shortDesc = "test";
-    int thac0 = 1;
-    auto character1 = std::make_unique<PlayerCharacter>(
-            armor, damage, desc, exp, gold, hit,
-            keywords, level,longDesc, shortDesc, thac0
-    );
+    auto character = createCharacter();
     RoomEntity* room = state.getRoomFromLUT(roomId);
-    state.addCharacterRoomRelationToLUT(character1->getEntityId(),
+    state.addCharacterRoomRelationToLUT(character->getEntityId(),
                                         room->getId());
-    RoomEntity* returnedRoom = state.getCharacterLocation(character1.get());
+    RoomEntity* returnedRoom = state.getCharacterLocation(character.get());
     EXPECT_EQ(returnedRoom->getId(), room->getId());
 }
 
 TEST_F(GameStateTest, GetAllCharactersInRoom) {
-    int armor = 1;
-    std::string damage = "1";
-    std::vector<std::string> desc {};
-    desc.push_back("desc1");
-    unsigned int exp = 1;
-    int gold = 1;
-    std::string hit = "1";
-    std::vector<std::string> keywords {};
-    keywords.push_back("keyword1");
-    unsigned int level = 1;
-    std::vector<std::string> longDesc {};
-    longDesc.push_back("desc1");
-    std::string shortDesc = "test";
-    int thac0 = 1;
-    auto character1 = std::make_unique<PlayerCharacter>(
-            armor, damage, desc, exp, gold, hit,
-            keywords, level,longDesc, shortDesc, thac0
-    );
-    auto character2 = std::make_unique<PlayerCharacter>(
-            armor, damage, desc, exp, gold, hit,
-            keywords, level,longDesc, shortDesc, thac0
-    );
+    auto character1 = createCharacter();
+    auto character2 = createCharacter();
     RoomEntity* room = state.getRoomFromLUT(roomId);
     state.addCharacterRoomRelationToLUT(character1->getEntityId(), room->getId());
     state.addCharacterRoomRelationToLUT(character2->getEntityId(), room->getId());
@@ -98,29 +86,25 @@ TEST_F(GameStateTest, AddNewRoom) {
 }
 
 TEST_F(GameStateTest, GetCharacterFromString) {
-    int armor = 1;
-    std::string damage = "1";
-    std::vector<std::string> desc {};
-    desc.push_back("desc1");
-    unsigned int exp = 1;
-    int gold = 1;
-    std::string hit = "1";
-    std::vector<std::string> keywords {};
-    keywords.push_back("keyword1");
-    unsigned int level = 1;
-    std::vector<std::string> longDesc {};
-    longDesc.push_back("desc1");
-    std::string shortDesc = "test";
-    int thac0 = 1;
-    auto character = std::make_unique<PlayerCharacter>(
-            armor, damage, desc, exp, gold, hit,
-            keywords, level,longDesc, shortDesc, thac0
-    );
+    auto character = createCharacter();
     UniqueId id = character->getEntityId();
     state.addCharacter(std::move(character));
     PlayerCharacter* returnedChar = state.getCharacterFromLUT(id);
     EXPECT_EQ(returnedChar->getEntityId(), id);
 }
+
+TEST_F(GameStateTest, TestUpdatePlayerRoom) {
+    auto character = createCharacter();
+    RoomEntity* room = state.getRoomFromLUT(roomId);
+    state.addCharacterRoomRelationToLUT(character->getEntityId(), room->getId());
+    vector<UniqueId> charIDs = state.getCharactersInRoom(room);
+    EXPECT_EQ(charIDs.size(), 1);
+    room = state.getRoomFromLUT(roomId+1);
+    state.addCharacterRoomRelationToLUT(character->getEntityId(), room->getId());
+    charIDs = state.getCharactersInRoom(room);
+    EXPECT_EQ(charIDs.size(), 1);
+}
+
 
 }  // namespace gamemanager
 }  // namespace mudserver
