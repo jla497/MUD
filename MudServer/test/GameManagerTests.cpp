@@ -38,6 +38,6 @@ TEST_F(GameManagerTests, StartGameManager) {
     state.initRoomLUT();
     m_manager.rxFromServer(incoming);
     mudserver::gamemanager::GameManager gameManager{m_manager, state};
-    gameManager.mainLoop();
+    // gameManager.mainLoop();
 
 }
