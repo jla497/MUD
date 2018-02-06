@@ -89,11 +89,6 @@ class GameManager {
      * @param playerId the player's id
      * @return the player's character (may be null)
      */
-    PlayerCharacter* playerIdToCharacter(PlayerId playerId);
-// <<<<<<< HEAD
-//     Player& characterToPlayer(PlayerCharacter& character);
-//     Player& characterIdToPlayer(UniqueId& characterId);
-// =======
     /**
      * Given a character, return a reference to the character's player.
      * @param character the character
