@@ -173,10 +173,13 @@ Player& GameManager::characterIdToPlayer(UniqueId characterId) {
 }
 
 void GameManager::addPlayerCharacter(PlayerId playerId) {
+    auto testShortDesc = "TestPlayerName" + std::to_string(playerCharacterBimap.size());
+
+
     auto character = std::make_unique<PlayerCharacter>(
         pc::ARMOR, std::string{pc::DAMAGE}, std::vector<std::string>{}, pc::EXP,
         pc::GOLD, std::string{pc::HIT}, std::vector<std::string>{}, pc::LEVEL,
-        std::vector<std::string>{}, std::string{}, pc::THAC0);
+        std::vector<std::string>{}, testShortDesc, pc::THAC0);
 
     playerCharacterBimap.insert(
         PcBmType::value_type(playerId, character->getEntityId()));
