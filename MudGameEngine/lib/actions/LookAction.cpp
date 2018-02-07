@@ -108,28 +108,28 @@ std::string
 LookAction::getDescriptionOfTargetCharacter(std::string nameOfTarget,
     RoomEntity *characterCurrentRoom){
 
-    // if(nameOfTarget.empty()){
-    //     return "";
-    // }
-    // auto &gameState = gameManager.getState();
-    // auto characterIds = gameState.getCharactersInRoom(characterCurrentRoom);
-    // if (characterIds.empty()) {
-    //     return nameOfTarget + " not found";
-    // }
-    // for (auto characterID : characterIds) {
-    //     auto currentEntity = gameState.getCharacterFromLUT(characterID);
-    //     if (!currentEntity){
-    //         continue;
-    //     }
-    //      auto shortDescOfCurrentCharacter = currentEntity->getShortDesc();
-    //     if (boost::to_lower_copy(shortDescOfCurrentCharacter) ==
-    //         boost::to_lower_copy(nameOfTarget)) {
+    if(nameOfTarget.empty()){
+        return "";
+    }
+    auto &gameState = gameManager.getState();
+    auto characterIds = gameState.getCharactersInRoom(characterCurrentRoom);
+    if (characterIds.empty()) {
+        return nameOfTarget + " not found";
+    }
+    for (auto characterID : characterIds) {
+        auto currentEntity = gameState.getCharacterFromLUT(characterID);
+        if (!currentEntity){
+            continue;
+        }
+         auto shortDescOfCurrentCharacter = currentEntity->getShortDesc();
+        if (boost::to_lower_copy(shortDescOfCurrentCharacter) ==
+            boost::to_lower_copy(nameOfTarget)) {
 
-    //         return getStringFromStringVector(currentEntity->getDesc());
-    //     }
-     // }
+            return getStringFromStringVector(currentEntity->getDesc());
+        }
+     }
 
-     return "looked at " + nameOfTarget;   
+     return "cannot see " + nameOfTarget;   
 }
 
 std::string 
