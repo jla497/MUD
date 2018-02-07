@@ -141,6 +141,7 @@ void GameState::doReset() {
 
 void GameState::killCharacter(const CharacterEntity &character){
     //remove from play
+    //TODO: uncomment and integrate once branches have been merged
     //removeCharacterByUniqueId(character.getEntityId());
     
     //if the character is controlled by a player notify them
