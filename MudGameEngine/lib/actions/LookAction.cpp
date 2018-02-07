@@ -36,7 +36,7 @@ void LookAction::execute_impl() {
     }
 
     if (actionArguments.empty()) {
-     logger->info("LookAction::Looking at room");        
+     logger->info("LookAction::Looking at room");
         // default: player looking at room
         std::string roomName = characterCurrentRoom->getName();
         std::vector<std::string> roomDesc = characterCurrentRoom->getDesc();
@@ -54,9 +54,9 @@ void LookAction::execute_impl() {
                 "Room Name" % roomName % "Description" % roomDescs % "Exits" %
                 roomExits % "Characters" % chDescs % "Objects in the room" %
                 objDescs));
-      logger->info("Looking at room ::End");       
+      logger->info("Looking at room ::End");
 
-    } else if (actionArguments.size() == MAX_LOOK_ARGS) {        
+    } else if (actionArguments.size() == MAX_LOOK_ARGS) {
         gameManager.sendCharacterMessage(
             characterPerformingAction->getEntityId(),
             getDescriptionOfTargetCharacter(actionArguments.front(),characterCurrentRoom ));
@@ -72,7 +72,7 @@ void LookAction::execute_impl() {
 
 std::string
 LookAction::getDescriptionOfCharactersInRoom(RoomEntity *characterCurrentRoom) {
-     logger->info("getDescriptionOfCharactersInRoom::Start");   
+    logger->info("getDescriptionOfCharactersInRoom::Start");
     auto &gameState = gameManager.getState();
     auto characterIds = gameState.getCharactersInRoom(characterCurrentRoom);
     std::vector<std::string> characterDescs{};
@@ -82,37 +82,36 @@ LookAction::getDescriptionOfCharactersInRoom(RoomEntity *characterCurrentRoom) {
         auto ch = gameState.getCharacterFromLUT(id);
         auto chId = std::to_string(id.getId());
         auto desc = ch->getShortDesc();
-        //auto longDesc = getStringFromStringVector(ch->getLongDesc());
-        auto longDesc = "longDesc";        
+        auto longDesc = getStringFromStringVector(ch->getLongDesc());
         auto objects = ch->getObjects();
         std::string objDesc{};
-        for (auto &obj : objects) {
-            //objDesc += getStringFromStringVector(obj.second.getLongDesc()) + "\n";
-            objDesc += "objDesc\n";            
+        for (auto &obj : objects) {  
+            //TODO: do all objects have longDesc?
+            objDesc += (obj.second.getShortDesc()) + "\n";
         }
         characterDescs.push_back(chId + ": " + desc + "\n" + longDesc + 
                                 "\n\t" + desc +
                                  "'s objects: " + objDesc + "\n");
     }
-
     logger->info("getDescriptionOfCharactersInRoom::joining characterDescs"); 
     std::string chDescs = join(characterDescs, " ");
-    logger->info("getDescriptionOfCharactersInRoom::End");       
+    logger->info("getDescriptionOfCharactersInRoom::End");
     return chDescs;
 }
 
 std::string
 LookAction::getDescriptionOfObjectsInRoom(RoomEntity *characterCurrentRoom) {
-    logger->info("getDescriptionOfObjectsInRoom::Start");      
+    logger->info("getDescriptionOfObjectsInRoom::Start");
     auto objects = characterCurrentRoom->getObjects();
     std::vector<std::string> objectDescs{};
     for (auto &obj : objects) {
-        // auto desc = getStringFromStringVector(obj.second.getLongDesc());
-        auto desc = (obj.second.getShortDesc());
+        auto desc = getStringFromStringVector(obj.second.getLongDesc());
+        //TODO: do all objects have longDesc?
+        // auto desc = (obj.second.getShortDesc());
         objectDescs.push_back(desc + "\n");
     }
     std::string objDescs = join(objectDescs, " ");
-    logger->info("getDescriptionOfObjectsInRoom::End");     
+    logger->info("getDescriptionOfObjectsInRoom::End");
     return objDescs;
 }
 
@@ -120,7 +119,7 @@ std::string
 LookAction::getDescriptionOfTargetCharacter(std::string nameOfTarget,
     RoomEntity *characterCurrentRoom){
 
-    logger->info("getDescriptionOfTargetCharacter::Start");  
+    logger->info("getDescriptionOfTargetCharacter::Start");
     if(nameOfTarget.empty()){
         return "";
     }
@@ -141,16 +140,15 @@ LookAction::getDescriptionOfTargetCharacter(std::string nameOfTarget,
             return getStringFromStringVector(currentEntity->getDesc());
         }
      }
-
-     logger->info("getDescriptionOfTargetCharacter::End");  
+     logger->info("getDescriptionOfTargetCharacter::End");
      return "cannot see " + nameOfTarget;   
 }
 
 std::string 
-LookAction::getStringFromStringVector(std::vector<std::string> stringVector){   
+LookAction::getStringFromStringVector(std::vector<std::string> stringVector){
     std::string output = "";
     for(const auto& desc : stringVector){
-        logger->info(desc);          
+        logger->info(desc);
         output += desc + "\n";
     }
     return output;
