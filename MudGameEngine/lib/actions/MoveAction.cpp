@@ -1,6 +1,7 @@
 #include "actions/MoveAction.h"
 #include "logging.h"
 #include <actions/LookAction.h>
+// #include "entities/CharacterEntity.h"
 // #include "entities/CombatComponent.h"
 
 std::vector<std::string> MoveAction::moveLookup = {"north", "south", "east",
@@ -13,7 +14,7 @@ void MoveAction::execute_impl() {
 
     //TODO: players in combat cannot move between rooms while they are in combat
     //unless they use some sort of flee spell)
-    // if(characterPerformingAction->getCombatComponent().getCombatState() == CombatStates::FIGHTING; ){
+    // if(characterPerformingAction->getCombatComponent()->getCombatState() == CombatStates::FIGHTING){
     //     gameManager.sendCharacterMessage(
     //         characterPerformingAction->getEntityId(),
     //         "You cannot leave the room, you are in Combat!");

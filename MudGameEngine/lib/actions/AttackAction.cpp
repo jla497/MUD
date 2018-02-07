@@ -61,6 +61,9 @@ void AttackAction::execute_impl() {
             playerWhoIsAttacking->getCombatComponent()->prepareToAttack();
             CombatSimulation::resolveCombatRound(*playerWhoIsAttacking,
                                                  *currentEntity, gameManager);
+
+                logger->info(nameOfAttackTarget + ": " + 
+                    playerWhoIsAttacking->getCombatComponent()->getHealthDescription());
             return;
         }
     }

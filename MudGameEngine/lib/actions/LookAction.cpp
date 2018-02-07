@@ -52,6 +52,7 @@ void LookAction::execute_impl() {
                 objDescs));
 
     } else if (actionArguments.size() == MAX_LOOK_ARGS) {
+        //TODO: show the description field when you look at a specific character
         // TODO: look at object
         // Can you look at players?
         gameManager.sendCharacterMessage(
@@ -67,6 +68,7 @@ void LookAction::execute_impl() {
 
 std::string
 LookAction::getCharacterDescriptions(RoomEntity *characterCurrentRoom) {
+    //TODO: when you look at a room the characters longdescs should be displayed
     auto &gameState = gameManager.getState();
     auto characterIds = gameState.getCharactersInRoom(characterCurrentRoom);
     std::vector<std::string> characterDescs{};
