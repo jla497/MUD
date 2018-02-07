@@ -27,7 +27,7 @@ void CombatComponent::prepareToAttack() {
     // set nextCombatAbilityToBeUsed to the characters default attack(if their
     // is no weapon use the default Damageroll)
     // TODO:
-    // this->nextCombatAbilityToBeUsed = this->standardAttackAbility;
+    // this->nextCombatAbilityToBeUsed = this->equippedWeapon->standardAttackAbility;
 }
 
 void CombatComponent::setArmor(int armor) { this->m_armor = armor; }

@@ -1,7 +1,5 @@
 #include "CombatSimulation.h"
 
-//TODO: add logging
-
 int CombatSimulation::calcRoll(Roll roll) {
     int rollValue = 0;
     for (int i = 0; i < roll.numOfDie; ++i) {
@@ -12,7 +10,7 @@ int CombatSimulation::calcRoll(Roll roll) {
     return rollValue;
 }
 
-int calcMaxPossibleRoll(Roll roll){
+int CombatSimulation::calcMaxPossibleRoll(Roll roll){
 	return roll.numOfDie * roll.sizeOfDie + roll.rollModifier;
 }
 
@@ -39,8 +37,10 @@ void CombatSimulation::resolveCombatRound(
                                      "Starting combat round");
 
     // set combat states of fighters to fighting
-    attackingCharactersCombatComponent->engageCombatState();
-    attackedCharactersCombatComponent->engageCombatState();
+    if(attackingCharactersCombatComponent != attackedCharactersCombatComponent){
+	    attackingCharactersCombatComponent->engageCombatState();
+	    attackedCharactersCombatComponent->engageCombatState();
+    }
 
     // TODO: use CombatAbilities rather than just raw roll values
     // A CombatAbility should encapsulate the damage dealt along side any
