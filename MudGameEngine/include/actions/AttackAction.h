@@ -3,6 +3,7 @@
 
 #include "Action.h"
 #include "gamemanager/GameManager.h"
+// #include "CombatSimulation.h"
 
 /**
  * The AttackAction class defines the behavior for when a player character

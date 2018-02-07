@@ -2,12 +2,17 @@
 #include <string>
 #include <vector>
 
-// #include "CombatSimulation.h"
 #include "actions/AttackAction.h"
 #include "gamemanager/GameManager.h"
 #include "logging.h"
+#include "CombatSimulation.h"
+#include "entities/CharacterEntity.h"
+
 AttackAction *AttackAction::clone() { return new AttackAction(*this); }
 
+
+class CombatComponent;
+class CharacterEntity;
 void AttackAction::execute_impl() {
     static auto logger = mudserver::logging::getLogger("AttackAction::execute");
 
@@ -53,10 +58,6 @@ void AttackAction::execute_impl() {
         auto shortDescOfCurrentPlayer = currentEntity->getShortDesc();
         if (boost::to_lower_copy(shortDescOfCurrentPlayer) ==
             boost::to_lower_copy(nameOfAttackTarget)) {
-            // TODO: change this to allow attacking any entity rather than just
-            // players
-            // TODO: implement proper use of combat states
-            // TODO: implement proper combat(in a seperate class)
 
             // send messages to characters fighting
             auto playerWhoIsBeingAttacking = currentEntity;
@@ -71,24 +72,13 @@ void AttackAction::execute_impl() {
                     "and take 1 damage");
 
 
+
+
+
+            //set attackers attackAbiliy to their normal attack
+            playerWhoIsAttacking->getCombatComponent()->prepareToAttack();
             //calculate and apply attack effects
-            //get combat components and send them to the combat module
-
-            //CombatSimulation::resolveCombatRound(*playerWhoIsAttacking, *playerWhoIsBeingAttacking,gameManager);
-
-            //inside Combat
-            //playerWhoIsAttacking.getCombatComponent() then do some calculations and change game state + send player messages
-
-
-
-
-
-
-
-
-
-
-
+            CombatSimulation::CombatSimulation::resolveCombatRound(*playerWhoIsAttacking, *playerWhoIsBeingAttacking,gameManager);
             return;
         }
     }

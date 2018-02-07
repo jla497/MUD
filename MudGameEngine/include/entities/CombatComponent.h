@@ -1,7 +1,7 @@
 #ifndef COMBAT_COMPONENT_H
 #define COMBAT_COMPONENT_H
-#include "Roll.h"
-#include "entities/CharacterComponent.h"
+ #include "Roll.h"
+ #include "entities/CharacterComponent.h"
 
 enum class CombatStates { NOT_FIGHTING, FIGHTING };
 
@@ -12,6 +12,8 @@ class CombatComponent : public CharacterComponent {
     CombatStates m_combatState;
     Roll m_damageRollData;
     Roll m_hitRollData;
+    //CombatAbility combatAbility = nullptr;
+    void die();
   public:
     CombatComponent(int armor, int thac0,Roll m_damageRollData,Roll m_hitRollData);
     CombatComponent();
@@ -29,6 +31,9 @@ class CombatComponent : public CharacterComponent {
     CombatStates getCombatState() const;
     void engageCombatState();
     void endCombatState();
+
+    void prepareToAttack();
+    bool damage(int damageAmount);
 
 };
 #endif

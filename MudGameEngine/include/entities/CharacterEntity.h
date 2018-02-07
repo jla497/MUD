@@ -59,5 +59,6 @@ class CharacterEntity : public Entity {
     ObjectEntity getObject(int id);
     std::map<int, ObjectEntity> getObjects();
 };
-
 #endif
+
+

@@ -1,7 +1,6 @@
 // #include "Roll.h"
 #include "entities/CombatComponent.h"
 
-
 CombatComponent::CombatComponent(int armor, int thac0, Roll m_damageRollData, Roll m_hitRollData){
 	this->m_combatState = CombatStates::NOT_FIGHTING;
 	this->m_armor = armor;
@@ -16,6 +15,18 @@ CombatComponent::CombatComponent(){
 	this->m_damageRollData = {1,1,0};
     this->m_hitRollData = {1,1,0};
 }
+
+void prepareToAttack(){
+	//set nextCombatAbilityToBeUsed to the characters default attack(if their is no weapon use the default Damageroll)
+}
+
+void die(){
+	//remove from play
+	//if the character is controlled by a player notify them
+
+}
+
+
 
 void CombatComponent::setArmor(int armor){
 	this->m_armor = armor;
@@ -46,7 +57,14 @@ Roll CombatComponent::getHitRoll() const {
 }
 int CombatComponent::getThac0() const {
  	return m_thac0; 
- }
+}
+
+bool damage(int damageAmount){
+	die();
+}
+
+
+
 
 
 
