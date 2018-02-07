@@ -135,5 +135,19 @@ void GameState::doReset() {
     ResetManager resetManager{resets};
     resetManager.applyResets(this);
 }
+
+
+void GameState::killCharacter(const CharacterEntity &character){
+    //remove from play
+    //removeCharacterByUniqueId(character.getEntityId());
+    
+    //if the character is controlled by a player notify them
+    
+
+
+}
+
+
+
 } // namespace gamemanager
 } // namespace mudserver

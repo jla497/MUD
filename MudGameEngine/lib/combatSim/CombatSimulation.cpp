@@ -1,6 +1,5 @@
 #include "CombatSimulation.h"
 
-
 int CombatSimulation::calcRoll(Roll roll){
 	int rollValue = 0;
 	for (int i = 0; i < roll.numOfDie; ++i){
@@ -11,14 +10,12 @@ int CombatSimulation::calcRoll(Roll roll){
 	return rollValue;
 }
 
-
 int CombatSimulation::calcRoundDamage(Roll damageRoll, Roll hitRoll){
 	int attackvalue = calcRoll(damageRoll);
 	int hitValue = calcRoll(hitRoll);
 
 	//ignore hit for now
 	int netDamage = attackvalue;
-
 	return netDamage;
 }
 
@@ -37,9 +34,6 @@ void CombatSimulation::resolveCombatRound(CharacterEntity& characterWhoIsAttacki
     //set combat states of fighters to fighting
 	attackingCharactersCombatComponent->engageCombatState();
 	attackedCharactersCombatComponent->engageCombatState();
-
-
-    //calc damage to deal(hard coded for now)
     
   	//TODO: use CombatAbilities rather than just raw roll values  
   	//A CombatAbility should encapsulate the damage dealth along site any effects it might apply
@@ -47,8 +41,6 @@ void CombatSimulation::resolveCombatRound(CharacterEntity& characterWhoIsAttacki
     int damageAmount = calcRoundDamage(attackingCharactersCombatComponent->getDamageRoll(),
     	(attackedCharactersCombatComponent->getHitRoll()));
     
-	//int damageAmount = 5;
-
     //deal damage 
 	bool enemyWasKilled = attackedCharactersCombatComponent->damage(5);	
 
@@ -64,7 +56,6 @@ void CombatSimulation::resolveCombatRound(CharacterEntity& characterWhoIsAttacki
 		" and take " + std::to_string(damageAmount) + " damage");
 
 
-
 	//exit combat state and remove Character from world if the attacked dies
 	if(enemyWasKilled){
 		attackingCharactersCombatComponent->endCombatState();
@@ -75,38 +66,22 @@ void CombatSimulation::resolveCombatRound(CharacterEntity& characterWhoIsAttacki
 		"You killed " + characterWhoIsBeingAttacked.getShortDesc());
 	gameManager.sendCharacterMessage(
 		characterWhoIsBeingAttacked.getEntityId(),
-		"You are were killed by " + characterWhoIsAttacking.getShortDesc());
-
+		"You were killed by " + characterWhoIsAttacking.getShortDesc());
 
 		//calculate rewards and give them to the attacker
-		int goldToGive = 55;
-		int expToGive = 33;
-
-
+		int goldToGive = characterWhoIsBeingAttacked.getGold();
+		int expToGive = characterWhoIsBeingAttacked.getExp();
+		characterWhoIsAttacking.addGold(goldToGive);
+		characterWhoIsAttacking.incExp(expToGive);
 
 
 		//remove killed character from game state
-		//GameManager.getGameState().killCharacter(characterWhoIsBeingAttacked.getEntityId());
-
-		//remove from play
-
-		//if the character is controlled by a player notify them
-
+		gameManager.getState().killCharacter(characterWhoIsBeingAttacked);
 	}
 
 	gameManager.sendCharacterMessage(characterWhoIsAttacking.getEntityId(),"Ending combat round");
 	gameManager.sendCharacterMessage(characterWhoIsBeingAttacked.getEntityId(),"Ending combat round");	
 }
-
-
-//TODO: change this to a gameState function
-// void CharacterEntity::die(GameManager& gameManager){
-//     //remove from play
-//     //if the character is controlled by a player notify them
-//     //gameManager.getGameState().removeCharacterByUniqueId(getEntityId());
-
-
-// }
 
 
 
