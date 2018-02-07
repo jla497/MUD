@@ -12,7 +12,9 @@ class CombatComponent : public CharacterComponent {
     int m_armor;
     int m_thac0;
     CombatStates m_combatState;
+    //The Roll use to calculate damage dealt.
     Roll m_damageRollData;
+    //the Roll used to calculate damage mitigated(my assumption, double check)
     Roll m_hitRollData;
     //CombatAbility combatAbility = nullptr;
   public:

@@ -13,7 +13,7 @@ namespace CombatSimulation {
 		GameManager& gameManager);
 
 	int calcRoundDamage(Roll damageRoll, Roll hitRoll);
-
+	int calcRoll(Roll roll);
 
 }
 #endif

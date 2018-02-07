@@ -1,13 +1,26 @@
 #include "CombatSimulation.h"
 
 
-int CombatSimulation::calcRoundDamage(Roll damageRoll, Roll hitRoll){
-	return 5;
+int CombatSimulation::calcRoll(Roll roll){
+	int rollValue = 0;
+	for (int i = 0; i < roll.numOfDie; ++i){
+		//generate roll in range [1,sizeOfDie]
+		rollValue += rand() % roll.sizeOfDie + 1 ;
+	}
+	rollValue+= roll.rollModifier;
+	return rollValue;
 }
 
 
+int CombatSimulation::calcRoundDamage(Roll damageRoll, Roll hitRoll){
+	int attackvalue = calcRoll(damageRoll);
+	int hitValue = calcRoll(hitRoll);
 
+	//ignore hit for now
+	int netDamage = attackvalue;
 
+	return netDamage;
+}
 
 void CombatSimulation::resolveCombatRound(CharacterEntity& characterWhoIsAttacking,
 	CharacterEntity&  characterWhoIsBeingAttacked,
