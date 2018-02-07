@@ -6,8 +6,8 @@
 // #include "CombatSimulation.h"
 
 /**
- * The AttackAction class defines the behavior for when a player character
- * attacks a creature or other character.
+ * The AttackAction class defines the behavior for when a character
+ * attacks am other character.
  */
 class AttackAction : public Action {
   public:

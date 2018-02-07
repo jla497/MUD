@@ -7,13 +7,14 @@ enum class CombatStates { NOT_FIGHTING, FIGHTING };
 
 class CombatComponent : public CharacterComponent {
   private:
+    int m_maxHealth;
+    int m_currentHealth;
     int m_armor;
     int m_thac0;
     CombatStates m_combatState;
     Roll m_damageRollData;
     Roll m_hitRollData;
     //CombatAbility combatAbility = nullptr;
-    void die();
   public:
     CombatComponent(int armor, int thac0,Roll m_damageRollData,Roll m_hitRollData);
     CombatComponent();
@@ -33,7 +34,11 @@ class CombatComponent : public CharacterComponent {
     void endCombatState();
 
     void prepareToAttack();
+    //void prepareToUseCombatAbility(CombatAbility& combatAbility);
+
+    /*Damage the Character and return true if it was killed */
     bool damage(int damageAmount);
+    void heal(int healAmount);
 
 };
 #endif

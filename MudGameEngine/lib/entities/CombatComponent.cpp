@@ -3,6 +3,8 @@
 
 CombatComponent::CombatComponent(int armor, int thac0, Roll m_damageRollData, Roll m_hitRollData){
 	this->m_combatState = CombatStates::NOT_FIGHTING;
+	this->m_maxHealth = 10;
+	this->m_currentHealth = 10;	
 	this->m_armor = armor;
 	this->m_thac0 = thac0;
 	this->m_damageRollData = m_damageRollData;
@@ -10,6 +12,8 @@ CombatComponent::CombatComponent(int armor, int thac0, Roll m_damageRollData, Ro
 }
 CombatComponent::CombatComponent(){
 	this->m_combatState = CombatStates::NOT_FIGHTING;
+	this->m_maxHealth = 10;
+	this->m_currentHealth = 10;	
 	this->m_armor = 0;
 	this->m_thac0 = 0;
 	this->m_damageRollData = {1,1,0};
@@ -18,15 +22,9 @@ CombatComponent::CombatComponent(){
 
 void CombatComponent::prepareToAttack(){
 	//set nextCombatAbilityToBeUsed to the characters default attack(if their is no weapon use the default Damageroll)
+	//TODO:
+	//this->nextCombatAbilityToBeUsed = this->standardAttackAbility;
 }
-
-void CombatComponent::die(){
-	//remove from play
-	//if the character is controlled by a player notify them
-
-}
-
-
 
 void CombatComponent::setArmor(int armor){
 	this->m_armor = armor;
@@ -60,6 +58,19 @@ int CombatComponent::getThac0() const {
 }
 
 bool CombatComponent::damage(int damageAmount){
-	die();
-	return false; //FIXME you were missing a return. put the proper value here
+	this->m_currentHealth -= damageAmount;
+	if(this->m_currentHealth <= 0){
+		this->m_currentHealth = 0;
+		return true;
+	}
+	else{
+		return false;
+	}
+}
+
+void CombatComponent::heal(int healAmount){
+	m_currentHealth += healAmount;
+	if(m_currentHealth > m_maxHealth){
+		m_currentHealth = m_maxHealth;
+	}
 }

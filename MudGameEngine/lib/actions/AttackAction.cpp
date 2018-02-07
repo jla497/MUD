@@ -10,7 +10,6 @@
 
 AttackAction *AttackAction::clone() { return new AttackAction(*this); }
 
-
 class CombatComponent;
 class CharacterEntity;
 void AttackAction::execute_impl() {
@@ -32,7 +31,7 @@ void AttackAction::execute_impl() {
         return;
     }
 
-    //--get list of entities in the room
+    //--get ids of characters in the attackers room
     auto IDsOfPlayersInRoom =
         gameState.getCharactersInRoom(characterCurrentRoom);
     if (IDsOfPlayersInRoom.empty()) {
@@ -49,8 +48,8 @@ void AttackAction::execute_impl() {
     auto nameOfAttackTarget = actionArguments.at(0);
     logger->info("nameOfAttackTarget: " + nameOfAttackTarget);
 
-    // TODO: make changes so that the player can attack any arbritrary entity.
-    // see if my target is in the same room
+
+    // see if the target is in the same room as the attacker
     for (auto characterID : IDsOfPlayersInRoom) {
         auto currentEntity = gameState.getCharacterFromLUT(characterID);
         if (!currentEntity)
@@ -59,26 +58,10 @@ void AttackAction::execute_impl() {
         if (boost::to_lower_copy(shortDescOfCurrentPlayer) ==
             boost::to_lower_copy(nameOfAttackTarget)) {
 
-            // send messages to characters fighting
-            auto playerWhoIsBeingAttacking = currentEntity;
-            gameManager.sendCharacterMessage(
-                playerWhoIsAttacking->getEntityId(),
-                "You attack " + playerWhoIsBeingAttacking->getShortDesc() +
-                    " and do 1 damage");
 
-            gameManager.sendCharacterMessage(
-                playerWhoIsBeingAttacking->getEntityId(),
-                "You are attacked by " + playerWhoIsAttacking->getShortDesc() +
-                    "and take 1 damage");
-
-
-
-
-
-            //set attackers attackAbiliy to their normal attack
             playerWhoIsAttacking->getCombatComponent()->prepareToAttack();
             //calculate and apply attack effects
-            CombatSimulation::resolveCombatRound(*playerWhoIsAttacking, *playerWhoIsBeingAttacking,gameManager);
+            CombatSimulation::resolveCombatRound(*playerWhoIsAttacking, *currentEntity,gameManager);
             return;
         }
     }
