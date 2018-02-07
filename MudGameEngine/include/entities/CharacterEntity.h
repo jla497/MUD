@@ -2,7 +2,6 @@
 #define CHARACTER_ENTITY_H
 
 #include <map>
-
 #include "Roll.h"
 #include "entities/Entity.h"
 #include "entities/ObjectEntity.h"
@@ -12,7 +11,7 @@ class CombatComponent;
 class CharacterEntity : public Entity {
   private:
     bool isPlayerCharacter = false;
-    int m_armor;
+    //int m_armor{};
     // std::string m_damage; // TODO: string for now
     std::vector<std::string> m_desc;
     unsigned int m_exp;
@@ -23,17 +22,15 @@ class CharacterEntity : public Entity {
     unsigned int m_level{};
     std::vector<std::string> m_longDesc;
     std::string m_shortDesc;
-    int m_thac0{};
+    //int m_thac0{};
     std::map<int, ObjectEntity> m_objects;
 
-   // CombatStates m_combatState;
-
-    Roll m_damageRollData; // ???
-    Roll m_hitRollData;    // ???
+    //Roll m_damageRollData;
+    //Roll m_hitRollData;
     CombatComponent combatComponent;
+
     // ASSUME: can only level up via experience
     // should calculate level every time exp changed
-    
     void calculateLevel();
 
   public:
@@ -46,31 +43,15 @@ class CharacterEntity : public Entity {
                     int thac0); // TODO make by reference
 
     // Getters
-    Roll getDamage() const;
-
     std::vector<std::string> getDesc() const;
-
     unsigned int getExp() const;
-
     int getGold() const;
-
-    Roll getHit() const;
-
     unsigned int getTypeId() const;
-
     std::vector<std::string> getKeywords() const;
-
     unsigned int getLevel() const;
-
     std::vector<std::string> getLongDesc() const;
-
     std::string getShortDesc() const;
-
-    int getThac0() const;
-
-
-    CombatComponent getCombatComponent();
-
+    CombatComponent* getCombatComponent();
 
     // currently gold is signed but good to have
     // separate methods for adding and subtracting

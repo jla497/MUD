@@ -20,6 +20,10 @@ class CombatComponent : public CharacterComponent {
     void setThac0(int thac0);
     void setDamageRoll(Roll damageRollData);
     void setHitRoll(Roll hitRollData);
+    int getArmor() const;
+    int getThac0() const;
+    Roll getDamageRoll() const;
+    Roll getHitRoll() const;
 
     // edit combat state
     CombatStates getCombatState() const;
