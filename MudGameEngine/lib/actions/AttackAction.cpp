@@ -18,29 +18,29 @@ void AttackAction::execute_impl() {
     // get gamestate
     auto &gameState = gameManager.getState();
 
-    // get player who is attacking
-    auto playerWhoIsAttacking = characterPerformingAction;
+    // get character who is attacking
+    auto characterWhoIsAttacking = characterPerformingAction;
 
-    //--get the room the player is in
+    //--get the room the character is in
     auto characterCurrentRoom =
-        gameState.getCharacterLocation(*playerWhoIsAttacking);
+        gameState.getCharacterLocation(*characterWhoIsAttacking);
     if (!characterCurrentRoom) {
         logger->error(
             "Character is not in a room! Suspect incorrect world init");
-        // return early, as we are in a bad state - the player is not in a room!
+        // return early, as we are in a bad state - the character is not in a room!
         return;
     }
 
     //--get ids of characters in the attackers room
-    auto IDsOfPlayersInRoom =
+    auto IDsOfCharactersInRoom =
         gameState.getCharactersInRoom(characterCurrentRoom);
-    if (IDsOfPlayersInRoom.empty()) {
+    if (IDsOfCharactersInRoom.empty()) {
         return;
     }
-    auto attackingPlayersUniqueId = playerWhoIsAttacking->getEntityId();
+    auto attackingCharactersUniqueId = characterWhoIsAttacking->getEntityId();
     if (actionArguments.empty()) {
         // user did not pass an attack target
-        gameManager.sendCharacterMessage(attackingPlayersUniqueId,
+        gameManager.sendCharacterMessage(attackingCharactersUniqueId,
                                          "Attack what?");
         logger->info("No Target found");
         return;
@@ -49,28 +49,34 @@ void AttackAction::execute_impl() {
     logger->info("nameOfAttackTarget: " + nameOfAttackTarget);
 
     // see if the target is in the same room as the attacker
-    for (auto characterID : IDsOfPlayersInRoom) {
+    for (auto characterID : IDsOfCharactersInRoom) {
         auto currentEntity = gameState.getCharacterFromLUT(characterID);
         if (!currentEntity)
             return;
-        auto shortDescOfCurrentPlayer = currentEntity->getShortDesc();
-        if (boost::to_lower_copy(shortDescOfCurrentPlayer) ==
+        auto shortDescOfCurrentCharacter = currentEntity->getShortDesc();
+        if (boost::to_lower_copy(shortDescOfCurrentCharacter) ==
             boost::to_lower_copy(nameOfAttackTarget)) {
 
             // calculate and apply attack effects
-            playerWhoIsAttacking->getCombatComponent()->prepareToAttack();
-            CombatSimulation::resolveCombatRound(*playerWhoIsAttacking,
+            characterWhoIsAttacking->getCombatComponent()->prepareToAttack();
+            CombatSimulation::resolveCombatRound(*characterWhoIsAttacking,
                                                  *currentEntity, gameManager);
 
+                //log hp of target
                 logger->info(nameOfAttackTarget + ": " + 
-                    playerWhoIsAttacking->getCombatComponent()->getHealthDescription());
+                    currentEntity->getCombatComponent()->getHealthDescription());
+                //display the targets hp to the attacker 
+                gameManager.sendCharacterMessage(attackingCharactersUniqueId,
+                    nameOfAttackTarget + ": " + 
+                    currentEntity->getCombatComponent()->getHealthDescription());
+                
             return;
         }
     }
 
-    // if we didnt find the target we tell the player
+    // if we didnt find the target tell the attacker
     logger->info("No Target found");
-    gameManager.sendCharacterMessage(attackingPlayersUniqueId,
+    gameManager.sendCharacterMessage(attackingCharactersUniqueId    ,
                                      "Attack failed: could not find " +
                                          nameOfAttackTarget);
 }

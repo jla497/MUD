@@ -49,7 +49,7 @@ class CombatComponent : public CharacterComponent {
     int getThac0() const;
     Roll getDamageRoll() const;
     Roll getHitRoll() const;
-    std::string getHealthDescription();
+    std::string getHealthDescription() const;
 
     // view and change combat state methods
     CombatStates getCombatState() const;
