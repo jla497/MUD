@@ -1,4 +1,5 @@
 #include <boost/algorithm/string/join.hpp>
+#include <boost/algorithm/string.hpp>
 #include <boost/format.hpp>
 #include <numeric>
 #include <sstream>
@@ -16,6 +17,7 @@ LookAction *LookAction::clone() { return new LookAction(*this); }
 
 void LookAction::execute_impl() {
     static auto logger = mudserver::logging::getLogger("LookAction::execute");
+    logger->info("LookAction::Start");
 
     auto &gameState = gameManager.getState();
 
@@ -38,8 +40,8 @@ void LookAction::execute_impl() {
         std::vector<std::string> roomDesc = characterCurrentRoom->getDesc();
         std::vector<std::string> roomDirs = characterCurrentRoom->getDirs();
 
-        auto chDescs = getCharacterDescriptions(characterCurrentRoom);
-        auto objDescs = getObjectDescriptions(characterCurrentRoom);
+        auto chDescs = getDescriptionOfCharactersInRoom(characterCurrentRoom);
+        auto objDescs = getDescriptionOfObjectsInRoom(characterCurrentRoom);
         std::string roomDescs = join(roomDesc, " ");
         std::string roomExits = join(roomDirs, " ");
 
@@ -52,23 +54,21 @@ void LookAction::execute_impl() {
                 objDescs));
 
     } else if (actionArguments.size() == MAX_LOOK_ARGS) {
-        //TODO: show the description field when you look at a specific character
-        // TODO: look at object
-        // Can you look at players?
         gameManager.sendCharacterMessage(
             characterPerformingAction->getEntityId(),
-            "looked at object " + actionArguments.front());
+            getDescriptionOfTargetCharacter(actionArguments.front(),characterCurrentRoom ));
     } else {
         // too many objects to look at, error message to player
         gameManager.sendCharacterMessage(
             characterPerformingAction->getEntityId(),
             "Please type /'look/' or /'look <object>/'");
     }
+
+     logger->info("LookAction::End");
 }
 
 std::string
-LookAction::getCharacterDescriptions(RoomEntity *characterCurrentRoom) {
-    //TODO: when you look at a room the characters longdescs should be displayed
+LookAction::getDescriptionOfCharactersInRoom(RoomEntity *characterCurrentRoom) {
     auto &gameState = gameManager.getState();
     auto characterIds = gameState.getCharactersInRoom(characterCurrentRoom);
     std::vector<std::string> characterDescs{};
@@ -78,12 +78,14 @@ LookAction::getCharacterDescriptions(RoomEntity *characterCurrentRoom) {
         auto ch = gameState.getCharacterFromLUT(id);
         auto chId = std::to_string(id.getId());
         auto desc = ch->getShortDesc();
+        auto longDesc = getStringFromStringVector(ch->getLongDesc());
         auto objects = ch->getObjects();
         std::string objDesc{};
         for (auto &obj : objects) {
-            objDesc += obj.second.getShortDesc() + "\n";
+            objDesc += getStringFromStringVector(obj.second.getLongDesc()) + "\n";
         }
-        characterDescs.push_back(chId + ": " + desc + "\n\t" + desc +
+        characterDescs.push_back(chId + ": " + desc + "\n" + longDesc + 
+                                "\n\t" + desc +
                                  "'s objects: " + objDesc + "\n");
     }
     std::string chDescs = join(characterDescs, " ");
@@ -91,14 +93,50 @@ LookAction::getCharacterDescriptions(RoomEntity *characterCurrentRoom) {
 }
 
 std::string
-LookAction::getObjectDescriptions(RoomEntity *characterCurrentRoom) {
+LookAction::getDescriptionOfObjectsInRoom(RoomEntity *characterCurrentRoom) {
     auto objects = characterCurrentRoom->getObjects();
     std::vector<std::string> objectDescs{};
     for (auto &obj : objects) {
-        auto desc = obj.second.getShortDesc();
+        auto desc = getStringFromStringVector(obj.second.getLongDesc());
         objectDescs.push_back(desc + "\n");
     }
-
     std::string objDescs = join(objectDescs, " ");
     return objDescs;
+}
+
+std::string 
+LookAction::getDescriptionOfTargetCharacter(std::string nameOfTarget,
+    RoomEntity *characterCurrentRoom){
+
+    // if(nameOfTarget.empty()){
+    //     return "";
+    // }
+    // auto &gameState = gameManager.getState();
+    // auto characterIds = gameState.getCharactersInRoom(characterCurrentRoom);
+    // if (characterIds.empty()) {
+    //     return nameOfTarget + " not found";
+    // }
+    // for (auto characterID : characterIds) {
+    //     auto currentEntity = gameState.getCharacterFromLUT(characterID);
+    //     if (!currentEntity){
+    //         continue;
+    //     }
+    //      auto shortDescOfCurrentCharacter = currentEntity->getShortDesc();
+    //     if (boost::to_lower_copy(shortDescOfCurrentCharacter) ==
+    //         boost::to_lower_copy(nameOfTarget)) {
+
+    //         return getStringFromStringVector(currentEntity->getDesc());
+    //     }
+     // }
+
+     return "looked at " + nameOfTarget;   
+}
+
+std::string 
+LookAction::getStringFromStringVector(std::vector<std::string> stringVector){
+    std::string output = "";
+    for(const auto& desc : stringVector){
+        output += desc + "\n";
+    }
+    return output;
 }
