@@ -75,6 +75,13 @@ void MoveAction::execute_impl() {
         auto mCharacterPtr = characterPerformingAction;
         gameState.addCharacterRoomRelationToLUT(mCharacterPtr->getEntityId(),
                                                 nextRoom->getId());
+
+
+        //TODO:the player automatically looks at the new room
+        //TODO:move look action meat into a helper method that all actions can access
+        //gameState.getDescriptionOfRoomPlayerIsIn();
+
+
         logger->info("MoveAction complete...");
         return;
     }

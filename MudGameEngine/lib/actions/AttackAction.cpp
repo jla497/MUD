@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 
+// #include "CombatSimulation.h"
 #include "actions/AttackAction.h"
 #include "gamemanager/GameManager.h"
 #include "logging.h"
@@ -68,6 +69,26 @@ void AttackAction::execute_impl() {
                 playerWhoIsBeingAttacking->getEntityId(),
                 "You are attacked by " + playerWhoIsAttacking->getShortDesc() +
                     "and take 1 damage");
+
+
+            //calculate and apply attack effects
+            //get combat components and send them to the combat module
+
+            //CombatSimulation::resolveCombatRound(*playerWhoIsAttacking, *playerWhoIsBeingAttacking,gameManager);
+
+            //inside Combat
+            //playerWhoIsAttacking.getCombatComponent() then do some calculations and change game state + send player messages
+
+
+
+
+
+
+
+
+
+
+
             return;
         }
     }

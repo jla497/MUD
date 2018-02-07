@@ -5,6 +5,8 @@
 
 #include "entities/CharacterEntity.h"
 #include "entities/ObjectEntity.h"
+ #include "entities/CombatComponent.h"
+
 
 CharacterEntity::CharacterEntity(
     int armor, std::string damage, std::vector<std::string> desc,
@@ -16,7 +18,9 @@ CharacterEntity::CharacterEntity(
       /*m_hit(std::move(hit)),*/
       m_keywords(std::move(keywords)), m_level(level),
       m_longDesc(std::move(longDesc)), m_shortDesc(std::move(shortDesc)),
-      m_thac0(thac0), m_combatState(CombatStates::NOT_FIGHTING) {
+      m_thac0(thac0)
+      //, m_combatState(CombatStates::NOT_FIGHTING)
+       {
 
     std::vector<std::string> tmpHit;
     boost::split(tmpHit, hit, boost::is_any_of("+d"));
@@ -27,6 +31,16 @@ CharacterEntity::CharacterEntity(
     boost::split(tmpDamage, damage, boost::is_any_of("+d"));
     m_damageRollData = {std::stoi(tmpDamage.at(0)), std::stoi(tmpDamage.at(1)),
                         tmpDamage.size() > 2 ? std::stoi(tmpDamage.at(2)) : 0};
+
+
+
+    //init combat Component
+    this->combatComponent.setArmor(armor);
+    this->combatComponent.setThac0(thac0);
+    this->combatComponent.setDamageRoll(m_damageRollData);
+    this->combatComponent.setHitRoll(m_hitRollData);
+
+
 }
 
 Roll CharacterEntity::getDamage() const { return m_damageRollData; }
@@ -55,13 +69,6 @@ std::string CharacterEntity::getShortDesc() const { return m_shortDesc; }
 
 int CharacterEntity::getThac0() const { return m_thac0; }
 
-CombatStates CharacterEntity::getCombatState() const { return m_combatState; }
-void CharacterEntity::engageCombatState() {
-    m_combatState = CombatStates::FIGHTING;
-}
-void CharacterEntity::endCombatState() {
-    m_combatState = CombatStates::NOT_FIGHTING;
-}
 
 void CharacterEntity::addGold(unsigned int amount) { m_gold += amount; }
 

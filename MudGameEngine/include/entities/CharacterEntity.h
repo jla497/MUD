@@ -6,11 +6,12 @@
 #include "Roll.h"
 #include "entities/Entity.h"
 #include "entities/ObjectEntity.h"
+#include "entities/CombatComponent.h"
 
-enum class CombatStates { NOT_FIGHTING, FIGHTING };
-
+class CombatComponent;
 class CharacterEntity : public Entity {
   private:
+    bool isPlayerCharacter = false;
     int m_armor;
     // std::string m_damage; // TODO: string for now
     std::vector<std::string> m_desc;
@@ -25,13 +26,14 @@ class CharacterEntity : public Entity {
     int m_thac0{};
     std::map<int, ObjectEntity> m_objects;
 
-    CombatStates m_combatState;
+   // CombatStates m_combatState;
 
     Roll m_damageRollData; // ???
     Roll m_hitRollData;    // ???
-
+    CombatComponent combatComponent;
     // ASSUME: can only level up via experience
     // should calculate level every time exp changed
+    
     void calculateLevel();
 
   public:
@@ -66,10 +68,9 @@ class CharacterEntity : public Entity {
 
     int getThac0() const;
 
-    // Combat related
-    CombatStates getCombatState() const;
-    void engageCombatState();
-    void endCombatState();
+
+    CombatComponent getCombatComponent();
+
 
     // currently gold is signed but good to have
     // separate methods for adding and subtracting
