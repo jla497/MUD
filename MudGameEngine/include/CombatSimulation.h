@@ -11,5 +11,9 @@ namespace CombatSimulation {
 	void resolveCombatRound(CharacterEntity& playerWhoIsAttacking,
 		CharacterEntity&  playerWhoIsBeingAttacking,
 		GameManager& gameManager);
+
+	int calcRoundDamage(Roll damageRoll, Roll hitRoll);
+
+
 }
 #endif

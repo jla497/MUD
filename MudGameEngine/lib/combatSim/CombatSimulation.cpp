@@ -1,5 +1,14 @@
 #include "CombatSimulation.h"
 
+
+int CombatSimulation::calcRoundDamage(Roll damageRoll, Roll hitRoll){
+	return 5;
+}
+
+
+
+
+
 void CombatSimulation::resolveCombatRound(CharacterEntity& characterWhoIsAttacking,
 	CharacterEntity&  characterWhoIsBeingAttacked,
 	GameManager& gameManager){
@@ -18,14 +27,16 @@ void CombatSimulation::resolveCombatRound(CharacterEntity& characterWhoIsAttacki
 
 
     //calc damage to deal(hard coded for now)
-    /*
+    
   	//TODO: use CombatAbilities rather than just raw roll values  
-    int damageAmount calcDamage(attackingCharactersCombatComponent->getDamageRoll(),
-    attackedCharactersCombatComponent->getHitRoll());
-    */
-	int damageAmount = 5;
+  	//A CombatAbility should encapsulate the damage dealth along site any effects it might apply
+  	//(ex a fireball might apply a burning effect on the target)
+    int damageAmount = calcRoundDamage(attackingCharactersCombatComponent->getDamageRoll(),
+    	(attackedCharactersCombatComponent->getHitRoll()));
+    
+	//int damageAmount = 5;
 
-    //deal damage damage 
+    //deal damage 
 	bool enemyWasKilled = attackedCharactersCombatComponent->damage(5);	
 
     // send messages to characters fighting
@@ -51,12 +62,19 @@ void CombatSimulation::resolveCombatRound(CharacterEntity& characterWhoIsAttacki
 		"You killed " + characterWhoIsBeingAttacked.getShortDesc());
 	gameManager.sendCharacterMessage(
 		characterWhoIsBeingAttacked.getEntityId(),
-		"You are were killed by by " + characterWhoIsAttacking.getShortDesc());
+		"You are were killed by " + characterWhoIsAttacking.getShortDesc());
+
+
+		//calculate rewards and give them to the attacker
+		int goldToGive = 55;
+		int expToGive = 33;
+
 
 
 
 		//remove killed character from game state
-		//gameManager.
+		//GameManager.getGameState().killCharacter(characterWhoIsBeingAttacked.getEntityId());
+
 		//remove from play
 
 		//if the character is controlled by a player notify them
@@ -66,3 +84,16 @@ void CombatSimulation::resolveCombatRound(CharacterEntity& characterWhoIsAttacki
 	gameManager.sendCharacterMessage(characterWhoIsAttacking.getEntityId(),"Ending combat round");
 	gameManager.sendCharacterMessage(characterWhoIsBeingAttacked.getEntityId(),"Ending combat round");	
 }
+
+
+//TODO: change this to a gameState function
+// void CharacterEntity::die(GameManager& gameManager){
+//     //remove from play
+//     //if the character is controlled by a player notify them
+//     //gameManager.getGameState().removeCharacterByUniqueId(getEntityId());
+
+
+// }
+
+
+

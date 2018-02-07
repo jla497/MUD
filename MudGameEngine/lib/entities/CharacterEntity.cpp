@@ -82,10 +82,3 @@ std::map<int, ObjectEntity> CharacterEntity::getObjects() { return m_objects; };
 CombatComponent *CharacterEntity::getCombatComponent() {
     return &combatComponent;
 }
-
-void CharacterEntity::die(){
-    //remove from play
-    //if the character is controlled by a player notify them
-
-    
-}

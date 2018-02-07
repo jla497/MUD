@@ -6,6 +6,7 @@
 #include "entities/Entity.h"
 #include "entities/ObjectEntity.h"
 #include "entities/CombatComponent.h"
+// #include "gamemanager/GameManager.h"
 
 class CombatComponent;
 class CharacterEntity : public Entity {
@@ -25,7 +26,6 @@ class CharacterEntity : public Entity {
     // ASSUME: can only level up via experience
     // should calculate level every time exp changed
     void calculateLevel();
-    void die();
   public:
     CharacterEntity() = default;
     CharacterEntity(int armor, std::string damage,

@@ -3,11 +3,11 @@
 
 #include "Action.h"
 #include "gamemanager/GameManager.h"
-// #include "CombatSimulation.h"
+#include "CombatSimulation.h"
 
 /**
  * The AttackAction class defines the behavior for when a character
- * attacks am other character.
+ * attacks an other character.
  */
 class AttackAction : public Action {
   public:
