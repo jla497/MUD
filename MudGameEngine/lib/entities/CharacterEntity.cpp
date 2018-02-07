@@ -12,13 +12,10 @@ CharacterEntity::CharacterEntity(
     unsigned int exp, int gold, std::string hit, unsigned int typeId,
     std::vector<std::string> keywords, unsigned int level,
     std::vector<std::string> longDesc, std::string shortDesc, int thac0)
-    : Entity::Entity(), /*m_armor(armor),*/ /*m_damage(std::move(damage)),*/
+    : Entity::Entity(),
       m_desc(std::move(desc)), m_typeId(typeId), m_exp(exp), m_gold(gold),
-      /*m_hit(std::move(hit)),*/
       m_keywords(std::move(keywords)), m_level(level),
-      m_longDesc(std::move(longDesc)), m_shortDesc(std::move(shortDesc))/*,
-      m_thac0(thac0)*/
-      //, m_combatState(CombatStates::NOT_FIGHTING)
+      m_longDesc(std::move(longDesc)), m_shortDesc(std::move(shortDesc))
        {
 
     std::vector<std::string> tmpHit;

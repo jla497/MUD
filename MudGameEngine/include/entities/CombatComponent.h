@@ -31,5 +31,4 @@ class CombatComponent : public CharacterComponent {
     void endCombatState();
 
 };
-
 #endif
