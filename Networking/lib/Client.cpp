@@ -6,7 +6,9 @@
 /////////////////////////////////////////////////////////////////////////////
 
 #include "Client.h"
+
 #include "TransferMessage.h"
+#include <utility>
 
 using namespace networking;
 
@@ -31,7 +33,7 @@ void Client::send(std::string message) {
 
     writeBuffer.emplace_back(std::move(message));
     boost::asio::async_write(socket, boost::asio::buffer(writeBuffer.back()),
-                             [this](auto errorCode, std::size_t size) {
+                             [this](auto errorCode, std::size_t) {
                                  if (!errorCode) {
                                      writeBuffer.pop_front();
                                  } else {
@@ -46,11 +48,12 @@ void Client::disconnect() {
 }
 
 void Client::connect(boost::asio::ip::tcp::resolver::iterator endpoint) {
-    boost::asio::async_connect(socket, endpoint, [this](auto errorCode, auto) {
-        if (!errorCode) {
-            this->readMessage();
-        }
-    });
+    boost::asio::async_connect(socket, std::move(endpoint),
+                               [this](auto errorCode, auto) {
+                                   if (!errorCode) {
+                                       this->readMessage();
+                                   }
+                               });
 }
 
 void Client::readMessage() {

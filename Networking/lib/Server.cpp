@@ -64,7 +64,7 @@ void Server::Channel::send(std::string outgoing) {
 
     auto self = shared_from_this();
     boost::asio::async_write(socket, boost::asio::buffer(writeBuffer.back()),
-                             [this, self](auto errorCode, std::size_t size) {
+                             [this, self](auto errorCode, std::size_t) {
                                  if (!errorCode) {
                                      writeBuffer.pop_front();
                                  } else if (!disconnected) {
@@ -77,7 +77,7 @@ void Server::Channel::readLine() {
     auto self = shared_from_this();
     boost::asio::async_read_until(
         socket, streamBuf, MESSAGE_DELIMITER,
-        [this, self](auto errorCode, std::size_t size) {
+        [this, self](auto errorCode, std::size_t) {
             if (!errorCode) {
                 readBuffer.push_back({connection, extractMessage(streamBuf)});
                 this->readLine();

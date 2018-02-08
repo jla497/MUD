@@ -57,6 +57,7 @@ void LookAction::execute_impl() {
         logger->debug("Looking at room ::End");
 
     } else if (actionArguments.size() == MAX_LOOK_ARGS) {
+
         gameManager.sendCharacterMessage(
             characterPerformingAction->getEntityId(),
             getDescriptionOfTargetCharacter(actionArguments.front(),

@@ -9,5 +9,5 @@ class MockGameManager : public mudserver::gamemanager::GameManager {
   public:
     MockGameManager(mudserver::connection::ConnectionManager &cm,
                     mudserver::gamemanager::GameState &gs)
-        : ps{""}, GameManager(cm, gs, ps) {}
+        : GameManager(cm, gs, ps), ps{""} {}
 };

@@ -47,13 +47,16 @@ void DecoyAction::execute_impl() {
             ourDecoyId =
                 newDecoy->getEntityId(); // to bind decoy to this action obj
             gameState.addCharacter(*newDecoy, room->getId());
-            logger->debug("decoy added in room " + room->getId());
+
+            logger->debug("decoy added in room " +
+                          std::to_string(room->getId()));
         } else {
             logger->debug("Spell not cast, not enough mana");
         }
     } else if (timeRemaining == 0) {
         gameState.removeCharacterByUniqueId(ourDecoyId);
-        logger->debug("decoy removed from room " + room->getId());
+        logger->debug("decoy removed from room " +
+                      std::to_string(room->getId()));
     } else {
         // decoy exists and will keep existing for this tick
     }

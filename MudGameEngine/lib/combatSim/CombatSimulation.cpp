@@ -14,8 +14,9 @@ int CombatSimulation::calcMaxPossibleRoll(Roll roll) {
     return roll.numOfDie * roll.sizeOfDie + roll.rollModifier;
 }
 
-int CombatSimulation::calcRoundDamage(Roll damageRoll, int armor) {
+int CombatSimulation::calcRoundDamage(Roll damageRoll, Roll hitRoll) {
     int attackvalue = calcRoll(damageRoll);
+
     // ignore armor for now
     int netDamage = attackvalue;
     return netDamage;
@@ -49,7 +50,7 @@ void CombatSimulation::resolveCombatRound(
     // target)
     int damageAmount =
         calcRoundDamage(attackingCharactersCombatComponent->getDamageRoll(),
-                        (attackedCharactersCombatComponent->getArmor()));
+                        (attackedCharactersCombatComponent->getHitRoll()));
 
     // deal damage
     bool enemyWasKilled =

@@ -13,8 +13,7 @@ void MoveAction::execute_impl() {
     static auto logger = mudserver::logging::getLogger("Action::MoveAction");
 
     // TODO: players in combat cannot move between rooms while they are in
-    // combat
-    // unless they use some sort of flee spell)
+    // combat  unless they use some sort of flee spell)
     // if(characterPerformingAction->getCombatComponent()->getCombatState() ==
     // CombatStates::FIGHTING){
     //     gameManager.sendCharacterMessage(
@@ -63,7 +62,7 @@ void MoveAction::execute_impl() {
         auto nextRoomId = room->getDestRoomIdOf(*direction);
 
         // not a valid direction
-        if (nextRoomId == -1) {
+        if (nextRoomId == RoomEntity::NO_ROOM_ID) {
             return;
         }
 

@@ -4,9 +4,9 @@
 namespace mudserver {
 namespace resources {
 namespace actions {
-extern const char *YOU;
-extern const char *SPEECHLESS;
-extern const char *YOURNAME;
+constexpr const char *YOU = u8"you";
+constexpr const char *SPEECHLESS = u8"<speechless>";
+constexpr const char *YOURNAME = u8"Your character's name is %s";
 } // namespace actions
 } // namespace resources
 } // namespace mudserver

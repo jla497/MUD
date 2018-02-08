@@ -1,3 +1,4 @@
+
 #ifndef PLAYERCHARACTERDEFAULTS_H
 #define PLAYERCHARACTERDEFAULTS_H
 
@@ -5,14 +6,14 @@ namespace mudserver {
 namespace resources {
 namespace playercharacter {
 
-extern const int ARMOR;
-extern const char *DAMAGE;
-extern const unsigned int EXP;
-extern const int GOLD;
-extern const char *HIT;
-extern const unsigned int LEVEL;
-extern const int THAC0;
-extern const unsigned int TYPEID;
+constexpr int ARMOR = 0;
+constexpr const char *DAMAGE = "1d8";
+constexpr unsigned int EXP = 0;
+constexpr int GOLD = 100;
+constexpr const char *HIT = "1d8";
+constexpr unsigned int LEVEL = 1;
+constexpr int THAC0 = 0;
+constexpr unsigned int TYPEID = 0;
 
 } // namespace playercharacter
 } // namespace resources

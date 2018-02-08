@@ -14,7 +14,7 @@ namespace mudserver {
 namespace gamemanager {
 class GameState;
 }
-}
+} // namespace mudserver
 
 class ResetManager {
     std::vector<Reset> resets;

@@ -18,7 +18,7 @@ class DecoyAction : public Action {
 
   public:
     using Action::Action;
-    void execute_impl();
+    void execute_impl() override;
     DecoyAction *clone() override;
 
   private:

@@ -59,8 +59,7 @@ std::unique_ptr<Action> generator(Player &player,
 };
 
 // FIXME: this should be an unordered_map, but some people don't have a
-// std::hash
-// specialization for enums in their old gcc/glibc
+// std::hash  specialization for enums in their old gcc/glibc
 const static std::map<ActKeyword, ActionGenerator> actionGenerators = {
     // NOLINT
     {ActKeyword::undefined, &generator<NullAction>},

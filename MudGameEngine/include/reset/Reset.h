@@ -18,7 +18,7 @@ namespace mudserver {
 namespace gamemanager {
 class GameState;
 }
-}
+} // namespace mudserver
 
 struct findNpc {
     findNpc(int id) : id(id) {}
