@@ -13,13 +13,13 @@
 using boost::algorithm::join;
 // namespace actmess = mudserver::resources::actions;
 
-static auto logger = mudserver::logging::getLogger("LookAction::execute");
+static auto logger = mudserver::logging::getLogger("LookAction");
 
 LookAction *LookAction::clone() { return new LookAction(*this); }
 
 void LookAction::execute_impl() {
 
-    logger->info("LookAction::Start");
+    logger->debug("LookAction::Start");
 
     auto &gameState = gameManager.getState();
 
@@ -36,7 +36,7 @@ void LookAction::execute_impl() {
     }
 
     if (actionArguments.empty()) {
-     logger->info("LookAction::Looking at room");
+     logger->debug("LookAction::Looking at room");
         // default: player looking at room
         std::string roomName = characterCurrentRoom->getName();
         std::vector<std::string> roomDesc = characterCurrentRoom->getDesc();
@@ -54,7 +54,7 @@ void LookAction::execute_impl() {
                 "Room Name" % roomName % "Description" % roomDescs % "Exits" %
                 roomExits % "Characters" % chDescs % "Objects in the room" %
                 objDescs));
-      logger->info("Looking at room ::End");
+      logger->debug("Looking at room ::End");
 
     } else if (actionArguments.size() == MAX_LOOK_ARGS) {
         gameManager.sendCharacterMessage(
@@ -67,12 +67,12 @@ void LookAction::execute_impl() {
             "Please type /'look/' or /'look <object>/'");
     }
 
-     logger->info("LookAction::End");
+     logger->debug("LookAction::End");
 }
 
 std::string
 LookAction::getDescriptionOfCharactersInRoom(RoomEntity *characterCurrentRoom) {
-    logger->info("getDescriptionOfCharactersInRoom::Start");
+    logger->debug("getDescriptionOfCharactersInRoom::Start");
     auto &gameState = gameManager.getState();
     auto characterIds = gameState.getCharactersInRoom(characterCurrentRoom);
     std::vector<std::string> characterDescs{};
@@ -93,15 +93,15 @@ LookAction::getDescriptionOfCharactersInRoom(RoomEntity *characterCurrentRoom) {
                                 "\n\t" + desc +
                                  "'s objects: " + objDesc + "\n");
     }
-    logger->info("getDescriptionOfCharactersInRoom::joining characterDescs"); 
+    logger->debug("getDescriptionOfCharactersInRoom::joining characterDescs"); 
     std::string chDescs = join(characterDescs, " ");
-    logger->info("getDescriptionOfCharactersInRoom::End");
+    logger->debug("getDescriptionOfCharactersInRoom::End");
     return chDescs;
 }
 
 std::string
 LookAction::getDescriptionOfObjectsInRoom(RoomEntity *characterCurrentRoom) {
-    logger->info("getDescriptionOfObjectsInRoom::Start");
+    logger->debug("getDescriptionOfObjectsInRoom::Start");
     auto objects = characterCurrentRoom->getObjects();
     std::vector<std::string> objectDescs{};
     for (auto &obj : objects) {
@@ -111,7 +111,7 @@ LookAction::getDescriptionOfObjectsInRoom(RoomEntity *characterCurrentRoom) {
         objectDescs.push_back(desc + "\n");
     }
     std::string objDescs = join(objectDescs, " ");
-    logger->info("getDescriptionOfObjectsInRoom::End");
+    logger->debug("getDescriptionOfObjectsInRoom::End");
     return objDescs;
 }
 
@@ -119,7 +119,7 @@ std::string
 LookAction::getDescriptionOfTargetCharacter(std::string nameOfTarget,
     RoomEntity *characterCurrentRoom){
 
-    logger->info("getDescriptionOfTargetCharacter::Start");
+    logger->debug("getDescriptionOfTargetCharacter::Start");
     if(nameOfTarget.empty()){
         return "";
     }
@@ -140,7 +140,7 @@ LookAction::getDescriptionOfTargetCharacter(std::string nameOfTarget,
             return getStringFromStringVector(currentEntity->getDesc());
         }
      }
-     logger->info("getDescriptionOfTargetCharacter::End");
+     logger->debug("getDescriptionOfTargetCharacter::End");
      return "cannot see " + nameOfTarget;   
 }
 
@@ -148,7 +148,7 @@ std::string
 LookAction::getStringFromStringVector(std::vector<std::string> stringVector){
     std::string output = "";
     for(const auto& desc : stringVector){
-        logger->info(desc);
+        logger->debug(desc);
         output += desc + "\n";
     }
     return output;
