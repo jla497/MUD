@@ -14,6 +14,6 @@ class SaveAction : public Action {
 
   protected:
     std::string description() const override { return u8"Save action"; }
-    SaveAction *clone() override;
+    std::unique_ptr<Action> clone() const override;
 };
 #endif // SAVEACTION_H

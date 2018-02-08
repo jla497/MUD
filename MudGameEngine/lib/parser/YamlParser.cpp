@@ -239,6 +239,28 @@ std::deque<RoomEntity> YamlParser::getAllRooms() const {
 AreaEntity YamlParser::getArea() const {
     // FIXME this function is horribly broken and doesn't do what you want it to
     // do
+    // warning: 'rooms' used after it was moved [bugprone-use-after-move]
+    // FIXME
+    // FIXME
+    // FIXME
+    // FIXME
+    // FIXME
+    // FIXME
+    // FIXME
+    // FIXME
+    // FIXME
+    // FIXME
+    // FIXME
+    // FIXME
+    // FIXME
+    // FIXME
+    // FIXME
+    // FIXME
+    // FIXME
+    // FIXME
+    // FIXME
+    // FIXME
+    // i have no idea what you intended this to do, so i can't fix it myself
 
     AreaEntity area;
     auto rooms = getAllRooms();

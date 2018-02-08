@@ -1,7 +1,13 @@
-#include "actions/SwapAction.h"
+
+#include <memory>
+
 #include <boost/algorithm/string.hpp>
 
-SwapAction *SwapAction::clone() { return new SwapAction(*this); }
+#include "actions/SwapAction.h"
+
+std::unique_ptr<Action> SwapAction::clone() const {
+    return std::make_unique<SwapAction>(*this);
+}
 
 void SwapAction::execute_impl() {
     static auto logger = mudserver::logging::getLogger("SwapAction::execute");

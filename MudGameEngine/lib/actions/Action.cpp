@@ -42,9 +42,7 @@ void Action::execute() {
 
     if (timeRemaining > 0) {
         timeRemaining--;
-        auto newAction = clone();
-        auto ptr = std::unique_ptr<Action>(newAction);
-        gameManager.addActionToQueue(std::move(ptr));
+        gameManager.addActionToQueue(clone());
     }
 }
 std::ostream &operator<<(std::ostream &os, const Action &action) {

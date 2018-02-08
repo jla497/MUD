@@ -1,6 +1,7 @@
 #include <boost/algorithm/string.hpp>
 #include <boost/algorithm/string/join.hpp>
 #include <boost/format.hpp>
+#include <memory>
 #include <numeric>
 #include <sstream>
 #include <string>
@@ -14,8 +15,9 @@ using boost::algorithm::join;
 // namespace actmess = mudserver::resources::actions;
 
 static auto logger = mudserver::logging::getLogger("LookAction");
-
-LookAction *LookAction::clone() { return new LookAction(*this); }
+std::unique_ptr<Action> LookAction::clone() const {
+    return std::make_unique<LookAction>(*this);
+}
 
 void LookAction::execute_impl() {
 

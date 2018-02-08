@@ -34,7 +34,7 @@ class Player {
     PlayerId id = static_cast<PlayerId>(-1);
     UsernameType username;
     PasswordType password;
-    networking::ConnectionId connectionId;
+    networking::ConnectionId connectionId{};
     CharacterEntity *character = nullptr;
     bool isAdmin = false;
 
