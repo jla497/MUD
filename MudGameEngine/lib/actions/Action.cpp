@@ -2,8 +2,8 @@
 #include <ostream>
 
 #include "actions/Action.h"
-#include "logging.h"
 #include "gamemanager/GameManager.h"
+#include "logging.h"
 
 // FIXME: this should possibly work on the enum keyword rather than the
 // description string
@@ -55,5 +55,3 @@ std::ostream &operator<<(std::ostream &os, const Action &action) {
     os << "]" << std::endl;
     return os;
 }
-
-

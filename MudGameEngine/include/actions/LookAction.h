@@ -13,10 +13,14 @@
  */
 class LookAction : public Action {
 
-    std::string getDescriptionOfCharactersInRoom(RoomEntity *characterCurrentRoom);
+    std::string
+    getDescriptionOfCharactersInRoom(RoomEntity *characterCurrentRoom);
     std::string getDescriptionOfObjectsInRoom(RoomEntity *characterCurrentRoom);
-    std::string getDescriptionOfTargetCharacter(std::string nameOfTarget,RoomEntity *characterCurrentRoom);
-    std::string getStringFromStringVector(std::vector<std::string> stringVector);
+    std::string
+    getDescriptionOfTargetCharacter(std::string nameOfTarget,
+                                    RoomEntity *characterCurrentRoom);
+    std::string
+    getStringFromStringVector(std::vector<std::string> stringVector);
 
   public:
     using Action::Action;

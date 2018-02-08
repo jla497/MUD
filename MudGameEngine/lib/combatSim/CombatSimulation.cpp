@@ -10,13 +10,13 @@ int CombatSimulation::calcRoll(Roll roll) {
     return rollValue;
 }
 
-int CombatSimulation::calcMaxPossibleRoll(Roll roll){
-	return roll.numOfDie * roll.sizeOfDie + roll.rollModifier;
+int CombatSimulation::calcMaxPossibleRoll(Roll roll) {
+    return roll.numOfDie * roll.sizeOfDie + roll.rollModifier;
 }
 
 int CombatSimulation::calcRoundDamage(Roll damageRoll, int armor) {
     int attackvalue = calcRoll(damageRoll);
-    //ignore armor for now
+    // ignore armor for now
     int netDamage = attackvalue;
     return netDamage;
 }
@@ -37,9 +37,10 @@ void CombatSimulation::resolveCombatRound(
                                      "Starting combat round");
 
     // set combat states of fighters to fighting
-    if(attackingCharactersCombatComponent != attackedCharactersCombatComponent){
-	    attackingCharactersCombatComponent->engageCombatState();
-	    attackedCharactersCombatComponent->engageCombatState();
+    if (attackingCharactersCombatComponent !=
+        attackedCharactersCombatComponent) {
+        attackingCharactersCombatComponent->engageCombatState();
+        attackedCharactersCombatComponent->engageCombatState();
     }
 
     // TODO: use CombatAbilities rather than just raw roll values
@@ -51,7 +52,8 @@ void CombatSimulation::resolveCombatRound(
                         (attackedCharactersCombatComponent->getArmor()));
 
     // deal damage
-    bool enemyWasKilled = attackedCharactersCombatComponent->damage(damageAmount);
+    bool enemyWasKilled =
+        attackedCharactersCombatComponent->damage(damageAmount);
 
     // send messages to characters fighting
     gameManager.sendCharacterMessage(
@@ -77,7 +79,7 @@ void CombatSimulation::resolveCombatRound(
             "You were killed by " + characterWhoIsAttacking.getShortDesc());
 
         // calculate rewards and give them to the attacker
-        //TODO: have a formula/function for calculating rewards
+        // TODO: have a formula/function for calculating rewards
         int goldToGive = characterWhoIsBeingAttacked.getGold();
         int expToGive = characterWhoIsBeingAttacked.getExp();
         characterWhoIsBeingAttacked.subtractGold(goldToGive);

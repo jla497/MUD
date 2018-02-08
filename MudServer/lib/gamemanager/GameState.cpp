@@ -150,9 +150,10 @@ void GameState::doReset() {
 }
 
 Spell *GameState::getSpellByName(const std::string spellName) {
-    auto foundSpell = std::find_if(spells.begin(), spells.end(), [spellName](Spell& tmp){
-        return tmp.getName() == spellName;
-    } );
+    auto foundSpell =
+        std::find_if(spells.begin(), spells.end(), [spellName](Spell &tmp) {
+            return tmp.getName() == spellName;
+        });
 }
 
 void GameState::killCharacter(const CharacterEntity &character) {
@@ -160,7 +161,6 @@ void GameState::killCharacter(const CharacterEntity &character) {
     removeCharacterByUniqueId(character.getEntityId());
 
     // notify the characters controller
-    
 }
 
 } // namespace gamemanager

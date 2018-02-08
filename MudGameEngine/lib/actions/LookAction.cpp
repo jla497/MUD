@@ -1,5 +1,5 @@
-#include <boost/algorithm/string/join.hpp>
 #include <boost/algorithm/string.hpp>
+#include <boost/algorithm/string/join.hpp>
 #include <boost/format.hpp>
 #include <numeric>
 #include <sstream>
@@ -36,7 +36,7 @@ void LookAction::execute_impl() {
     }
 
     if (actionArguments.empty()) {
-     logger->debug("LookAction::Looking at room");
+        logger->debug("LookAction::Looking at room");
         // default: player looking at room
         std::string roomName = characterCurrentRoom->getName();
         std::vector<std::string> roomDesc = characterCurrentRoom->getDesc();
@@ -54,12 +54,13 @@ void LookAction::execute_impl() {
                 "Room Name" % roomName % "Description" % roomDescs % "Exits" %
                 roomExits % "Characters" % chDescs % "Objects in the room" %
                 objDescs));
-      logger->debug("Looking at room ::End");
+        logger->debug("Looking at room ::End");
 
     } else if (actionArguments.size() == MAX_LOOK_ARGS) {
         gameManager.sendCharacterMessage(
             characterPerformingAction->getEntityId(),
-            getDescriptionOfTargetCharacter(actionArguments.front(),characterCurrentRoom ));
+            getDescriptionOfTargetCharacter(actionArguments.front(),
+                                            characterCurrentRoom));
     } else {
         // too many objects to look at, error message to player
         gameManager.sendCharacterMessage(
@@ -67,7 +68,7 @@ void LookAction::execute_impl() {
             "Please type /'look/' or /'look <object>/'");
     }
 
-     logger->debug("LookAction::End");
+    logger->debug("LookAction::End");
 }
 
 std::string
@@ -85,15 +86,14 @@ LookAction::getDescriptionOfCharactersInRoom(RoomEntity *characterCurrentRoom) {
         auto longDesc = getStringFromStringVector(ch->getLongDesc());
         auto objects = ch->getObjects();
         std::string objDesc{};
-        for (auto &obj : objects) {  
-            //TODO: do all objects have longDesc?
+        for (auto &obj : objects) {
+            // TODO: do all objects have longDesc?
             objDesc += (obj.second.getShortDesc()) + "\n";
         }
-        characterDescs.push_back(chId + ": " + desc + "\n" + longDesc + 
-                                "\n\t" + desc +
-                                 "'s objects: " + objDesc + "\n");
+        characterDescs.push_back(chId + ": " + desc + "\n" + longDesc + "\n\t" +
+                                 desc + "'s objects: " + objDesc + "\n");
     }
-    logger->debug("getDescriptionOfCharactersInRoom::joining characterDescs"); 
+    logger->debug("getDescriptionOfCharactersInRoom::joining characterDescs");
     std::string chDescs = join(characterDescs, " ");
     logger->debug("getDescriptionOfCharactersInRoom::End");
     return chDescs;
@@ -106,7 +106,7 @@ LookAction::getDescriptionOfObjectsInRoom(RoomEntity *characterCurrentRoom) {
     std::vector<std::string> objectDescs{};
     for (auto &obj : objects) {
         auto desc = getStringFromStringVector(obj.second.getLongDesc());
-        //TODO: do all objects have longDesc?
+        // TODO: do all objects have longDesc?
         // auto desc = (obj.second.getShortDesc());
         objectDescs.push_back(desc + "\n");
     }
@@ -115,12 +115,12 @@ LookAction::getDescriptionOfObjectsInRoom(RoomEntity *characterCurrentRoom) {
     return objDescs;
 }
 
-std::string 
+std::string
 LookAction::getDescriptionOfTargetCharacter(std::string nameOfTarget,
-    RoomEntity *characterCurrentRoom){
+                                            RoomEntity *characterCurrentRoom) {
 
     logger->debug("getDescriptionOfTargetCharacter::Start");
-    if(nameOfTarget.empty()){
+    if (nameOfTarget.empty()) {
         return "";
     }
     auto &gameState = gameManager.getState();
@@ -130,24 +130,24 @@ LookAction::getDescriptionOfTargetCharacter(std::string nameOfTarget,
     }
     for (auto characterID : characterIds) {
         auto currentEntity = gameState.getCharacterFromLUT(characterID);
-        if (!currentEntity){
+        if (!currentEntity) {
             continue;
         }
-         auto shortDescOfCurrentCharacter = currentEntity->getShortDesc();
+        auto shortDescOfCurrentCharacter = currentEntity->getShortDesc();
         if (boost::to_lower_copy(shortDescOfCurrentCharacter) ==
             boost::to_lower_copy(nameOfTarget)) {
 
             return getStringFromStringVector(currentEntity->getDesc());
         }
-     }
-     logger->debug("getDescriptionOfTargetCharacter::End");
-     return "cannot see " + nameOfTarget;   
+    }
+    logger->debug("getDescriptionOfTargetCharacter::End");
+    return "cannot see " + nameOfTarget;
 }
 
-std::string 
-LookAction::getStringFromStringVector(std::vector<std::string> stringVector){
+std::string
+LookAction::getStringFromStringVector(std::vector<std::string> stringVector) {
     std::string output = "";
-    for(const auto& desc : stringVector){
+    for (const auto &desc : stringVector) {
         logger->debug(desc);
         output += desc + "\n";
     }

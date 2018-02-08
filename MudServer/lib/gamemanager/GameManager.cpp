@@ -7,8 +7,8 @@
 #include <thread>
 #include <vector>
 
-#include <boost/optional.hpp>
 #include <boost/format.hpp>
+#include <boost/optional.hpp>
 
 #include "connectionmanager/ConnectionManager.h"
 #include "entities/CharacterEntity.h"
