@@ -88,13 +88,15 @@ LookAction::getDescriptionOfCharactersInRoom(RoomEntity *characterCurrentRoom) {
         auto desc = ch->getShortDesc();
         auto longDesc = getStringFromStringVector(ch->getLongDesc());
         auto objects = ch->getObjects();
-        std::string objDesc{};
+        //std::string objDesc{};
+        std::ostringstream objDesc("");
         for (auto &obj : objects) {
             // TODO: do all objects have longDesc?
-            objDesc += (obj.second.getShortDesc()) + "\n";
+            //objDesc += (obj.second.getShortDesc()) + "\n";
+            objDesc << (obj.second.getShortDesc()) << "\n";
         }
         characterDescs.push_back(chId + ": " + desc + "\n" + longDesc + "\n\t" +
-                                 desc + "'s objects: " + objDesc + "\n");
+                                 desc + "'s objects: " + objDesc.str() + "\n");
     }
     logger->debug("getDescriptionOfCharactersInRoom::joining characterDescs");
     std::string chDescs = join(characterDescs, " ");
@@ -107,11 +109,13 @@ LookAction::getDescriptionOfObjectsInRoom(RoomEntity *characterCurrentRoom) {
     logger->debug("getDescriptionOfObjectsInRoom::Start");
     auto objects = characterCurrentRoom->getObjects();
     std::vector<std::string> objectDescs{};
+    std::ostringstream desc("");
     for (auto &obj : objects) {
-        auto desc = getStringFromStringVector(obj.second.getLongDesc());
+        //auto desc = getStringFromStringVector(obj.second.getLongDesc());
+        desc << getStringFromStringVector(obj.second.getLongDesc());
         // TODO: do all objects have longDesc?
         // auto desc = (obj.second.getShortDesc());
-        objectDescs.push_back(desc + "\n");
+        objectDescs.push_back(desc.str() + "\n");
     }
     std::string objDescs = join(objectDescs, " ");
     logger->debug("getDescriptionOfObjectsInRoom::End");
