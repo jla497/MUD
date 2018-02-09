@@ -9,10 +9,8 @@
 
 #include "actions/LookAction.h"
 #include "logging.h"
-// #include "resources/ActionMessages.h"
 
 using boost::algorithm::join;
-// namespace actmess = mudserver::resources::actions;
 
 static auto logger = mudserver::logging::getLogger("LookAction");
 std::unique_ptr<Action> LookAction::clone() const {
@@ -88,11 +86,9 @@ LookAction::getDescriptionOfCharactersInRoom(RoomEntity *characterCurrentRoom) {
         auto desc = ch->getShortDesc();
         auto longDesc = getStringFromStringVector(ch->getLongDesc());
         auto objects = ch->getObjects();
-        //std::string objDesc{};
         std::ostringstream objDesc("");
         for (auto &obj : objects) {
             // TODO: do all objects have longDesc?
-            //objDesc += (obj.second.getShortDesc()) + "\n";
             objDesc << (obj.second.getShortDesc()) << "\n";
         }
         characterDescs.push_back(chId + ": " + desc + "\n" + longDesc + "\n\t" +
@@ -111,10 +107,9 @@ LookAction::getDescriptionOfObjectsInRoom(RoomEntity *characterCurrentRoom) {
     std::vector<std::string> objectDescs{};
     std::ostringstream desc("");
     for (auto &obj : objects) {
-        //auto desc = getStringFromStringVector(obj.second.getLongDesc());
         desc << getStringFromStringVector(obj.second.getLongDesc());
         // TODO: do all objects have longDesc?
-        // auto desc = (obj.second.getShortDesc());
+        // desc << (obj.second.getShortDesc());
         objectDescs.push_back(desc.str() + "\n");
     }
     std::string objDescs = join(objectDescs, " ");
