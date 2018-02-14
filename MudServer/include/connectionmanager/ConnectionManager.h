@@ -22,8 +22,9 @@ struct gameAndUserInterface {
 /*functor used in searches*/
 struct findGameAndUserInterface {
     findGameAndUserInterface(networking::Connection conn) : conn(conn) {}
-    bool operator()(const std::unique_ptr<gameAndUserInterface>& ptr) {
-        return ptr->conn.id == conn.id;
+
+    bool operator()(const gameAndUserInterface &conn) const {
+        return this->conn.id == conn.conn.id;
     }
 
 private:
@@ -32,19 +33,14 @@ private:
 
 struct findContainer {
     findContainer(networking::Connection conn) : conn(conn) {}
-    bool operator()(const std::unique_ptr<ConnectionContainer>& ptr) {
-        return ptr->getConnection().id == conn.id;
+
+    bool operator()(const ConnectionContainer conn) const {
+        return this->conn.id == conn.getConnection().id;
     }
 
 private:
     networking::Connection conn;
 };
-
-typedef std::vector<std::unique_ptr<ConnectionContainer>> ConnectionList;
-
-typedef std::vector<std::unique_ptr<ConnectionContainer>>::iterator it;
-
-typedef std::vector<std::unique_ptr<gameAndUserInterface>> gameAndUserMsgs;
 
 /*Connection Manager manages ConnectionContainers.
  Adds new connections and removes connections.
@@ -59,7 +55,7 @@ class ConnectionManager {
     // 	printf("Connection lost: %lu\n", c.id);
     // };
 
-    ConnectionList mList;
+    std::vector<ConnectionContainer> mList;
     networking::Server server;
 
 public:
@@ -76,10 +72,10 @@ public:
     std::deque<networking::Message> sendToServer();
 
     // collect and pass msgs from protocols to the GameManager
-    std::unique_ptr<gameAndUserMsgs> sendToGameManager();
+    std::vector<gameAndUserInterface> sendToGameManager();
 
     // collect and pass msgs from GameManager to ConnectionManager
-    void receiveFromGameManager(std::unique_ptr<gameAndUserMsgs> fromGame);
+    void receiveFromGameManager(const std::vector<gameAndUserInterface> &fromGame);
 
     bool update();
 };

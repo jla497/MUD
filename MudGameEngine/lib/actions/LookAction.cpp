@@ -21,7 +21,7 @@ void LookAction::execute() {
     // TODO: Feel like this error checking could be rolled into the 
     //       getCharacterLocation method?
     auto characterCurrentRoom =
-        gameState.getCharacterLocation(&characterPerformingAction);
+        gameState.getCharacterLocation(characterPerformingAction);
     if (!characterCurrentRoom) {
         logger->error(
             "Character is not in a room! Suspect incorrect world init");

@@ -14,28 +14,17 @@
 
 namespace mudserver {
 namespace connection {
+
+constexpr unsigned int DEFAULT_NUM_OF_MUD_PROTOCOLS = 512;
+
 class ConnectionContainer {
     networking::Connection mConnection;
-    bool isConnected;
-    std::unique_ptr<MudProtocol> mProtocol;
+    bool isConnected = false;
+    MudProtocol mProtocol{DEFAULT_NUM_OF_MUD_PROTOCOLS};
 
 public:
-    ConnectionContainer();
-
+    ConnectionContainer() = default;
     ConnectionContainer(const networking::Connection &c);
-
-    ConnectionContainer(ConnectionContainer const &) = delete;
-
-    ConnectionContainer &operator=(ConnectionContainer const &) = delete;
-
-    ConnectionContainer(ConnectionContainer &&container);
-
-    ConnectionContainer &operator=(ConnectionContainer &&container) {
-        if (this != &container) {
-            mProtocol = std::move(container.mProtocol);
-        }
-        return *this;
-    }
 
     bool getIsConnected() const;
 
@@ -44,14 +33,13 @@ public:
 
     std::string sendToGameManager();
 
-    void receiveFromGameManager(std::string &str);
+    void receiveFromGameManager(const std::string &str);
 
     std::string sendToServer();
 
     networking::Connection getConnection() const;
 
 private:
-    static const int DEFAULT_NUM_OF_MUD_PROTOCOLS;
 };
 }  // namespace connection
 }  // namespace mudserver

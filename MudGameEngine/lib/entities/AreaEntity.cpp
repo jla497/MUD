@@ -4,11 +4,11 @@
 
 #include "entities/AreaEntity.h"
 
-AreaEntity::AreaEntity(std::string& name,
-                       std::deque<std::unique_ptr<RoomEntity>> rooms)
+AreaEntity::AreaEntity(const std::string& name,
+                       std::deque<RoomEntity> rooms)
     : Entity::Entity(), m_name(name), m_rooms(std::move(rooms)) {}
 
-std::deque<std::unique_ptr<RoomEntity>>& AreaEntity::getAllRooms() {
+std::deque<RoomEntity>& AreaEntity::getAllRooms() {
  	return m_rooms;
  }
 std::string AreaEntity::getName() {

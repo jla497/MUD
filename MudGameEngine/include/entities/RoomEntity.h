@@ -12,10 +12,10 @@ struct ExtendedDesc {
 class RoomEntity : public Entity {
    private:
     std::vector<std::string> m_desc;
-    std::vector<std::unique_ptr<DoorEntity>> m_doors;
-    ExtendedDesc m_extDesc;
+    std::vector<DoorEntity> m_doors;
     std::string m_name;
-    unsigned int m_roomId;
+    ExtendedDesc m_extDesc;
+    unsigned int m_roomId = static_cast<unsigned int>(-1);
 
     /*
      * ASSUME ids are unique for ALL entities, entities include npc, obj, equip,
@@ -25,12 +25,14 @@ class RoomEntity : public Entity {
     std::vector<unsigned int> m_idEntitiesInRoom;
 
    public:
-    RoomEntity(std::vector<std::string>& desc,
-               std::vector<std::unique_ptr<DoorEntity>> doors, std::vector<std::string>& descExt,
-               std::vector<std::string>& keywordsExt, std::string& name,
+    RoomEntity() = default;
+
+    RoomEntity(const std::vector<std::string>& desc,
+               const std::vector<DoorEntity> &doors, const std::vector<std::string>& descExt,
+               const std::vector<std::string>& keywordsExt, const std::string& name,
                unsigned int roomId);
 
-    unsigned int getId();
+    unsigned int getId() const;
 
     std::string getName() const;
 
@@ -63,7 +65,7 @@ class RoomEntity : public Entity {
      * Returns success msg if inserts given entity into room succeeds
      * Given entity id
      */
-    std::string addEntity(const unsigned int entityToAdd);
+    std::string addEntity(unsigned int entityToAdd);
 
     /** 
      *Return all entities in the room
@@ -74,7 +76,7 @@ class RoomEntity : public Entity {
      *Returns success or failure msg if removes given entity into room succeeds
      * Given entity id
      */
-    std::string removeEntity(const unsigned int entityToRemove);
+    std::string removeEntity(unsigned int entityToRemove);
 };
 
 #endif

@@ -19,18 +19,12 @@ namespace pc = mudserver::resources::playercharacter;
 
 using boost::format;
 using boost::str;
-using std::vector;
 
 GameManager::GameManager(connection::ConnectionManager& connMan,
                          GameState& gameState)
-    : connectionManager{connMan},
-      gameState{gameState},
-      commandParser(),
-      tick{DEFAULT_TICK_LENGTH_MS},
-      done{false},
-      players(),
-      outgoingMessages(),
-      actions() {}
+    : gameState{gameState},
+      connectionManager{connMan}
+{}
 
 /**
  * Runs a standard game loop, which consists of the following steps:
@@ -47,8 +41,7 @@ void GameManager::mainLoop() {
     auto startTime = clock::now();
 
     while (!done) {
-        unique_ptr<gameAndUserMsgs> messagesForConnMan;
-         if (connectionManager.update()) {
+        if (connectionManager.update()) {
             // An error was encountered, stop
             done = true;
             continue;
@@ -56,7 +49,7 @@ void GameManager::mainLoop() {
     
         auto messages = connectionManager.sendToGameManager();
 
-        processMessages(*messages);
+        processMessages(messages);
 
         auto delta = clock::now() - startTime;
         if (delta >= tick) {
@@ -68,22 +61,20 @@ void GameManager::mainLoop() {
     }
 }
 
-void GameManager::processMessages(gameAndUserMsgs& messages) {
+void GameManager::processMessages(std::vector<connection::gameAndUserInterface>& messages) {
     static auto logger = logging::getLogger("GameManager::processMessages");
   
-    for (auto& message : messages) {
+    for (const auto& message : messages) {
 
         // look up player from ID
-        auto playerId = message->conn.id;
-        logger->debug(std::to_string(playerId) + ": " + message->text);
+        auto playerId = message.conn.id;
+        logger->debug(std::to_string(playerId) + ": " + message.text);
 
         if (players.find(playerId) == players.end()) {
             // We should add a login service that can deal with
             //      - players not existing
             //      - authenticating players
-            players.emplace(
-                playerId,
-                Player{playerId, "player" + std::to_string(playerId), ""});
+            players[playerId] = {playerId, "player" + std::to_string(playerId), ""};
         }
 
         // Guaranteed not to throw out_of_range - Player has been created
@@ -100,15 +91,15 @@ void GameManager::processMessages(gameAndUserMsgs& messages) {
         auto& playerCharacter = *playerToCharacter(player);
 
         // parse message into verb/object
-        std::unique_ptr<Action> action = commandParser.actionFromPlayerCommand(
-            playerCharacter, message->text, *this);
+        auto action = commandParser.actionFromPlayerCommand(
+            playerCharacter, message.text, *this);
 
         std::stringstream retMessage;
         retMessage << "DEBUG: " << *action;
 
         enqueueAction(std::move(action));
 
-        enqueueMessage(message->conn, retMessage.str());
+        enqueueMessage(message.conn, retMessage.str());
     }
 }
 
@@ -117,20 +108,23 @@ void GameManager::enqueueMessage(networking::Connection conn, std::string msg) {
 }
 
 void GameManager::sendMessagesToPlayers() {
-    auto toSend = std::make_unique<gameAndUserMsgs>();
+    std::vector<connection::gameAndUserInterface> toSend;
+    toSend.reserve(outgoingMessages.size());
+
+
 
     while (!outgoingMessages.empty()) {
-        toSend->push_back(std::make_unique<connection::gameAndUserInterface>(
-            outgoingMessages.front()));
+        toSend.push_back(outgoingMessages.front());
         outgoingMessages.pop();
     }
-    connectionManager.receiveFromGameManager(std::move(toSend));
+    connectionManager.receiveFromGameManager(toSend);
     connectionManager.sendToServer();
 }
 
-void GameManager::enqueueAction(unique_ptr<Action> action) {
+void GameManager::enqueueAction(std::unique_ptr<Action> action) {
     actions.push(std::move(action));
 }
+
 void GameManager::performQueuedActions() {
     while (!actions.empty()) {
         actions.front()->execute();
@@ -138,13 +132,12 @@ void GameManager::performQueuedActions() {
     }
 }
 
-GameState &GameManager::getState() { return gameState; }
+GameState &GameManager::getState() {
+    return gameState;
+}
 
-void GameManager::sendCharacterMessage(UniqueId characterId,
-                                       std::string message) {
-    auto player = characterIdToPlayer(characterId);
-    auto conn = networking::Connection{player.getId()};
-    enqueueMessage(conn, std::move(message));
+void GameManager::sendCharacterMessage(UniqueId characterId, std::string message) {
+    enqueueMessage({characterIdToPlayer(characterId).getId()}, std::move(message));
 }
 
 // TODO: Factor out into a new class
@@ -179,16 +172,12 @@ Player& GameManager::characterIdToPlayer(UniqueId characterId) {
 void GameManager::addPlayerCharacter(PlayerId playerId) {
     auto testShortDesc = "TestPlayerName" + std::to_string(playerCharacterBimap.size());
 
+    PlayerCharacter pc(pc::ARMOR, std::string{pc::DAMAGE}, std::vector<std::string>{}, pc::EXP,
+            pc::GOLD, std::string{pc::HIT}, std::vector<std::string>{}, pc::LEVEL,
+            std::vector<std::string>{}, testShortDesc, pc::THAC0);
 
-    auto character = std::make_unique<PlayerCharacter>(
-        pc::ARMOR, std::string{pc::DAMAGE}, std::vector<std::string>{}, pc::EXP,
-        pc::GOLD, std::string{pc::HIT}, std::vector<std::string>{}, pc::LEVEL,
-        std::vector<std::string>{}, testShortDesc, pc::THAC0);
-
-    playerCharacterBimap.insert(
-        PcBmType::value_type(playerId, character->getEntityId()));
-    gameState.addCharacter(std::move(character));
-
+    playerCharacterBimap.insert(PcBmType::value_type(playerId, pc.getEntityId()));
+    gameState.addCharacter(pc);
 }
 
 }  // namespace gamemanager
