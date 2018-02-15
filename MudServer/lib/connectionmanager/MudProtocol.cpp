@@ -25,47 +25,32 @@ void MudProtocol::receive(std::string str) {
 }
 
 std::string MudProtocol::send() {
-    if (inBuffer.empty()) return "";
+    if (inBuffer.empty())
+        return {};
 
-    std::string res;
-    std::stringstream ss;
+    constexpr auto prefixes = "";
+    constexpr auto suffixes = "\n";
 
-    auto prefixes = "";
-
-    auto suffixes = "\n";
-
-    ss << prefixes << inBuffer << suffixes;
-
-    res = ss.str();
-
-    // std::cout << res << std::endl;
+    std::ostringstream oss;
+    oss << prefixes << inBuffer << suffixes;
     inBuffer.clear();
-
-    return res;
+    return oss.str();
 }
 
 // any protocol-specific text formatting here
 std::string MudProtocol::broadcast(std::string broadcast) {
-    if (broadcast.empty()) return "";
-
+    if (broadcast.empty())
+        return {};
     broadcastBuffer = broadcast;
 
-    std::string res;
-
-    std::stringstream ss;
-
-    auto prefixes =
+    constexpr auto prefixes =
         "[ MudProtocol-specific broadcast formatting happens here: ]\n";
+    constexpr auto suffixes = "\n";
 
-    auto suffixes = "\n";
-
-    ss << prefixes << broadcastBuffer << suffixes;
-
-    res = ss.str();
-
+    std::ostringstream oss;
+    oss << prefixes << broadcastBuffer << suffixes;
     broadcastBuffer.clear();
-
-    return res;
+    return oss.str();
 }
 }
 }

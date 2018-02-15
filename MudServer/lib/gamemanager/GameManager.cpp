@@ -1,10 +1,13 @@
-#include <boost/format.hpp>
+
+#include <cassert>
 #include <iomanip>
 #include <iostream>
 #include <memory>
 #include <sstream>
 #include <thread>
 #include <vector>
+
+#include <boost/format.hpp>
 
 #include "connectionmanager/ConnectionManager.h"
 #include "entities/PlayerCharacter.h"
@@ -37,7 +40,6 @@ void GameManager::mainLoop() {
     logger->info("Entered main game loop");
 
     using clock = std::chrono::high_resolution_clock;
-
     auto startTime = clock::now();
 
     while (!done) {
@@ -51,6 +53,11 @@ void GameManager::mainLoop() {
 
         processMessages(messages);
 
+        /*
+         * FIXME
+         * This eventually causes the tick to go out of sync.
+         * If tick = delta + n, n time units get lost every tick.
+         */
         auto delta = clock::now() - startTime;
         if (delta >= tick) {
             startTime = clock::now();
@@ -63,7 +70,7 @@ void GameManager::mainLoop() {
 
 void GameManager::processMessages(std::vector<connection::gameAndUserInterface>& messages) {
     static auto logger = logging::getLogger("GameManager::processMessages");
-  
+
     for (const auto& message : messages) {
 
         // look up player from ID
@@ -83,18 +90,19 @@ void GameManager::processMessages(std::vector<connection::gameAndUserInterface>&
         // look up player's character
         // pointer is used as player may not have character yet
         auto character = playerToCharacter(player);
-        if (!character) {
+        if (character == nullptr) {
             // create a new character for the player and add it to the game
             // state
             addPlayerCharacter(playerId);
         }
-        auto& playerCharacter = *playerToCharacter(player);
+        auto playerCharacter = playerToCharacter(player);
+        assert(playerCharacter != nullptr);
 
         // parse message into verb/object
         auto action = commandParser.actionFromPlayerCommand(
-            playerCharacter, message.text, *this);
+                *playerCharacter, message.text, *this);
 
-        std::stringstream retMessage;
+        std::ostringstream retMessage;
         retMessage << "DEBUG: " << *action;
 
         enqueueAction(std::move(action));
@@ -110,8 +118,6 @@ void GameManager::enqueueMessage(networking::Connection conn, std::string msg) {
 void GameManager::sendMessagesToPlayers() {
     std::vector<connection::gameAndUserInterface> toSend;
     toSend.reserve(outgoingMessages.size());
-
-
 
     while (!outgoingMessages.empty()) {
         toSend.push_back(outgoingMessages.front());

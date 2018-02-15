@@ -4,7 +4,7 @@
 #include "YamlParser.h"
 #include "resources/DataFields.h"
 
-bool YamlParser::loadYamlFile(const std::string path){
+bool YamlParser::loadYamlFile(const std::string &path){
     if (is_loaded) {
         return false; //file is already loaded
     }
@@ -22,7 +22,7 @@ std::string YamlParser::parseString(YAML::Node node) {
     return node.as<std::string>();
 }
 
-NonPlayerCharacter YamlParser::parseNPC(YAML::Node npcNode){
+NonPlayerCharacter YamlParser::parseNPC(YAML::Node npcNode) const {
     auto armor = npcNode[ARMOR].as<int>();
     auto damage = npcNode[DAMAGE].as<std::string>();
     
@@ -52,7 +52,7 @@ NonPlayerCharacter YamlParser::parseNPC(YAML::Node npcNode){
     return {armor, damage, description, exp, gold, hit, npcTypeId, keywords, level, longdesc, shortDesc, thac0};
 }
 
-ObjectEntity YamlParser::parseObject(YAML::Node objectNode){
+ObjectEntity YamlParser::parseObject(YAML::Node objectNode) const {
     std::vector<std::string> attributes;
     std::transform(objectNode[ATTRIBUTES].begin(), objectNode[ATTRIBUTES].end(),
         std::back_inserter(attributes), parseString);
@@ -93,7 +93,7 @@ ObjectEntity YamlParser::parseObject(YAML::Node objectNode){
             keywordsExtra, objectTypeId, itemType, keywords, longdesc, shortdesc, wearFlags, weight};
 }
 
-Reset YamlParser::parseReset(YAML::Node resetNode){
+Reset YamlParser::parseReset(YAML::Node resetNode) const {
     auto id = resetNode[ID].as<int>();
     auto action = resetNode[ACTION].as<std::string>();
     auto comment = resetNode[COMMENT].as<std::string>("");
@@ -104,11 +104,11 @@ Reset YamlParser::parseReset(YAML::Node resetNode){
     return {id, action, comment, state, slot, limit, roomID};
 }
 
-void YamlParser::parseHelp(YAML::Node helpNode){
+void YamlParser::parseHelp(YAML::Node helpNode) const {
 
 }
 
-DoorEntity YamlParser::parseDoor(YAML::Node doorNode){
+DoorEntity YamlParser::parseDoor(YAML::Node doorNode) const {
     std::vector<std::string> desc;
     std::transform(doorNode[DESC].begin(), doorNode[DESC].end(), 
         std::back_inserter(desc), parseString);
@@ -124,7 +124,7 @@ DoorEntity YamlParser::parseDoor(YAML::Node doorNode){
     return {desc, dir, keywords, to};
 }
 
-std::vector<DoorEntity> YamlParser::getAllDoors(YAML::Node roomNode){
+std::vector<DoorEntity> YamlParser::getAllDoors(YAML::Node roomNode) const {
     std::vector<DoorEntity> doors;
     //iterate through all doors in room and add them to list/vector of doors
 
@@ -135,7 +135,8 @@ std::vector<DoorEntity> YamlParser::getAllDoors(YAML::Node roomNode){
      *
      * return {roomNode[DOORS_ENT].begin(), roomNode[DOORS_ENT].end()};
      *
-     * This applies for every function that looks like this.
+     * Iterators convert to Nodes convert to DoorEntities.
+     * This can apply for every function that looks like this.
      */
 
     std::for_each(roomNode[DOORS_ENT].begin(), roomNode[DOORS_ENT].end(),
@@ -146,7 +147,7 @@ std::vector<DoorEntity> YamlParser::getAllDoors(YAML::Node roomNode){
     return doors;
 }
 
-RoomEntity YamlParser::parseRoom(YAML::Node roomNode){
+RoomEntity YamlParser::parseRoom(YAML::Node roomNode) const {
     std::vector<std::string> desc;
     std::transform(roomNode[DESC].begin(), roomNode[DESC].end(),
         std::back_inserter(desc), parseString);
@@ -171,11 +172,11 @@ RoomEntity YamlParser::parseRoom(YAML::Node roomNode){
     return {desc, doors, descExt, keywordsExt, name, roomId};
 }
 
-ShopEntity YamlParser::parseShop(YAML::Node shopNode){
+ShopEntity YamlParser::parseShop(YAML::Node shopNode) const {
     return {};
 }
 
-std::vector<NonPlayerCharacter> YamlParser::getAllNPCS(){
+std::vector<NonPlayerCharacter> YamlParser::getAllNPCS() const {
     std::vector<NonPlayerCharacter> npcs;
     for (auto& document : data) {
         std::for_each(document[NPCS_ENT].begin(), document[NPCS_ENT].end(), 
@@ -187,7 +188,7 @@ std::vector<NonPlayerCharacter> YamlParser::getAllNPCS(){
     return npcs;
 }
 
-std::vector<ObjectEntity> YamlParser::getAllObjects(){
+std::vector<ObjectEntity> YamlParser::getAllObjects() const {
     std::vector<ObjectEntity> objects;
     for (auto& document : data) {
         std::for_each(document[OBJECTS_ENT].begin(), document[OBJECTS_ENT].end(), 
@@ -199,7 +200,7 @@ std::vector<ObjectEntity> YamlParser::getAllObjects(){
     return objects;
 }
 
-std::vector<Reset> YamlParser::getAllResets(){
+std::vector<Reset> YamlParser::getAllResets() const {
     std::vector<Reset> resets;
     for (auto& document : data) {
         std::for_each(document[RESETS_ENT].begin(), document[RESETS_ENT].end(), 
@@ -211,11 +212,11 @@ std::vector<Reset> YamlParser::getAllResets(){
     return resets;
 }
 
-void YamlParser::getAllHelps(){
+void YamlParser::getAllHelps() const {
 
 }
 
-std::vector<ShopEntity> YamlParser::getAllShops(){
+std::vector<ShopEntity> YamlParser::getAllShops() const {
     std::vector<ShopEntity> shops;
     for (auto& document : data) {
         if(document[SHOPS_ENT]){
@@ -228,7 +229,7 @@ std::vector<ShopEntity> YamlParser::getAllShops(){
     return shops;
 }
 
-std::deque<RoomEntity> YamlParser::getAllRooms(){
+std::deque<RoomEntity> YamlParser::getAllRooms() const {
     //need Room constructor
     std::deque<RoomEntity> rooms;
     //iterate through all rooms in data and add them to list/vector of rooms
@@ -242,7 +243,7 @@ std::deque<RoomEntity> YamlParser::getAllRooms(){
     return rooms;
 }
 
-AreaEntity YamlParser::getArea(){
+AreaEntity YamlParser::getArea() const {
     //FIXME this function is horribly broken and doesn't do what you want it to do
 
     AreaEntity area;

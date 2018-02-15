@@ -10,7 +10,8 @@ AreaEntity::AreaEntity(const std::string& name,
 
 std::deque<RoomEntity>& AreaEntity::getAllRooms() {
  	return m_rooms;
- }
-std::string AreaEntity::getName() {
+}
+
+std::string AreaEntity::getName() const {
 	return m_name;
 }

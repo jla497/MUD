@@ -34,6 +34,7 @@ using mudserver::commandparser::CommandParser;
  * actions. It fetches batches of incoming messages from the network.
  */
 class GameManager {
+private:
     GameState& gameState;
     GameLoopTick tick = DEFAULT_TICK_LENGTH_MS;
     bool done = false;
@@ -79,17 +80,14 @@ class GameManager {
      * @return the player's character (may be null)
      */
     PlayerCharacter* playerToCharacter(const Player& player);
-    /**
-     * Given a player's id, return a pointer to the player's character.
-     * @param playerId the player's id
-     * @return the player's character (may be null)
-     */
+
     /**
      * Given a character, return a reference to the character's player.
      * @param character the character
      * @return the character's player
      */
     Player& characterToPlayer(const PlayerCharacter& character);
+
     /**
      * Given a character's id, return a reference to the character's player.
      * @param characterId the character's id
@@ -97,6 +95,11 @@ class GameManager {
      */
     Player& characterIdToPlayer(UniqueId characterId);
 
+    /**
+     * Given a player's id, return a pointer to the player's character.
+     * @param playerId the player's id
+     * @return the player's character (may be null)
+     */
     PlayerCharacter* playerIdToCharacter(PlayerId playerId);
 
     /**
@@ -113,9 +116,7 @@ public:
      * @param connMan the connection manager
      * @param gameState the game state
      */
-    GameManager(connection::ConnectionManager& connMan,
-                    GameState& gameState);
-    GameManager(const GameManager& gm) = delete;
+    GameManager(connection::ConnectionManager& connMan, GameState& gameState);
 
     /**
      * The main game loop. Updates game state once per tick, processes messages
@@ -128,7 +129,6 @@ public:
      * @return the game state
      */
     GameState& getState();
-
 
     /**
      * Send a message to a given character. This will translate to sending a

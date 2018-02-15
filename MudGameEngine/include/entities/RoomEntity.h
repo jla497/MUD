@@ -48,7 +48,7 @@ class RoomEntity : public Entity {
      * (use find_to)
      * Does not check whether that room exists yet 
      */
-    unsigned int getDestRoomIdOf(std::string& dir);
+    unsigned int getDestRoomIdOf(const std::string& dir) const;
 
     /**
      * Returns list of doors available in room (e.g for showing options to

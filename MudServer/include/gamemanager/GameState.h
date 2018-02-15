@@ -27,7 +27,6 @@ public:
     std::size_t operator()(UniqueId id) const;
 };
 
-
 /**
  * The overarching idea of GameState is that it should
  *      - be owned by the GameManager
@@ -35,7 +34,7 @@ public:
  *      - be the source of truth for all state relating to the world
  */
 class GameState {
-
+private:
     bimap<set_of<UniqueId>, list_of<roomId>> characterRoomLookUp;
     std::unordered_map<roomId, RoomEntity> roomLookUp;
     std::unordered_map<UniqueId, PlayerCharacter, UniqueIdHash> characterLookUp;

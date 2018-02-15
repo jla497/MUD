@@ -12,20 +12,24 @@
 #include "entities/PlayerCharacter.h"
 
 class Action;                                     // forward declaration
+
 namespace mudserver {
-namespace gamemanager { class GameManager; }      // forward declaration
+namespace gamemanager {
+class GameManager; // forward declaration
+}
 
 namespace commandparser {
 
 using StrView = std::experimental::string_view;
 
 enum class ActKeyword {
-    undefined,
+    undefined = 0,
     say,
     look,
     move,
     attack,
-    actions
+
+    _N_ACTIONS_
 };
 
 /**
@@ -33,7 +37,6 @@ enum class ActKeyword {
  * input.
  */
 class CommandParser {
-    static std::unordered_map<std::string, ActKeyword> actionLookup;
 public:
     CommandParser() = default;
 

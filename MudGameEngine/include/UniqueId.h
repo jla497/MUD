@@ -8,11 +8,9 @@
 class UniqueId {
    private:
     static unsigned int nextUniqueId;
-    unsigned int id;
+    unsigned int id = nextUniqueId++;
 
    public:
-    UniqueId() : id(nextUniqueId++) {}
-
     unsigned int getId() const;
 
     bool operator==(const UniqueId& rhs ) const {

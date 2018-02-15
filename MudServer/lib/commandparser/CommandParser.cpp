@@ -1,8 +1,11 @@
-#include <boost/algorithm/string.hpp>
-#include <boost/tokenizer.hpp>
+
 #include <iostream>
 #include <sstream>
 #include <memory>
+#include <vector>
+
+#include <boost/algorithm/string.hpp>
+#include <boost/tokenizer.hpp>
 
 #include "actions/AttackAction.h"
 #include "actions/NullAction.h"
@@ -11,7 +14,6 @@
 #include "actions/LookAction.h"
 #include "commandparser/CommandParser.h"
 #include "resources/commands.h"
-#include "logging.h"
 
 namespace mudserver {
 namespace commandparser {
@@ -21,17 +23,35 @@ using boost::algorithm::to_lower_copy;
 
 using namespace resources::commands;
 
-std::unordered_map<std::string, ActKeyword> CommandParser::actionLookup = {
-    {SAY, ActKeyword::say},
-    {LOOK, ActKeyword::look},
-    {ATTACK, ActKeyword::attack},
-    {MOVE, ActKeyword::move}};
+static std::unordered_map<std::string, ActKeyword> actionLookup = { // NOLINT
+        {SAY, ActKeyword::say},
+        {LOOK, ActKeyword::look},
+        {ATTACK, ActKeyword::attack},
+        {MOVE, ActKeyword::move}
+};
+
+using ActionGenerator = std::unique_ptr<Action> (*)(PlayerCharacter&,
+                                                    std::vector<std::string>&,
+                                                    gamemanager::GameManager&);
+
+#define generator(type)\
+[](PlayerCharacter &pc, std::vector<std::string> &args, gamemanager::GameManager &manager) -> std::unique_ptr<Action> {\
+    return std::make_unique<type>(pc, args, manager);\
+}
+
+const static std::vector<ActionGenerator> actionGenerators = { // NOLINT
+        generator(NullAction), //undefined
+        generator(SayAction),
+        generator(LookAction),
+        generator(MoveAction),
+        generator(AttackAction),
+};
+
+#undef generator
 
 std::unique_ptr<Action> CommandParser::actionFromPlayerCommand(
     PlayerCharacter& character, StrView command,
     gamemanager::GameManager& gameManager) {
-
-    auto logger = logging::getLogger("CommandParser::actionFromPlayerCommand");
 
     Tokenizer tokens{command};
     auto tokenIterator = tokens.begin();
@@ -46,44 +66,12 @@ std::unique_ptr<Action> CommandParser::actionFromPlayerCommand(
                                 ? ActKeyword::undefined
                                 : actionTypeIter->second;
 
-    std::stringstream actionDescription;
-    std::unique_ptr<Action> action;
-
-    switch (actionType) {
-    case ActKeyword::say: {
-        actionDescription << u8"SayAction will be created";
-        action = std::make_unique<SayAction>(character, remainderOfTokens,
-                                             gameManager);
-        break;
+    auto index = static_cast<std::vector<ActionGenerator>::size_type>(actionType);
+    if (index >= actionGenerators.size())
+    {
+        return nullptr;
     }
-
-    case ActKeyword::move: {
-        actionDescription << u8"MoveAction will be created";
-        action = std::make_unique<MoveAction>(character, remainderOfTokens,
-                                              gameManager);
-        break;
-    }
-    case ActKeyword::attack: {
-        actionDescription << u8"AttackAction will be created";
-        action = std::make_unique<AttackAction>(character, remainderOfTokens,
-                                                gameManager);
-        break;
-    }
-    case ActKeyword::look: {
-        actionDescription << u8"LookAction will be created";
-        action = std::make_unique<LookAction>(character, remainderOfTokens, gameManager);
-
-        break;
-    }
-    default:
-        actionDescription << u8"Action was not supported";
-        action = std::make_unique<NullAction>(character, remainderOfTokens, gameManager);
-    }
-
-    actionDescription << ", with remainder tokens [" << tokenRep.str() << "]";
-    logger->debug(actionDescription.str());
-
-    return action;
+    return actionGenerators[index](character, remainderOfTokens, gameManager);
 }
 
 }  // namespace commandparser

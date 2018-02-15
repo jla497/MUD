@@ -20,7 +20,7 @@ class AreaEntity : public Entity {
 
     std::deque<RoomEntity>& getAllRooms();
 
-    std::string getName();
+    std::string getName() const;
 };
 
 #endif

@@ -24,6 +24,11 @@ int main(int argc, char* argv[]) {
     mudserver::connection::ConnectionManager connectionManager{port};
     mudserver::gamemanager::GameState gameState{};
     if (argc > 2) {
+        /*
+         * FIXME
+         * Nick might very well make us connect YAML worlds together.
+         * Do not design around only 1 YAML world existing at a time.
+         */
         gameState.initFromYaml(argv[2]);
     }
     mudserver::gamemanager::GameManager gameManager{connectionManager, gameState};

@@ -35,8 +35,7 @@ std::vector<std::string> RoomEntity::getExtendedKeywords() const {
   return m_extDesc.keywords;
 }
 
-// TODO, should be able to make this method const...
-unsigned int RoomEntity::getDestRoomIdOf(std::string& dir) { 
+unsigned int RoomEntity::getDestRoomIdOf(const std::string& dir) const {
   auto door = std::find_if(std::begin(m_doors), std::end(m_doors),
          [&] (auto &d) {
              return d.getDir() == dir;
