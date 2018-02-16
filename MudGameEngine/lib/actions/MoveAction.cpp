@@ -21,11 +21,12 @@ void MoveAction::execute() {
 	}
     std::string roomInfo("roomid: " + std::to_string(room->getId()));
     logger->info(roomInfo);
-    
-    if(actionArguments.empty()) {
+
+    if (actionArguments.empty()) {
         logger->error("Not a valid move command...");
-        gameManager.sendCharacterMessage(characterPerformingAction.getEntityId(),
-                                         "Not a valid move command...");
+        gameManager.sendCharacterMessage(
+            characterPerformingAction.getEntityId(),
+            "Not a valid move command...");
         return;
     }
 
