@@ -1,0 +1,52 @@
+#ifndef CONFIG_PARSER_H
+#define CONFIG_PARSER_H
+
+#include <vector>
+#include <string>
+#include <iostream>
+#include <algorithm>
+#include <fstream>
+#include <yaml-cpp/yaml.h>
+#include <boost/optional/optional.hpp>
+#include "Server.h"
+
+
+namespace mudserver{
+
+using networking::Port;
+
+struct ConfigData {
+    Port serverPort;
+    Port clientPort;
+    std::string ymlFilePath;
+    std::string url;
+};
+
+boost::optional<ConfigData> parseConfigFile(const std::string& filePath) {
+    std::vector<YAML::Node> data;
+    
+	try {
+		data = YAML::LoadAllFromFile(filePath);
+
+	} catch (const std::exception& e) {
+	    std::cout<<"something is wrong with the file path...";
+	  //logger print error
+		return boost::none;
+	}
+	
+	// auto portNum = data[0]["SERVER"]["port"].as<unsigned int>();
+	// std::cout<<"filepath:"<<data[0]["SERVER"]["yml_file"].as<std::string>();
+		
+	// Port port{portNum};
+
+	ConfigData serverData{
+		Port{data[0]["SERVER"]["port"].as<short unsigned int>()},
+		Port{data[0]["CLIENT"]["port"].as<short unsigned int>()},
+		data[0]["SERVER"]["yml_file"].as<std::string>(),
+		data[0]["CLIENT"]["url"].as<std::string>()	
+	};
+    
+    return serverData;
+};
+}
+#endif 

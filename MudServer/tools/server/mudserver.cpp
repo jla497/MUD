@@ -4,11 +4,14 @@
 #include <memory>
 #include <sstream>
 #include <unistd.h>
+#include <boost/optional/optional.hpp>
 
 #include "Server.h"
 #include "connectionmanager/ConnectionManager.h"
 #include "gamemanager/GameManager.h"
 #include "logging.h"
+#include "configparser/ConfigParser.h"
+// #include "ConfigParser.h"
 
 using networking::Port;
 
@@ -18,20 +21,28 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    Port port{(Port)std::stoi(argv[1])};
-    mudserver::logging::setLogLevel(mudserver::logging::LogLevel::debug);
+    auto configData = mudserver::parseConfigFile(argv[1]);
+    
+    if(configData) {
 
-    mudserver::connection::ConnectionManager connectionManager{port};
-    mudserver::gamemanager::GameState gameState{};
-    if (argc > 2) {
-        gameState.initFromYaml(argv[2]);
-    }
-    mudserver::gamemanager::GameManager gameManager{connectionManager, gameState};
+       mudserver::logging::setLogLevel(mudserver::logging::LogLevel::debug);
+       mudserver::connection::ConnectionManager connectionManager{configData->serverPort};
+       mudserver::gamemanager::GameState gameState{};
+       gameState.initFromYaml(configData->ymlFilePath);
+    
+       mudserver::gamemanager::GameManager gameManager{connectionManager, gameState};
 
-    std::cout << "---------------------MUD Server Console---------------------"
+       std::cout << "---------------------MUD Server Console---------------------"
               << std::endl;
 
-    gameManager.mainLoop();
+       gameManager.mainLoop();
 
-    return 0;
+
+    } else {
+        printf("Something was wrong with config file or the file path...");
+        return -1;
+    }
+    
+    return 0;    
+    
 }
