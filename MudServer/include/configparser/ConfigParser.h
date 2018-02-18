@@ -11,27 +11,26 @@
 #include "Server.h"
 
 
-namespace mudserver{
-
 using networking::Port;
 
 struct ConfigData {
     Port serverPort;
-    Port clientPort;
+    std::string clientPort;
     std::string ymlFilePath;
     std::string url;
 };
 
 boost::optional<ConfigData> parseConfigFile(const std::string& filePath) {
     std::vector<YAML::Node> data;
-    
-	try {
-		data = YAML::LoadAllFromFile(filePath);
+
+    try {
+        data = YAML::LoadAllFromFile(filePath);
 
 	} catch (const std::exception& e) {
-	    std::cout<<"something is wrong with the file path...";
-	  //logger print error
-		return boost::none;
+        std::cout << "something is wrong with the config file path or the file "
+                     "doesn't exist...";
+        // logger print error
+        return boost::none;
 	}
 	
 	// auto portNum = data[0]["SERVER"]["port"].as<unsigned int>();
@@ -41,12 +40,12 @@ boost::optional<ConfigData> parseConfigFile(const std::string& filePath) {
 
 	ConfigData serverData{
 		Port{data[0]["SERVER"]["port"].as<short unsigned int>()},
-		Port{data[0]["CLIENT"]["port"].as<short unsigned int>()},
+		data[0]["CLIENT"]["port"].as<std::string>(),
 		data[0]["SERVER"]["yml_file"].as<std::string>(),
 		data[0]["CLIENT"]["url"].as<std::string>()	
 	};
     
     return serverData;
 };
-}
+
 #endif 

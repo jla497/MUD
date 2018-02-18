@@ -9,15 +9,24 @@
 
 #include "ChatWindow.h"
 #include "Client.h"
+#include <boost/optional/optional.hpp>
+#include "configparser/ConfigParser.h"
+
+using networking::Port;
 
 int main(int argc, char* argv[]) {
-    if (argc < 3) {
-        printf("Usage:\n%s <ip address> <port>\ne.g. %s localhost 4002\n",
+    if (argc < 2) {
+        printf("Usage:\n%s <config_file_path>\ne.g. %s config.yaml\n",
                argv[0], argv[0]);
         return 1;
     }
-
-    networking::Client client{argv[1], argv[2]};
+    
+    auto configData = parseConfigFile(argv[1]);
+    
+    if(configData) {
+    auto url = configData->url;
+    auto port = configData->clientPort;
+    networking::Client client{url.c_str(), port.c_str()};
 
     bool done = false;
     auto onTextEntry = [&done, &client](std::string text) {
@@ -43,6 +52,10 @@ int main(int argc, char* argv[]) {
             chatWindow.displayText(response);
         }
         chatWindow.update();
+    }
+
+    }else {
+
     }
 
     return 0;

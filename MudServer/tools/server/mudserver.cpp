@@ -21,7 +21,7 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    auto configData = mudserver::parseConfigFile(argv[1]);
+    auto configData = parseConfigFile(argv[1]);
     
     if(configData) {
 
@@ -37,9 +37,7 @@ int main(int argc, char* argv[]) {
 
        gameManager.mainLoop();
 
-
     } else {
-        printf("Something was wrong with config file or the file path...");
         return -1;
     }
     
