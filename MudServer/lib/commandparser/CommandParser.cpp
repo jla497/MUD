@@ -24,6 +24,7 @@ using boost::algorithm::to_lower_copy;
 using namespace resources::commands;
 
 static std::unordered_map<std::string, ActKeyword> actionLookup = { // NOLINT
+        {UNDEFINED, ActKeyword::undefined},
         {SAY, ActKeyword::say},
         {LOOK, ActKeyword::look},
         {ATTACK, ActKeyword::attack},

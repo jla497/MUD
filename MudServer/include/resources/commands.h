@@ -7,6 +7,7 @@ namespace mudserver {
 namespace resources {
 namespace commands {
 
+static const char *UNDEFINED = u8"undefined";
 static const char *SAY = u8"say";
 static const char *LOOK = u8"look";
 static const char *MOVE = u8"move";
