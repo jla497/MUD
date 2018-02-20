@@ -10,7 +10,7 @@
 #include "ChatWindow.h"
 #include "Client.h"
 
-int main(int argc, char* argv[]) {
+int main(int argc, char *argv[]) {
     if (argc < 3) {
         printf("Usage:\n%s <ip address> <port>\ne.g. %s localhost 4002\n",
                argv[0], argv[0]);
@@ -32,7 +32,7 @@ int main(int argc, char* argv[]) {
     while (!done && !client.isDisconnected()) {
         try {
             client.update();
-        } catch (std::exception& e) {
+        } catch (std::exception &e) {
             chatWindow.displayText("Exception from Client update:");
             chatWindow.displayText(e.what());
             done = true;

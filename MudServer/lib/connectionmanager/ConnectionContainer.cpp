@@ -9,23 +9,22 @@ ConnectionContainer::ConnectionContainer()
     : mProtocol(std::unique_ptr<MudProtocol>(
           new MudProtocol(DEFAULT_NUM_OF_MUD_PROTOCOLS))) {}
 
-ConnectionContainer::ConnectionContainer(const networking::Connection& c)
-    : mConnection(c),
-      isConnected(true),
+ConnectionContainer::ConnectionContainer(const networking::Connection &c)
+    : mConnection(c), isConnected(true),
       mProtocol(std::unique_ptr<MudProtocol>(
           new MudProtocol(DEFAULT_NUM_OF_MUD_PROTOCOLS))) {}
 
-ConnectionContainer::ConnectionContainer(ConnectionContainer&& container)
+ConnectionContainer::ConnectionContainer(ConnectionContainer &&container)
     : mConnection(container.mConnection),
       mProtocol(std::move(container.mProtocol)) {}
 
 // receives messages from Server ->
 // ConnectionManager->ConnectionContainer->Protocol
-void ConnectionContainer::receiveFromServer(std::string& str) {
+void ConnectionContainer::receiveFromServer(std::string &str) {
     // translated = mProtocol.receive(str);
     try {
         mProtocol->receive(str);
-    } catch (std::exception& e) {
+    } catch (std::exception &e) {
         // kick user out
         isConnected = false;
         return;
@@ -40,14 +39,14 @@ std::string ConnectionContainer::sendToGameManager() {
     return str;
 }
 
-void ConnectionContainer::receiveFromGameManager(std::string& str) {
+void ConnectionContainer::receiveFromGameManager(std::string &str) {
     // std::cout<<"connection container received from game manager:
     // "<<str<<std::endl;
 
     // translated = mProtocol.receive(str);
     try {
         mProtocol->receive(str);
-    } catch (std::exception& e) {
+    } catch (std::exception &e) {
         // kick user out
         // std::cout << e.what() << std::endl;
         isConnected = false;
@@ -63,5 +62,5 @@ bool ConnectionContainer::getIsConnected() const { return isConnected; }
 networking::Connection ConnectionContainer::getConnection() const {
     return mConnection;
 }
-}  // namespace connection
-}  // namespace mudserver
+} // namespace connection
+} // namespace mudserver

@@ -10,7 +10,7 @@ struct ExtendedDesc {
 };
 
 class RoomEntity : public Entity {
-   private:
+  private:
     std::vector<std::string> m_desc;
     std::vector<std::unique_ptr<DoorEntity>> m_doors;
     ExtendedDesc m_extDesc;
@@ -24,10 +24,11 @@ class RoomEntity : public Entity {
      */
     std::vector<unsigned int> m_idEntitiesInRoom;
 
-   public:
-    RoomEntity(std::vector<std::string>& desc,
-               std::vector<std::unique_ptr<DoorEntity>> doors, std::vector<std::string>& descExt,
-               std::vector<std::string>& keywordsExt, std::string& name,
+  public:
+    RoomEntity(std::vector<std::string> &desc,
+               std::vector<std::unique_ptr<DoorEntity>> doors,
+               std::vector<std::string> &descExt,
+               std::vector<std::string> &keywordsExt, std::string &name,
                unsigned int roomId);
 
     unsigned int getId();
@@ -40,13 +41,13 @@ class RoomEntity : public Entity {
 
     std::vector<std::string> getExtendedKeywords() const;
 
-    /** 
+    /**
      * Returns destinationID to room given dir command while in a room
      * Returns 0 if dir does not exist for room
      * (use find_to)
-     * Does not check whether that room exists yet 
+     * Does not check whether that room exists yet
      */
-    unsigned int getDestRoomIdOf(std::string& dir);
+    unsigned int getDestRoomIdOf(std::string &dir);
 
     /**
      * Returns list of doors available in room (e.g for showing options to
@@ -65,12 +66,12 @@ class RoomEntity : public Entity {
      */
     std::string addEntity(const unsigned int entityToAdd);
 
-    /** 
+    /**
      *Return all entities in the room
      */
     std::vector<unsigned int> getEntitiesInRoom() const;
 
-    /** 
+    /**
      *Returns success or failure msg if removes given entity into room succeeds
      * Given entity id
      */
