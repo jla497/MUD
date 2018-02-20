@@ -78,8 +78,8 @@ void ExpectKeyAndValueWereRecordedForId(
     TestPropertyKeyIs matches_key(IdToKey(id, suffix).c_str());
     const std::vector<TestProperty>::const_iterator property =
         std::find_if(properties.begin(), properties.end(), matches_key);
-    ASSERT_TRUE(property != properties.end())
-        << "expecting " << suffix << " value for id " << id;
+    ASSERT_TRUE(property != properties.end()) << "expecting " << suffix
+                                              << " value for id " << id;
     EXPECT_STREQ(IdToString(id).c_str(), property->value());
 }
 

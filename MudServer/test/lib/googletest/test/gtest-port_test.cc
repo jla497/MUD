@@ -266,7 +266,7 @@ TEST(GtestCheckSyntaxTest, WorksWithSwitch) {
 
     switch (0)
     case 0:
-        GTEST_CHECK_(true) << "Check failed in switch case";
+    GTEST_CHECK_(true) << "Check failed in switch case";
 }
 
 // Verifies behavior of FormatFileLocation.
@@ -1063,9 +1063,9 @@ class AtomicCounterWithMutex {
         MutexLock lock(mutex_);
         int temp = value_;
         {
-        // We need to put up a memory barrier to prevent reads and writes to
-        // value_ rearranged with the call to SleepMilliseconds when observed
-        // from other threads.
+// We need to put up a memory barrier to prevent reads and writes to
+// value_ rearranged with the call to SleepMilliseconds when observed
+// from other threads.
 #if GTEST_HAS_PTHREAD
             // On POSIX, locking a mutex puts up a memory barrier.  We cannot
             // use Mutex and MutexLock here or rely on their memory barrier

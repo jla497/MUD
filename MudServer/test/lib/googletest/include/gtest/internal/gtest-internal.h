@@ -543,9 +543,8 @@ class GTEST_API_ TypedTestCasePState {
     bool AddTestName(const char *file, int line, const char *case_name,
                      const char *test_name) {
         if (registered_) {
-            fprintf(stderr,
-                    "%s Test %s must be defined before "
-                    "REGISTER_TYPED_TEST_CASE_P(%s, ...).\n",
+            fprintf(stderr, "%s Test %s must be defined before "
+                            "REGISTER_TYPED_TEST_CASE_P(%s, ...).\n",
                     FormatFileLocation(file, line).c_str(), test_name,
                     case_name);
             fflush(stderr);
@@ -638,8 +637,12 @@ class TypeParameterizedTest {
             TestClass::TearDownTestCase, new TestFactoryImpl<TestClass>);
 
         // Next, recurses (at compile time) with the tail of the type list.
-        return TypeParameterizedTest<Fixture, TestSel, typename Types::Tail>::
-            Register(prefix, code_location, case_name, test_names, index + 1);
+        return TypeParameterizedTest<
+            Fixture, TestSel, typename Types::Tail>::Register(prefix,
+                                                              code_location,
+                                                              case_name,
+                                                              test_names,
+                                                              index + 1);
     }
 };
 
@@ -1130,8 +1133,8 @@ template <typename Element> class NativeArray {
             goto GTEST_CONCAT_TOKEN_(gtest_label_testthrow_, __LINE__);        \
         }                                                                      \
     } else                                                                     \
-        GTEST_CONCAT_TOKEN_(gtest_label_testthrow_, __LINE__)                  \
-            : fail(gtest_msg.value)
+    GTEST_CONCAT_TOKEN_(gtest_label_testthrow_, __LINE__)                      \
+        : fail(gtest_msg.value)
 
 #define GTEST_TEST_NO_THROW_(statement, fail)                                  \
     GTEST_AMBIGUOUS_ELSE_BLOCKER_                                              \
@@ -1142,9 +1145,9 @@ template <typename Element> class NativeArray {
             goto GTEST_CONCAT_TOKEN_(gtest_label_testnothrow_, __LINE__);      \
         }                                                                      \
     } else                                                                     \
-        GTEST_CONCAT_TOKEN_(gtest_label_testnothrow_, __LINE__)                \
-            : fail("Expected: " #statement " doesn't throw an exception.\n"    \
-                   "  Actual: it throws.")
+    GTEST_CONCAT_TOKEN_(gtest_label_testnothrow_, __LINE__)                    \
+        : fail("Expected: " #statement " doesn't throw an exception.\n"        \
+               "  Actual: it throws.")
 
 #define GTEST_TEST_ANY_THROW_(statement, fail)                                 \
     GTEST_AMBIGUOUS_ELSE_BLOCKER_                                              \
@@ -1159,9 +1162,9 @@ template <typename Element> class NativeArray {
             goto GTEST_CONCAT_TOKEN_(gtest_label_testanythrow_, __LINE__);     \
         }                                                                      \
     } else                                                                     \
-        GTEST_CONCAT_TOKEN_(gtest_label_testanythrow_, __LINE__)               \
-            : fail("Expected: " #statement " throws an exception.\n"           \
-                   "  Actual: it doesn't.")
+    GTEST_CONCAT_TOKEN_(gtest_label_testanythrow_, __LINE__)                   \
+        : fail("Expected: " #statement " throws an exception.\n"               \
+               "  Actual: it doesn't.")
 
 // Implements Boolean test assertions such as EXPECT_TRUE. expression can be
 // either a boolean expression or an AssertionResult. text is a textual
@@ -1172,9 +1175,9 @@ template <typename Element> class NativeArray {
             ::testing::AssertionResult(expression))                            \
         ;                                                                      \
     else                                                                       \
-        fail(::testing::internal::GetBoolAssertionFailureMessage(              \
-                 gtest_ar_, text, #actual, #expected)                          \
-                 .c_str())
+    fail(::testing::internal::GetBoolAssertionFailureMessage(                  \
+             gtest_ar_, text, #actual, #expected)                              \
+             .c_str())
 
 #define GTEST_TEST_NO_FATAL_FAILURE_(statement, fail)                          \
     GTEST_AMBIGUOUS_ELSE_BLOCKER_                                              \
@@ -1186,10 +1189,10 @@ template <typename Element> class NativeArray {
             goto GTEST_CONCAT_TOKEN_(gtest_label_testnofatal_, __LINE__);      \
         }                                                                      \
     } else                                                                     \
-        GTEST_CONCAT_TOKEN_(gtest_label_testnofatal_, __LINE__)                \
-            : fail("Expected: " #statement " doesn't generate new fatal "      \
-                   "failures in the current thread.\n"                         \
-                   "  Actual: it does.")
+    GTEST_CONCAT_TOKEN_(gtest_label_testnofatal_, __LINE__)                    \
+        : fail("Expected: " #statement " doesn't generate new fatal "          \
+               "failures in the current thread.\n"                             \
+               "  Actual: it does.")
 
 // Expands to the name of the class that implements the given test.
 #define GTEST_TEST_CLASS_NAME_(test_case_name, test_name)                      \

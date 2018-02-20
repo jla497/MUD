@@ -35,8 +35,8 @@
 //
 // Author: wan@google.com (Zhanyong Wan)
 
-#include "gtest/gtest-spi.h"
 #include "gtest/gtest.h"
+#include "gtest/gtest-spi.h"
 
 // Indicates that this translation unit is part of Google Test's
 // implementation.  It must come before gtest-internal-inl.h is
@@ -716,7 +716,7 @@ TEST(ExpectFatalFailureTest, FailsWhenStatementThrows) {
 
 #endif // GTEST_HAS_EXCEPTIONS
 
-    // This #ifdef block tests the output of value-parameterized tests.
+// This #ifdef block tests the output of value-parameterized tests.
 
 #if GTEST_HAS_PARAM_TEST
 
@@ -971,8 +971,8 @@ int main(int argc, char **argv) {
 
 #if GTEST_HAS_DEATH_TEST
     if (testing::internal::GTEST_FLAG(internal_run_death_test) != "") {
-    // Skip the usual output capturing if we're running as the child
-    // process of an threadsafe-style death test.
+// Skip the usual output capturing if we're running as the child
+// process of an threadsafe-style death test.
 #if GTEST_OS_WINDOWS
         posix::FReopen("nul:", "w", stdout);
 #else

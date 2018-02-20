@@ -1033,14 +1033,16 @@ DoAll(Action1 a1, Action2 a2, Action3 a3, Action4 a4, Action5 a5, Action6 a6,
                                                   kind2, name2, kind3, name3,  \
                                                   kind4, name4, kind5, name5)  \
     kind0 name0, kind1 name1, kind2 name2, kind3 name3, kind4 name4, kind5 name5
-#define GMOCK_INTERNAL_DECL_HAS_7_TEMPLATE_PARAMS(                             \
-    kind0, name0, kind1, name1, kind2, name2, kind3, name3, kind4, name4,      \
-    kind5, name5, kind6, name6)                                                \
+#define GMOCK_INTERNAL_DECL_HAS_7_TEMPLATE_PARAMS(kind0, name0, kind1, name1,  \
+                                                  kind2, name2, kind3, name3,  \
+                                                  kind4, name4, kind5, name5,  \
+                                                  kind6, name6)                \
     kind0 name0, kind1 name1, kind2 name2, kind3 name3, kind4 name4,           \
         kind5 name5, kind6 name6
-#define GMOCK_INTERNAL_DECL_HAS_8_TEMPLATE_PARAMS(                             \
-    kind0, name0, kind1, name1, kind2, name2, kind3, name3, kind4, name4,      \
-    kind5, name5, kind6, name6, kind7, name7)                                  \
+#define GMOCK_INTERNAL_DECL_HAS_8_TEMPLATE_PARAMS(kind0, name0, kind1, name1,  \
+                                                  kind2, name2, kind3, name3,  \
+                                                  kind4, name4, kind5, name5,  \
+                                                  kind6, name6, kind7, name7)  \
     kind0 name0, kind1 name1, kind2 name2, kind3 name3, kind4 name4,           \
         kind5 name5, kind6 name6, kind7 name7
 #define GMOCK_INTERNAL_DECL_HAS_9_TEMPLATE_PARAMS(                             \
@@ -1071,13 +1073,15 @@ DoAll(Action1 a1, Action2 a2, Action3 a3, Action4 a4, Action5 a5, Action6 a6,
                                                   kind2, name2, kind3, name3,  \
                                                   kind4, name4, kind5, name5)  \
     name0, name1, name2, name3, name4, name5
-#define GMOCK_INTERNAL_LIST_HAS_7_TEMPLATE_PARAMS(                             \
-    kind0, name0, kind1, name1, kind2, name2, kind3, name3, kind4, name4,      \
-    kind5, name5, kind6, name6)                                                \
+#define GMOCK_INTERNAL_LIST_HAS_7_TEMPLATE_PARAMS(kind0, name0, kind1, name1,  \
+                                                  kind2, name2, kind3, name3,  \
+                                                  kind4, name4, kind5, name5,  \
+                                                  kind6, name6)                \
     name0, name1, name2, name3, name4, name5, name6
-#define GMOCK_INTERNAL_LIST_HAS_8_TEMPLATE_PARAMS(                             \
-    kind0, name0, kind1, name1, kind2, name2, kind3, name3, kind4, name4,      \
-    kind5, name5, kind6, name6, kind7, name7)                                  \
+#define GMOCK_INTERNAL_LIST_HAS_8_TEMPLATE_PARAMS(kind0, name0, kind1, name1,  \
+                                                  kind2, name2, kind3, name3,  \
+                                                  kind4, name4, kind5, name5,  \
+                                                  kind6, name6, kind7, name7)  \
     name0, name1, name2, name3, name4, name5, name6, name7
 #define GMOCK_INTERNAL_LIST_HAS_9_TEMPLATE_PARAMS(                             \
     kind0, name0, kind1, name1, kind2, name2, kind3, name3, kind4, name4,      \
@@ -1395,7 +1399,7 @@ DoAll(Action1 a1, Action2 a2, Action3 a3, Action4 a4, Action5 a5, Action6 a6,
     inline GMOCK_ACTION_CLASS_(                                                \
         name, value_params)<GMOCK_INTERNAL_LIST_##template_params              \
                                 GMOCK_INTERNAL_LIST_TYPE_##value_params>       \
-    name(GMOCK_INTERNAL_DECL_##value_params) {                                 \
+        name(GMOCK_INTERNAL_DECL_##value_params) {                             \
         return GMOCK_ACTION_CLASS_(                                            \
             name, value_params)<GMOCK_INTERNAL_LIST_##template_params          \
                                     GMOCK_INTERNAL_LIST_TYPE_##value_params>(  \

@@ -1220,13 +1220,13 @@ class GTEST_API_ RE {
 
 // Formats a source file path and a line number as they would appear
 // in an error message from the compiler used to compile this code.
-GTEST_API_ ::std::string FormatFileLocation(const char *file, int line);
+GTEST_API_::std::string FormatFileLocation(const char *file, int line);
 
 // Formats a file location for compiler-independent XML output.
 // Although this function is not platform dependent, we put it next to
 // FormatFileLocation in order to contrast the two functions.
-GTEST_API_ ::std::string FormatCompilerIndependentFileLocation(const char *file,
-                                                               int line);
+GTEST_API_::std::string FormatCompilerIndependentFileLocation(const char *file,
+                                                              int line);
 
 // Defines logging utilities:
 //   GTEST_LOG_(severity) - logs messages at the specified severity level. The
@@ -1286,7 +1286,7 @@ inline void FlushInfoLog() { fflush(NULL); }
     if (::testing::internal::IsTrue(condition))                                \
         ;                                                                      \
     else                                                                       \
-        GTEST_LOG_(FATAL) << "Condition " #condition " failed. "
+    GTEST_LOG_(FATAL) << "Condition " #condition " failed. "
 #endif // !defined(GTEST_CHECK_)
 
 // An all-mode assert to verify that the given POSIX-style function
@@ -1438,8 +1438,8 @@ inline void SleepMilliseconds(int n) {
 #endif // GTEST_HAS_PTHREAD
 
 #if GTEST_HAS_NOTIFICATION_
-    // Notification has already been imported into the namespace.
-    // Nothing to do here.
+// Notification has already been imported into the namespace.
+// Nothing to do here.
 
 #elif GTEST_HAS_PTHREAD
 // Allows a controller thread to pause execution of newly created
@@ -2322,9 +2322,9 @@ inline const char *StrNCpy(char *dest, const char *src, size_t n) {
     return strncpy(dest, src, n);
 }
 
-    // ChDir(), FReopen(), FDOpen(), Read(), Write(), Close(), and
-    // StrError() aren't needed on Windows CE at this time and thus not
-    // defined there.
+// ChDir(), FReopen(), FDOpen(), Read(), Write(), Close(), and
+// StrError() aren't needed on Windows CE at this time and thus not
+// defined there.
 
 #if !GTEST_OS_WINDOWS_MOBILE && !GTEST_OS_WINDOWS_PHONE && !GTEST_OS_WINDOWS_RT
 inline int ChDir(const char *dir) { return chdir(dir); }
@@ -2484,9 +2484,9 @@ typedef TypeWithSize<8>::Int TimeInMillis; // Represents time in milliseconds.
 #define GTEST_DEFINE_bool_(name, default_val, doc)                             \
     GTEST_API_ bool GTEST_FLAG(name) = (default_val)
 #define GTEST_DEFINE_int32_(name, default_val, doc)                            \
-    GTEST_API_ ::testing::internal::Int32 GTEST_FLAG(name) = (default_val)
+    GTEST_API_::testing::internal::Int32 GTEST_FLAG(name) = (default_val)
 #define GTEST_DEFINE_string_(name, default_val, doc)                           \
-    GTEST_API_ ::std::string GTEST_FLAG(name) = (default_val)
+    GTEST_API_::std::string GTEST_FLAG(name) = (default_val)
 
 #endif // !defined(GTEST_DECLARE_bool_)
 

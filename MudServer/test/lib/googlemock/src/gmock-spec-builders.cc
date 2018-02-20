@@ -154,8 +154,8 @@ void ExpectationBase::DescribeCallCountTo(::std::ostream *os) const
     *os << " - "
         << (IsOverSaturated()
                 ? "over-saturated"
-                : IsSaturated() ? "saturated"
-                                : IsSatisfied() ? "satisfied" : "unsatisfied")
+                : IsSaturated() ? "saturated" : IsSatisfied() ? "satisfied"
+                                                              : "unsatisfied")
         << " and " << (is_retired() ? "retired" : "active");
 }
 

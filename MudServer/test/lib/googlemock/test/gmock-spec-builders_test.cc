@@ -437,7 +437,9 @@ TEST(ExpectCallSyntaxTest, AfterMustBeBeforeWillOnce) {
 
     Expectation e = EXPECT_CALL(a, DoA(1));
     EXPECT_NONFATAL_FAILURE(
-        { EXPECT_CALL(a, DoA(2)).WillOnce(Return()).After(e); },
+        {
+            EXPECT_CALL(a, DoA(2)).WillOnce(Return()).After(e);
+        },
         ".After() cannot appear after ");
 
     a.DoA(1);
@@ -492,8 +494,9 @@ TEST(ExpectCallSyntaxTest, WillRepeatedlyCannotAppearMultipleTimes) {
 
     EXPECT_NONFATAL_FAILURE(
         { // NOLINT
-            EXPECT_CALL(a, DoA(1)).WillRepeatedly(Return()).WillRepeatedly(
-                Return());
+            EXPECT_CALL(a, DoA(1))
+                .WillRepeatedly(Return())
+                .WillRepeatedly(Return());
         },
         ".WillRepeatedly() cannot appear more than once in an "
         "EXPECT_CALL()");
@@ -504,8 +507,9 @@ TEST(ExpectCallSyntaxTest, WillRepeatedlyMustBeBeforeRetiresOnSaturation) {
 
     EXPECT_NONFATAL_FAILURE(
         { // NOLINT
-            EXPECT_CALL(a, DoA(1)).RetiresOnSaturation().WillRepeatedly(
-                Return());
+            EXPECT_CALL(a, DoA(1))
+                .RetiresOnSaturation()
+                .WillRepeatedly(Return());
         },
         ".WillRepeatedly() cannot appear after ");
 }
@@ -597,8 +601,10 @@ TEST(ExpectCallSyntaxTest, WarnsOnTooManyActions) {
 
         // Warns when the number of WillOnce()s is larger than the upper bound.
         EXPECT_CALL(b, DoB()).Times(0).WillOnce(Return(1)); // #1
-        EXPECT_CALL(b, DoB()).Times(AtMost(1)).WillOnce(Return(1)).WillOnce(
-            Return(2)); // #2
+        EXPECT_CALL(b, DoB())
+            .Times(AtMost(1))
+            .WillOnce(Return(1))
+            .WillOnce(Return(2)); // #2
         EXPECT_CALL(b, DoB(1))
             .Times(1)
             .WillOnce(Return(1))
@@ -608,8 +614,10 @@ TEST(ExpectCallSyntaxTest, WarnsOnTooManyActions) {
         // Warns when the number of WillOnce()s equals the upper bound and
         // there is a WillRepeatedly().
         EXPECT_CALL(b, DoB()).Times(0).WillRepeatedly(Return(1)); // #4
-        EXPECT_CALL(b, DoB(2)).Times(1).WillOnce(Return(1)).WillRepeatedly(
-            Return(2)); // #5
+        EXPECT_CALL(b, DoB(2))
+            .Times(1)
+            .WillOnce(Return(1))
+            .WillRepeatedly(Return(2)); // #5
 
         // Satisfies the above expectations.
         b.DoB(1);
@@ -617,32 +625,27 @@ TEST(ExpectCallSyntaxTest, WarnsOnTooManyActions) {
     }
     const std::string output = GetCapturedStdout();
     EXPECT_PRED_FORMAT2(
-        IsSubstring,
-        "Too many actions specified in EXPECT_CALL(b, DoB())...\n"
-        "Expected to be never called, but has 1 WillOnce().",
+        IsSubstring, "Too many actions specified in EXPECT_CALL(b, DoB())...\n"
+                     "Expected to be never called, but has 1 WillOnce().",
         output); // #1
     EXPECT_PRED_FORMAT2(
-        IsSubstring,
-        "Too many actions specified in EXPECT_CALL(b, DoB())...\n"
-        "Expected to be called at most once, "
-        "but has 2 WillOnce()s.",
+        IsSubstring, "Too many actions specified in EXPECT_CALL(b, DoB())...\n"
+                     "Expected to be called at most once, "
+                     "but has 2 WillOnce()s.",
         output); // #2
     EXPECT_PRED_FORMAT2(
-        IsSubstring,
-        "Too many actions specified in EXPECT_CALL(b, DoB(1))...\n"
-        "Expected to be called once, but has 2 WillOnce()s.",
+        IsSubstring, "Too many actions specified in EXPECT_CALL(b, DoB(1))...\n"
+                     "Expected to be called once, but has 2 WillOnce()s.",
         output); // #3
     EXPECT_PRED_FORMAT2(
-        IsSubstring,
-        "Too many actions specified in EXPECT_CALL(b, DoB())...\n"
-        "Expected to be never called, but has 0 WillOnce()s "
-        "and a WillRepeatedly().",
+        IsSubstring, "Too many actions specified in EXPECT_CALL(b, DoB())...\n"
+                     "Expected to be never called, but has 0 WillOnce()s "
+                     "and a WillRepeatedly().",
         output); // #4
     EXPECT_PRED_FORMAT2(
-        IsSubstring,
-        "Too many actions specified in EXPECT_CALL(b, DoB(2))...\n"
-        "Expected to be called once, but has 1 WillOnce() "
-        "and a WillRepeatedly().",
+        IsSubstring, "Too many actions specified in EXPECT_CALL(b, DoB(2))...\n"
+                     "Expected to be called once, but has 1 WillOnce() "
+                     "and a WillRepeatedly().",
         output); // #5
 }
 
@@ -657,10 +660,9 @@ TEST(ExpectCallSyntaxTest, WarnsOnTooFewActions) {
     b.DoB();
     const std::string output = GetCapturedStdout();
     EXPECT_PRED_FORMAT2(
-        IsSubstring,
-        "Too few actions specified in EXPECT_CALL(b, DoB())...\n"
-        "Expected to be called between 2 and 3 times, "
-        "but has only 1 WillOnce().",
+        IsSubstring, "Too few actions specified in EXPECT_CALL(b, DoB())...\n"
+                     "Expected to be called between 2 and 3 times, "
+                     "but has only 1 WillOnce().",
         output);
     b.DoB();
 }
@@ -796,8 +798,10 @@ TEST(ExpectCallTest, InfersCardinality1WhenThereIsWillRepeatedly) {
 // invocation.
 TEST(ExpectCallTest, NthMatchTakesNthAction) {
     MockB b;
-    EXPECT_CALL(b, DoB()).WillOnce(Return(1)).WillOnce(Return(2)).WillOnce(
-        Return(3));
+    EXPECT_CALL(b, DoB())
+        .WillOnce(Return(1))
+        .WillOnce(Return(2))
+        .WillOnce(Return(3));
 
     EXPECT_EQ(1, b.DoB());
     EXPECT_EQ(2, b.DoB());
@@ -1026,8 +1030,8 @@ TEST(UnexpectedCallTest, UnsatisifiedPrerequisites) {
     const ::testing::TestPartResult &r = failures.GetTestPartResult(0);
     EXPECT_EQ(::testing::TestPartResult::kNonFatalFailure, r.type());
 
-    // Verifies that the failure message contains the two unsatisfied
-    // pre-requisites but not the satisfied one.
+// Verifies that the failure message contains the two unsatisfied
+// pre-requisites but not the satisfied one.
 #if GTEST_USES_PCRE
     EXPECT_THAT(
         r.message(),
@@ -1064,9 +1068,9 @@ TEST(UnexpectedCallTest, UnsatisifiedPrerequisites) {
 TEST(UndefinedReturnValueTest,
      ReturnValueIsMandatoryWhenNotDefaultConstructible) {
     MockA a;
-    // TODO(wan@google.com): We should really verify the output message,
-    // but we cannot yet due to that EXPECT_DEATH only captures stderr
-    // while Google Mock logs to stdout.
+// TODO(wan@google.com): We should really verify the output message,
+// but we cannot yet due to that EXPECT_DEATH only captures stderr
+// while Google Mock logs to stdout.
 #if GTEST_HAS_EXCEPTIONS
     EXPECT_ANY_THROW(a.ReturnNonDefaultConstructible());
 #else
@@ -2453,8 +2457,9 @@ TEST(VerifyAndClearTest,
 TEST(SynchronizationTest, CanCallMockMethodInAction) {
     MockA a;
     MockC c;
-    ON_CALL(a, DoA(_)).WillByDefault(
-        IgnoreResult(InvokeWithoutArgs(&c, &MockC::NonVoidMethod)));
+    ON_CALL(a, DoA(_))
+        .WillByDefault(
+            IgnoreResult(InvokeWithoutArgs(&c, &MockC::NonVoidMethod)));
     EXPECT_CALL(a, DoA(1));
     EXPECT_CALL(a, DoA(1))
         .WillOnce(Invoke(&a, &MockA::DoA))

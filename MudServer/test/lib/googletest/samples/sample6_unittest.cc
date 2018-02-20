@@ -127,9 +127,9 @@ TYPED_TEST(PrimeTableTest, CanGetNextPrime) {
     EXPECT_EQ(131, this->table_->GetNextPrime(128));
 }
 
-    // That's it!  Google Test will repeat each TYPED_TEST for each type
-    // in the type list specified in TYPED_TEST_CASE.  Sit back and be
-    // happy that you don't have to define them multiple times.
+// That's it!  Google Test will repeat each TYPED_TEST for each type
+// in the type list specified in TYPED_TEST_CASE.  Sit back and be
+// happy that you don't have to define them multiple times.
 
 #endif // GTEST_HAS_TYPED_TEST
 

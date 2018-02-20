@@ -177,9 +177,8 @@ INSTANTIATE_TYPED_TEST_CASE_P(My, FooTest, MyTypes);
     };                                                                         \
     bool gtest_##CaseName##_##TestName##_registered_ GTEST_ATTRIBUTE_UNUSED_ = \
         ::testing::internal::TypeParameterizedTest<                            \
-            CaseName,                                                          \
-            ::testing::internal::TemplateSel<GTEST_TEST_CLASS_NAME_(           \
-                CaseName, TestName)>,                                          \
+            CaseName, ::testing::internal::TemplateSel<GTEST_TEST_CLASS_NAME_( \
+                          CaseName, TestName)>,                                \
             GTEST_TYPE_PARAMS_(                                                \
                 CaseName)>::Register("",                                       \
                                      ::testing::internal::CodeLocation(        \

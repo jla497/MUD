@@ -436,9 +436,9 @@ class FormatEpochTimeInMillisAsIso8601Test : public Test {
     }
 
     static void SetTimeZone(const char *time_zone) {
-    // tzset() distinguishes between the TZ variable being present and empty
-    // and not being present, so we have to consider the case of time_zone
-    // being NULL.
+// tzset() distinguishes between the TZ variable being present and empty
+// and not being present, so we have to consider the case of time_zone
+// being NULL.
 #if _MSC_VER
         // ...Unless it's MSVC, whose standard library's _putenv doesn't
         // distinguish between an empty and a missing variable.
@@ -1889,10 +1889,10 @@ TEST(ShouldRunTestOnShardTest, IsPartitionWhenThereAreFiveShards) {
                 if (prev_selected_shard_index < 0) {
                     prev_selected_shard_index = shard_index;
                 } else {
-                    ADD_FAILURE()
-                        << "Shard " << prev_selected_shard_index << " and "
-                        << shard_index << " are both selected to run test "
-                        << test_id;
+                    ADD_FAILURE() << "Shard " << prev_selected_shard_index
+                                  << " and " << shard_index
+                                  << " are both selected to run test "
+                                  << test_id;
                 }
             }
         }
@@ -3129,7 +3129,7 @@ TEST_F(DisabledTestsTest, DISABLED_TestShouldNotRun_2) {
     FAIL() << "Unexpected failure: Disabled test should not be run.";
 }
 
-    // Tests that disabled typed tests aren't run.
+// Tests that disabled typed tests aren't run.
 
 #if GTEST_HAS_TYPED_TEST
 
@@ -3152,7 +3152,7 @@ TYPED_TEST(DISABLED_TypedTest, ShouldNotRun) {
 
 #endif // GTEST_HAS_TYPED_TEST
 
-    // Tests that disabled type-parameterized tests aren't run.
+// Tests that disabled type-parameterized tests aren't run.
 
 #if GTEST_HAS_TYPED_TEST_P
 
@@ -4097,7 +4097,7 @@ TEST(AssertionSyntaxTest, WorksWithSwitch) {
 
     switch (0)
     case 0:
-        EXPECT_FALSE(false) << "EXPECT_FALSE failed in switch case";
+    EXPECT_FALSE(false) << "EXPECT_FALSE failed in switch case";
 
     // Binary assertions are implemented using a different code path
     // than the Boolean assertions.  Hence we test them separately.
@@ -4109,7 +4109,7 @@ TEST(AssertionSyntaxTest, WorksWithSwitch) {
 
     switch (0)
     case 0:
-        EXPECT_NE(1, 2);
+    EXPECT_NE(1, 2);
 }
 
 #if GTEST_HAS_EXCEPTIONS
@@ -4243,8 +4243,8 @@ TEST(AssertionWithMessageTest, ASSERT_TRUE) {
     ASSERT_TRUE(true) << true;
     EXPECT_FATAL_FAILURE(
         { // NOLINT
-            ASSERT_TRUE(false)
-                << static_cast<const char *>(NULL) << static_cast<char *>(NULL);
+            ASSERT_TRUE(false) << static_cast<const char *>(NULL)
+                               << static_cast<char *>(NULL);
         },
         "(null)(null)");
 }
@@ -4884,8 +4884,8 @@ TEST(ComparisonAssertionTest, AcceptsUnprintableArgs) {
     EXPECT_NONFATAL_FAILURE(EXPECT_GT(x, y), "1-byte object <78>");
     EXPECT_NONFATAL_FAILURE(EXPECT_GT(x, y), "1-byte object <79>");
 
-    // Code tested by EXPECT_FATAL_FAILURE cannot reference local
-    // variables, so we have to write UnprintableChar('x') instead of x.
+// Code tested by EXPECT_FATAL_FAILURE cannot reference local
+// variables, so we have to write UnprintableChar('x') instead of x.
 #ifndef __BORLANDC__
     // ICE's in C++Builder.
     EXPECT_FATAL_FAILURE(ASSERT_NE(UnprintableChar('x'), UnprintableChar('x')),
@@ -5578,8 +5578,8 @@ class InitGoogleTestTest : public Test {
         ::testing::internal::g_help_flag = saved_help_flag;
     }
 
-        // This macro wraps TestParsingFlags s.t. the user doesn't need
-        // to specify the array sizes.
+// This macro wraps TestParsingFlags s.t. the user doesn't need
+// to specify the array sizes.
 
 #define GTEST_TEST_PARSING_FLAGS_(argv1, argv2, expected, should_print_help)   \
     TestParsingFlags(sizeof(argv1) / sizeof(*argv1) - 1, argv1,                \

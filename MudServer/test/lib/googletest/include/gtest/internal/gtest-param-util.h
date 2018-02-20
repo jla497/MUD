@@ -341,7 +341,8 @@ class ValuesInIteratorRangeGenerator : public ParamGeneratorInterface<T> {
         Iterator(const Iterator &other)
             // The explicit constructor call suppresses a false warning
             // emitted by gcc when supplied with the -Wextra option.
-            : ParamIteratorInterface<T>(), base_(other.base_),
+            : ParamIteratorInterface<T>(),
+              base_(other.base_),
               iterator_(other.iterator_) {}
 
         const ParamGeneratorInterface<T> *const base_;

@@ -23,9 +23,9 @@ using std::vector;
 
 GameManager::GameManager(connection::ConnectionManager &connMan,
                          GameState &gameState)
-    : connectionManager{connMan}, gameState{gameState},
-      commandParser(), tick{DEFAULT_TICK_LENGTH_MS}, done{false}, players(),
-      outgoingMessages(), actions() {}
+    : connectionManager{connMan}, gameState{gameState}, commandParser(),
+      tick{DEFAULT_TICK_LENGTH_MS}, done{false}, players(), outgoingMessages(),
+      actions() {}
 
 /**
  * Runs a standard game loop, which consists of the following steps:

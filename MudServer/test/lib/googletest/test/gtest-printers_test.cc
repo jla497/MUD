@@ -533,9 +533,9 @@ AssertionResult HasPrefix(const StringType &str, const StringType &prefix) {
 
     const bool is_wide_string = sizeof(prefix[0]) > 1;
     const char *const begin_string_quote = is_wide_string ? "L\"" : "\"";
-    return AssertionFailure()
-           << begin_string_quote << prefix << "\" is not a prefix of "
-           << begin_string_quote << str << "\"\n";
+    return AssertionFailure() << begin_string_quote << prefix
+                              << "\" is not a prefix of " << begin_string_quote
+                              << str << "\"\n";
 }
 
 // Tests printing member variable pointers.  Although they are called
@@ -638,7 +638,7 @@ TEST(PrintArrayTest, BigArray) {
               PrintArrayHelper(a));
 }
 
-    // Tests printing ::string and ::std::string.
+// Tests printing ::string and ::std::string.
 
 #if GTEST_HAS_GLOBAL_STRING
 // ::string.
@@ -676,7 +676,7 @@ TEST(PrintStringTest, StringAmbiguousHex) {
     EXPECT_EQ("\"!\\x5-!\"", Print(::std::string("!\x5-!")));
 }
 
-    // Tests printing ::wstring and ::std::wstring.
+// Tests printing ::wstring and ::std::wstring.
 
 #if GTEST_HAS_GLOBAL_WSTRING
 // ::wstring.
@@ -847,8 +847,8 @@ TEST(PrintStlContainerTest, HashMultiSet) {
             ASSERT_NE(isdigit(static_cast<unsigned char>(result[i])), 0);
             numbers.push_back(result[i] - '0');
         } else {
-            EXPECT_EQ(expected_pattern[i], result[i])
-                << " where result is " << result;
+            EXPECT_EQ(expected_pattern[i], result[i]) << " where result is "
+                                                      << result;
         }
     }
 
@@ -1281,8 +1281,8 @@ TEST(FormatForComparisonFailureMessageTest, WorksForWCharPointerVsPointer) {
               FormatForComparisonFailureMessage(&ch, &ch).c_str());
 }
 
-    // Tests formatting a char pointer when it's compared to a string object.
-    // In this case we want to print the char pointer as a C string.
+// Tests formatting a char pointer when it's compared to a string object.
+// In this case we want to print the char pointer as a C string.
 
 #if GTEST_HAS_GLOBAL_STRING
 // char pointer vs ::string
@@ -1378,8 +1378,8 @@ TEST(FormatForComparisonFailureMessageTest, WorksForWCharArrayVsWCharArray) {
               FormatForComparisonFailureMessage(str, str).c_str());
 }
 
-    // Tests formatting a char array when it's compared with a string object.
-    // In this case we want to print the array as a C string.
+// Tests formatting a char array when it's compared with a string object.
+// In this case we want to print the array as a C string.
 
 #if GTEST_HAS_GLOBAL_STRING
 // char array vs string

@@ -1869,8 +1869,8 @@ template <typename FloatType> class FloatingEqMatcher {
                       FloatType max_abs_error)
         : expected_(expected), nan_eq_nan_(nan_eq_nan),
           max_abs_error_(max_abs_error) {
-        GTEST_CHECK_(max_abs_error >= 0)
-            << ", where max_abs_error is" << max_abs_error;
+        GTEST_CHECK_(max_abs_error >= 0) << ", where max_abs_error is"
+                                         << max_abs_error;
     }
 
     // Implements floating point equality matcher as a Matcher<T>.
@@ -2225,8 +2225,8 @@ template <typename Class, typename PropertyType> class PropertyMatcher {
     bool MatchAndExplainImpl(false_type /* is_not_pointer */, const Class &obj,
                              MatchResultListener *listener) const {
         *listener << "whose given property is ";
-        // Cannot pass the return value (for example, int) to
-        // MatchPrintAndExplain, which takes a non-const reference as argument.
+// Cannot pass the return value (for example, int) to
+// MatchPrintAndExplain, which takes a non-const reference as argument.
 #if defined(_PREFAST_) && _MSC_VER == 1800
         // Workaround bug in VC++ 2013's /analyze parser.
         // https://connect.microsoft.com/VisualStudio/feedback/details/1106363/internal-compiler-error-with-analyze-due-to-failure-to-infer-move

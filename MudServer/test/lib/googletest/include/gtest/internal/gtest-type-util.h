@@ -66,8 +66,8 @@ template <typename T> std::string GetTypeName() {
     const char *const name = typeid(T).name();
 #if GTEST_HAS_CXXABI_H_ || defined(__HP_aCC)
     int status = 0;
-    // gcc's implementation of typeid(T).name() mangles the type name,
-    // so we have to demangle it.
+// gcc's implementation of typeid(T).name() mangles the type name,
+// so we have to demangle it.
 #if GTEST_HAS_CXXABI_H_
     using abi::__cxa_demangle;
 #endif // GTEST_HAS_CXXABI_H_

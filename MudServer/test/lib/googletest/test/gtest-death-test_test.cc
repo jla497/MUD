@@ -332,11 +332,11 @@ TEST_F(TestForDeathTest, SwitchStatement) {
 
     switch (0)
     default:
-        ASSERT_DEATH(_exit(1), "") << "exit in default switch handler";
+    ASSERT_DEATH(_exit(1), "") << "exit in default switch handler";
 
     switch (0)
     case 0:
-        EXPECT_DEATH(_exit(1), "") << "exit in switch case";
+    EXPECT_DEATH(_exit(1), "") << "exit in switch case";
 
     GTEST_DISABLE_MSC_WARNINGS_POP_()
 }
@@ -534,8 +534,8 @@ TEST_F(TestForDeathTest, OutsideFixture) { DeathTestSubroutine(); }
 // Tests that death tests can be done inside a loop.
 TEST_F(TestForDeathTest, InsideLoop) {
     for (int i = 0; i < 5; i++) {
-        EXPECT_DEATH(DieIfLessThan(-1, i), "DieIfLessThan")
-            << "where i == " << i;
+        EXPECT_DEATH(DieIfLessThan(-1, i), "DieIfLessThan") << "where i == "
+                                                            << i;
     }
 }
 
@@ -1410,12 +1410,11 @@ TEST(ConditionalDeathMacrosSyntaxDeathTest, SwitchStatement) {
 
     switch (0)
     default:
-        ASSERT_DEATH_IF_SUPPORTED(_exit(1), "")
-            << "exit in default switch handler";
+    ASSERT_DEATH_IF_SUPPORTED(_exit(1), "") << "exit in default switch handler";
 
     switch (0)
     case 0:
-        EXPECT_DEATH_IF_SUPPORTED(_exit(1), "") << "exit in switch case";
+    EXPECT_DEATH_IF_SUPPORTED(_exit(1), "") << "exit in switch case";
 
     GTEST_DISABLE_MSC_WARNINGS_POP_()
 }

@@ -78,7 +78,7 @@
 #include <sys/time.h> // NOLINT
 
 // On z/OS we additionally need strings.h for strcasecmp.
-#include <strings.h>  // NOLINT
+#include <strings.h> // NOLINT
 
 #elif GTEST_OS_WINDOWS_MOBILE // We are on Windows CE.
 
@@ -355,7 +355,7 @@ void AssertHelper::operator=(const Message &message) const {
         AppendUserMessage(data_->message, message),
         UnitTest::GetInstance()->impl()->CurrentOsStackTraceExceptTop(1)
         // Skips the stack frame for this function itself.
-    ); // NOLINT
+        ); // NOLINT
 }
 
 // Mutex for linked pointers.
@@ -773,7 +773,7 @@ std::string UnitTestImpl::CurrentOsStackTraceExceptTop(int skip_count) {
         static_cast<int>(GTEST_FLAG(stack_trace_depth)), skip_count + 1
         // Skips the user-specified number of frames plus this function
         // itself.
-    ); // NOLINT
+        ); // NOLINT
 }
 
 // Returns the current time in milliseconds.
@@ -820,9 +820,9 @@ TimeInMillis GetTimeInMillis() {
 #endif
 }
 
-    // Utilities
+// Utilities
 
-    // class String.
+// class String.
 
 #if GTEST_OS_WINDOWS_MOBILE
 // Creates a UTF-16 wide string from the given ANSI string, allocating
@@ -1477,9 +1477,9 @@ AssertionResult CmpHelperSTRNE(const char *s1_expression,
     if (!String::CStringEquals(s1, s2)) {
         return AssertionSuccess();
     } else {
-        return AssertionFailure()
-               << "Expected: (" << s1_expression << ") != (" << s2_expression
-               << "), actual: \"" << s1 << "\" vs \"" << s2 << "\"";
+        return AssertionFailure() << "Expected: (" << s1_expression << ") != ("
+                                  << s2_expression << "), actual: \"" << s1
+                                  << "\" vs \"" << s2 << "\"";
     }
 }
 
@@ -2051,8 +2051,8 @@ GetReservedAttributesForElement(const std::string &xml_element) {
     } else if (xml_element == "testcase") {
         return ArrayAsVector(kReservedTestCaseAttributes);
     } else {
-        GTEST_CHECK_(false)
-            << "Unrecognized xml_element provided: " << xml_element;
+        GTEST_CHECK_(false) << "Unrecognized xml_element provided: "
+                            << xml_element;
     }
     // This code is unreachable but some compilers may not realizes that.
     return std::vector<std::string>();
@@ -2797,10 +2797,10 @@ static void PrintTestPartResult(const TestPartResult &test_part_result) {
     const std::string &result = PrintTestPartResultToString(test_part_result);
     printf("%s\n", result.c_str());
     fflush(stdout);
-    // If the test program runs in Visual Studio or a debugger, the
-    // following statements add the test part result message to the Output
-    // window such that the user can double-click on it to jump to the
-    // corresponding source code location; otherwise they do nothing.
+// If the test program runs in Visual Studio or a debugger, the
+// following statements add the test part result message to the Output
+// window such that the user can double-click on it to jump to the
+// corresponding source code location; otherwise they do nothing.
 #if GTEST_OS_WINDOWS && !GTEST_OS_WINDOWS_MOBILE
     // We don't call OutputDebugString*() on Windows Mobile, as printing
     // to stdout is done by OutputDebugString() there already - we don't
@@ -3687,7 +3687,7 @@ std::string XmlUnitTestResultPrinter::TestPropertiesAsXmlAttributes(
     return attributes.GetString();
 }
 
-    // End XmlUnitTestResultPrinter
+// End XmlUnitTestResultPrinter
 
 #if GTEST_CAN_STREAM_RESULTS_
 
@@ -4145,9 +4145,8 @@ int UnitTest::Run() {
     // that understands the premature-exit-file protocol to report the
     // test as having failed.
     const internal::ScopedPrematureExitFile premature_exit_file(
-        in_death_test_child_process
-            ? NULL
-            : internal::posix::GetEnv("TEST_PREMATURE_EXIT_FILE"));
+        in_death_test_child_process ? NULL : internal::posix::GetEnv(
+                                                 "TEST_PREMATURE_EXIT_FILE"));
 
     // Captures the value of GTEST_FLAG(catch_exceptions).  This value will be
     // used for the duration of the program.

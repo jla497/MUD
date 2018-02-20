@@ -958,8 +958,8 @@ static int ExecDeathTestChildMain(void *child_arg) {
         UnitTest::GetInstance()->original_working_dir();
     // We can safely call chdir() as it's a direct system call.
     if (chdir(original_dir) != 0) {
-        DeathTestAbort(std::string("chdir(\"") + original_dir +
-                       "\") failed: " + GetLastErrnoDescription());
+        DeathTestAbort(std::string("chdir(\"") + original_dir + "\") failed: " +
+                       GetLastErrnoDescription());
         return EXIT_FAILURE;
     }
 
@@ -1023,8 +1023,8 @@ static pid_t ExecDeathTestSpawnChild(char *const *argv, int close_fd) {
         UnitTest::GetInstance()->original_working_dir();
     // We can safely call chdir() as it's a direct system call.
     if (chdir(original_dir) != 0) {
-        DeathTestAbort(std::string("chdir(\"") + original_dir +
-                       "\") failed: " + GetLastErrnoDescription());
+        DeathTestAbort(std::string("chdir(\"") + original_dir + "\") failed: " +
+                       GetLastErrnoDescription());
         return EXIT_FAILURE;
     }
 

@@ -2074,12 +2074,12 @@ AnyOf(M1 m1, M2 m2, M3 m3, M4 m4, M5 m5, M6 m6, M7 m7, M8 m8, M9 m9, M10 m10) {
               typename p3##_type, typename p4##_type, typename p5##_type,      \
               typename p6##_type, typename p7##_type, typename p8##_type>      \
     template <typename arg_type>                                               \
-    bool                                                                       \
-        name##MatcherP9<p0##_type, p1##_type, p2##_type, p3##_type, p4##_type, \
-                        p5##_type, p6##_type, p7##_type, p8##_type>::          \
-            gmock_Impl<arg_type>::MatchAndExplain(                             \
-                arg_type arg, ::testing::MatchResultListener *result_listener  \
-                                  GTEST_ATTRIBUTE_UNUSED_) const
+    bool name##MatcherP9<p0##_type, p1##_type, p2##_type, p3##_type,           \
+                         p4##_type, p5##_type, p6##_type, p7##_type,           \
+                         p8##_type>::gmock_Impl<arg_type>::                    \
+        MatchAndExplain(arg_type arg,                                          \
+                        ::testing::MatchResultListener *result_listener        \
+                            GTEST_ATTRIBUTE_UNUSED_) const
 
 #define MATCHER_P10(name, p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, description) \
     template <typename p0##_type, typename p1##_type, typename p2##_type,      \

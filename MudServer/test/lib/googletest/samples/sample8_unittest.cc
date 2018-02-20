@@ -51,9 +51,8 @@ class HybridPrimeTable : public PrimeTable {
   public:
     HybridPrimeTable(bool force_on_the_fly, int max_precalculated)
         : on_the_fly_impl_(new OnTheFlyPrimeTable),
-          precalc_impl_(force_on_the_fly
-                            ? NULL
-                            : new PreCalculatedPrimeTable(max_precalculated)),
+          precalc_impl_(force_on_the_fly ? NULL : new PreCalculatedPrimeTable(
+                                                      max_precalculated)),
           max_precalculated_(max_precalculated) {}
     virtual ~HybridPrimeTable() {
         delete on_the_fly_impl_;

@@ -743,9 +743,9 @@ MATCHER(IsEven2, negation ? "is odd" : "is even") {
 
 // This also tests that the description string can reference matcher
 // parameters.
-MATCHER_P2(EqSumOf, x, y,
-           string(negation ? "doesn't equal" : "equals") + " the sum of " +
-               PrintToString(x) + " and " + PrintToString(y)) {
+MATCHER_P2(EqSumOf, x, y, string(negation ? "doesn't equal" : "equals") +
+                              " the sum of " + PrintToString(x) + " and " +
+                              PrintToString(y)) {
     if (arg == (x + y)) {
         *result_listener << "OK";
         return true;

@@ -1144,9 +1144,10 @@ template <typename F> class TypedExpectation : public ExpectationBase {
             Log(kWarning, ss.str(), 1);
         }
 
-        return count <= action_count ? *static_cast<const Action<F> *>(
-                                           untyped_actions_[count - 1])
-                                     : repeated_action();
+        return count <= action_count
+                   ? *static_cast<const Action<F> *>(
+                         untyped_actions_[count - 1])
+                   : repeated_action();
     }
 
     // Given the arguments of a mock function call, if the call will
