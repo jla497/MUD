@@ -1,1 +1,0 @@
-/usr/bin/c++    -Wall -fno-rtti   CMakeFiles/chatclient.dir/chatclient.cpp.o CMakeFiles/chatclient.dir/ChatWindow.cpp.o  -o ../../bin/chatclient -rdynamic ../../lib/libnetworking.a -lboost_system -lcurses -lform -lpthread 

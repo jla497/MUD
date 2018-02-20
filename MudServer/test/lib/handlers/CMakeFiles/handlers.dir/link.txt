@@ -1,2 +1,0 @@
-/usr/bin/ar qc ../libhandlers.a  CMakeFiles/handlers.dir/PlayHandler.cpp.o CMakeFiles/handlers.dir/LoginHandler.cpp.o
-/usr/bin/ranlib ../libhandlers.a
