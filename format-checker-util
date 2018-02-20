@@ -46,12 +46,22 @@ if [ -z "$FMT" ]; then
 fi
 
 # Check all of the arguments first to make sure they're all directories
-for dir in "$@"; do
-    if [ ! -d "${dir}" ]; then
-        echo "${dir} is not a directory"
+argc=$#
+argv=($@)
+
+OPTION=-output-replacements-xml
+
+if [ "${argv[0]}" -eq 0 ]; then
+    OPTION=-i;
+fi
+
+for((j=1;j<argc;j++)) do
+   if [ ! -d "${argv[j]}" ]; then
+        echo "${argv[j]} is not a directory"
         usage
     fi
 done
+
 
 # Find a dominating file, starting from a given directory and going up.
 find-dominating-file() {
@@ -79,7 +89,7 @@ for dir in "$@"; do
          -o -name '*.h' \
          -o -name '*.hh' \
          -o -name '*.hpp' \) \
-         -exec "${FMT}" '{}' -output-replacements-xml \;
+         -exec "${FMT}" '{}' ${OPTION} \;
     popd &>/dev/null
 done
 

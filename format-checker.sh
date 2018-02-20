@@ -1,5 +1,5 @@
 #!/bin/bash
-./format-checker-util Client/ Logging/ MudGameEngine/ MudServer/ Networking/ > output.xml
+./format-checker-util 1 Client/ Logging/ MudGameEngine/ MudServer/ Networking/ > output.xml
 
 if test $(cat output.xml | grep -c "<replacement ") -gt 0
 	then
