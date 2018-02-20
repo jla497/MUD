@@ -8,6 +8,12 @@ stages:
 before_script:
   - apk update
   - apk add yaml-cpp-dev
+  - apk add clang-format-5.0
+
+clang-format-check:
+  stage: build
+  script:
+    - ./format-checker.sh
 
 compile:
   stage: build
