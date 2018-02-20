@@ -8,6 +8,7 @@ stages:
 before_script:
   - apk update
   - apk add yaml-cpp-dev
+  - apk add bash
   
 clang-format-check:
   stage: build
