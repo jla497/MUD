@@ -12,7 +12,6 @@ before_script:
 compile:
   stage: build
   script:
-    - git submodule init && git submodule update
     - mkdir build
     - cd build
     - cmake ..
