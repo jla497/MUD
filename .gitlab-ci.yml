@@ -13,6 +13,7 @@ before_script:
 compile:
   stage: build
   script:
+    - ./reformat.sh
     - mkdir build
     - cd build
     - cmake ..
