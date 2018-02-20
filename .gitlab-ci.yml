@@ -8,12 +8,10 @@ stages:
 before_script:
   - apk update
   - apk add yaml-cpp-dev
-  - apk add --no-cache bash
 
 compile:
   stage: build
   script:
-    - ./reformat.sh
     - mkdir build
     - cd build
     - cmake ..
