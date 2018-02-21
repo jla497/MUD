@@ -2,13 +2,15 @@
 #define ACTION_H
 
 namespace mudserver {
-namespace gamemanager { class GameManager; }
+namespace gamemanager {
+class GameManager;
 }
+} // namespace mudserver
 
-#include <string>
-#include <vector>
 #include "entities/Entity.h"
 #include "entities/PlayerCharacter.h"
+#include <string>
+#include <vector>
 
 /**
  * The Action class defines the interface that all actions implement.
@@ -17,10 +19,10 @@ namespace gamemanager { class GameManager; }
  * actually affects.
  */
 class Action {
-public:
-    Action(PlayerCharacter& characterPerformingAction,
+  public:
+    Action(PlayerCharacter &characterPerformingAction,
            std::vector<std::string> actionArguments,
-           mudserver::gamemanager::GameManager& gameManager);
+           mudserver::gamemanager::GameManager &gameManager);
 
     /**
      * Actions are designed to be placed in a queue. When the queue is
@@ -29,11 +31,12 @@ public:
      */
     virtual void execute() = 0;
 
-    friend std::ostream& operator<<(std::ostream& os, const Action& action);
-protected:
+    friend std::ostream &operator<<(std::ostream &os, const Action &action);
+
+  protected:
     virtual std::string description() const = 0;
-    PlayerCharacter& characterPerformingAction;
+    PlayerCharacter &characterPerformingAction;
     std::vector<std::string> actionArguments;
-    mudserver::gamemanager::GameManager& gameManager;
+    mudserver::gamemanager::GameManager &gameManager;
 };
 #endif

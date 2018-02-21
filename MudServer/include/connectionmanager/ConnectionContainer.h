@@ -19,7 +19,7 @@ class ConnectionContainer {
     bool isConnected;
     std::unique_ptr<MudProtocol> mProtocol;
 
-public:
+  public:
     ConnectionContainer();
 
     ConnectionContainer(const networking::Connection &c);
@@ -50,10 +50,10 @@ public:
 
     networking::Connection getConnection() const;
 
-private:
+  private:
     static const int DEFAULT_NUM_OF_MUD_PROTOCOLS;
 };
-}  // namespace connection
-}  // namespace mudserver
+} // namespace connection
+} // namespace mudserver
 
 #endif

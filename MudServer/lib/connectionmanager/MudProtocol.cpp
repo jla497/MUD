@@ -10,7 +10,7 @@ MudProtocol::MudProtocol(unsigned int max_buf) : maxBufSize(max_buf) {}
 void MudProtocol::receive(std::string str) {
     // pass only alphanumeric characters, backspace nad cr
 
-    for (auto& c : str) {
+    for (auto &c : str) {
         if (inBuffer.length() < maxBufSize) {
             inBuffer.append(1, c);
         }
@@ -19,12 +19,11 @@ void MudProtocol::receive(std::string str) {
             throw std::runtime_error("buffer overflow");
         }
     }
-
-    return;
 }
 
 std::string MudProtocol::send() {
-    if (inBuffer.empty()) return "";
+    if (inBuffer.empty())
+        return "";
 
     std::string res;
     std::stringstream ss;
@@ -45,7 +44,8 @@ std::string MudProtocol::send() {
 
 // any protocol-specific text formatting here
 std::string MudProtocol::broadcast(std::string broadcast) {
-    if (broadcast.empty()) return "";
+    if (broadcast.empty())
+        return "";
 
     broadcastBuffer = broadcast;
 
@@ -66,5 +66,5 @@ std::string MudProtocol::broadcast(std::string broadcast) {
 
     return res;
 }
-}
-}
+} // namespace connection
+} // namespace mudserver

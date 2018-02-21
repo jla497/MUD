@@ -13,6 +13,8 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/lib")
 set (CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -fno-omit-frame-pointer -fsanitize=address")
 set (CMAKE_LINKER_FLAGS_DEBUG "${CMAKE_STATIC_LINKER_FLAGS_DEBUG} -fno-omit-frame-pointer -fsanitize=address")
 
+add_subdirectory(googletest/googlemock)
+
 include_directories(${CMAKE_SOURCE_DIR}/MudServer/include)
 include_directories(${CMAKE_SOURCE_DIR}/MudGameEngine/include)
 include_directories(${CMAKE_SOURCE_DIR}/Networking/include)

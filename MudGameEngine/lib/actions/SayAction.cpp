@@ -1,9 +1,9 @@
+#include <boost/algorithm/string/join.hpp>
+#include <boost/format.hpp>
 #include <numeric>
 #include <sstream>
 #include <string>
 #include <vector>
-#include <boost/algorithm/string/join.hpp>
-#include <boost/format.hpp>
 
 #include "actions/SayAction.h"
 #include "logging.h"
@@ -15,7 +15,7 @@ namespace actmess = mudserver::resources::actions;
 void SayAction::execute() {
     static auto logger = mudserver::logging::getLogger("SayAction::execute");
 
-    auto& gameState = gameManager.getState();
+    auto &gameState = gameManager.getState();
 
     // get player who is saying the message
     auto playerSayingMessage = characterPerformingAction;
@@ -51,11 +51,10 @@ void SayAction::execute() {
     // send the message to all the players in the room
     for (auto characterID : characterIdsInRoom) {
         gameManager.sendCharacterMessage(
-            characterID,
-            boost::str(boost::format{"%s: %s"} %
-                       (speakingCharacterId == characterID
-                            ? "You"
-                            : speakingCharacterDesc) %
-                       messageSentByPlayer));
+            characterID, boost::str(boost::format{"%s: %s"} %
+                                    (speakingCharacterId == characterID
+                                         ? "You"
+                                         : speakingCharacterDesc) %
+                                    messageSentByPlayer));
     }
 }

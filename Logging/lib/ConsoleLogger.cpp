@@ -36,5 +36,5 @@ std::string ConsoleLogger::identifiedLog(StrView str) {
     return identifier + ": " + str;
 }
 
-}  // namespace logging
-}  // namespace mudserver
+} // namespace logging
+} // namespace mudserver
