@@ -11,8 +11,7 @@ void MudProtocol::receive(std::string str) {
     // pass only alphanumeric characters, backspace nad cr
 
     for (auto &c : str) {
-        if ((std::isalnum(c) || std::isspace(c)) &&
-            inBuffer.length() < maxBufSize) {
+        if (inBuffer.length() < maxBufSize) {
             inBuffer.append(1, c);
         }
 
@@ -20,8 +19,6 @@ void MudProtocol::receive(std::string str) {
             throw std::runtime_error("buffer overflow");
         }
     }
-
-    return;
 }
 
 std::string MudProtocol::send() {
