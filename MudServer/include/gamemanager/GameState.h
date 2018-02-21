@@ -9,12 +9,17 @@
 #include <unordered_map>
 #include <deque>
 
+#include "entities/ShopEntity.h"
 #include "entities/AreaEntity.h"
+#include "entities/DoorEntity.h"
+#include "entities/NonPlayerCharacter.h"
+#include "entities/ObjectEntity.h"
+#include "entities/RoomEntity.h"
 #include "entities/PlayerCharacter.h"
-//#include "Room.h"
 #include "gamemanager/LutBuilder.h"
 #include "YamlParser.h"
 #include "UniqueId.h"
+#include "Reset.h"
 
 namespace mudserver {
 namespace gamemanager {
@@ -29,7 +34,7 @@ using std::vector;
 using CharacterRoomLookupTable = bimap<set_of<UniqueId>, list_of<roomId>> ;
 using RoomLookupTable = std::map<roomId, RoomEntity*> ;
 using CharacterLookUp = std::map<UniqueId, unique_ptr<PlayerCharacter>> ;
-
+using NpcLookUp = std::map<roomId, NonPlayerCharacter*>;
 /**
  * The overarching idea of GameState is that it should
  *      - be owned by the GameManager
@@ -41,6 +46,8 @@ class GameState {
     CharacterRoomLookupTable characterRoomLookUp;
     RoomLookupTable roomLookUp;
     CharacterLookUp characterLookUp;
+    NpcLookUp npcLookUp;
+    vector<std::unique_ptr<NonPlayerCharacter>> npcs;
     deque<unique_ptr<AreaEntity>> areas;
     YamlParser parser;
     std::unique_ptr<AreaEntity> area;
@@ -52,8 +59,9 @@ public:
     void initFromYaml(std::string filename);
     void parseYamlFile(std::string string);
     void initRoomLUT();
-
+    void initNpcLUT();
     void addAreaFromParser();
+    void addNpcsFromParser();
     void addCharacter(unique_ptr<PlayerCharacter> character);
     void addCharacterRoomRelationToLUT(UniqueId characterId,
                                        unsigned int roomId);
@@ -67,6 +75,7 @@ public:
     RoomEntity* getRoomFromLUT(const roomId);
     void clearAreas();
     void clearCharacterRoomLUT();
+    void doReset();
 
     };
 

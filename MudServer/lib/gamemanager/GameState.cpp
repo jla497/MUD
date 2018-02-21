@@ -11,7 +11,9 @@ using std::make_unique;
 void GameState::initFromYaml(std::string filename) {
     parseYamlFile(std::move(filename));
     addAreaFromParser();
+    addNpcsFromParser();
     initRoomLUT();
+    initNpcLUT();
 }
 
 void GameState::parseYamlFile(std::string filename) {
@@ -24,6 +26,11 @@ void GameState::initRoomLUT() {
         LutBuilder lutBuilder;
         roomLookUp = lutBuilder.createLUT(rooms);
     }
+}
+
+void GameState::initNpcLUT() {
+   LutBuilder lutBuilder;
+   npcLookUp = lutBuilder.createNpcLUT(npcs);
 }
 
 /**
@@ -56,6 +63,10 @@ void GameState::addAreaFromParser() {
     areas.push_back(std::move(parser.getArea()));
 }
 
+void GameState::addNpcsFromParser() {
+    npcs= parser.getAllNPCS();
+
+}
 
 /**
  * Get Methods
@@ -115,6 +126,14 @@ void GameState::clearAreas() {
     roomLookUp.clear();
 }
 
+void GameState::doReset() {
+    auto resets = parser.getAllResets();
+    
+    for(auto& reset: resets) {
+        reset->execute(*this);
+    }
+
+}
 
 }  // namespace gamemanager
 }  // namespace mudserver

@@ -46,6 +46,9 @@ void GameManager::mainLoop() {
 
     auto startTime = clock::now();
 
+    //first reset in game
+    gameState.doReset();
+
     while (!done) {
         unique_ptr<gameAndUserMsgs> messagesForConnMan;
          if (connectionManager.update()) {

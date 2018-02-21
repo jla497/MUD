@@ -7,9 +7,14 @@
 #include <deque>
 
 #include "Player.h"
-#include "entities/Entity.h"
-#include "UniqueId.h"
+#include "entities/ShopEntity.h"
+#include "entities/AreaEntity.h"
+#include "entities/DoorEntity.h"
+#include "entities/NonPlayerCharacter.h"
+#include "entities/ObjectEntity.h"
 #include "entities/RoomEntity.h"
+#include "entities/PlayerCharacter.h"
+#include "UniqueId.h"
 
 namespace mudserver {
 namespace gamemanager {
@@ -22,6 +27,7 @@ class LutBuilder {
 public:
 
     std::map<roomId, RoomEntity*> createLUT(std::deque<unique_ptr<RoomEntity>>& mVector);
+    std::map<roomId, NonPlayerCharacter*> createNpcLUT(std::vector<std::unique_ptr<NonPlayerCharacter>>& mVector);
 
     
 };

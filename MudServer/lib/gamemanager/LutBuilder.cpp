@@ -7,8 +7,17 @@ namespace gamemanager {
     	std::map<roomId, RoomEntity*> mMap{};
 
     	for (auto& room : rooms ) {
-    		auto rid = room->getId();
     		mMap.insert(std::make_pair<roomId, RoomEntity*>(room->getId(),room.get()));
+    	}
+
+    	return mMap;
+    }
+
+    std::map<roomId, NonPlayerCharacter*> LutBuilder::createNpcLUT(std::vector<std::unique_ptr<NonPlayerCharacter>>& npcs){
+    	std::map<roomId, NonPlayerCharacter*> mMap{};
+
+    	for (auto& npc : npcs ) {
+    		mMap.insert(std::make_pair<roomId, NonPlayerCharacter*>(npc->getNpcTypeId(),npc.get()));
     	}
 
     	return mMap;

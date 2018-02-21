@@ -10,6 +10,7 @@ target_link_libraries(gamemanager
     logging
     entity
     commandparser
+    reset
 )
 
 set_target_properties(gamemanager
