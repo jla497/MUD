@@ -8,11 +8,13 @@ stages:
 before_script:
   - apk update
   - apk add yaml-cpp-dev
+  - apk add -y git
   - apk add bash
 
 compile:
   stage: build
   script:
+    - git submodule init && git submodule update
     - mkdir build
     - cd build
     - cmake ..
@@ -25,7 +27,7 @@ clang-format-check:
   stage: test
   script:
     - ./format-checker.sh
-    
+
 mudserver-unit-test:
   stage: test
   script:
