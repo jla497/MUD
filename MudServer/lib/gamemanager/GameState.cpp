@@ -13,6 +13,7 @@ void GameState::initFromYaml(std::string filename) {
     addAreaFromParser();
     initRoomLUT();
     factory = std::unique_ptr<EntityFactory>(parser.makeFactory());
+    factory->init();
 }
 
 void GameState::parseYamlFile(std::string filename) {

@@ -1,5 +1,6 @@
 #include "Reset.h"
 #include <boost/algorithm/string.hpp>
+#include "gamemanager/GameState.h"
 
 std::unordered_map<std::string, Reset::ResetKeyword> Reset::resetLookUp = {
     {"object", Reset::ResetKeyword::object},

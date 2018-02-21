@@ -35,7 +35,6 @@ public:
    EntityFactory(NpcVector npcs);
    void init();
 
-
 	NonPlayerCharacter buildNpc(Id id);
   
   };

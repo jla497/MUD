@@ -16,12 +16,13 @@
 #include "entities/ObjectEntity.h"
 #include "entities/RoomEntity.h"
 #include "entities/PlayerCharacter.h"
-#include "YamlParser.h"
 #include "gamemanager/LutBuilder.h"
 #include "gamemanager/EntityFactory.h"
+#include "YamlParser.h"
 #include "UniqueId.h"
 #include "Reset.h"
 
+class Reset;
 namespace mudserver {
 namespace gamemanager {
 
