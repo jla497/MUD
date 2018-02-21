@@ -3,6 +3,7 @@ add_library(gamemanager
     GameState.cpp
     Player.cpp
     LutBuilder.cpp
+    EntityFactory.cpp
 )
 
 target_link_libraries(gamemanager

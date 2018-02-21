@@ -11,9 +11,7 @@ using std::make_unique;
 void GameState::initFromYaml(std::string filename) {
     parseYamlFile(std::move(filename));
     addAreaFromParser();
-    addNpcsFromParser();
     initRoomLUT();
-    initNpcLUT();
 }
 
 void GameState::parseYamlFile(std::string filename) {
@@ -28,10 +26,6 @@ void GameState::initRoomLUT() {
     }
 }
 
-void GameState::initNpcLUT() {
-   LutBuilder lutBuilder;
-   npcLookUp = lutBuilder.createNpcLUT(npcs);
-}
 
 /**
  * Add Methods
@@ -63,10 +57,6 @@ void GameState::addAreaFromParser() {
     areas.push_back(std::move(parser.getArea()));
 }
 
-void GameState::addNpcsFromParser() {
-    npcs= parser.getAllNPCS();
-
-}
 
 /**
  * Get Methods

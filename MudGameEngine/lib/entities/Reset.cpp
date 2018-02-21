@@ -20,15 +20,7 @@ Reset::Reset(int id, std::string action, std::string comment, std::string state,
 
 void Reset::resetNpc(mudserver::gamemanager::GameState& state) {
 	// static auto logger = mudserver::logging::getLogger("Reset::execute::resetNPC");
-	// auto npcs = parser.getAllNPCS();
-	// auto npcIter = npcs.find_if(npcs.begin(), npcs.end(), findNpc(id));
-	// if(npcIter == npcs.end()){
-	// 	return;
-	// } 
-
-	// auto npc = **npcIter;
-	// auto desc = npc.getShortDesc();
-	// logger->info("NPC: "+desc);
+	// auto npcs = state.
 }
 
 void Reset::execute(mudserver::gamemanager::GameState& state) {

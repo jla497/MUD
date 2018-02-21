@@ -13,15 +13,14 @@ namespace gamemanager {
     	return mMap;
     }
 
-    std::map<roomId, NonPlayerCharacter*> LutBuilder::createNpcLUT(std::vector<std::unique_ptr<NonPlayerCharacter>>& npcs){
-    	std::map<roomId, NonPlayerCharacter*> mMap{};
-
-    	for (auto& npc : npcs ) {
-    		mMap.insert(std::make_pair<roomId, NonPlayerCharacter*>(npc->getNpcTypeId(),npc.get()));
-    	}
-
-    	return mMap;
-    }
+    std::map<Id, NonPlayerCharacter> LutBuilder::createNpcLUT(std::vector<std::unique_ptr<NonPlayerCharacter>>& npcs){
+    	std::map<Id, NonPlayerCharacter> map;
+        for (auto &npc : npcs) {
+            auto npcPtr = npc.get();
+            map[npc->getNpcTypeId()] = *npcPtr;
+        }
+        return map;
+        }
 
 }
 }
