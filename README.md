@@ -18,10 +18,12 @@ git submodule init && git submodule update
 ## Usage
 
 Server:
-- ./mudserver \<port> \<yaml_files(s)>
+- ./mudserver <config_file_path>
 
 Client:
-- ./chatclient \<host_ip> \<port>
+- ./chatclient <config_file_path>
+
+<config_file_path> = "config.yaml"
 
 ## Actions Supported
 - say 
