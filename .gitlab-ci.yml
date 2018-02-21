@@ -8,6 +8,7 @@ stages:
 before_script:
   - apk update
   - apk add yaml-cpp-dev
+  - apk add bash
 
 compile:
   stage: build
@@ -20,6 +21,11 @@ compile:
     paths:
     - build
 
+clang-format-check:
+  stage: test
+  script:
+    - ./format-checker.sh
+    
 mudserver-unit-test:
   stage: test
   script:

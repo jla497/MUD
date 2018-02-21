@@ -12,9 +12,10 @@
 
 using networking::Port;
 
-int main(int argc, char* argv[]) {
+int main(int argc, char *argv[]) {
     if (argc < 2) {
-        printf("Usage:\n%s <port> [world file]\ne.g. %s 4002 mgoose.yml\n", argv[0], argv[0]);
+        printf("Usage:\n%s <port> [world file]\ne.g. %s 4002 mgoose.yml\n",
+               argv[0], argv[0]);
         return 1;
     }
 
@@ -26,7 +27,8 @@ int main(int argc, char* argv[]) {
     if (argc > 2) {
         gameState.initFromYaml(argv[2]);
     }
-    mudserver::gamemanager::GameManager gameManager{connectionManager, gameState};
+    mudserver::gamemanager::GameManager gameManager{connectionManager,
+                                                    gameState};
 
     std::cout << "---------------------MUD Server Console---------------------"
               << std::endl;

@@ -1,34 +1,34 @@
 #ifndef GAMESTATE_H
 #define GAMESTATE_H
 
-#include <boost/foreach.hpp>
 #include <boost/bimap.hpp>
-#include <boost/bimap/set_of.hpp>
 #include <boost/bimap/list_of.hpp>
+#include <boost/bimap/set_of.hpp>
+#include <boost/foreach.hpp>
+#include <deque>
 #include <memory>
 #include <unordered_map>
-#include <deque>
 
 #include "entities/AreaEntity.h"
 #include "entities/PlayerCharacter.h"
 //#include "Room.h"
-#include "gamemanager/LutBuilder.h"
-#include "YamlParser.h"
 #include "UniqueId.h"
+#include "YamlParser.h"
+#include "gamemanager/LutBuilder.h"
 
 namespace mudserver {
 namespace gamemanager {
 
 using namespace boost::bimaps;
 
+using std::deque;
 using std::unique_ptr;
 using std::unordered_map;
-using std::deque;
 using std::vector;
 
-using CharacterRoomLookupTable = bimap<set_of<UniqueId>, list_of<roomId>> ;
-using RoomLookupTable = std::map<roomId, RoomEntity*> ;
-using CharacterLookUp = std::map<UniqueId, unique_ptr<PlayerCharacter>> ;
+using CharacterRoomLookupTable = bimap<set_of<UniqueId>, list_of<roomId>>;
+using RoomLookupTable = std::map<roomId, RoomEntity *>;
+using CharacterLookUp = std::map<UniqueId, unique_ptr<PlayerCharacter>>;
 
 /**
  * The overarching idea of GameState is that it should
@@ -45,8 +45,7 @@ class GameState {
     YamlParser parser;
     std::unique_ptr<AreaEntity> area;
 
-public:
-
+  public:
     GameState() = default;
 
     void initFromYaml(std::string filename);
@@ -57,19 +56,18 @@ public:
     void addCharacter(unique_ptr<PlayerCharacter> character);
     void addCharacterRoomRelationToLUT(UniqueId characterId,
                                        unsigned int roomId);
-    void addRoomToLUT(RoomEntity*);
-    AreaEntity* getAreaFromParser();
-    deque<unique_ptr<AreaEntity>>& getAreas();
-    vector<UniqueId> getCharactersInRoom(RoomEntity* room);
-    PlayerCharacter* getCharacterFromLUT(UniqueId id);
-    RoomEntity* getCharacterLocation(PlayerCharacter* character);
-    RoomEntity* getCharacterLocation(PlayerCharacter& character);
-    RoomEntity* getRoomFromLUT(const roomId);
+    void addRoomToLUT(RoomEntity *);
+    AreaEntity *getAreaFromParser();
+    deque<unique_ptr<AreaEntity>> &getAreas();
+    vector<UniqueId> getCharactersInRoom(RoomEntity *room);
+    PlayerCharacter *getCharacterFromLUT(UniqueId id);
+    RoomEntity *getCharacterLocation(PlayerCharacter *character);
+    RoomEntity *getCharacterLocation(PlayerCharacter &character);
+    RoomEntity *getRoomFromLUT(const roomId);
     void clearAreas();
     void clearCharacterRoomLUT();
+};
 
-    };
-
-}  // namespace gamemanager
-}  // namespace mudserver
-#endif  // GAMESTATE_H
+} // namespace gamemanager
+} // namespace mudserver
+#endif // GAMESTATE_H

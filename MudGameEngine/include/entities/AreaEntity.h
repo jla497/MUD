@@ -7,16 +7,16 @@
 #include "RoomEntity.h"
 
 class AreaEntity : public Entity {
-   private:
+  private:
     // add unique id
     std::string m_name;
     std::deque<std::unique_ptr<RoomEntity>> m_rooms;
 
-   public:
-    AreaEntity(std::string& name,
+  public:
+    AreaEntity(std::string &name,
                std::deque<std::unique_ptr<RoomEntity>> rooms);
 
-    std::deque<std::unique_ptr<RoomEntity>>& getAllRooms();
+    std::deque<std::unique_ptr<RoomEntity>> &getAllRooms();
 
     std::string getName();
 };

@@ -16,7 +16,7 @@ class MudProtocol : public Protocol {
     std::string broadcastBuffer;
     unsigned int maxBufSize;
 
-public:
+  public:
     MudProtocol();
     MudProtocol(unsigned int maxBuf);
 
@@ -26,7 +26,7 @@ public:
 
     std::string broadcast(std::string);
 };
-}  // namespace connection
-}  // namespace mudserver
+} // namespace connection
+} // namespace mudserver
 
 #endif
