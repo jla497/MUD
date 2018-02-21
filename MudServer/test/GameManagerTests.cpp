@@ -1,27 +1,25 @@
 #include <gtest/gtest.h>
 
-#include "gamemanager/GameState.h"
-#include "gamemanager/GameManager.h"
 #include "connectionmanager/ConnectionManager.h"
-
+#include "gamemanager/GameManager.h"
+#include "gamemanager/GameState.h"
 
 class GameManagerTests : public testing::Test {
 protected:
     virtual void SetUp() {
-
         networking::Message m1{networking::Connection{39985500}, "move north"};
 
         incoming.push_back(m1);
 
         state.parseYamlFile("MudGameEngine/lib/dataFiles/detailed_smurf.yml");
         state.initRoomLUT();
-
     }
 
     virtual void TearDown() {
         state.clearCharacterRoomLUT();
         state.clearAreas();
     }
+
 public:
     mudserver::connection::ConnectionManager m_manager{4000};
     std::deque<networking::Message> incoming;
@@ -39,5 +37,4 @@ TEST_F(GameManagerTests, StartGameManager) {
     m_manager.rxFromServer(incoming);
     mudserver::gamemanager::GameManager gameManager{m_manager, state};
     // gameManager.mainLoop();
-
 }

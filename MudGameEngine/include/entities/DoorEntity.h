@@ -4,7 +4,7 @@
 #include "Entity.h"
 
 class DoorEntity : public Entity {
-   private:
+private:
     std::vector<std::string> m_desc;
     std::string m_dir;  // didn't enum dir, could be arbitrary
     std::vector<std::string> m_keywords;
@@ -14,7 +14,7 @@ class DoorEntity : public Entity {
     // use std::find_if instead
     // find_to(std::string dir) : dir_(dir) {}
     // bool operator()(Door& door) {return door.dir == dir_;}
-   public:
+public:
     DoorEntity(std::vector<std::string>& desc, std::string& dir,
                std::vector<std::string>& keywords, unsigned int to);
 

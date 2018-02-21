@@ -1,6 +1,6 @@
 #include "Reset.h"
-#include <boost/algorithm/string.hpp>
 #include "gamemanager/GameState.h"
+#include <boost/algorithm/string.hpp>
 
 std::unordered_map<std::string, Reset::ResetKeyword> Reset::resetLookUp = {
     {"object", Reset::ResetKeyword::object},
@@ -8,9 +8,8 @@ std::unordered_map<std::string, Reset::ResetKeyword> Reset::resetLookUp = {
     {"door", Reset::ResetKeyword::door},
     {"equip", Reset::ResetKeyword::equip}};
 
-
 Reset::Reset(int id, std::string action, std::string comment, std::string state,
- 	int slot,int limit, int roomID)
+             int slot, int limit, int roomID)
     : id{id},
       action{action},
       comment{comment},
@@ -20,48 +19,43 @@ Reset::Reset(int id, std::string action, std::string comment, std::string state,
       roomID{roomID} {}
 
 void Reset::resetNpc(mudserver::gamemanager::GameState& state) {
-	static auto logger = mudserver::logging::getLogger("Reset::execute::resetNPC");
-	auto& factory = state.getFactory();
-	auto npc = factory.buildNpc(id);
-	logger->info("npc: "+npc.getShortDesc());
+    static auto logger =
+        mudserver::logging::getLogger("Reset::execute::resetNPC");
+    auto& factory = state.getFactory();
+    auto npc = factory.buildNpc(id);
+    logger->info("npc: " + npc.getShortDesc());
 }
 
 void Reset::execute(mudserver::gamemanager::GameState& state) {
-	static auto logger = mudserver::logging::getLogger("Reset::execute");
-    auto resetTypeIter = resetLookUp.find(boost::algorithm::to_lower_copy(action));
+    static auto logger = mudserver::logging::getLogger("Reset::execute");
+    auto resetTypeIter =
+        resetLookUp.find(boost::algorithm::to_lower_copy(action));
     auto resetT = (resetTypeIter == resetLookUp.end())
-                                ? Reset::ResetKeyword::undefined
-                                : resetTypeIter->second;
+                      ? Reset::ResetKeyword::undefined
+                      : resetTypeIter->second;
 
-    switch(resetT) {
-    	case Reset::ResetKeyword::npc: {
-          logger->info("npc reset");
-          resetNpc(state);
+    switch (resetT) {
+    case Reset::ResetKeyword::npc: {
+        logger->info("npc reset");
+        resetNpc(state);
         break;
-        }
-        
-    	case Reset::ResetKeyword::object: {
-          logger->info("object reset");
-        break;
-
-        }
-
-    	case Reset::ResetKeyword::door: {
-          logger->info("door reset");
-        break;
-
-        }
-
-
-    	case Reset::ResetKeyword::equip: {
-          logger->info("equip reset");
-        break;
-
-        }
-        default:
-          logger->info("not a valid reset code");
     }
 
+    case Reset::ResetKeyword::object: {
+        logger->info("object reset");
+        break;
+    }
 
+    case Reset::ResetKeyword::door: {
+        logger->info("door reset");
+        break;
+    }
 
+    case Reset::ResetKeyword::equip: {
+        logger->info("equip reset");
+        break;
+    }
+    default:
+        logger->info("not a valid reset code");
+    }
 }

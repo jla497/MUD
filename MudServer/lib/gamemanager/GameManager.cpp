@@ -46,17 +46,17 @@ void GameManager::mainLoop() {
 
     auto startTime = clock::now();
 
-    //first reset in game
+    // first reset in game
     gameState.doReset();
 
     while (!done) {
         unique_ptr<gameAndUserMsgs> messagesForConnMan;
-         if (connectionManager.update()) {
+        if (connectionManager.update()) {
             // An error was encountered, stop
             done = true;
             continue;
         }
-    
+
         auto messages = connectionManager.sendToGameManager();
 
         processMessages(*messages);
@@ -67,15 +67,13 @@ void GameManager::mainLoop() {
             performQueuedActions();
             sendMessagesToPlayers();
         }
-
     }
 }
 
 void GameManager::processMessages(gameAndUserMsgs& messages) {
     static auto logger = logging::getLogger("GameManager::processMessages");
-  
-    for (auto& message : messages) {
 
+    for (auto& message : messages) {
         // look up player from ID
         auto playerId = message->conn.id;
         logger->debug(std::to_string(playerId) + ": " + message->text);
@@ -141,7 +139,7 @@ void GameManager::performQueuedActions() {
     }
 }
 
-GameState &GameManager::getState() { return gameState; }
+GameState& GameManager::getState() { return gameState; }
 
 void GameManager::sendCharacterMessage(UniqueId characterId,
                                        std::string message) {
@@ -154,7 +152,6 @@ void GameManager::sendCharacterMessage(UniqueId characterId,
 // Technical debt alert:
 // I believe the player-character mapping is complex enough to factor out into
 // a new class - possibly will be the LoginManager once we get that far
-
 
 PlayerCharacter* GameManager::playerIdToCharacter(PlayerId playerId) {
     auto entry = playerCharacterBimap.left.find(playerId);
@@ -180,8 +177,8 @@ Player& GameManager::characterIdToPlayer(UniqueId characterId) {
 }
 
 void GameManager::addPlayerCharacter(PlayerId playerId) {
-    auto testShortDesc = "TestPlayerName" + std::to_string(playerCharacterBimap.size());
-
+    auto testShortDesc =
+        "TestPlayerName" + std::to_string(playerCharacterBimap.size());
 
     auto character = std::make_unique<PlayerCharacter>(
         pc::ARMOR, std::string{pc::DAMAGE}, std::vector<std::string>{}, pc::EXP,
@@ -191,7 +188,6 @@ void GameManager::addPlayerCharacter(PlayerId playerId) {
     playerCharacterBimap.insert(
         PcBmType::value_type(playerId, character->getEntityId()));
     gameState.addCharacter(std::move(character));
-
 }
 
 }  // namespace gamemanager

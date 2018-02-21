@@ -5,7 +5,6 @@
 // for details.
 /////////////////////////////////////////////////////////////////////////////
 
-
 #ifndef NETWORKING_TRANSFER_MESSAGE
 #define NETWORKING_TRANSFER_MESSAGE
 
@@ -13,26 +12,19 @@
 #include <streambuf>
 #include <string>
 
-
 static constexpr char MESSAGE_DELIMITER = '\r';
 
-
-static inline void
-ensureMessageTerminator(std::string &message) {
-  if (message.back() != MESSAGE_DELIMITER) {
-    message.push_back(MESSAGE_DELIMITER);
-  }
+static inline void ensureMessageTerminator(std::string &message) {
+    if (message.back() != MESSAGE_DELIMITER) {
+        message.push_back(MESSAGE_DELIMITER);
+    }
 }
 
-
-static inline std::string
-extractMessage(std::streambuf &buffer) {
-  std::string message;
-  std::istream is(&buffer);
-  std::getline(is, message, MESSAGE_DELIMITER);
-  return message;
+static inline std::string extractMessage(std::streambuf &buffer) {
+    std::string message;
+    std::istream is(&buffer);
+    std::getline(is, message, MESSAGE_DELIMITER);
+    return message;
 }
-
 
 #endif
-

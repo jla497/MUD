@@ -80,29 +80,29 @@ void ChatWindow::resizeOnShapeChange() {
 
 void ChatWindow::processInput(int key) {
     switch (key) {
-        case KEY_ENTER:
-        case '\n':
-            // Requesting validation synchs the seen field & the buffer.
-            form_driver(entryForm, REQ_VALIDATION);
-            onTextEntry(getFieldString());
-            move(1, 1);
-            set_field_buffer(entryField, 0, "");
-            refresh();
-            pos_form_cursor(entryForm);
-            break;
-        case KEY_BACKSPACE:
-        case 127:
-            form_driver(entryForm, REQ_DEL_PREV);
-            break;
-        case KEY_DC:
-            form_driver(entryForm, REQ_DEL_CHAR);
-            break;
-        case ERR:
-            // swallow
-            break;
-        default:
-            form_driver(entryForm, key);
-            break;
+    case KEY_ENTER:
+    case '\n':
+        // Requesting validation synchs the seen field & the buffer.
+        form_driver(entryForm, REQ_VALIDATION);
+        onTextEntry(getFieldString());
+        move(1, 1);
+        set_field_buffer(entryField, 0, "");
+        refresh();
+        pos_form_cursor(entryForm);
+        break;
+    case KEY_BACKSPACE:
+    case 127:
+        form_driver(entryForm, REQ_DEL_PREV);
+        break;
+    case KEY_DC:
+        form_driver(entryForm, REQ_DEL_CHAR);
+        break;
+    case ERR:
+        // swallow
+        break;
+    default:
+        form_driver(entryForm, key);
+        break;
     }
 }
 

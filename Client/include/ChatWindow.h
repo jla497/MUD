@@ -14,7 +14,7 @@
 #include <ncurses.h>
 
 class ChatWindow {
-   public:
+public:
     explicit ChatWindow(std::function<void(std::string)> onTextEntry)
         : ChatWindow{onTextEntry, 1} {}
 
@@ -29,7 +29,7 @@ class ChatWindow {
 
     void displayText(const std::string &text);
 
-   private:
+private:
     void resizeOnShapeChange();
 
     void processInput(int key);

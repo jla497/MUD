@@ -1,26 +1,26 @@
 #ifndef GAMESTATE_H
 #define GAMESTATE_H
 
-#include <boost/foreach.hpp>
 #include <boost/bimap.hpp>
-#include <boost/bimap/set_of.hpp>
 #include <boost/bimap/list_of.hpp>
+#include <boost/bimap/set_of.hpp>
+#include <boost/foreach.hpp>
+#include <deque>
 #include <memory>
 #include <unordered_map>
-#include <deque>
 
-#include "entities/ShopEntity.h"
+#include "Reset.h"
+#include "UniqueId.h"
+#include "YamlParser.h"
 #include "entities/AreaEntity.h"
 #include "entities/DoorEntity.h"
 #include "entities/NonPlayerCharacter.h"
 #include "entities/ObjectEntity.h"
-#include "entities/RoomEntity.h"
 #include "entities/PlayerCharacter.h"
-#include "gamemanager/LutBuilder.h"
+#include "entities/RoomEntity.h"
+#include "entities/ShopEntity.h"
 #include "gamemanager/EntityFactory.h"
-#include "YamlParser.h"
-#include "UniqueId.h"
-#include "Reset.h"
+#include "gamemanager/LutBuilder.h"
 
 class Reset;
 namespace mudserver {
@@ -33,9 +33,9 @@ using std::unordered_map;
 using std::deque;
 using std::vector;
 
-using CharacterRoomLookupTable = bimap<set_of<UniqueId>, list_of<roomId>> ;
-using RoomLookupTable = std::map<roomId, RoomEntity*> ;
-using CharacterLookUp = std::map<UniqueId, unique_ptr<PlayerCharacter>> ;
+using CharacterRoomLookupTable = bimap<set_of<UniqueId>, list_of<roomId>>;
+using RoomLookupTable = std::map<roomId, RoomEntity*>;
+using CharacterLookUp = std::map<UniqueId, unique_ptr<PlayerCharacter>>;
 
 /**
  * The overarching idea of GameState is that it should
@@ -44,7 +44,6 @@ using CharacterLookUp = std::map<UniqueId, unique_ptr<PlayerCharacter>> ;
  *      - be the source of truth for all state relating to the world
  */
 class GameState {
-
     CharacterRoomLookupTable characterRoomLookUp;
     RoomLookupTable roomLookUp;
     CharacterLookUp characterLookUp;
@@ -54,7 +53,6 @@ class GameState {
     std::unique_ptr<EntityFactory> factory;
 
 public:
-
     GameState() = default;
 
     void initFromYaml(std::string filename);
@@ -76,8 +74,7 @@ public:
     void clearCharacterRoomLUT();
     EntityFactory& getFactory();
     void doReset();
-
-    };
+};
 
 }  // namespace gamemanager
 }  // namespace mudserver

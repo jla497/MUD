@@ -28,12 +28,12 @@ void GameState::initRoomLUT() {
     }
 }
 
-
 /**
  * Add Methods
  */
 
-void GameState::addCharacterRoomRelationToLUT(UniqueId characterId,unsigned int roomId) {
+void GameState::addCharacterRoomRelationToLUT(UniqueId characterId,
+                                              unsigned int roomId) {
     characterRoomLookUp.left[characterId] = roomId;
 }
 
@@ -44,9 +44,9 @@ void GameState::addRoomToLUT(RoomEntity* room) {
 void GameState::addCharacter(unique_ptr<PlayerCharacter> character) {
     auto id = character->getEntityId();
     characterLookUp[id] = std::move(character);
-    //TODO: implement a configurable default spawn point
-    //currently just takes the first room loaded
-        auto roomLookupBegin = roomLookUp.begin();
+    // TODO: implement a configurable default spawn point
+    // currently just takes the first room loaded
+    auto roomLookupBegin = roomLookUp.begin();
     if (roomLookupBegin != roomLookUp.end()) {
         addCharacterRoomRelationToLUT(id, roomLookupBegin->second->getId());
     } else {
@@ -58,7 +58,6 @@ void GameState::addCharacter(unique_ptr<PlayerCharacter> character) {
 void GameState::addAreaFromParser() {
     areas.push_back(std::move(parser.getArea()));
 }
-
 
 /**
  * Get Methods
@@ -77,8 +76,9 @@ RoomEntity* GameState::getCharacterLocation(PlayerCharacter* character) {
 }
 
 RoomEntity* GameState::getCharacterLocation(PlayerCharacter& character) {
-    auto roomid = characterRoomLookUp.left.find(character.getEntityId())->second;
-    
+    auto roomid =
+        characterRoomLookUp.left.find(character.getEntityId())->second;
+
     auto room = roomLookUp.find(roomid)->second;
     // std::cout<<"room's id: "<<room->getId()<<std::endl;
     return roomLookUp.find(roomid)->second;
@@ -86,11 +86,11 @@ RoomEntity* GameState::getCharacterLocation(PlayerCharacter& character) {
 
 vector<UniqueId> GameState::getCharactersInRoom(RoomEntity* room) {
     if (room == nullptr) {
-        //return an empty vector
+        // return an empty vector
         return {};
     }
     vector<UniqueId> characters;
-    for (auto& p : characterRoomLookUp.left ) {
+    for (auto& p : characterRoomLookUp.left) {
         if (p.second == room->getId()) {
             characters.push_back(p.first);
         }
@@ -98,37 +98,25 @@ vector<UniqueId> GameState::getCharactersInRoom(RoomEntity* room) {
     return characters;
 }
 
-AreaEntity* GameState::getAreaFromParser() {
-    return parser.getArea().get();
-}
+AreaEntity* GameState::getAreaFromParser() { return parser.getArea().get(); }
 
-deque<unique_ptr<AreaEntity>>& GameState::getAreas() {
-    return areas;
-}
-
+deque<unique_ptr<AreaEntity>>& GameState::getAreas() { return areas; }
 
 /**
  * Clear Methods
  */
-void GameState::clearCharacterRoomLUT() {
-    characterRoomLookUp.clear();
-}
+void GameState::clearCharacterRoomLUT() { characterRoomLookUp.clear(); }
 
-void GameState::clearAreas() {
-    roomLookUp.clear();
-}
+void GameState::clearAreas() { roomLookUp.clear(); }
 
-EntityFactory& GameState::getFactory() {
-    return *factory;
-}
+EntityFactory& GameState::getFactory() { return *factory; }
 
 void GameState::doReset() {
     auto resets = parser.getAllResets();
-    
-    for(auto& reset: resets) {
+
+    for (auto& reset : resets) {
         reset->execute(*this);
     }
-
 }
 
 }  // namespace gamemanager

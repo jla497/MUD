@@ -12,10 +12,8 @@ const int GOLD = 100;
 const char* HIT = "1d8";
 const unsigned int LEVEL = 1;
 const int THAC0 = 0;
-
 }
 }
 }
 
-
-#endif //PLAYERCHARACTERDEFAULTS_H
+#endif  // PLAYERCHARACTERDEFAULTS_H

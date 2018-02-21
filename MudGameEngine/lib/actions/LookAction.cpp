@@ -1,9 +1,9 @@
+#include <boost/algorithm/string/join.hpp>
+#include <boost/format.hpp>
 #include <numeric>
 #include <sstream>
 #include <string>
 #include <vector>
-#include <boost/algorithm/string/join.hpp>
-#include <boost/format.hpp>
 
 #include "actions/LookAction.h"
 #include "logging.h"
@@ -18,7 +18,7 @@ void LookAction::execute() {
     auto& gameState = gameManager.getState();
 
     // get the room the player is in
-    // TODO: Feel like this error checking could be rolled into the 
+    // TODO: Feel like this error checking could be rolled into the
     //       getCharacterLocation method?
     auto characterCurrentRoom =
         gameState.getCharacterLocation(&characterPerformingAction);
@@ -28,7 +28,7 @@ void LookAction::execute() {
         // return early, as we are in a bad state - the player is not in a room!
         return;
     }
-    
+
     if (actionArguments.empty()) {
         // default: player looking at room
         // TODO: should it show list of npc and objects too?
@@ -40,13 +40,12 @@ void LookAction::execute() {
 
         gameManager.sendCharacterMessage(
             characterPerformingAction.getEntityId(),
-            boost::str(boost::format{"%s: %s\n%s: %s\n%s: %s"} %
-                           "Room Name" % roomName %
-                           "Description" % roomDescs %
-                           "Exits" % roomExits));
+            boost::str(boost::format{"%s: %s\n%s: %s\n%s: %s"} % "Room Name" %
+                       roomName % "Description" % roomDescs % "Exits" %
+                       roomExits));
 
-    } else if (actionArguments.size() == MAX_LOOK_ARGS){
-        // TODO: look at object        
+    } else if (actionArguments.size() == MAX_LOOK_ARGS) {
+        // TODO: look at object
         // Can you look at players?
         gameManager.sendCharacterMessage(
             characterPerformingAction.getEntityId(),
@@ -57,7 +56,4 @@ void LookAction::execute() {
             characterPerformingAction.getEntityId(),
             "Please type /'look/' or /'look <object>/'");
     }
-
-
-
 }

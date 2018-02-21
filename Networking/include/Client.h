@@ -5,19 +5,16 @@
 // for details.
 /////////////////////////////////////////////////////////////////////////////
 
-
 #ifndef NETWORKING_CLIENT_H
 #define NETWORKING_CLIENT_H
 
 #include <boost/asio.hpp>
 
 #include <deque>
-#include <string>
 #include <sstream>
-
+#include <string>
 
 namespace networking {
-
 
 /**
  *  @class Client
@@ -36,64 +33,58 @@ namespace networking {
  */
 class Client {
 public:
-  /**
-   *  Construct a Client and acquire a connection to a remote Server at the
-   *  given address and port.
-   */
-  Client(const char* address, const char* port)
-    : isClosed{false},
-      ioService{},
-      socket{ioService} {
-    boost::asio::ip::tcp::resolver resolver{ioService};
-    connect(resolver.resolve({address, port}));
-  }
+    /**
+     *  Construct a Client and acquire a connection to a remote Server at the
+     *  given address and port.
+     */
+    Client(const char* address, const char* port)
+        : isClosed{false}, ioService{}, socket{ioService} {
+        boost::asio::ip::tcp::resolver resolver{ioService};
+        connect(resolver.resolve({address, port}));
+    }
 
-  /**
-   *  Perform all pending sends and receives. This function can throw an
-   *  exception if any of the I/O operations encounters an error.
-   */
-  void update();
+    /**
+     *  Perform all pending sends and receives. This function can throw an
+     *  exception if any of the I/O operations encounters an error.
+     */
+    void update();
 
-  /**
-   *  Send a message to the server. The message may not contain carriage
-   *  returns.
-   */
-  void send(std::string message);
+    /**
+     *  Send a message to the server. The message may not contain carriage
+     *  returns.
+     */
+    void send(std::string message);
 
-  /**
-   *  Receive messages from the Server. This returns all messages collected by
-   *  previous calls to Client::update() and not yet received. If multiple
-   *  messages were received from the Server, they are first concatenated
-   *  into a single std::string.
-   */
-  std::string receive();
+    /**
+     *  Receive messages from the Server. This returns all messages collected by
+     *  previous calls to Client::update() and not yet received. If multiple
+     *  messages were received from the Server, they are first concatenated
+     *  into a single std::string.
+     */
+    std::string receive();
 
-  /**
-   *  Returns true iff the client disconnected from the server after initally
-   *  connecting.
-   */
-  bool isDisconnected() { return isClosed; }
+    /**
+     *  Returns true iff the client disconnected from the server after initally
+     *  connecting.
+     */
+    bool isDisconnected() { return isClosed; }
 
 private:
-  void disconnect();
+    void disconnect();
 
-  void connect(boost::asio::ip::tcp::resolver::iterator endpoint);
+    void connect(boost::asio::ip::tcp::resolver::iterator endpoint);
 
-  void readMessage();
+    void readMessage();
 
-  static constexpr std::size_t BUFFER_SIZE = 256;
+    static constexpr std::size_t BUFFER_SIZE = 256;
 
-  bool isClosed;
-  boost::asio::io_service ioService;
-  boost::asio::ip::tcp::socket socket;
-  boost::asio::streambuf readBuffer;
-  std::ostringstream incomingMessage;
-  std::deque<std::string> writeBuffer;
+    bool isClosed;
+    boost::asio::io_service ioService;
+    boost::asio::ip::tcp::socket socket;
+    boost::asio::streambuf readBuffer;
+    std::ostringstream incomingMessage;
+    std::deque<std::string> writeBuffer;
 };
-
-
 }
 
-
 #endif
-

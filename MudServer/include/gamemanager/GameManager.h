@@ -118,8 +118,7 @@ public:
      * @param connMan the connection manager
      * @param gameState the game state
      */
-    GameManager(connection::ConnectionManager& connMan,
-                    GameState& gameState);
+    GameManager(connection::ConnectionManager& connMan, GameState& gameState);
     GameManager(const GameManager& gm) = delete;
 
     /**
@@ -133,7 +132,6 @@ public:
      * @return the game state
      */
     GameState& getState();
-
 
     /**
      * Send a message to a given character. This will translate to sending a

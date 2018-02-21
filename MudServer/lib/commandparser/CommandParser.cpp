@@ -1,17 +1,17 @@
 #include <boost/algorithm/string.hpp>
 #include <boost/tokenizer.hpp>
 #include <iostream>
-#include <sstream>
 #include <memory>
+#include <sstream>
 
 #include "actions/AttackAction.h"
-#include "actions/NullAction.h"
-#include "actions/MoveAction.h"
-#include "actions/SayAction.h"
 #include "actions/LookAction.h"
+#include "actions/MoveAction.h"
+#include "actions/NullAction.h"
+#include "actions/SayAction.h"
 #include "commandparser/CommandParser.h"
-#include "resources/commands.h"
 #include "logging.h"
+#include "resources/commands.h"
 
 namespace mudserver {
 namespace commandparser {
@@ -30,7 +30,6 @@ std::unordered_map<std::string, ActKeyword> CommandParser::actionLookup = {
 std::unique_ptr<Action> CommandParser::actionFromPlayerCommand(
     PlayerCharacter& character, StrView command,
     gamemanager::GameManager& gameManager) {
-
     auto logger = logging::getLogger("CommandParser::actionFromPlayerCommand");
 
     Tokenizer tokens{command};
@@ -71,13 +70,15 @@ std::unique_ptr<Action> CommandParser::actionFromPlayerCommand(
     }
     case ActKeyword::look: {
         actionDescription << u8"LookAction will be created";
-        action = std::make_unique<LookAction>(character, remainderOfTokens, gameManager);
+        action = std::make_unique<LookAction>(character, remainderOfTokens,
+                                              gameManager);
 
         break;
     }
     default:
         actionDescription << u8"Action was not supported";
-        action = std::make_unique<NullAction>(character, remainderOfTokens, gameManager);
+        action = std::make_unique<NullAction>(character, remainderOfTokens,
+                                              gameManager);
     }
 
     actionDescription << ", with remainder tokens [" << tokenRep.str() << "]";

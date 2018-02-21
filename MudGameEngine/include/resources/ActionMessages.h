@@ -10,4 +10,4 @@ const char* SPEECHLESS = u8"<speechless>";
 }
 }
 
-#endif //ACTIONMESSAGES_H
+#endif  // ACTIONMESSAGES_H

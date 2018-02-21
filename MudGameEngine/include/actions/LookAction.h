@@ -15,6 +15,7 @@ class LookAction : public Action {
 public:
     using Action::Action;
     void execute() override;
+
 protected:
     std::string description() const override { return u8"Look action"; }
     const unsigned int MAX_LOOK_ARGS = 1;
