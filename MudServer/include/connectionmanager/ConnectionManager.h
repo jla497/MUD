@@ -22,21 +22,21 @@ struct gameAndUserInterface {
 /*functor used in searches*/
 struct findGameAndUserInterface {
     findGameAndUserInterface(networking::Connection conn) : conn(conn) {}
-    bool operator()(const std::unique_ptr<gameAndUserInterface>& ptr) {
+    bool operator()(const std::unique_ptr<gameAndUserInterface> &ptr) {
         return ptr->conn.id == conn.id;
     }
 
-private:
+  private:
     networking::Connection conn;
 };
 
 struct findContainer {
     findContainer(networking::Connection conn) : conn(conn) {}
-    bool operator()(const std::unique_ptr<ConnectionContainer>& ptr) {
+    bool operator()(const std::unique_ptr<ConnectionContainer> &ptr) {
         return ptr->getConnection().id == conn.id;
     }
 
-private:
+  private:
     networking::Connection conn;
 };
 
@@ -62,7 +62,7 @@ class ConnectionManager {
     ConnectionList mList;
     networking::Server server;
 
-public:
+  public:
     ConnectionManager(networking::Port port);
     // pass signals to server to drop connections
     void dropConnections();
@@ -70,7 +70,7 @@ public:
     void addConnection(const networking::Connection c);
 
     // pass incoming Messages from server to connection containers
-    void rxFromServer(std::deque<networking::Message>& incoming);
+    void rxFromServer(std::deque<networking::Message> &incoming);
 
     // send Messages to server
     std::deque<networking::Message> sendToServer();
@@ -84,6 +84,6 @@ public:
     bool update();
 };
 
-}  // end of namespace connection
-}
+} // end of namespace connection
+} // namespace mudserver
 #endif

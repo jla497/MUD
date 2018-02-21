@@ -9,6 +9,7 @@ before_script:
   - apk update
   - apk add yaml-cpp-dev
   - apk add -y git
+  - apk add bash
 
 compile:
   stage: build
@@ -21,6 +22,11 @@ compile:
   artifacts:
     paths:
     - build
+
+clang-format-check:
+  stage: test
+  script:
+    - ./format-checker.sh
 
 mudserver-unit-test:
   stage: test

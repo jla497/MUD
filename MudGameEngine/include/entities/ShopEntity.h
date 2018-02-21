@@ -4,8 +4,8 @@
 #include "Entity.h"
 
 class ShopEntity : public Entity {
-   private:
-   public:
+  private:
+  public:
     ShopEntity();
 };
 
