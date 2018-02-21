@@ -14,15 +14,15 @@
 
 using networking::Port;
 
-int main(int argc, char* argv[]) {
+int main(int argc, char *argv[]) {
     if (argc < 2) {
         printf("Usage:\n%s <config_file_path>\ne.g. %s config.yaml\n",
                argv[0], argv[0]);
         return 1;
     }
-    
+
     auto configData = parseConfigFile(argv[1]);
-    
+
     if(configData) {
     auto url = configData->url;
     auto port = configData->clientPort;
@@ -41,7 +41,7 @@ int main(int argc, char* argv[]) {
     while (!done && !client.isDisconnected()) {
         try {
             client.update();
-        } catch (std::exception& e) {
+        } catch (std::exception &e) {
             chatWindow.displayText("Exception from Client update:");
             chatWindow.displayText(e.what());
             done = true;
@@ -52,10 +52,6 @@ int main(int argc, char* argv[]) {
             chatWindow.displayText(response);
         }
         chatWindow.update();
-    }
-
-    }else {
-
     }
 
     return 0;

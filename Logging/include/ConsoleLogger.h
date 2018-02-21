@@ -14,7 +14,7 @@ class ConsoleLogger : public ILogger {
     std::string identifiedLog(StrView str);
     LogLevel level;
 
-public:
+  public:
     ConsoleLogger(std::string identifier, LogLevel level);
     void debug(StrView str) override;
     void info(StrView str) override;
@@ -22,7 +22,7 @@ public:
     void error(StrView str) override;
 };
 
-}  // namespace logging
-}  // namespace mudserver
+} // namespace logging
+} // namespace mudserver
 
-#endif  // MUDSERVER_LOGGER_H
+#endif // MUDSERVER_LOGGER_H
