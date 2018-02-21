@@ -16,7 +16,7 @@ using networking::Port;
 
 int main(int argc, char *argv[]) {
     if (argc < 2) {
-        printf("Usage:\n%s <port> [world file]\ne.g. %s 4002 mgoose.yml\n",
+        printf("Usage:\n%s <config_file>\ne.g. %s mudconfig.yml\n",
                argv[0], argv[0]);
         return 1;
     }
