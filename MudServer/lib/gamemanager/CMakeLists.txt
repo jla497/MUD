@@ -3,7 +3,11 @@ add_library(gamemanager
     GameState.cpp
     Player.cpp
     LutBuilder.cpp
-    EntityFactory.cpp
+)
+
+add_library(factory EntityFactory.cpp)
+target_link_libraries(factory logging
+            entity
 )
 
 target_link_libraries(gamemanager
@@ -12,6 +16,7 @@ target_link_libraries(gamemanager
     entity
     commandparser
     reset
+    factory
 )
 
 set_target_properties(gamemanager

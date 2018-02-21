@@ -19,8 +19,10 @@ Reset::Reset(int id, std::string action, std::string comment, std::string state,
       roomID{roomID} {}
 
 void Reset::resetNpc(mudserver::gamemanager::GameState& state) {
-	// static auto logger = mudserver::logging::getLogger("Reset::execute::resetNPC");
-	// auto npcs = state.
+	static auto logger = mudserver::logging::getLogger("Reset::execute::resetNPC");
+	auto& factory = state.getFactory();
+	auto npc = factory.buildNpc(id);
+	logger->info("npc: "+npc.getShortDesc());
 }
 
 void Reset::execute(mudserver::gamemanager::GameState& state) {

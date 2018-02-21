@@ -43,10 +43,6 @@
     static const char *DIR = "dir";
     static const char *TO = "to";
     static const char *EXTENDED_DESCRIPTIONS = "extended_descriptions";
-    static const char *OBJECT = "object";
-    static const char *NPC = "npc";
-    static const char *DOOR = "door";
-    static const char *EQUIP = "equip";
 
 
 

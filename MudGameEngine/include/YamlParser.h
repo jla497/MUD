@@ -14,6 +14,8 @@
 #include "entities/ObjectEntity.h"
 #include "entities/RoomEntity.h"
 #include "Reset.h"
+#include "gamemanager/EntityFactory.h"
+
 
 
 class YamlParser {
@@ -51,6 +53,7 @@ public:
     void getAllHelps();
     std::vector<std::unique_ptr<ShopEntity>> getAllShops();
     std::unique_ptr<AreaEntity> getArea();
+    mudserver::gamemanager::EntityFactory* makeFactory();
 };
 
 #endif

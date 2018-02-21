@@ -12,6 +12,7 @@ void GameState::initFromYaml(std::string filename) {
     parseYamlFile(std::move(filename));
     addAreaFromParser();
     initRoomLUT();
+    factory = std::unique_ptr<EntityFactory>(parser.makeFactory());
 }
 
 void GameState::parseYamlFile(std::string filename) {
@@ -114,6 +115,10 @@ void GameState::clearCharacterRoomLUT() {
 
 void GameState::clearAreas() {
     roomLookUp.clear();
+}
+
+EntityFactory& GameState::getFactory() {
+    return *factory;
 }
 
 void GameState::doReset() {

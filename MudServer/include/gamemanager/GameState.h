@@ -16,9 +16,9 @@
 #include "entities/ObjectEntity.h"
 #include "entities/RoomEntity.h"
 #include "entities/PlayerCharacter.h"
+#include "YamlParser.h"
 #include "gamemanager/LutBuilder.h"
 #include "gamemanager/EntityFactory.h"
-#include "YamlParser.h"
 #include "UniqueId.h"
 #include "Reset.h"
 
@@ -50,6 +50,7 @@ class GameState {
     deque<unique_ptr<AreaEntity>> areas;
     YamlParser parser;
     std::unique_ptr<AreaEntity> area;
+    std::unique_ptr<EntityFactory> factory;
 
 public:
 
@@ -72,6 +73,7 @@ public:
     RoomEntity* getRoomFromLUT(const roomId);
     void clearAreas();
     void clearCharacterRoomLUT();
+    EntityFactory& getFactory();
     void doReset();
 
     };

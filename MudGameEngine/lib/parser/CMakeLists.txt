@@ -11,6 +11,7 @@ target_link_libraries(parser yaml-cpp)
 target_link_libraries(parser entity)
 target_link_libraries(parser uniqueid)
 target_link_libraries(parser reset)
+target_link_libraries(parser factory)
 
 install(TARGETS parser ARCHIVE DESTINATION lib)
 

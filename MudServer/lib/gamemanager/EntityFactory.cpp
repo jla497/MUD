@@ -3,11 +3,10 @@
 namespace mudserver {
 namespace gamemanager {
 
-	void EntityFactory::initNpcLUT(YamlParser& parser) {
-	   auto npcs= parser.getAllNPCS();
-	   LutBuilder lutBuilder;
-	   npcLookUp = lutBuilder.createNpcLUT(npcs);
-	}
+  EntityFactory::EntityFactory(NpcVector npcs): npcs(std::move(npcs)) {
+  	LutBuilder lutBuilder;
+	npcLookUp = lutBuilder.createNpcLUT(npcs);
+  }
 	
 	NonPlayerCharacter EntityFactory::buildNpc(Id id) {
 		

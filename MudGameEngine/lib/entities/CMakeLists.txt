@@ -23,7 +23,8 @@ set_target_properties(
 
 target_link_libraries(entity uniqueid)
 target_link_libraries(reset gamemanager 
-							parser)
+							parser
+							factory)
 
 
 install(TARGETS 

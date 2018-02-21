@@ -17,23 +17,25 @@
 #include "entities/RoomEntity.h"
 #include "entities/PlayerCharacter.h"
 #include "gamemanager/LutBuilder.h"
-#include "YamlParser.h"
+
 #include "UniqueId.h"
 
 
 namespace mudserver {
 namespace gamemanager {
   using NpcLookUp = std::map<Id, NonPlayerCharacter>;
+  using NpcVector = std::vector<std::unique_ptr<NonPlayerCharacter>>;
   
 
   class EntityFactory {
     
     NpcLookUp npcLookUp;
-    std::vector<std::unique_ptr<NonPlayerCharacter>> npcs;
-
-   void initNpcLUT(YamlParser& parser);
-
+    NpcVector npcs;
 public:
+   EntityFactory(NpcVector npcs);
+   void init();
+
+
 	NonPlayerCharacter buildNpc(Id id);
   
   };

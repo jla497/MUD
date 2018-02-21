@@ -11,6 +11,7 @@
 #include "entities/NonPlayerCharacter.h"
 #include "entities/ObjectEntity.h"
 #include "entities/RoomEntity.h"
+#include "gamemanager/EntityFactory.h"
 
 
 //forward declaration
