@@ -1,5 +1,0 @@
-server-port: 4000
-yml_file: ../build/MudGameEngine/lib/dataFiles/detailed_smurf.yml
-client-port: 4000
-url: localhost
-   

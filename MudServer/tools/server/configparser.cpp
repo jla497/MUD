@@ -1,34 +1,28 @@
 #include "configparser/ConfigParser.h"
 
-boost::optional<ConfigData> parseConfigFile(const std::string filePath) {
-    std::vector<YAML::Node> data;
-    
-    try {
-        data = YAML::LoadAllFromFile(filePath);
 
+boost::optional<ConfigData> parseConfigFile(const std::string filePath) {
+    std::vector<YAML::Node> config;
+    try {
+        config = YAML::LoadAllFromFile(filePath);
+    
     } catch (const std::exception &e) {
         std::cout << "something is wrong with the config file path or the file "
                      "doesn't exist...";
         // logger print error
         return boost::none;
     }
-
-    // auto serverPort = data["server-port"].as<short unsigned int>();
-    // auto clientPort = data["CLIENT"]["port"].as<std::string>();
-    // auto ymlFile = data["SERVER"]["yml_file"].as<std::string>();
-    // auto url = data["CLIENT"]["url"].as<std::string>();
-    // ConfigData serverData{
-    //     Port{serverPort},
-    //     clientPort,
-    //     ymlFile,
-    //     url
-    //     };
+ 
+    auto serverPort = config[0]["SERVER"]["port"].as<short unsigned int>();
+    auto clientPort = config[0]["CLIENT"]["port"].as<std::string>();
+    auto ymlFile = config[0]["SERVER"]["yml_file"].as<std::string>();
+    auto url = config[0]["CLIENT"]["url"].as<std::string>();
     ConfigData serverData{
-        Port{4000},
-        "4000",
-        "../build/MudGameEngine/lib/dataFiles/detailed_smurf.yml",
-        "localhost"
+        Port{serverPort},
+        clientPort,
+        ymlFile,
+        url
         };
-
     return serverData;
+  
 };
