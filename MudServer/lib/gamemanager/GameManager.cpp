@@ -68,8 +68,6 @@ void GameManager::mainLoop() {
 void GameManager::processMessages(gameAndUserMsgs &messages) {
     static auto logger = logging::getLogger("GameManager::processMessages");
 
-    for (auto &message : messages) {
-
     for (auto& message : messages) {
         // look up player from ID
         auto playerId = message->conn.id;

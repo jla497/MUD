@@ -109,5 +109,14 @@ void GameState::clearCharacterRoomLUT() { characterRoomLookUp.clear(); }
 
 void GameState::clearAreas() { roomLookUp.clear(); }
 
+EntityFactory& GameState::getFactory() { return *factory; }
+
+void GameState::doReset() {
+    auto resets = parser.getAllResets();
+
+    for (auto& reset : resets) {
+        reset->execute(*this);
+    }
+}
 } // namespace gamemanager
 } // namespace mudserver

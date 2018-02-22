@@ -13,6 +13,7 @@ class NonPlayerCharacter : public CharacterEntity {
     unsigned int m_npcTypeId;
 
   public:
+    NonPlayerCharacter() = default;
     NonPlayerCharacter(int armor, std::string &damage,
                        std::vector<std::string> &desc, unsigned int exp,
                        int gold, std::string &hit, unsigned int npcTypeId,

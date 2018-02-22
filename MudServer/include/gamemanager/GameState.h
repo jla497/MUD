@@ -72,6 +72,8 @@ class GameState {
     RoomEntity *getRoomFromLUT(const roomId);
     void clearAreas();
     void clearCharacterRoomLUT();
+    EntityFactory& getFactory();
+    void doReset();
 };
 
 } // namespace gamemanager

@@ -31,10 +31,15 @@ private:
 };
 
 class Reset {
+    enum class ResetKeyword { undefined, object, npc, door, equip, resets };
+
+    static std::unordered_map<std::string, ResetKeyword> resetLookUp;
+    
   public:
     Reset(int id, std::string action, std::string comment, std::string state,
           int slot, int limit, int roomID);
-
+    
+    void execute(mudserver::gamemanager::GameState& state);
   private:
     // TODO: figure out Id, it seems that Id may refer to different things
     // depending on the reset action.

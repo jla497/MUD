@@ -273,3 +273,9 @@ std::unique_ptr<AreaEntity> YamlParser::getArea() {
     }
     return area;
 }
+
+mudserver::gamemanager::EntityFactory* YamlParser::makeFactory() {
+    mudserver::gamemanager::EntityFactory* factory =
+        new mudserver::gamemanager::EntityFactory(getAllNPCS());
+    return factory;
+}

@@ -1,3 +1,7 @@
+find_package(yaml-cpp)
+add_library(configparser configparser.cpp)
+target_link_libraries(configparser yaml-cpp)
+
 add_executable(mudserver
   mudserver.cpp
 )
@@ -8,6 +12,7 @@ target_link_libraries(mudserver gamemanager)
 #target_link_libraries(mudserver -lpthread)
 target_link_libraries(mudserver logging)
 target_link_libraries(mudserver parser)
+target_link_libraries(mudserver configparser)
 
 set_target_properties(mudserver
                       PROPERTIES
