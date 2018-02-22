@@ -15,7 +15,7 @@ using boost::algorithm::join;
 void LookAction::execute() {
     static auto logger = mudserver::logging::getLogger("LookAction::execute");
 
-    auto& gameState = gameManager.getState();
+    auto &gameState = gameManager.getState();
 
     // get the room the player is in
     // TODO: Feel like this error checking could be rolled into the

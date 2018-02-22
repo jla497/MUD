@@ -18,9 +18,9 @@ class Player {
     PlayerId id;
     std::string username;
     std::string password;
-    CharacterEntity* character;
+    CharacterEntity *character;
 
-public:
+  public:
     /**
      * The player is constructed with ID, username, and password.
      * @param id the player's ID, currently matching the connection ID
@@ -36,6 +36,6 @@ public:
     PlayerId getId() const;
 };
 
-}  // namespace gamemanager
-}  // namespace mudserver
-#endif  // PLAYER_H
+} // namespace gamemanager
+} // namespace mudserver
+#endif // PLAYER_H

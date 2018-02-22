@@ -7,13 +7,13 @@
 enum class CombatStates { NOT_FIGHTING, FIGHTING };
 
 class CharacterEntity : public Entity {
-private:
+  private:
     int m_armor;
-    std::string m_damage;  // TODO: string for now
+    std::string m_damage; // TODO: string for now
     std::vector<std::string> m_desc;
     unsigned int m_exp;
     int m_gold;
-    std::string m_hit;  // TODO: string for now
+    std::string m_hit; // TODO: string for now
     std::vector<std::string> m_keywords;
     unsigned int m_level;
     std::vector<std::string> m_longDesc;
@@ -22,20 +22,20 @@ private:
 
     CombatStates m_combatState;
 
-    Roll m_damageRollData;  // ???
-    Roll m_hitRollData;     // ???
+    Roll m_damageRollData; // ???
+    Roll m_hitRollData;    // ???
 
     // ASSUME: can only level up via experience
     // should calculate level every time exp changed
     void calculateLevel();
 
-public:
+  public:
     CharacterEntity() = default;
-    CharacterEntity(int armor, std::string& damage,
-                    std::vector<std::string>& desc, unsigned int exp, int gold,
-                    std::string& hit, std::vector<std::string>& keywords,
-                    unsigned int level, std::vector<std::string>& longDesc,
-                    std::string& shortDesc, int thac0);
+    CharacterEntity(int armor, std::string &damage,
+                    std::vector<std::string> &desc, unsigned int exp, int gold,
+                    std::string &hit, std::vector<std::string> &keywords,
+                    unsigned int level, std::vector<std::string> &longDesc,
+                    std::string &shortDesc, int thac0);
 
     // Getters
     std::string getDamage() const;

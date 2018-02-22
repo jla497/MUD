@@ -6,12 +6,12 @@ YamlParser::YamlParser() { is_loaded = false; }
 
 bool YamlParser::loadYamlFile(const std::string path) {
     if (is_loaded) {
-        return false;  // file is already loaded
+        return false; // file is already loaded
     }
     data = YAML::LoadAllFromFile(path);
 
     if (data[0].IsNull()) {
-        return false;  // file was not found or file is empty
+        return false; // file was not found or file is empty
     }
 
     is_loaded = true;
@@ -151,8 +151,8 @@ std::unique_ptr<DoorEntity> YamlParser::parseDoor(YAML::Node doorNode) {
     return door;
 }
 
-std::vector<std::unique_ptr<DoorEntity>> YamlParser::getAllDoors(
-    YAML::Node roomNode) {
+std::vector<std::unique_ptr<DoorEntity>>
+YamlParser::getAllDoors(YAML::Node roomNode) {
     std::vector<std::unique_ptr<DoorEntity>> doors;
     // iterate through all doors in room and add them to list/vector of doors
 
@@ -200,7 +200,7 @@ std::unique_ptr<ShopEntity> YamlParser::parseShop(YAML::Node shopNode) {
 
 std::vector<std::unique_ptr<NonPlayerCharacter>> YamlParser::getAllNPCS() {
     std::vector<std::unique_ptr<NonPlayerCharacter>> npcs;
-    for (auto& document : data) {
+    for (auto &document : data) {
         std::for_each(document[NPCS_ENT].begin(), document[NPCS_ENT].end(),
                       [&](YAML::Node node) {
                           npcs.push_back(std::move(parseNPC(node)));
@@ -212,7 +212,7 @@ std::vector<std::unique_ptr<NonPlayerCharacter>> YamlParser::getAllNPCS() {
 
 std::vector<std::unique_ptr<ObjectEntity>> YamlParser::getAllObjects() {
     std::vector<std::unique_ptr<ObjectEntity>> objects;
-    for (auto& document : data) {
+    for (auto &document : data) {
         std::for_each(document[OBJECTS_ENT].begin(),
                       document[OBJECTS_ENT].end(), [&](YAML::Node node) {
                           objects.push_back(std::move(parseObject(node)));
@@ -224,7 +224,7 @@ std::vector<std::unique_ptr<ObjectEntity>> YamlParser::getAllObjects() {
 
 std::vector<std::unique_ptr<Reset>> YamlParser::getAllResets() {
     std::vector<std::unique_ptr<Reset>> resets;
-    for (auto& document : data) {
+    for (auto &document : data) {
         std::for_each(document[RESETS_ENT].begin(), document[RESETS_ENT].end(),
                       [&](YAML::Node node) {
                           resets.push_back(std::move(parseReset(node)));
@@ -238,7 +238,7 @@ void YamlParser::getAllHelps() {}
 
 std::vector<std::unique_ptr<ShopEntity>> YamlParser::getAllShops() {
     std::vector<std::unique_ptr<ShopEntity>> shops;
-    for (auto& document : data) {
+    for (auto &document : data) {
         if (document[SHOPS_ENT]) {
             std::for_each(document[SHOPS_ENT].begin(),
                           document[SHOPS_ENT].end(), [&](YAML::Node node) {
@@ -253,7 +253,7 @@ std::deque<std::unique_ptr<RoomEntity>> YamlParser::getAllRooms() {
     // need Room constructor
     std::deque<std::unique_ptr<RoomEntity>> rooms;
     // iterate through all rooms in data and add them to list/vector of rooms
-    for (auto& document : data) {
+    for (auto &document : data) {
         std::for_each(document[ROOMS_ENT].begin(), document[ROOMS_ENT].end(),
                       [&](YAML::Node node) {
                           rooms.push_back(std::move(parseRoom(node)));
@@ -266,16 +266,10 @@ std::deque<std::unique_ptr<RoomEntity>> YamlParser::getAllRooms() {
 std::unique_ptr<AreaEntity> YamlParser::getArea() {
     std::unique_ptr<AreaEntity> area;
     auto rooms = getAllRooms();
-    for (auto& document : data) {
+    for (auto &document : data) {
         std::string name = document[AREA_ENT][NAME].as<std::string>();
         // TODO: remove std::move if looping over multiple dcouments
         area = std::make_unique<AreaEntity>(name, std::move(rooms));
     }
     return area;
-}
-
-mudserver::gamemanager::EntityFactory* YamlParser::makeFactory() {
-    mudserver::gamemanager::EntityFactory* factory =
-        new mudserver::gamemanager::EntityFactory(getAllNPCS());
-    return factory;
 }

@@ -1,39 +1,48 @@
 // Server executable
 
+#include <boost/optional/optional.hpp>
 #include <iostream>
 #include <memory>
 #include <sstream>
 #include <unistd.h>
 
 #include "Server.h"
+#include "configparser/ConfigParser.h"
 #include "connectionmanager/ConnectionManager.h"
 #include "gamemanager/GameManager.h"
 #include "logging.h"
 
 using networking::Port;
 
-int main(int argc, char* argv[]) {
+int main(int argc, char *argv[]) {
     if (argc < 2) {
-        printf("Usage:\n%s <port> [world file]\ne.g. %s 4002 mgoose.yml\n",
-               argv[0], argv[0]);
+        printf("Usage:\n%s <config_file>\ne.g. %s mudconfig.yml\n", argv[0],
+               argv[0]);
         return 1;
     }
 
-    Port port{(Port)std::stoi(argv[1])};
-    mudserver::logging::setLogLevel(mudserver::logging::LogLevel::debug);
+    auto configData = parseConfigFile(argv[1]);
 
-    mudserver::connection::ConnectionManager connectionManager{port};
-    mudserver::gamemanager::GameState gameState{};
-    if (argc > 2) {
-        gameState.initFromYaml(argv[2]);
+    if (configData) {
+
+        mudserver::logging::setLogLevel(mudserver::logging::LogLevel::debug);
+        mudserver::connection::ConnectionManager connectionManager{
+            configData->serverPort};
+        mudserver::gamemanager::GameState gameState{};
+        gameState.initFromYaml(configData->ymlFilePath);
+
+        mudserver::gamemanager::GameManager gameManager{connectionManager,
+                                                        gameState};
+
+        std::cout
+            << "---------------------MUD Server Console---------------------"
+            << std::endl;
+
+        gameManager.mainLoop();
+
+    } else {
+        return -1;
     }
-    mudserver::gamemanager::GameManager gameManager{connectionManager,
-                                                    gameState};
-
-    std::cout << "---------------------MUD Server Console---------------------"
-              << std::endl;
-
-    gameManager.mainLoop();
 
     return 0;
 }

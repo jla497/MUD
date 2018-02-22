@@ -9,7 +9,7 @@ using namespace mudserver::connection;
 
 // To use a test fixture, derive a class from testing::Test.
 class ConnectionManTest : public testing::Test {
-protected:  // You should make the members protected s.t. they can be
+  protected: // You should make the members protected s.t. they can be
     // accessed from sub-classes.
 
     virtual void SetUp() {
@@ -65,6 +65,7 @@ TEST_F(ConnectionManTest, TestProtocolInConnectionContainer) {
 
 TEST_F(ConnectionManTest,
        SendFromConnectionManagerToConnectionContainerProtocol) {
+
     ASSERT_NO_THROW(m_manager.rxFromServer(incoming));
 }
 
@@ -74,17 +75,17 @@ TEST_F(ConnectionManTest, SendFromConnectionManagerToGameManager) {
 
     auto itr = std::find_if(msgs->begin(), msgs->end(),
                             findGameAndUserInterface(Connection{39985500}));
-    const auto& text = (*itr)->text;
+    const auto &text = (*itr)->text;
     ASSERT_EQ(text, "msg1\n");
 
     itr = std::find_if(msgs->begin(), msgs->end(),
                        findGameAndUserInterface(Connection{39985499}));
-    const auto& text2 = (*itr)->text;
+    const auto &text2 = (*itr)->text;
     ASSERT_EQ(text2, "msg2\n");
 
     itr = std::find_if(msgs->begin(), msgs->end(),
                        findGameAndUserInterface(Connection{39985600}));
-    const auto& text3 = (*itr)->text;
+    const auto &text3 = (*itr)->text;
     ASSERT_EQ(text3, "msg3\n");
 }
 
@@ -95,7 +96,7 @@ TEST_F(ConnectionManTest, SendFromGameManagerToServer) {
     ASSERT_NO_THROW(m_manager.receiveFromGameManager(std::move(gameMsgsPtr)));
     auto msgsToServer = m_manager.sendToServer();
 
-    for (auto& msg : msgsToServer) {
+    for (auto &msg : msgsToServer) {
         ASSERT_EQ("reply\n", msg.text);
     }
 }
@@ -108,4 +109,4 @@ TEST_F(ConnectionManTest, SendFromGameManagerToServer) {
 //   // std::cout<<msg->text<<std::endl;
 //    EXPECT_EQ("msg1", "msg1");
 // }
-}  // namespace
+} // namespace

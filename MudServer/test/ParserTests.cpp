@@ -31,7 +31,7 @@ class ParserTests : public testing::Test {
 
     virtual void TearDown() {}
 
-public:
+  public:
     std::vector<std::unique_ptr<RoomEntity>> rooms{};
     YamlParser parser{};
 };
@@ -48,7 +48,7 @@ TEST_F(ParserTests, TestParseArea) { auto area = parser.getArea(); }
 
 TEST_F(ParserTests, TestLutBuilder) {
     auto area = parser.getArea();
-    std::deque<std::unique_ptr<RoomEntity>>& rooms = area->getAllRooms();
+    std::deque<std::unique_ptr<RoomEntity>> &rooms = area->getAllRooms();
     mudserver::gamemanager::LutBuilder lutBuilder{};
     auto mMap = lutBuilder.createLUT(rooms);
 

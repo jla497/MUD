@@ -13,7 +13,7 @@ namespace connection {
 
 /*Application protocol interface*/
 class Protocol {
-public:
+  public:
     // application specific formatting done here for inputs
     virtual void receive(std::string str) = 0;
 
@@ -23,7 +23,7 @@ public:
     // applicaiton specific formatting for broadcasts
     virtual std::string broadcast(std::string) = 0;
 };
-}
-}
+} // namespace connection
+} // namespace mudserver
 
 #endif

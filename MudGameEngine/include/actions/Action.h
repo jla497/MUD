@@ -5,7 +5,7 @@ namespace mudserver {
 namespace gamemanager {
 class GameManager;
 }
-}
+} // namespace mudserver
 
 #include "entities/Entity.h"
 #include "entities/PlayerCharacter.h"
@@ -19,10 +19,10 @@ class GameManager;
  * actually affects.
  */
 class Action {
-public:
-    Action(PlayerCharacter& characterPerformingAction,
+  public:
+    Action(PlayerCharacter &characterPerformingAction,
            std::vector<std::string> actionArguments,
-           mudserver::gamemanager::GameManager& gameManager);
+           mudserver::gamemanager::GameManager &gameManager);
 
     /**
      * Actions are designed to be placed in a queue. When the queue is
@@ -31,12 +31,12 @@ public:
      */
     virtual void execute() = 0;
 
-    friend std::ostream& operator<<(std::ostream& os, const Action& action);
+    friend std::ostream &operator<<(std::ostream &os, const Action &action);
 
-protected:
+  protected:
     virtual std::string description() const = 0;
-    PlayerCharacter& characterPerformingAction;
+    PlayerCharacter &characterPerformingAction;
     std::vector<std::string> actionArguments;
-    mudserver::gamemanager::GameManager& gameManager;
+    mudserver::gamemanager::GameManager &gameManager;
 };
 #endif

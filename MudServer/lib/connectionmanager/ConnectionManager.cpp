@@ -4,24 +4,23 @@ namespace mudserver {
 namespace connection {
 
 ConnectionManager::ConnectionManager(networking::Port port)
-    : mList(),
-      server{port,
-             [this](networking::Connection c) {
-                 printf("New connection found: %lu\n", c.id);
-                 this->addConnection(c);
-             },
+    : mList(), server{port,
+                      [this](networking::Connection c) {
+                          printf("New connection found: %lu\n", c.id);
+                          this->addConnection(c);
+                      },
 
-             [this](networking::Connection c) {
-                 printf("Connection lost: %lu\n", c.id);
-             }} {}
+                      [this](networking::Connection c) {
+                          printf("Connection lost: %lu\n", c.id);
+                      }} {}
 
 /*checks each ConnectionContainers's isConnected state. If isConnected is false,
-then remove the container and
-drop connection.*/
+then remove the container and drop connection.*/
 void ConnectionManager::dropConnections() {
-    for (const auto& c : mList) {
+    for (const auto &c : mList) {
+
         if (!(*c).getIsConnected()) {
-            const auto& toBeRmved = (*c).getConnection();
+            const auto &toBeRmved = (*c).getConnection();
             mList.erase(std::remove(mList.begin(), mList.end(), c));
             server.disconnect(toBeRmved);
         }
@@ -35,12 +34,11 @@ void ConnectionManager::addConnection(networking::Connection c) {
 }
 
 /*pass clients messages to existing connection containers If client does not
-exist,
-create new connection containers.
+exist, create new connection containers.
 */
 void ConnectionManager::rxFromServer(
-    std::deque<networking::Message>& incoming) {
-    for (auto& msg : incoming) {
+    std::deque<networking::Message> &incoming) {
+    for (auto &msg : incoming) {
         auto conn = msg.connection;
         auto text = msg.text;
 
@@ -59,13 +57,13 @@ void ConnectionManager::rxFromServer(
 }
 /*Polls the list of connection containers for any buffered messages waiting to
  * be sent
-*/
+ */
 std::deque<networking::Message> ConnectionManager::sendToServer() {
     std::deque<networking::Message> messages;
 
-    for (const auto& container : mList) {
-        const auto& conn = container->getConnection();
-        const auto& toSend = container->sendToServer();
+    for (const auto &container : mList) {
+        const auto &conn = container->getConnection();
+        const auto &toSend = container->sendToServer();
 
         if (!toSend.empty()) {
             networking::Message m_msg = networking::Message{conn, toSend};
@@ -81,9 +79,9 @@ std::deque<networking::Message> ConnectionManager::sendToServer() {
 std::unique_ptr<gameAndUserMsgs> ConnectionManager::sendToGameManager() {
     auto msgsToGameManager = std::make_unique<gameAndUserMsgs>();
 
-    for (const auto& container : mList) {
-        const auto& user_msg = container->sendToGameManager();
-        const auto& c = container->getConnection();
+    for (const auto &container : mList) {
+        const auto &user_msg = container->sendToGameManager();
+        const auto &c = container->getConnection();
         // std::cout<<c.id<<": "<<user_msg<<std::endl;
 
         if (!user_msg.empty()) {
@@ -101,16 +99,16 @@ std::unique_ptr<gameAndUserMsgs> ConnectionManager::sendToGameManager() {
  * the server*/
 void ConnectionManager::receiveFromGameManager(
     std::unique_ptr<gameAndUserMsgs> fromGame) {
-    for (auto& msg : *fromGame) {
-        auto& connection = msg->conn;
-        auto& text = msg->text;
+
+    for (auto &msg : *fromGame) {
+        auto &connection = msg->conn;
+        auto &text = msg->text;
         auto connContainerItr =
             std::find_if(mList.begin(), mList.end(), findContainer(connection));
 
         if (connContainerItr == mList.end()) {
-            auto errMsg =
-                "ConnectionContainer not found while trying to send msg from "
-                "the GameManager\n";
+            auto errMsg = "ConnectionContainer not found while trying to send "
+                          "msg from the GameManager\n";
             throw std::runtime_error(errMsg);
         }
 
@@ -133,7 +131,7 @@ bool ConnectionManager::update() {
 
     return false;
 }
-}
-}
+} // namespace connection
+} // namespace mudserver
 // receive msgs to send from GameManager
 // void rxFromGameManager(std::vector<Interface2Game> msgs);

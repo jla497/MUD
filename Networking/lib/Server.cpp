@@ -17,37 +17,35 @@ using namespace networking;
 namespace networking {
 
 class Server::Channel : public std::enable_shared_from_this<Server::Channel> {
-public:
-    Channel(boost::asio::io_service& io_service, Server& server,
-            std::deque<Message>& readBuffer)
-        : disconnected{false},
-          connection{reinterpret_cast<uintptr_t>(this)},
-          socket{io_service},
-          server{server},
-          streamBuf{BUFFER_SIZE},
+  public:
+    Channel(boost::asio::io_service &io_service, Server &server,
+            std::deque<Message> &readBuffer)
+        : disconnected{false}, connection{reinterpret_cast<uintptr_t>(this)},
+          socket{io_service}, server{server}, streamBuf{BUFFER_SIZE},
           readBuffer{readBuffer} {}
 
     void start();
     void send(std::string outgoing);
     void disconnect();
 
-    boost::asio::ip::tcp::socket& getSocket() { return socket; }
+    boost::asio::ip::tcp::socket &getSocket() { return socket; }
     Connection getConnection() const { return connection; }
 
     static constexpr unsigned BUFFER_SIZE = 256;
 
-private:
+  private:
     void readLine();
 
     bool disconnected;
     Connection connection;
     boost::asio::ip::tcp::socket socket;
-    Server& server;
+    Server &server;
     boost::asio::streambuf streamBuf;
-    std::deque<Message>& readBuffer;
+    std::deque<Message> &readBuffer;
     std::deque<std::string> writeBuffer;
 };
-}
+
+} // namespace networking
 
 void Server::Channel::start() { readLine(); }
 
@@ -101,8 +99,8 @@ std::deque<Message> Server::receive() {
     return oldIncoming;
 }
 
-void Server::send(const std::deque<Message>& messages) {
-    for (auto& message : messages) {
+void Server::send(const std::deque<Message> &messages) {
+    for (auto &message : messages) {
         auto found = channels.find(message.connection);
         if (channels.end() != found) {
             found->second->send(message.text);

@@ -61,7 +61,7 @@ struct Message {
  *  transmission.
  */
 class Server {
-public:
+  public:
     /**
      *  Construct a Server that listens for connections on the given port.
      *  The onConnect and onDisconnect arguments are callbacks called when a
@@ -79,8 +79,7 @@ public:
     Server(Port port, C onConnect, D onDisconnect)
         : connectionHandler{std::make_unique<ConnectionHandlerImpl<C, D>>(
               onConnect, onDisconnect)},
-          endpoint{boost::asio::ip::tcp::v4(), port},
-          ioService{},
+          endpoint{boost::asio::ip::tcp::v4(), port}, ioService{},
           acceptor{ioService, endpoint} {
         listenForConnections();
     }
@@ -93,16 +92,14 @@ public:
 
     /**
      *  Send a list of messages to their respective Clients. The messages may
-     * not
-     *  contain carriage returns.
+     * not contain carriage returns.
      */
-    void send(const std::deque<Message>& messages);
+    void send(const std::deque<Message> &messages);
 
     /**
      *  Receive Message instances from Client instances. This returns all
-     * Message
-     *  instances collected by previous calls to Server::update() and not yet
-     *  received.
+     * Message instances collected by previous calls to Server::update() and not
+     * yet received.
      */
     std::deque<Message> receive();
 
@@ -111,13 +108,13 @@ public:
      */
     void disconnect(Connection connection);
 
-private:
+  private:
     // Hiding the template parameters of the Server class behind a pointer to
     // a private interface allows us to refer to an unparameterized Server
     // object while still having the handlers of connect & disconnect be client
     // defined types. This is a form of *type erasure*.
     class ConnectionHandler {
-    public:
+      public:
         virtual ~ConnectionHandler() = default;
         virtual void handleConnect(Connection) = 0;
         virtual void handleDisconnect(Connection) = 0;
@@ -125,15 +122,15 @@ private:
 
     template <typename C, typename D>
     class ConnectionHandlerImpl final : public ConnectionHandler {
-    public:
+      public:
         ConnectionHandlerImpl(C onConnect, D onDisconnect)
-            : onConnect{std::move(onConnect)},
-              onDisconnect{std::move(onDisconnect)} {}
+            : onConnect{std::move(onConnect)}, onDisconnect{
+                                                   std::move(onDisconnect)} {}
         ~ConnectionHandlerImpl() override = default;
         void handleConnect(Connection c) override { onConnect(c); }
         void handleDisconnect(Connection c) override { onDisconnect(c); }
 
-    private:
+      private:
         C onConnect;
         D onDisconnect;
     };
@@ -151,6 +148,7 @@ private:
     ChannelMap channels;
     std::deque<Message> incoming;
 };
-}
+
+} // namespace networking
 
 #endif

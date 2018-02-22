@@ -9,11 +9,11 @@
  * to every other player in the room.
  */
 class SayAction : public Action {
-public:
+  public:
     using Action::Action;
     void execute() override;
 
-protected:
+  protected:
     std::string description() const override { return u8"Say action"; }
 };
 #endif

@@ -6,7 +6,8 @@ namespace mudserver {
 namespace gamemanager {
 
 class GameStateTest : public testing::Test {
-public:
+
+  public:
     unique_ptr<PlayerCharacter> createCharacter() {
         int armor = 1;
         std::string damage = "1";
@@ -28,7 +29,7 @@ public:
         return character;
     }
 
-protected:
+  protected:
     virtual void SetUp() {
         state.initFromYaml("MudGameEngine/lib/dataFiles/detailed_smurf.yml");
     }
@@ -44,17 +45,17 @@ protected:
 
 TEST_F(GameStateTest, AddCharacterWithLocation) {
     auto character = createCharacter();
-    RoomEntity* room = state.getRoomFromLUT(roomId);
+    RoomEntity *room = state.getRoomFromLUT(roomId);
     state.addCharacterRoomRelationToLUT(character->getEntityId(),
                                         room->getId());
-    RoomEntity* returnedRoom = state.getCharacterLocation(character.get());
+    RoomEntity *returnedRoom = state.getCharacterLocation(character.get());
     EXPECT_EQ(returnedRoom->getId(), room->getId());
 }
 
 TEST_F(GameStateTest, GetAllCharactersInRoom) {
     auto character1 = createCharacter();
     auto character2 = createCharacter();
-    RoomEntity* room = state.getRoomFromLUT(roomId);
+    RoomEntity *room = state.getRoomFromLUT(roomId);
     state.addCharacterRoomRelationToLUT(character1->getEntityId(),
                                         room->getId());
     state.addCharacterRoomRelationToLUT(character2->getEntityId(),
@@ -81,7 +82,7 @@ TEST_F(GameStateTest, AddNewRoom) {
     auto room = std::make_unique<RoomEntity>(desc, std::move(doors), descExt,
                                              keywordsExt, name, newRoomId);
     state.addRoomToLUT(room.get());
-    RoomEntity* addedRoom = state.getRoomFromLUT(newRoomId);
+    RoomEntity *addedRoom = state.getRoomFromLUT(newRoomId);
     EXPECT_EQ(room->getId(), addedRoom->getId());
 }
 
@@ -89,13 +90,13 @@ TEST_F(GameStateTest, GetCharacterFromString) {
     auto character = createCharacter();
     UniqueId id = character->getEntityId();
     state.addCharacter(std::move(character));
-    PlayerCharacter* returnedChar = state.getCharacterFromLUT(id);
+    PlayerCharacter *returnedChar = state.getCharacterFromLUT(id);
     EXPECT_EQ(returnedChar->getEntityId(), id);
 }
 
 TEST_F(GameStateTest, TestUpdatePlayerRoom) {
     auto character = createCharacter();
-    RoomEntity* room = state.getRoomFromLUT(roomId);
+    RoomEntity *room = state.getRoomFromLUT(roomId);
     state.addCharacterRoomRelationToLUT(character->getEntityId(),
                                         room->getId());
     vector<UniqueId> charIDs = state.getCharactersInRoom(room);
@@ -107,5 +108,5 @@ TEST_F(GameStateTest, TestUpdatePlayerRoom) {
     EXPECT_EQ(charIDs.size(), 1);
 }
 
-}  // namespace gamemanager
-}  // namespace mudserver
+} // namespace gamemanager
+} // namespace mudserver

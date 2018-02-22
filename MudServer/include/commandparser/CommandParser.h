@@ -9,11 +9,11 @@
 #include "entities/CharacterEntity.h"
 #include "entities/PlayerCharacter.h"
 
-class Action;  // forward declaration
+class Action; // forward declaration
 namespace mudserver {
 namespace gamemanager {
 class GameManager;
-}  // forward declaration
+} // namespace gamemanager
 
 namespace commandparser {
 
@@ -28,7 +28,7 @@ enum class ActKeyword { undefined, say, look, move, attack, actions };
 class CommandParser {
     static std::unordered_map<std::string, ActKeyword> actionLookup;
 
-public:
+  public:
     CommandParser() = default;
 
     /**
@@ -42,12 +42,12 @@ public:
      *                    queue messages or alter game state
      * @return the generated Action (will be a derived class)
      */
-    std::unique_ptr<Action> actionFromPlayerCommand(
-        PlayerCharacter& character, StrView command,
-        gamemanager::GameManager& gameManager);
+    std::unique_ptr<Action>
+    actionFromPlayerCommand(PlayerCharacter &character, StrView command,
+                            gamemanager::GameManager &gameManager);
 };
 
-}  // namespace commandparser
-}  // namespace mudserver
+} // namespace commandparser
+} // namespace mudserver
 
-#endif  // COMMANDPARSER_H
+#endif // COMMANDPARSER_H

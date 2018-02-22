@@ -2,15 +2,12 @@
 
 #include "entities/RoomEntity.h"
 
-RoomEntity::RoomEntity(std::vector<std::string>& desc,
+RoomEntity::RoomEntity(std::vector<std::string> &desc,
                        std::vector<std::unique_ptr<DoorEntity>> doors,
-                       std::vector<std::string>& descExt,
-                       std::vector<std::string>& keywordsExt, std::string& name,
+                       std::vector<std::string> &descExt,
+                       std::vector<std::string> &keywordsExt, std::string &name,
                        unsigned int roomId)
-    : Entity::Entity(),
-      m_desc(desc),
-      m_doors(std::move(doors)),
-      m_name(name),
+    : Entity::Entity(), m_desc(desc), m_doors(std::move(doors)), m_name(name),
       m_roomId(roomId) {
     m_extDesc = {descExt, keywordsExt};
 }
@@ -30,12 +27,12 @@ std::vector<std::string> RoomEntity::getExtendedKeywords() const {
 }
 
 // TODO, should be able to make this method const...
-unsigned int RoomEntity::getDestRoomIdOf(std::string& dir) {
+unsigned int RoomEntity::getDestRoomIdOf(std::string &dir) {
     std::vector<std::unique_ptr<DoorEntity>>::iterator door =
         // auto& door =
         std::find_if(
             std::begin(m_doors), std::end(m_doors),
-            [&](std::unique_ptr<DoorEntity>& d) { return d->getDir() == dir; });
+            [&](std::unique_ptr<DoorEntity> &d) { return d->getDir() == dir; });
     // error checking
     if (door == m_doors.end()) {
         return -1;
@@ -45,7 +42,7 @@ unsigned int RoomEntity::getDestRoomIdOf(std::string& dir) {
 
 std::vector<std::string> RoomEntity::getDirs() const {
     std::vector<std::string> dirList;
-    for (auto& door : m_doors) {
+    for (auto &door : m_doors) {
         dirList.push_back(door->getDir());
     }
     return dirList;

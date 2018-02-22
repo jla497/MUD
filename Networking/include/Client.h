@@ -32,12 +32,12 @@ namespace networking {
  *  transmission.
  */
 class Client {
-public:
+  public:
     /**
      *  Construct a Client and acquire a connection to a remote Server at the
      *  given address and port.
      */
-    Client(const char* address, const char* port)
+    Client(const char *address, const char *port)
         : isClosed{false}, ioService{}, socket{ioService} {
         boost::asio::ip::tcp::resolver resolver{ioService};
         connect(resolver.resolve({address, port}));
@@ -69,7 +69,7 @@ public:
      */
     bool isDisconnected() { return isClosed; }
 
-private:
+  private:
     void disconnect();
 
     void connect(boost::asio::ip::tcp::resolver::iterator endpoint);
@@ -85,6 +85,7 @@ private:
     std::ostringstream incomingMessage;
     std::deque<std::string> writeBuffer;
 };
-}
+
+} // namespace networking
 
 #endif

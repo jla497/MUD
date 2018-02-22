@@ -27,9 +27,11 @@ std::unordered_map<std::string, ActKeyword> CommandParser::actionLookup = {
     {ATTACK, ActKeyword::attack},
     {MOVE, ActKeyword::move}};
 
-std::unique_ptr<Action> CommandParser::actionFromPlayerCommand(
-    PlayerCharacter& character, StrView command,
-    gamemanager::GameManager& gameManager) {
+std::unique_ptr<Action>
+CommandParser::actionFromPlayerCommand(PlayerCharacter &character,
+                                       StrView command,
+                                       gamemanager::GameManager &gameManager) {
+
     auto logger = logging::getLogger("CommandParser::actionFromPlayerCommand");
 
     Tokenizer tokens{command};
@@ -87,5 +89,5 @@ std::unique_ptr<Action> CommandParser::actionFromPlayerCommand(
     return action;
 }
 
-}  // namespace commandparser
-}  // namespace mudserver
+} // namespace commandparser
+} // namespace mudserver

@@ -10,7 +10,7 @@ struct ExtendedDesc {
 };
 
 class RoomEntity : public Entity {
-private:
+  private:
     std::vector<std::string> m_desc;
     std::vector<std::unique_ptr<DoorEntity>> m_doors;
     ExtendedDesc m_extDesc;
@@ -24,11 +24,11 @@ private:
      */
     std::vector<unsigned int> m_idEntitiesInRoom;
 
-public:
-    RoomEntity(std::vector<std::string>& desc,
+  public:
+    RoomEntity(std::vector<std::string> &desc,
                std::vector<std::unique_ptr<DoorEntity>> doors,
-               std::vector<std::string>& descExt,
-               std::vector<std::string>& keywordsExt, std::string& name,
+               std::vector<std::string> &descExt,
+               std::vector<std::string> &keywordsExt, std::string &name,
                unsigned int roomId);
 
     unsigned int getId();
@@ -47,7 +47,7 @@ public:
      * (use find_to)
      * Does not check whether that room exists yet
      */
-    unsigned int getDestRoomIdOf(std::string& dir);
+    unsigned int getDestRoomIdOf(std::string &dir);
 
     /**
      * Returns list of doors available in room (e.g for showing options to

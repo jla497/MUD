@@ -5,7 +5,7 @@
 #include "gamemanager/GameState.h"
 
 class GameManagerTests : public testing::Test {
-protected:
+  protected:
     virtual void SetUp() {
         networking::Message m1{networking::Connection{39985500}, "move north"};
 
@@ -20,7 +20,7 @@ protected:
         state.clearAreas();
     }
 
-public:
+  public:
     mudserver::connection::ConnectionManager m_manager{4000};
     std::deque<networking::Message> incoming;
     unsigned int rid = 101;

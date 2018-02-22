@@ -13,8 +13,8 @@ void MoveAction::execute() {
         std::to_string(characterPerformingAction.getEntityId().getId()));
     logger->info(userinfo);
 
-    auto& gameState = gameManager.getState();
-    RoomEntity* room =
+    auto &gameState = gameManager.getState();
+    RoomEntity *room =
         gameState.getCharacterLocation(characterPerformingAction);
 
     if (!room) {
@@ -42,6 +42,7 @@ void MoveAction::execute() {
         logger->error("not a valid direction...");
         return;
     } else {
+
         // get next room id from current room
 
         auto nextRoomId = room->getDestRoomIdOf(*direction);

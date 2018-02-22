@@ -15,7 +15,7 @@ namespace actmess = mudserver::resources::actions;
 void SayAction::execute() {
     static auto logger = mudserver::logging::getLogger("SayAction::execute");
 
-    auto& gameState = gameManager.getState();
+    auto &gameState = gameManager.getState();
 
     // get player who is saying the message
     auto playerSayingMessage = characterPerformingAction;

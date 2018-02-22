@@ -21,8 +21,8 @@ void GameState::parseYamlFile(std::string filename) {
 }
 
 void GameState::initRoomLUT() {
-    for (auto& area : areas) {
-        auto& rooms = area->getAllRooms();
+    for (auto &area : areas) {
+        auto &rooms = area->getAllRooms();
         LutBuilder lutBuilder;
         roomLookUp = lutBuilder.createLUT(rooms);
     }
@@ -37,7 +37,7 @@ void GameState::addCharacterRoomRelationToLUT(UniqueId characterId,
     characterRoomLookUp.left[characterId] = roomId;
 }
 
-void GameState::addRoomToLUT(RoomEntity* room) {
+void GameState::addRoomToLUT(RoomEntity *room) {
     roomLookUp[room->getId()] = room;
 }
 
@@ -62,20 +62,20 @@ void GameState::addAreaFromParser() {
 /**
  * Get Methods
  */
-RoomEntity* GameState::getRoomFromLUT(const roomId id) {
+RoomEntity *GameState::getRoomFromLUT(const roomId id) {
     return roomLookUp.find(id)->second;
 }
 
-PlayerCharacter* GameState::getCharacterFromLUT(UniqueId id) {
+PlayerCharacter *GameState::getCharacterFromLUT(UniqueId id) {
     return characterLookUp.find(id)->second.get();
 }
 
-RoomEntity* GameState::getCharacterLocation(PlayerCharacter* character) {
+RoomEntity *GameState::getCharacterLocation(PlayerCharacter *character) {
     auto id = characterRoomLookUp.left.find(character->getEntityId())->second;
     return roomLookUp.find(id)->second;
 }
 
-RoomEntity* GameState::getCharacterLocation(PlayerCharacter& character) {
+RoomEntity *GameState::getCharacterLocation(PlayerCharacter &character) {
     auto roomid =
         characterRoomLookUp.left.find(character.getEntityId())->second;
 
@@ -84,13 +84,13 @@ RoomEntity* GameState::getCharacterLocation(PlayerCharacter& character) {
     return roomLookUp.find(roomid)->second;
 }
 
-vector<UniqueId> GameState::getCharactersInRoom(RoomEntity* room) {
+vector<UniqueId> GameState::getCharactersInRoom(RoomEntity *room) {
     if (room == nullptr) {
         // return an empty vector
         return {};
     }
     vector<UniqueId> characters;
-    for (auto& p : characterRoomLookUp.left) {
+    for (auto &p : characterRoomLookUp.left) {
         if (p.second == room->getId()) {
             characters.push_back(p.first);
         }
@@ -98,9 +98,9 @@ vector<UniqueId> GameState::getCharactersInRoom(RoomEntity* room) {
     return characters;
 }
 
-AreaEntity* GameState::getAreaFromParser() { return parser.getArea().get(); }
+AreaEntity *GameState::getAreaFromParser() { return parser.getArea().get(); }
 
-deque<unique_ptr<AreaEntity>>& GameState::getAreas() { return areas; }
+deque<unique_ptr<AreaEntity>> &GameState::getAreas() { return areas; }
 
 /**
  * Clear Methods
@@ -109,15 +109,5 @@ void GameState::clearCharacterRoomLUT() { characterRoomLookUp.clear(); }
 
 void GameState::clearAreas() { roomLookUp.clear(); }
 
-EntityFactory& GameState::getFactory() { return *factory; }
-
-void GameState::doReset() {
-    auto resets = parser.getAllResets();
-
-    for (auto& reset : resets) {
-        reset->execute(*this);
-    }
-}
-
-}  // namespace gamemanager
-}  // namespace mudserver
+} // namespace gamemanager
+} // namespace mudserver

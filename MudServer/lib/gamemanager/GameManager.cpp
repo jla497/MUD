@@ -21,16 +21,11 @@ using boost::format;
 using boost::str;
 using std::vector;
 
-GameManager::GameManager(connection::ConnectionManager& connMan,
-                         GameState& gameState)
-    : connectionManager{connMan},
-      gameState{gameState},
-      commandParser(),
-      tick{DEFAULT_TICK_LENGTH_MS},
-      done{false},
-      players(),
-      outgoingMessages(),
-      actions() {}
+GameManager::GameManager(connection::ConnectionManager &connMan,
+                         GameState &gameState)
+    : connectionManager{connMan}, gameState{gameState},
+      commandParser(), tick{DEFAULT_TICK_LENGTH_MS}, done{false}, players(),
+      outgoingMessages(), actions() {}
 
 /**
  * Runs a standard game loop, which consists of the following steps:
@@ -70,8 +65,10 @@ void GameManager::mainLoop() {
     }
 }
 
-void GameManager::processMessages(gameAndUserMsgs& messages) {
+void GameManager::processMessages(gameAndUserMsgs &messages) {
     static auto logger = logging::getLogger("GameManager::processMessages");
+
+    for (auto &message : messages) {
 
     for (auto& message : messages) {
         // look up player from ID
@@ -98,7 +95,7 @@ void GameManager::processMessages(gameAndUserMsgs& messages) {
             // state
             addPlayerCharacter(playerId);
         }
-        auto& playerCharacter = *playerToCharacter(player);
+        auto &playerCharacter = *playerToCharacter(player);
 
         // parse message into verb/object
         std::unique_ptr<Action> action = commandParser.actionFromPlayerCommand(
@@ -153,7 +150,7 @@ void GameManager::sendCharacterMessage(UniqueId characterId,
 // I believe the player-character mapping is complex enough to factor out into
 // a new class - possibly will be the LoginManager once we get that far
 
-PlayerCharacter* GameManager::playerIdToCharacter(PlayerId playerId) {
+PlayerCharacter *GameManager::playerIdToCharacter(PlayerId playerId) {
     auto entry = playerCharacterBimap.left.find(playerId);
     if (entry != playerCharacterBimap.left.end()) {
         auto characterId = entry->second;
@@ -163,15 +160,15 @@ PlayerCharacter* GameManager::playerIdToCharacter(PlayerId playerId) {
     return nullptr;
 }
 
-PlayerCharacter* GameManager::playerToCharacter(const Player& player) {
+PlayerCharacter *GameManager::playerToCharacter(const Player &player) {
     return playerIdToCharacter(player.getId());
 }
 
-Player& GameManager::characterToPlayer(const PlayerCharacter& character) {
+Player &GameManager::characterToPlayer(const PlayerCharacter &character) {
     return characterIdToPlayer(character.getEntityId());
 }
 
-Player& GameManager::characterIdToPlayer(UniqueId characterId) {
+Player &GameManager::characterIdToPlayer(UniqueId characterId) {
     auto playerId = playerCharacterBimap.right.find(characterId)->second;
     return players.at(playerId);
 }
@@ -190,5 +187,5 @@ void GameManager::addPlayerCharacter(PlayerId playerId) {
     gameState.addCharacter(std::move(character));
 }
 
-}  // namespace gamemanager
-}  // namespace mudserver
+} // namespace gamemanager
+} // namespace mudserver

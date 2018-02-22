@@ -57,7 +57,7 @@ void ChatWindow::update() {
     wrefresh(entry);
 }
 
-void ChatWindow::displayText(const std::string& text) {
+void ChatWindow::displayText(const std::string &text) {
     wprintw(view, "%s", text.c_str());
 }
 
