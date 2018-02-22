@@ -1,6 +1,7 @@
 
 #include <iostream>
 #include <sstream>
+#include <type_traits>
 #include <memory>
 #include <vector>
 
@@ -35,20 +36,20 @@ using ActionGenerator = std::unique_ptr<Action> (*)(PlayerCharacter&,
                                                     std::vector<std::string>&,
                                                     gamemanager::GameManager&);
 
-#define generator(type)\
-[](PlayerCharacter &pc, std::vector<std::string> &args, gamemanager::GameManager &manager) -> std::unique_ptr<Action> {\
-    return std::make_unique<type>(pc, args, manager);\
+template<typename T, typename = std::enable_if<std::is_base_of<Action, T>::value>>
+constexpr ActionGenerator generator() noexcept {
+    return [](PlayerCharacter &pc, std::vector<std::string> &args, gamemanager::GameManager &manager) -> std::unique_ptr<Action> {
+        return std::make_unique<T>(pc, args, manager);
+    };
 }
 
 const static std::vector<ActionGenerator> actionGenerators = { // NOLINT
-        generator(NullAction), //undefined
-        generator(SayAction),
-        generator(LookAction),
-        generator(MoveAction),
-        generator(AttackAction),
+        generator<NullAction>(), //undefined
+        generator<SayAction>(),
+        generator<LookAction>(),
+        generator<MoveAction>(),
+        generator<AttackAction>(),
 };
-
-#undef generator
 
 std::unique_ptr<Action> CommandParser::actionFromPlayerCommand(
     PlayerCharacter& character, StrView command,
