@@ -28,6 +28,7 @@ class Player {
      * @param username the player's username
      * @param password the player's password
      */
+    Player() = default;
     Player(PlayerId id, std::string username, std::string password);
 
     /**
@@ -35,7 +36,7 @@ class Player {
      * @return the player's id number
      */
     PlayerId getId() const;
-
+    bool hasAdminPrivilege();
     void getAdminPrivilege();
 };
 

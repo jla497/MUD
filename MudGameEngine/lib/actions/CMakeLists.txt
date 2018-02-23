@@ -4,7 +4,8 @@ add_library(actions
 	MoveAction.cpp
 	AttackAction.cpp
 	NullAction.cpp
-	LookAction.cpp)
+	LookAction.cpp
+	PrgmAction.cpp)
 
 set_target_properties(actions
 	PROPERTIES

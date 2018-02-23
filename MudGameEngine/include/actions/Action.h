@@ -11,6 +11,7 @@ class GameManager;
 #include "entities/PlayerCharacter.h"
 #include <string>
 #include <vector>
+#include <unordered_map>
 
 /**
  * The Action class defines the interface that all actions implement.
@@ -19,6 +20,7 @@ class GameManager;
  * actually affects.
  */
 class Action {
+    static std::unordered_map<std::string, bool> isAdminAction;
   public:
     Action(PlayerCharacter &characterPerformingAction,
            std::vector<std::string> actionArguments,

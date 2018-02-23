@@ -11,6 +11,7 @@ static const char *SAY = u8"say";
 static const char *LOOK = u8"look";
 static const char *MOVE = u8"move";
 static const char *ATTACK = u8"attack";
+static const char *PROGRAM = u8"program";
 
 } // namespace commands
 } // namespace resources

@@ -3,12 +3,14 @@
 #include <iostream>
 #include <memory>
 #include <sstream>
+#include <actions/PrgmAction.h>
 
 #include "actions/AttackAction.h"
 #include "actions/LookAction.h"
 #include "actions/MoveAction.h"
 #include "actions/NullAction.h"
 #include "actions/SayAction.h"
+#include "actions/PrgmAction.h"
 #include "commandparser/CommandParser.h"
 #include "logging.h"
 #include "resources/commands.h"
@@ -25,7 +27,8 @@ std::unordered_map<std::string, ActKeyword> CommandParser::actionLookup = {
     {SAY, ActKeyword::say},
     {LOOK, ActKeyword::look},
     {ATTACK, ActKeyword::attack},
-    {MOVE, ActKeyword::move}};
+    {MOVE, ActKeyword::move},
+    {PROGRAM, ActKeyword::program}};
 
 std::unique_ptr<Action>
 CommandParser::actionFromPlayerCommand(PlayerCharacter &character,
@@ -77,6 +80,13 @@ CommandParser::actionFromPlayerCommand(PlayerCharacter &character,
 
         break;
     }
+        case ActKeyword::program: {
+            actionDescription << u8"ProgramAction will be created";
+            action = std::make_unique<PrgmAction>(character, remainderOfTokens,
+                                                  gameManager);
+
+            break;
+        }
     default:
         actionDescription << u8"Action was not supported";
         action = std::make_unique<NullAction>(character, remainderOfTokens,

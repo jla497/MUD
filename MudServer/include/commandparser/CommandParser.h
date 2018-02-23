@@ -19,7 +19,7 @@ namespace commandparser {
 
 using StrView = std::experimental::string_view;
 
-enum class ActKeyword { undefined, say, look, move, attack, actions };
+enum class ActKeyword { undefined, say, look, move, attack, program, actions };
 
 /**
  * Uses Factory pattern to create correct derived type of Action depending on

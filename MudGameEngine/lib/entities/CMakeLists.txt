@@ -21,7 +21,7 @@ set_target_properties(
 		CXX_STANDARD 14
 )
 
-target_link_libraries(entity uniqueid)
+target_link_libraries(entity uniqueid administrator)
 target_link_libraries(reset gamemanager 
 							parser
 							factory)

@@ -1,13 +1,27 @@
+add_library(administrator Administrator.cpp)
+
+set_target_properties(administrator
+        PROPERTIES
+        LINKER_LANGUAGE CXX
+        CXX_STANDARD 14
+        )
+
+add_library(factory EntityFactory.cpp)
+target_link_libraries(factory logging
+        entity
+        )
+
+set_target_properties(factory
+        PROPERTIES
+        LINKER_LANGUAGE CXX
+        CXX_STANDARD 14
+        )
+
 add_library(gamemanager
     GameManager.cpp
     GameState.cpp
     Player.cpp
     LutBuilder.cpp
-)
-
-add_library(factory EntityFactory.cpp)
-target_link_libraries(factory logging
-            entity
 )
 
 target_link_libraries(gamemanager
@@ -17,6 +31,7 @@ target_link_libraries(gamemanager
     commandparser
     reset
     factory
+        administrator
 )
 
 set_target_properties(gamemanager
@@ -26,5 +41,7 @@ set_target_properties(gamemanager
 )
 
 install(TARGETS gamemanager
-  ARCHIVE DESTINATION lib
+                administrator
+                factory
+        ARCHIVE DESTINATION lib
 )

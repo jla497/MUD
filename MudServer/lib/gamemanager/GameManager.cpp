@@ -80,6 +80,17 @@ void GameManager::processMessages(gameAndUserMsgs &messages) {
             players.emplace(
                 playerId,
                 Player{playerId, "player" + std::to_string(playerId), ""});
+            auto player = players.at(playerId);
+            player.getAdminPrivilege();
+            players[playerId] = player;
+            std::cout<<"player got admin priv"<<std::endl;
+#ifdef DEBUG
+            auto player = players.at(playerId);
+            player.getAdminPrivilege();
+            players[playerId] = player;
+            std::cout<<"player got admin priv"<<std::endl;
+
+#endif
         }
 
         // Guaranteed not to throw out_of_range - Player has been created
@@ -183,8 +194,8 @@ void GameManager::addPlayerCharacter(PlayerId playerId) {
     auto player = players.at(playerId);
     
     //check if player has admin privilege then give admin component to player's character
-    if (player.isAdmin) {
-      character.getAdminPrivileges();
+    if (player.hasAdminPrivilege()) {
+        character->getAdminPrivileges();
     }
 
     playerCharacterBimap.insert(
