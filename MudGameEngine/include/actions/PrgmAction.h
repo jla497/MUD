@@ -4,6 +4,7 @@
 #include <boost/algorithm/string.hpp>
 #include <string>
 #include <vector>
+#include <unordered_map>
 
 #include "Action.h"
 #include "gamemanager/GameManager.h"
@@ -13,6 +14,12 @@
  * character
  */
 class PrgmAction : public Action {
+    enum class PrgmKeyword { undefined, npc, pc, object, actions };
+    static std::unordered_map<std::string, PrgmKeyword> prgmLookup;
+
+    void prgmNpc();
+    void prgmPc();
+    void prgmObject();
 
   public:
     using Action::Action;
