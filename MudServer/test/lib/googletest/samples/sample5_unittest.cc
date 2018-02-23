@@ -61,7 +61,7 @@
 //
 // Later, we will derive multiple test fixtures from QuickTest.
 class QuickTest : public testing::Test {
-protected:
+  protected:
     // Remember that SetUp() is run immediately before a test starts.
     // This is a good place to record the start time.
     virtual void SetUp() { start_time_ = time(NULL); }
@@ -136,7 +136,7 @@ TEST_F(IntegerFunctionTest, IsPrime) {
 // addition to what's in QuickTest already.  We define the additional
 // stuff inside the body of the test fixture, as usual.
 class QueueTest : public QuickTest {
-protected:
+  protected:
     virtual void SetUp() {
         // First, we need to set up the super fixture (QuickTest).
         QuickTest::SetUp();
@@ -167,7 +167,7 @@ TEST_F(QueueTest, DefaultConstructor) { EXPECT_EQ(0u, q0_.Size()); }
 
 // Tests Dequeue().
 TEST_F(QueueTest, Dequeue) {
-    int* n = q0_.Dequeue();
+    int *n = q0_.Dequeue();
     EXPECT_TRUE(n == NULL);
 
     n = q1_.Dequeue();

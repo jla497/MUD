@@ -55,14 +55,14 @@
 #undef GTEST_IMPLEMENTATION_
 
 #if GTEST_OS_CYGWIN
-#include <sys/types.h>  // For ssize_t. NOLINT
+#include <sys/types.h> // For ssize_t. NOLINT
 #endif
 
 class ProtocolMessage;
 
 namespace proto2 {
 class Message;
-}  // namespace proto2
+} // namespace proto2
 
 namespace testing {
 namespace internal {
@@ -105,41 +105,41 @@ TEST(ConvertIdentifierNameToWordsTest, WorksWhenNameIsMixture) {
 
 TEST(PointeeOfTest, WorksForSmartPointers) {
     CompileAssertTypesEqual<
-        const char, PointeeOf<internal::linked_ptr<const char> >::type>();
+        const char, PointeeOf<internal::linked_ptr<const char>>::type>();
 #if GTEST_HAS_STD_UNIQUE_PTR_
-    CompileAssertTypesEqual<int, PointeeOf<std::unique_ptr<int> >::type>();
-#endif  // GTEST_HAS_STD_UNIQUE_PTR_
+    CompileAssertTypesEqual<int, PointeeOf<std::unique_ptr<int>>::type>();
+#endif // GTEST_HAS_STD_UNIQUE_PTR_
 #if GTEST_HAS_STD_SHARED_PTR_
     CompileAssertTypesEqual<std::string,
-                            PointeeOf<std::shared_ptr<std::string> >::type>();
-#endif  // GTEST_HAS_STD_SHARED_PTR_
+                            PointeeOf<std::shared_ptr<std::string>>::type>();
+#endif // GTEST_HAS_STD_SHARED_PTR_
 }
 
 TEST(PointeeOfTest, WorksForRawPointers) {
-    CompileAssertTypesEqual<int, PointeeOf<int*>::type>();
-    CompileAssertTypesEqual<const char, PointeeOf<const char*>::type>();
-    CompileAssertTypesEqual<void, PointeeOf<void*>::type>();
+    CompileAssertTypesEqual<int, PointeeOf<int *>::type>();
+    CompileAssertTypesEqual<const char, PointeeOf<const char *>::type>();
+    CompileAssertTypesEqual<void, PointeeOf<void *>::type>();
 }
 
 TEST(GetRawPointerTest, WorksForSmartPointers) {
 #if GTEST_HAS_STD_UNIQUE_PTR_
-    const char* const raw_p1 = new const char('a');  // NOLINT
+    const char *const raw_p1 = new const char('a'); // NOLINT
     const std::unique_ptr<const char> p1(raw_p1);
     EXPECT_EQ(raw_p1, GetRawPointer(p1));
-#endif  // GTEST_HAS_STD_UNIQUE_PTR_
+#endif // GTEST_HAS_STD_UNIQUE_PTR_
 #if GTEST_HAS_STD_SHARED_PTR_
-    double* const raw_p2 = new double(2.5);  // NOLINT
+    double *const raw_p2 = new double(2.5); // NOLINT
     const std::shared_ptr<double> p2(raw_p2);
     EXPECT_EQ(raw_p2, GetRawPointer(p2));
-#endif  // GTEST_HAS_STD_SHARED_PTR_
+#endif // GTEST_HAS_STD_SHARED_PTR_
 
-    const char* const raw_p4 = new const char('a');  // NOLINT
+    const char *const raw_p4 = new const char('a'); // NOLINT
     const internal::linked_ptr<const char> p4(raw_p4);
     EXPECT_EQ(raw_p4, GetRawPointer(p4));
 }
 
 TEST(GetRawPointerTest, WorksForRawPointers) {
-    int* p = NULL;
+    int *p = NULL;
     // Don't use EXPECT_EQ as no NULL-testing magic on Symbian.
     EXPECT_TRUE(NULL == GetRawPointer(p));
     int n = 1;
@@ -152,38 +152,38 @@ class Base {};
 class Derived : public Base {};
 
 TEST(KindOfTest, Bool) {
-    EXPECT_EQ(kBool, GMOCK_KIND_OF_(bool));  // NOLINT
+    EXPECT_EQ(kBool, GMOCK_KIND_OF_(bool)); // NOLINT
 }
 
 TEST(KindOfTest, Integer) {
-    EXPECT_EQ(kInteger, GMOCK_KIND_OF_(char));            // NOLINT
-    EXPECT_EQ(kInteger, GMOCK_KIND_OF_(signed char));     // NOLINT
-    EXPECT_EQ(kInteger, GMOCK_KIND_OF_(unsigned char));   // NOLINT
-    EXPECT_EQ(kInteger, GMOCK_KIND_OF_(short));           // NOLINT
-    EXPECT_EQ(kInteger, GMOCK_KIND_OF_(unsigned short));  // NOLINT
-    EXPECT_EQ(kInteger, GMOCK_KIND_OF_(int));             // NOLINT
-    EXPECT_EQ(kInteger, GMOCK_KIND_OF_(unsigned int));    // NOLINT
-    EXPECT_EQ(kInteger, GMOCK_KIND_OF_(long));            // NOLINT
-    EXPECT_EQ(kInteger, GMOCK_KIND_OF_(unsigned long));   // NOLINT
-    EXPECT_EQ(kInteger, GMOCK_KIND_OF_(wchar_t));         // NOLINT
-    EXPECT_EQ(kInteger, GMOCK_KIND_OF_(Int64));           // NOLINT
-    EXPECT_EQ(kInteger, GMOCK_KIND_OF_(UInt64));          // NOLINT
-    EXPECT_EQ(kInteger, GMOCK_KIND_OF_(size_t));          // NOLINT
+    EXPECT_EQ(kInteger, GMOCK_KIND_OF_(char));           // NOLINT
+    EXPECT_EQ(kInteger, GMOCK_KIND_OF_(signed char));    // NOLINT
+    EXPECT_EQ(kInteger, GMOCK_KIND_OF_(unsigned char));  // NOLINT
+    EXPECT_EQ(kInteger, GMOCK_KIND_OF_(short));          // NOLINT
+    EXPECT_EQ(kInteger, GMOCK_KIND_OF_(unsigned short)); // NOLINT
+    EXPECT_EQ(kInteger, GMOCK_KIND_OF_(int));            // NOLINT
+    EXPECT_EQ(kInteger, GMOCK_KIND_OF_(unsigned int));   // NOLINT
+    EXPECT_EQ(kInteger, GMOCK_KIND_OF_(long));           // NOLINT
+    EXPECT_EQ(kInteger, GMOCK_KIND_OF_(unsigned long));  // NOLINT
+    EXPECT_EQ(kInteger, GMOCK_KIND_OF_(wchar_t));        // NOLINT
+    EXPECT_EQ(kInteger, GMOCK_KIND_OF_(Int64));          // NOLINT
+    EXPECT_EQ(kInteger, GMOCK_KIND_OF_(UInt64));         // NOLINT
+    EXPECT_EQ(kInteger, GMOCK_KIND_OF_(size_t));         // NOLINT
 #if GTEST_OS_LINUX || GTEST_OS_MAC || GTEST_OS_CYGWIN
     // ssize_t is not defined on Windows and possibly some other OSes.
-    EXPECT_EQ(kInteger, GMOCK_KIND_OF_(ssize_t));  // NOLINT
+    EXPECT_EQ(kInteger, GMOCK_KIND_OF_(ssize_t)); // NOLINT
 #endif
 }
 
 TEST(KindOfTest, FloatingPoint) {
-    EXPECT_EQ(kFloatingPoint, GMOCK_KIND_OF_(float));        // NOLINT
-    EXPECT_EQ(kFloatingPoint, GMOCK_KIND_OF_(double));       // NOLINT
-    EXPECT_EQ(kFloatingPoint, GMOCK_KIND_OF_(long double));  // NOLINT
+    EXPECT_EQ(kFloatingPoint, GMOCK_KIND_OF_(float));       // NOLINT
+    EXPECT_EQ(kFloatingPoint, GMOCK_KIND_OF_(double));      // NOLINT
+    EXPECT_EQ(kFloatingPoint, GMOCK_KIND_OF_(long double)); // NOLINT
 }
 
 TEST(KindOfTest, Other) {
-    EXPECT_EQ(kOther, GMOCK_KIND_OF_(void*));   // NOLINT
-    EXPECT_EQ(kOther, GMOCK_KIND_OF_(char**));  // NOLINT
+    EXPECT_EQ(kOther, GMOCK_KIND_OF_(void *));  // NOLINT
+    EXPECT_EQ(kOther, GMOCK_KIND_OF_(char **)); // NOLINT
     EXPECT_EQ(kOther, GMOCK_KIND_OF_(Base));    // NOLINT
 }
 
@@ -197,7 +197,7 @@ TEST(LosslessArithmeticConvertibleTest, BoolToInteger) {
     EXPECT_TRUE((LosslessArithmeticConvertible<bool, char>::value));
     EXPECT_TRUE((LosslessArithmeticConvertible<bool, int>::value));
     EXPECT_TRUE(
-        (LosslessArithmeticConvertible<bool, unsigned long>::value));  // NOLINT
+        (LosslessArithmeticConvertible<bool, unsigned long>::value)); // NOLINT
 }
 
 TEST(LosslessArithmeticConvertibleTest, BoolToFloatingPoint) {
@@ -216,14 +216,14 @@ TEST(LosslessArithmeticConvertibleTest, IntegerToInteger) {
 
     // Unsigned => larger unsigned is fine.
     EXPECT_TRUE((LosslessArithmeticConvertible<unsigned short,
-                                               UInt64>::value));  // NOLINT
+                                               UInt64>::value)); // NOLINT
 
     // Signed => unsigned is not fine.
     EXPECT_FALSE(
-        (LosslessArithmeticConvertible<short, UInt64>::value));  // NOLINT
+        (LosslessArithmeticConvertible<short, UInt64>::value)); // NOLINT
     EXPECT_FALSE(
         (LosslessArithmeticConvertible<signed char,
-                                       unsigned int>::value));  // NOLINT
+                                       unsigned int>::value)); // NOLINT
 
     // Same size and same signedness: fine too.
     EXPECT_TRUE(
@@ -232,7 +232,7 @@ TEST(LosslessArithmeticConvertibleTest, IntegerToInteger) {
     EXPECT_TRUE((LosslessArithmeticConvertible<wchar_t, wchar_t>::value));
     EXPECT_TRUE(
         (LosslessArithmeticConvertible<unsigned long,
-                                       unsigned long>::value));  // NOLINT
+                                       unsigned long>::value)); // NOLINT
 
     // Same size, different signedness: not fine.
     EXPECT_FALSE(
@@ -241,7 +241,7 @@ TEST(LosslessArithmeticConvertibleTest, IntegerToInteger) {
     EXPECT_FALSE((LosslessArithmeticConvertible<UInt64, Int64>::value));
 
     // Larger size => smaller size is not fine.
-    EXPECT_FALSE((LosslessArithmeticConvertible<long, char>::value));  // NOLINT
+    EXPECT_FALSE((LosslessArithmeticConvertible<long, char>::value)); // NOLINT
     EXPECT_FALSE((LosslessArithmeticConvertible<int, signed char>::value));
     EXPECT_FALSE((LosslessArithmeticConvertible<Int64, unsigned int>::value));
 }
@@ -252,7 +252,7 @@ TEST(LosslessArithmeticConvertibleTest, IntegerToFloatingPoint) {
     EXPECT_FALSE((LosslessArithmeticConvertible<char, float>::value));
     EXPECT_FALSE((LosslessArithmeticConvertible<int, double>::value));
     EXPECT_FALSE(
-        (LosslessArithmeticConvertible<short, long double>::value));  // NOLINT
+        (LosslessArithmeticConvertible<short, long double>::value)); // NOLINT
 }
 
 TEST(LosslessArithmeticConvertibleTest, FloatingPointToBool) {
@@ -261,8 +261,7 @@ TEST(LosslessArithmeticConvertibleTest, FloatingPointToBool) {
 }
 
 TEST(LosslessArithmeticConvertibleTest, FloatingPointToInteger) {
-    EXPECT_FALSE(
-        (LosslessArithmeticConvertible<float, long>::value));  // NOLINT
+    EXPECT_FALSE((LosslessArithmeticConvertible<float, long>::value)); // NOLINT
     EXPECT_FALSE((LosslessArithmeticConvertible<double, Int64>::value));
     EXPECT_FALSE((LosslessArithmeticConvertible<long double, int>::value));
 }
@@ -280,7 +279,7 @@ TEST(LosslessArithmeticConvertibleTest, FloatingPointToFloatingPoint) {
     // Larger size => smaller size is not fine.
     EXPECT_FALSE((LosslessArithmeticConvertible<double, float>::value));
     GTEST_INTENTIONAL_CONST_COND_PUSH_()
-    if (sizeof(double) == sizeof(long double)) {  // NOLINT
+    if (sizeof(double) == sizeof(long double)) { // NOLINT
         GTEST_INTENTIONAL_CONST_COND_POP_()
         // In some implementations (e.g. MSVC), double and long double
         // have the same size.
@@ -302,7 +301,7 @@ TEST(TupleMatchesTest, WorksForSize0) {
 }
 
 TEST(TupleMatchesTest, WorksForSize1) {
-    tuple<Matcher<int> > matchers(Eq(1));
+    tuple<Matcher<int>> matchers(Eq(1));
     tuple<int> values1(1), values2(2);
 
     EXPECT_TRUE(TupleMatches(matchers, values1));
@@ -310,7 +309,7 @@ TEST(TupleMatchesTest, WorksForSize1) {
 }
 
 TEST(TupleMatchesTest, WorksForSize2) {
-    tuple<Matcher<int>, Matcher<char> > matchers(Eq(1), Eq('a'));
+    tuple<Matcher<int>, Matcher<char>> matchers(Eq(1), Eq('a'));
     tuple<int, char> values1(1, 'a'), values2(1, 'b'), values3(2, 'a'),
         values4(2, 'b');
 
@@ -321,10 +320,10 @@ TEST(TupleMatchesTest, WorksForSize2) {
 }
 
 TEST(TupleMatchesTest, WorksForSize5) {
-    tuple<Matcher<int>, Matcher<char>, Matcher<bool>, Matcher<long>,  // NOLINT
-          Matcher<string> >
+    tuple<Matcher<int>, Matcher<char>, Matcher<bool>, Matcher<long>, // NOLINT
+          Matcher<string>>
         matchers(Eq(1), Eq('a'), Eq(true), Eq(2L), Eq("hi"));
-    tuple<int, char, bool, long, string>  // NOLINT
+    tuple<int, char, bool, long, string> // NOLINT
         values1(1, 'a', true, 2L, "hi"), values2(1, 'a', true, 2L, "hello"),
         values3(2, 'a', true, 2L, "hi");
 
@@ -336,7 +335,7 @@ TEST(TupleMatchesTest, WorksForSize5) {
 // Tests that Assert(true, ...) succeeds.
 TEST(AssertTest, SucceedsOnTrue) {
     Assert(true, __FILE__, __LINE__, "This should succeed.");
-    Assert(true, __FILE__, __LINE__);  // This should succeed too.
+    Assert(true, __FILE__, __LINE__); // This should succeed too.
 }
 
 // Tests that Assert(false, ...) generates a fatal failure.
@@ -350,19 +349,19 @@ TEST(AssertTest, FailsFatallyOnFalse) {
 // Tests that Expect(true, ...) succeeds.
 TEST(ExpectTest, SucceedsOnTrue) {
     Expect(true, __FILE__, __LINE__, "This should succeed.");
-    Expect(true, __FILE__, __LINE__);  // This should succeed too.
+    Expect(true, __FILE__, __LINE__); // This should succeed too.
 }
 
 // Tests that Expect(false, ...) generates a non-fatal failure.
 TEST(ExpectTest, FailsNonfatallyOnFalse) {
     EXPECT_NONFATAL_FAILURE(
-        {  // NOLINT
+        { // NOLINT
             Expect(false, __FILE__, __LINE__, "This should fail.");
         },
         "This should fail");
 
     EXPECT_NONFATAL_FAILURE(
-        {  // NOLINT
+        { // NOLINT
             Expect(false, __FILE__, __LINE__);
         },
         "Expectation failed");
@@ -371,7 +370,7 @@ TEST(ExpectTest, FailsNonfatallyOnFalse) {
 // Tests LogIsVisible().
 
 class LogIsVisibleTest : public ::testing::Test {
-protected:
+  protected:
     virtual void SetUp() { original_verbose_ = GMOCK_FLAG(verbose); }
 
     virtual void TearDown() { GMOCK_FLAG(verbose) = original_verbose_; }
@@ -403,7 +402,7 @@ TEST_F(LogIsVisibleTest, WorksWhenVerbosityIsWarning) {
 
 // Verifies that Log() behaves correctly for the given verbosity level
 // and log severity.
-void TestLogWithSeverity(const string& verbosity, LogSeverity severity,
+void TestLogWithSeverity(const string &verbosity, LogSeverity severity,
                          bool should_print) {
     const string old_flag = GMOCK_FLAG(verbose);
     GMOCK_FLAG(verbose) = verbosity;
@@ -443,7 +442,7 @@ struct MockStackTraceGetter : testing::internal::OsStackTraceGetterInterface {
 // Tests that in opt mode, a positive stack_frames_to_skip argument is
 // treated as 0.
 TEST(LogTest, NoSkippingStackFrameInOptMode) {
-    MockStackTraceGetter* mock_os_stack_trace_getter = new MockStackTraceGetter;
+    MockStackTraceGetter *mock_os_stack_trace_getter = new MockStackTraceGetter;
     GetUnitTestImpl()->set_os_stack_trace_getter(mock_os_stack_trace_getter);
 
     CaptureStdout();
@@ -453,11 +452,10 @@ TEST(LogTest, NoSkippingStackFrameInOptMode) {
     string expected_trace =
         (testing::Message() << GTEST_FLAG(stack_trace_depth) << "::")
             .GetString();
-    string expected_message =
-        "\nGMOCK WARNING:\n"
-        "Test log.\n"
-        "Stack trace:\n" +
-        expected_trace;
+    string expected_message = "\nGMOCK WARNING:\n"
+                              "Test log.\n"
+                              "Stack trace:\n" +
+                              expected_trace;
     EXPECT_THAT(log, HasSubstr(expected_message));
     int skip_count = atoi(log.substr(expected_message.size()).c_str());
 
@@ -507,7 +505,7 @@ TEST(LogTest, OnlyWarningsArePrintedWhenVerbosityIsInvalid) {
     TestLogWithSeverity("invalid", kWarning, true);
 }
 
-#endif  // GTEST_HAS_STREAM_REDIRECTION
+#endif // GTEST_HAS_STREAM_REDIRECTION
 
 TEST(TypeTraitsTest, true_type) { EXPECT_TRUE(true_type::value); }
 
@@ -515,36 +513,37 @@ TEST(TypeTraitsTest, false_type) { EXPECT_FALSE(false_type::value); }
 
 TEST(TypeTraitsTest, is_reference) {
     EXPECT_FALSE(is_reference<int>::value);
-    EXPECT_FALSE(is_reference<char*>::value);
-    EXPECT_TRUE(is_reference<const int&>::value);
+    EXPECT_FALSE(is_reference<char *>::value);
+    EXPECT_TRUE(is_reference<const int &>::value);
 }
 
 TEST(TypeTraitsTest, is_pointer) {
     EXPECT_FALSE(is_pointer<int>::value);
-    EXPECT_FALSE(is_pointer<char&>::value);
-    EXPECT_TRUE(is_pointer<const int*>::value);
+    EXPECT_FALSE(is_pointer<char &>::value);
+    EXPECT_TRUE(is_pointer<const int *>::value);
 }
 
 TEST(TypeTraitsTest, type_equals) {
     EXPECT_FALSE((type_equals<int, const int>::value));
-    EXPECT_FALSE((type_equals<int, int&>::value));
+    EXPECT_FALSE((type_equals<int, int &>::value));
     EXPECT_FALSE((type_equals<int, double>::value));
     EXPECT_TRUE((type_equals<char, char>::value));
 }
 
 TEST(TypeTraitsTest, remove_reference) {
-    EXPECT_TRUE((type_equals<char, remove_reference<char&>::type>::value));
+    EXPECT_TRUE((type_equals<char, remove_reference<char &>::type>::value));
     EXPECT_TRUE(
-        (type_equals<const int, remove_reference<const int&>::type>::value));
+        (type_equals<const int, remove_reference<const int &>::type>::value));
     EXPECT_TRUE((type_equals<int, remove_reference<int>::type>::value));
-    EXPECT_TRUE((type_equals<double*, remove_reference<double*>::type>::value));
+    EXPECT_TRUE(
+        (type_equals<double *, remove_reference<double *>::type>::value));
 }
 
 #if GTEST_HAS_STREAM_REDIRECTION
 
 // Verifies that Log() behaves correctly for the given verbosity level
 // and log severity.
-std::string GrabOutput(void (*logger)(), const char* verbosity) {
+std::string GrabOutput(void (*logger)(), const char *verbosity) {
     const string saved_flag = GMOCK_FLAG(verbose);
     GMOCK_FLAG(verbose) = verbosity;
     CaptureStdout();
@@ -554,7 +553,7 @@ std::string GrabOutput(void (*logger)(), const char* verbosity) {
 }
 
 class DummyMock {
-public:
+  public:
     MOCK_METHOD0(TestMethod, void());
     MOCK_METHOD1(TestMethodArg, void(int dummy));
 };
@@ -618,20 +617,20 @@ TEST(OnCallTest, LogsAnythingArgument) {
         HasSubstr("ON_CALL(mock, TestMethodArg(_)"));
 }
 
-#endif  // GTEST_HAS_STREAM_REDIRECTION
+#endif // GTEST_HAS_STREAM_REDIRECTION
 
 // Tests StlContainerView.
 
 TEST(StlContainerViewTest, WorksForStlContainer) {
     StaticAssertTypeEq<std::vector<int>,
-                       StlContainerView<std::vector<int> >::type>();
+                       StlContainerView<std::vector<int>>::type>();
     StaticAssertTypeEq<
-        const std::vector<double>&,
-        StlContainerView<std::vector<double> >::const_reference>();
+        const std::vector<double> &,
+        StlContainerView<std::vector<double>>::const_reference>();
 
     typedef std::vector<char> Chars;
     Chars v1;
-    const Chars& v2(StlContainerView<Chars>::ConstReference(v1));
+    const Chars &v2(StlContainerView<Chars>::ConstReference(v1));
     EXPECT_EQ(&v1, &v2);
 
     v1.push_back('a');
@@ -667,25 +666,25 @@ TEST(StlContainerViewTest, WorksForStaticNativeArray) {
 
 TEST(StlContainerViewTest, WorksForDynamicNativeArray) {
     StaticAssertTypeEq<NativeArray<int>,
-                       StlContainerView<tuple<const int*, size_t> >::type>();
+                       StlContainerView<tuple<const int *, size_t>>::type>();
     StaticAssertTypeEq<
         NativeArray<double>,
-        StlContainerView<tuple<linked_ptr<double>, int> >::type>();
+        StlContainerView<tuple<linked_ptr<double>, int>>::type>();
 
     StaticAssertTypeEq<
         const NativeArray<int>,
-        StlContainerView<tuple<const int*, int> >::const_reference>();
+        StlContainerView<tuple<const int *, int>>::const_reference>();
 
     int a1[3] = {0, 1, 2};
-    const int* const p1 = a1;
+    const int *const p1 = a1;
     NativeArray<int> a2 =
-        StlContainerView<tuple<const int*, int> >::ConstReference(
+        StlContainerView<tuple<const int *, int>>::ConstReference(
             make_tuple(p1, 3));
     EXPECT_EQ(3U, a2.size());
     EXPECT_EQ(a1, a2.begin());
 
-    const NativeArray<int> a3 = StlContainerView<tuple<int*, size_t> >::Copy(
-        make_tuple(static_cast<int*>(a1), 3));
+    const NativeArray<int> a3 = StlContainerView<tuple<int *, size_t>>::Copy(
+        make_tuple(static_cast<int *>(a1), 3));
     ASSERT_EQ(3U, a3.size());
     EXPECT_EQ(0, a3.begin()[0]);
     EXPECT_EQ(1, a3.begin()[1]);
@@ -696,6 +695,6 @@ TEST(StlContainerViewTest, WorksForDynamicNativeArray) {
     EXPECT_EQ(0, a3.begin()[0]);
 }
 
-}  // namespace
-}  // namespace internal
-}  // namespace testing
+} // namespace
+} // namespace internal
+} // namespace testing

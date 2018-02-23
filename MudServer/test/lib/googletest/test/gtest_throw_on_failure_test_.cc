@@ -37,9 +37,9 @@
 
 #include "gtest/gtest.h"
 
-#include <exception>  // for set_terminate
-#include <stdio.h>    // for fflush, fprintf, NULL, etc.
-#include <stdlib.h>   // for exit
+#include <exception> // for set_terminate
+#include <stdio.h>   // for fflush, fprintf, NULL, etc.
+#include <stdlib.h>  // for exit
 
 // This terminate handler aborts the program using exit() rather than abort().
 // This avoids showing pop-ups on Windows systems and core dumps on Unix-like
@@ -50,7 +50,7 @@ void TerminateHandler() {
     exit(1);
 }
 
-int main(int argc, char** argv) {
+int main(int argc, char **argv) {
 #if GTEST_HAS_EXCEPTIONS
     std::set_terminate(&TerminateHandler);
 #endif

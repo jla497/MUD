@@ -48,7 +48,7 @@
 // told to instantiate without PrecalcPrimeTable instance at all and use only
 // OnTheFlyPrimeTable.
 class HybridPrimeTable : public PrimeTable {
-public:
+  public:
     HybridPrimeTable(bool force_on_the_fly, int max_precalculated)
         : on_the_fly_impl_(new OnTheFlyPrimeTable),
           precalc_impl_(force_on_the_fly ? NULL : new PreCalculatedPrimeTable(
@@ -75,9 +75,9 @@ public:
                                 : on_the_fly_impl_->GetNextPrime(p);
     }
 
-private:
-    OnTheFlyPrimeTable* on_the_fly_impl_;
-    PreCalculatedPrimeTable* precalc_impl_;
+  private:
+    OnTheFlyPrimeTable *on_the_fly_impl_;
+    PreCalculatedPrimeTable *precalc_impl_;
     int max_precalculated_;
 };
 
@@ -91,8 +91,8 @@ using ::testing::Combine;
 // PreCalculatedPrimeTable disabled. We do this by defining fixture which will
 // accept different combinations of parameters for instantiating a
 // HybridPrimeTable instance.
-class PrimeTableTest : public TestWithParam< ::testing::tuple<bool, int> > {
-protected:
+class PrimeTableTest : public TestWithParam<::testing::tuple<bool, int>> {
+  protected:
     virtual void SetUp() {
         // This can be written as
         //
@@ -110,7 +110,7 @@ protected:
         delete table_;
         table_ = NULL;
     }
-    HybridPrimeTable* table_;
+    HybridPrimeTable *table_;
 };
 
 TEST_P(PrimeTableTest, ReturnsFalseForNonPrimes) {
@@ -170,4 +170,4 @@ INSTANTIATE_TEST_CASE_P(MeaningfulTestParameters, PrimeTableTest,
 // defined). This dummy test keeps gtest_main linked in.
 TEST(DummyTest, CombineIsNotSupportedOnThisPlatform) {}
 
-#endif  // GTEST_HAS_COMBINE
+#endif // GTEST_HAS_COMBINE

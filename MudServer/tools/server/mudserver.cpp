@@ -22,7 +22,7 @@ int main(int argc, char *argv[]) {
     }
 
     auto configData = parseConfigFile(argv[1]);
-    
+
     if (configData) {
 
         mudserver::logging::setLogLevel(mudserver::logging::LogLevel::debug);

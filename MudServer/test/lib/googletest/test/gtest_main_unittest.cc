@@ -38,7 +38,7 @@ namespace {
 
 TEST(GTestMainTest, ShouldSucceed) {}
 
-}  // namespace
+} // namespace
 
 // We are using the main() function defined in src/gtest_main.cc, so
 // we don't define it here.

@@ -43,8 +43,7 @@ using testing::Test;
 // ContainerTest will be instantiated in both gtest-typed-test_test.cc
 // and gtest-typed-test2_test.cc.
 
-template <typename T>
-class ContainerTest : public Test {};
+template <typename T> class ContainerTest : public Test {};
 
 TYPED_TEST_CASE_P(ContainerTest);
 
@@ -58,6 +57,6 @@ TYPED_TEST_P(ContainerTest, InitialSizeIsZero) {
 REGISTER_TYPED_TEST_CASE_P(ContainerTest, CanBeDefaultConstructed,
                            InitialSizeIsZero);
 
-#endif  // GTEST_HAS_TYPED_TEST_P
+#endif // GTEST_HAS_TYPED_TEST_P
 
-#endif  // GTEST_TEST_GTEST_TYPED_TEST_TEST_H_
+#endif // GTEST_TEST_GTEST_TYPED_TEST_TEST_H_

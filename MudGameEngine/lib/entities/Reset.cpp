@@ -10,23 +10,18 @@ std::unordered_map<std::string, Reset::ResetKeyword> Reset::resetLookUp = {
 
 Reset::Reset(int id, std::string action, std::string comment, std::string state,
              int slot, int limit, int roomID)
-    : id{id},
-      action{action},
-      comment{comment},
-      state{state},
-      slot{slot},
-      limit{limit},
-      roomID{roomID} {}
+    : id{id}, action{action}, comment{comment}, state{state}, slot{slot},
+      limit{limit}, roomID{roomID} {}
 
-void Reset::resetNpc(mudserver::gamemanager::GameState& state) {
+void Reset::resetNpc(mudserver::gamemanager::GameState &state) {
     static auto logger =
         mudserver::logging::getLogger("Reset::execute::resetNPC");
-    auto& factory = state.getFactory();
+    auto &factory = state.getFactory();
     auto npc = factory.buildNpc(id);
     logger->info("npc: " + npc.getShortDesc());
 }
 
-void Reset::execute(mudserver::gamemanager::GameState& state) {
+void Reset::execute(mudserver::gamemanager::GameState &state) {
     static auto logger = mudserver::logging::getLogger("Reset::execute");
     auto resetTypeIter =
         resetLookUp.find(boost::algorithm::to_lower_copy(action));

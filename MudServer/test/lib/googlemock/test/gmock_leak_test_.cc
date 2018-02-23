@@ -41,23 +41,23 @@ namespace {
 using ::testing::Return;
 
 class FooInterface {
-public:
+  public:
     virtual ~FooInterface() {}
     virtual void DoThis() = 0;
 };
 
 class MockFoo : public FooInterface {
-public:
+  public:
     MockFoo() {}
 
     MOCK_METHOD0(DoThis, void());
 
-private:
+  private:
     GTEST_DISALLOW_COPY_AND_ASSIGN_(MockFoo);
 };
 
 TEST(LeakTest, LeakedMockWithExpectCallCausesFailureWhenLeakCheckingIsEnabled) {
-    MockFoo* foo = new MockFoo;
+    MockFoo *foo = new MockFoo;
 
     EXPECT_CALL(*foo, DoThis());
     foo->DoThis();
@@ -70,7 +70,7 @@ TEST(LeakTest, LeakedMockWithExpectCallCausesFailureWhenLeakCheckingIsEnabled) {
 }
 
 TEST(LeakTest, LeakedMockWithOnCallCausesFailureWhenLeakCheckingIsEnabled) {
-    MockFoo* foo = new MockFoo;
+    MockFoo *foo = new MockFoo;
 
     ON_CALL(*foo, DoThis()).WillByDefault(Return());
 
@@ -82,8 +82,8 @@ TEST(LeakTest, LeakedMockWithOnCallCausesFailureWhenLeakCheckingIsEnabled) {
 }
 
 TEST(LeakTest, CatchesMultipleLeakedMockObjects) {
-    MockFoo* foo1 = new MockFoo;
-    MockFoo* foo2 = new MockFoo;
+    MockFoo *foo1 = new MockFoo;
+    MockFoo *foo2 = new MockFoo;
 
     ON_CALL(*foo1, DoThis()).WillByDefault(Return());
     EXPECT_CALL(*foo2, DoThis());
@@ -97,4 +97,4 @@ TEST(LeakTest, CatchesMultipleLeakedMockObjects) {
     exit(0);
 }
 
-}  // namespace
+} // namespace

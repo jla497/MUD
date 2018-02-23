@@ -40,12 +40,12 @@
 // http://connect.microsoft.com/VisualStudio/feedback/ViewFeedback.aspx?FeedbackID=394464
 // // NOLINT
 #if GTEST_OS_WINDOWS_MOBILE
-#include <tchar.h>  // NOLINT
+#include <tchar.h> // NOLINT
 
-GTEST_API_ int _tmain(int argc, TCHAR** argv) {
+GTEST_API_ int _tmain(int argc, TCHAR **argv) {
 #else
-GTEST_API_ int main(int argc, char** argv) {
-#endif  // GTEST_OS_WINDOWS_MOBILE
+GTEST_API_ int main(int argc, char **argv) {
+#endif // GTEST_OS_WINDOWS_MOBILE
     std::cout << "Running main() from gmock_main.cc\n";
     // Since Google Mock depends on Google Test, InitGoogleMock() is
     // also responsible for initializing Google Test.  Therefore there's

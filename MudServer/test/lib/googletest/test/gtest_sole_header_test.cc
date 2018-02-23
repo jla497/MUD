@@ -52,4 +52,4 @@ TEST(NoFatalFailureTest, AssertNoFatalFailure) {
     ASSERT_NO_FATAL_FAILURE({ SUCCEED(); });
 }
 
-}  // namespace
+} // namespace

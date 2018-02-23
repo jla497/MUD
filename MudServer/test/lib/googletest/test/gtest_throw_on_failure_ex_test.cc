@@ -42,7 +42,7 @@
 // non-zero.  We use this instead of a Google Test assertion to
 // indicate a failure, as the latter is been tested and cannot be
 // relied on.
-void Fail(const char* msg) {
+void Fail(const char *msg) {
     printf("FAILURE: %s\n", msg);
     fflush(stdout);
     exit(1);
@@ -63,8 +63,9 @@ void TestFailureThrowsRuntimeError() {
     // A failed assertion should throw a subclass of std::runtime_error.
     try {
         EXPECT_EQ(2, 3) << "Expected failure";
-    } catch (const std::runtime_error& e) {
-        if (strstr(e.what(), "Expected failure") != NULL) return;
+    } catch (const std::runtime_error &e) {
+        if (strstr(e.what(), "Expected failure") != NULL)
+            return;
 
         printf(
             "%s",
@@ -78,7 +79,7 @@ void TestFailureThrowsRuntimeError() {
     Fail("A failed assertion should've thrown but didn't.");
 }
 
-int main(int argc, char** argv) {
+int main(int argc, char **argv) {
     testing::InitGoogleTest(&argc, argv);
 
     // We want to ensure that people can use Google Test assertions in

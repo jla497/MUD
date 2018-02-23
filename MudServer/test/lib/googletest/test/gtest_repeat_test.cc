@@ -50,7 +50,7 @@ GTEST_DECLARE_string_(death_test_style);
 GTEST_DECLARE_string_(filter);
 GTEST_DECLARE_int32_(repeat);
 
-}  // namespace testing
+} // namespace testing
 
 using testing::GTEST_FLAG(death_test_style);
 using testing::GTEST_FLAG(filter);
@@ -60,17 +60,17 @@ namespace {
 
 // We need this when we are testing Google Test itself and therefore
 // cannot use Google Test assertions.
-#define GTEST_CHECK_INT_EQ_(expected, actual)                          \
-    do {                                                               \
-        const int expected_val = (expected);                           \
-        const int actual_val = (actual);                               \
-        if (::testing::internal::IsTrue(expected_val != actual_val)) { \
-            ::std::cout << "Value of: " #actual "\n"                   \
-                        << "  Actual: " << actual_val << "\n"          \
-                        << "Expected: " #expected "\n"                 \
-                        << "Which is: " << expected_val << "\n";       \
-            ::testing::internal::posix::Abort();                       \
-        }                                                              \
+#define GTEST_CHECK_INT_EQ_(expected, actual)                                  \
+    do {                                                                       \
+        const int expected_val = (expected);                                   \
+        const int actual_val = (actual);                                       \
+        if (::testing::internal::IsTrue(expected_val != actual_val)) {         \
+            ::std::cout << "Value of: " #actual "\n"                           \
+                        << "  Actual: " << actual_val << "\n"                  \
+                        << "Expected: " #expected "\n"                         \
+                        << "Which is: " << expected_val << "\n";               \
+            ::testing::internal::posix::Abort();                               \
+        }                                                                      \
     } while (::testing::internal::AlwaysFalse())
 
 // Used for verifying that global environment set-up and tear-down are
@@ -80,7 +80,7 @@ int g_environment_set_up_count = 0;
 int g_environment_tear_down_count = 0;
 
 class MyEnvironment : public testing::Environment {
-public:
+  public:
     MyEnvironment() {}
     virtual void SetUp() { g_environment_set_up_count++; }
     virtual void TearDown() { g_environment_tear_down_count++; }
@@ -131,7 +131,7 @@ TEST_P(MyParamTest, ShouldPass) {
 }
 INSTANTIATE_TEST_CASE_P(MyParamSequence, MyParamTest,
                         testing::Range(0, kNumberOfParamTests));
-#endif  // GTEST_HAS_PARAM_TEST
+#endif // GTEST_HAS_PARAM_TEST
 
 // Resets the count for each test.
 void ResetCounts() {
@@ -142,7 +142,7 @@ void ResetCounts() {
     g_death_test_count = 0;
 #if GTEST_HAS_PARAM_TEST
     g_param_test_count = 0;
-#endif  // GTEST_HAS_PARAM_TEST
+#endif // GTEST_HAS_PARAM_TEST
 }
 
 // Checks that the count for each test is expected.
@@ -154,7 +154,7 @@ void CheckCounts(int expected) {
     GTEST_CHECK_INT_EQ_(expected, g_death_test_count);
 #if GTEST_HAS_PARAM_TEST
     GTEST_CHECK_INT_EQ_(expected * kNumberOfParamTests, g_param_test_count);
-#endif  // GTEST_HAS_PARAM_TEST
+#endif // GTEST_HAS_PARAM_TEST
 }
 
 // Tests the behavior of Google Test when --gtest_repeat is not specified.
@@ -199,7 +199,7 @@ void TestRepeatWithFilterForSuccessfulTests(int repeat) {
     GTEST_CHECK_INT_EQ_(repeat, g_death_test_count);
 #if GTEST_HAS_PARAM_TEST
     GTEST_CHECK_INT_EQ_(repeat * kNumberOfParamTests, g_param_test_count);
-#endif  // GTEST_HAS_PARAM_TEST
+#endif // GTEST_HAS_PARAM_TEST
 }
 
 // Tests using --gtest_repeat when --gtest_filter specifies a set of
@@ -217,10 +217,10 @@ void TestRepeatWithFilterForFailedTests(int repeat) {
     GTEST_CHECK_INT_EQ_(0, g_death_test_count);
 #if GTEST_HAS_PARAM_TEST
     GTEST_CHECK_INT_EQ_(0, g_param_test_count);
-#endif  // GTEST_HAS_PARAM_TEST
+#endif // GTEST_HAS_PARAM_TEST
 }
 
-}  // namespace
+} // namespace
 
 int main(int argc, char **argv) {
     testing::InitGoogleTest(&argc, argv);

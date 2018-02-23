@@ -66,17 +66,17 @@ TEST(FooDeathTest, Test1) {}
 // A group of value-parameterized tests.
 
 class MyType {
-public:
-    explicit MyType(const std::string& a_value) : value_(a_value) {}
+  public:
+    explicit MyType(const std::string &a_value) : value_(a_value) {}
 
-    const std::string& value() const { return value_; }
+    const std::string &value() const { return value_; }
 
-private:
+  private:
     std::string value_;
 };
 
 // Teaches Google Test how to print a MyType.
-void PrintTo(const MyType& x, std::ostream* os) { *os << x.value(); }
+void PrintTo(const MyType &x, std::ostream *os) { *os << x.value(); }
 
 class ValueParamTest : public testing::TestWithParam<MyType> {};
 
@@ -93,25 +93,23 @@ INSTANTIATE_TEST_CASE_P(
                "ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo"
                "ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo"
                "ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo"
-               "ooooong line")));  // NOLINT
+               "ooooong line"))); // NOLINT
 
 // A group of typed tests.
 
 // A deliberately long type name for testing the line-truncating
 // behavior when printing a type parameter.
 class
-    VeryLoooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooogName {  // NOLINT
+    VeryLoooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooogName { // NOLINT
 };
 
-template <typename T>
-class TypedTest : public testing::Test {};
+template <typename T> class TypedTest : public testing::Test {};
 
-template <typename T, int kSize>
-class MyArray {};
+template <typename T, int kSize> class MyArray {};
 
 typedef testing::Types<
-    VeryLoooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooogName,  // NOLINT
-    int*, MyArray<bool, 42> >
+    VeryLoooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooogName, // NOLINT
+    int *, MyArray<bool, 42>>
     MyTypes;
 
 TYPED_TEST_CASE(TypedTest, MyTypes);
@@ -122,8 +120,7 @@ TYPED_TEST(TypedTest, TestB) {}
 
 // A group of type-parameterized tests.
 
-template <typename T>
-class TypeParamTest : public testing::Test {};
+template <typename T> class TypeParamTest : public testing::Test {};
 
 TYPED_TEST_CASE_P(TypeParamTest);
 
@@ -135,7 +132,7 @@ REGISTER_TYPED_TEST_CASE_P(TypeParamTest, TestA, TestB);
 
 INSTANTIATE_TYPED_TEST_CASE_P(My, TypeParamTest, MyTypes);
 
-int main(int argc, char** argv) {
+int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);
 
     return RUN_ALL_TESTS();

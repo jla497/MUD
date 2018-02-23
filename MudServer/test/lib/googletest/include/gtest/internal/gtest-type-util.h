@@ -52,7 +52,7 @@
 #include <cxxabi.h>
 #elif defined(__HP_aCC)
 #include <acxx_demangle.h>
-#endif  // GTEST_HASH_CXXABI_H_
+#endif // GTEST_HASH_CXXABI_H_
 
 namespace testing {
 namespace internal {
@@ -60,31 +60,30 @@ namespace internal {
 // GetTypeName<T>() returns a human-readable name of type T.
 // NB: This function is also used in Google Mock, so don't move it inside of
 // the typed-test-only section below.
-template <typename T>
-std::string GetTypeName() {
+template <typename T> std::string GetTypeName() {
 #if GTEST_HAS_RTTI
 
-    const char* const name = typeid(T).name();
+    const char *const name = typeid(T).name();
 #if GTEST_HAS_CXXABI_H_ || defined(__HP_aCC)
     int status = 0;
 // gcc's implementation of typeid(T).name() mangles the type name,
 // so we have to demangle it.
 #if GTEST_HAS_CXXABI_H_
     using abi::__cxa_demangle;
-#endif  // GTEST_HAS_CXXABI_H_
-    char* const readable_name = __cxa_demangle(name, 0, 0, &status);
+#endif // GTEST_HAS_CXXABI_H_
+    char *const readable_name = __cxa_demangle(name, 0, 0, &status);
     const std::string name_str(status == 0 ? readable_name : name);
     free(readable_name);
     return name_str;
 #else
     return name;
-#endif  // GTEST_HAS_CXXABI_H_ || __HP_aCC
+#endif // GTEST_HAS_CXXABI_H_ || __HP_aCC
 
 #else
 
     return "<type>";
 
-#endif  // GTEST_HAS_RTTI
+#endif // GTEST_HAS_RTTI
 }
 
 #if GTEST_HAS_TYPED_TEST || GTEST_HAS_TYPED_TEST_P
@@ -93,13 +92,9 @@ std::string GetTypeName() {
 // type.  This can be used as a compile-time assertion to ensure that
 // two types are equal.
 
-template <typename T1, typename T2>
-struct AssertTypeEq;
+template <typename T1, typename T2> struct AssertTypeEq;
 
-template <typename T>
-struct AssertTypeEq<T, T> {
-    typedef bool type;
-};
+template <typename T> struct AssertTypeEq<T, T> { typedef bool type; };
 
 // A unique type used as the default value for the arguments of class
 // template Types.  This allows us to simulate variadic templates
@@ -119,25 +114,21 @@ struct Types0 {};
 
 // Type lists of length 1, 2, 3, and so on.
 
-template <typename T1>
-struct Types1 {
+template <typename T1> struct Types1 {
     typedef T1 Head;
     typedef Types0 Tail;
 };
-template <typename T1, typename T2>
-struct Types2 {
+template <typename T1, typename T2> struct Types2 {
     typedef T1 Head;
     typedef Types1<T2> Tail;
 };
 
-template <typename T1, typename T2, typename T3>
-struct Types3 {
+template <typename T1, typename T2, typename T3> struct Types3 {
     typedef T1 Head;
     typedef Types2<T2, T3> Tail;
 };
 
-template <typename T1, typename T2, typename T3, typename T4>
-struct Types4 {
+template <typename T1, typename T2, typename T3, typename T4> struct Types4 {
     typedef T1 Head;
     typedef Types3<T2, T3, T4> Tail;
 };
@@ -752,7 +743,7 @@ struct Types50 {
         Tail;
 };
 
-}  // namespace internal
+} // namespace internal
 
 // We don't want to require the users to write TypesN<...> directly,
 // as that would require them to count the length.  Types<...> is much
@@ -1724,9 +1715,7 @@ struct Types<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15,
 
 namespace internal {
 
-#define GTEST_TEMPLATE_   \
-    template <typename T> \
-    class
+#define GTEST_TEMPLATE_ template <typename T> class
 
 // The template "selector" struct TemplateSel<Tmpl> is used to
 // represent Tmpl, which must be a class template with one type
@@ -1736,12 +1725,8 @@ namespace internal {
 //
 // This trick is necessary for simulating typedef for class templates,
 // which C++ doesn't support directly.
-template <GTEST_TEMPLATE_ Tmpl>
-struct TemplateSel {
-    template <typename T>
-    struct Bind {
-        typedef Tmpl<T> type;
-    };
+template <GTEST_TEMPLATE_ Tmpl> struct TemplateSel {
+    template <typename T> struct Bind { typedef Tmpl<T> type; };
 };
 
 #define GTEST_BIND_(TmplSel, T) TmplSel::template Bind<T>::type
@@ -1750,8 +1735,7 @@ struct TemplateSel {
 // arguments of class template Templates.  This allows us to simulate
 // variadic templates (e.g. Templates<int>, Templates<int, double>,
 // and etc), which C++ doesn't support directly.
-template <typename T>
-struct NoneT {};
+template <typename T> struct NoneT {};
 
 // The following family of struct and struct templates are used to
 // represent template lists.  In particular, TemplatesN<T1, T2, ...,
@@ -1765,13 +1749,11 @@ struct Templates0 {};
 
 // Template lists of length 1, 2, 3, and so on.
 
-template <GTEST_TEMPLATE_ T1>
-struct Templates1 {
+template <GTEST_TEMPLATE_ T1> struct Templates1 {
     typedef TemplateSel<T1> Head;
     typedef Templates0 Tail;
 };
-template <GTEST_TEMPLATE_ T1, GTEST_TEMPLATE_ T2>
-struct Templates2 {
+template <GTEST_TEMPLATE_ T1, GTEST_TEMPLATE_ T2> struct Templates2 {
     typedef TemplateSel<T1> Head;
     typedef Templates1<T2> Tail;
 };
@@ -3531,10 +3513,7 @@ struct Templates<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14,
 // or a Types<...> list in TYPED_TEST_CASE() and
 // INSTANTIATE_TYPED_TEST_CASE_P().
 
-template <typename T>
-struct TypeList {
-    typedef Types1<T> type;
-};
+template <typename T> struct TypeList { typedef Types1<T> type; };
 
 template <typename T1, typename T2, typename T3, typename T4, typename T5,
           typename T6, typename T7, typename T8, typename T9, typename T10,
@@ -3550,7 +3529,7 @@ struct TypeList<
     Types<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16,
           T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27, T28, T29, T30,
           T31, T32, T33, T34, T35, T36, T37, T38, T39, T40, T41, T42, T43, T44,
-          T45, T46, T47, T48, T49, T50> > {
+          T45, T46, T47, T48, T49, T50>> {
     typedef typename Types<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12,
                            T13, T14, T15, T16, T17, T18, T19, T20, T21, T22,
                            T23, T24, T25, T26, T27, T28, T29, T30, T31, T32,
@@ -3558,9 +3537,9 @@ struct TypeList<
                            T43, T44, T45, T46, T47, T48, T49, T50>::type type;
 };
 
-#endif  // GTEST_HAS_TYPED_TEST || GTEST_HAS_TYPED_TEST_P
+#endif // GTEST_HAS_TYPED_TEST || GTEST_HAS_TYPED_TEST_P
 
-}  // namespace internal
-}  // namespace testing
+} // namespace internal
+} // namespace testing
 
-#endif  // GTEST_INCLUDE_GTEST_INTERNAL_GTEST_TYPE_UTIL_H_
+#endif // GTEST_INCLUDE_GTEST_INTERNAL_GTEST_TYPE_UTIL_H_

@@ -99,9 +99,9 @@ TEST_P(ParamTest, TestY) {}
 
 INSTANTIATE_TEST_CASE_P(SeqP, ParamTest, testing::Values(1, 2));
 INSTANTIATE_TEST_CASE_P(SeqQ, ParamTest, testing::Values(5, 6));
-#endif  // GTEST_HAS_PARAM_TEST
+#endif // GTEST_HAS_PARAM_TEST
 
-}  // namespace
+} // namespace
 
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);

@@ -22,11 +22,11 @@ class GameState;
 
 struct findNpc {
     findNpc(int id) : id(id) {}
-    bool operator()(const std::unique_ptr<NonPlayerCharacter>& ptr) {
+    bool operator()(const std::unique_ptr<NonPlayerCharacter> &ptr) {
         return static_cast<int>(ptr->getNpcTypeId()) == id;
     }
 
-private:
+  private:
     int id;
 };
 
@@ -34,12 +34,13 @@ class Reset {
     enum class ResetKeyword { undefined, object, npc, door, equip, resets };
 
     static std::unordered_map<std::string, ResetKeyword> resetLookUp;
-    
+
   public:
     Reset(int id, std::string action, std::string comment, std::string state,
           int slot, int limit, int roomID);
-    
-    void execute(mudserver::gamemanager::GameState& state);
+
+    void execute(mudserver::gamemanager::GameState &state);
+
   private:
     // TODO: figure out Id, it seems that Id may refer to different things
     // depending on the reset action.
@@ -53,6 +54,6 @@ class Reset {
     int limit;
     int roomID;
 
-    void resetNpc(mudserver::gamemanager::GameState& state);
+    void resetNpc(mudserver::gamemanager::GameState &state);
 };
 #endif

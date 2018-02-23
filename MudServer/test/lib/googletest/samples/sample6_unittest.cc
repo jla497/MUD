@@ -41,23 +41,19 @@
 // the implementations.  You may be able to skip this step if all your
 // implementations can be constructed the same way.
 
-template <class T>
-PrimeTable* CreatePrimeTable();
+template <class T> PrimeTable *CreatePrimeTable();
 
-template <>
-PrimeTable* CreatePrimeTable<OnTheFlyPrimeTable>() {
+template <> PrimeTable *CreatePrimeTable<OnTheFlyPrimeTable>() {
     return new OnTheFlyPrimeTable;
 }
 
-template <>
-PrimeTable* CreatePrimeTable<PreCalculatedPrimeTable>() {
+template <> PrimeTable *CreatePrimeTable<PreCalculatedPrimeTable>() {
     return new PreCalculatedPrimeTable(10000);
 }
 
 // Then we define a test fixture class template.
-template <class T>
-class PrimeTableTest : public testing::Test {
-protected:
+template <class T> class PrimeTableTest : public testing::Test {
+  protected:
     // The ctor calls the factory function to create a prime table
     // implemented by T.
     PrimeTableTest() : table_(CreatePrimeTable<T>()) {}
@@ -71,7 +67,7 @@ protected:
     // got-yas where the implementation class has a method that shadows
     // a method with the same name (but slightly different argument
     // types) in the base interface, for example.
-    PrimeTable* const table_;
+    PrimeTable *const table_;
 };
 
 #if GTEST_HAS_TYPED_TEST
@@ -135,7 +131,7 @@ TYPED_TEST(PrimeTableTest, CanGetNextPrime) {
 // in the type list specified in TYPED_TEST_CASE.  Sit back and be
 // happy that you don't have to define them multiple times.
 
-#endif  // GTEST_HAS_TYPED_TEST
+#endif // GTEST_HAS_TYPED_TEST
 
 #if GTEST_HAS_TYPED_TEST_P
 
@@ -157,8 +153,7 @@ using testing::Types;
 // First, define a test fixture class template.  Here we just reuse
 // the PrimeTableTest fixture defined earlier:
 
-template <class T>
-class PrimeTableTest2 : public PrimeTableTest<T> {};
+template <class T> class PrimeTableTest2 : public PrimeTableTest<T> {};
 
 // Then, declare the test case.  The argument is the name of the test
 // fixture, and also the name of the test case (as usual).  The _P
@@ -197,7 +192,7 @@ TYPED_TEST_P(PrimeTableTest2, CanGetNextPrime) {
 // Type-parameterized tests involve one extra step: you have to
 // enumerate the tests you defined:
 REGISTER_TYPED_TEST_CASE_P(
-    PrimeTableTest2,  // The first argument is the test case name.
+    PrimeTableTest2, // The first argument is the test case name.
     // The rest of the arguments are the test names.
     ReturnsFalseForNonPrimes, ReturnsTrueForPrimes, CanGetNextPrime);
 
@@ -216,8 +211,8 @@ REGISTER_TYPED_TEST_CASE_P(
 // defined at the time we write the TYPED_TEST_P()s.
 typedef Types<OnTheFlyPrimeTable, PreCalculatedPrimeTable>
     PrimeTableImplementations;
-INSTANTIATE_TYPED_TEST_CASE_P(OnTheFlyAndPreCalculated,    // Instance name
-                              PrimeTableTest2,             // Test case name
-                              PrimeTableImplementations);  // Type list
+INSTANTIATE_TYPED_TEST_CASE_P(OnTheFlyAndPreCalculated,   // Instance name
+                              PrimeTableTest2,            // Test case name
+                              PrimeTableImplementations); // Type list
 
-#endif  // GTEST_HAS_TYPED_TEST_P
+#endif // GTEST_HAS_TYPED_TEST_P

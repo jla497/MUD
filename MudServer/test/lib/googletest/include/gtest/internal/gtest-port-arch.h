@@ -61,7 +61,7 @@
 #endif
 #else
 #define GTEST_OS_WINDOWS_DESKTOP 1
-#endif  // _WIN32_WCE
+#endif // _WIN32_WCE
 #elif defined __APPLE__
 #define GTEST_OS_MAC 1
 #if TARGET_OS_IPHONE
@@ -88,6 +88,6 @@
 #define GTEST_OS_OPENBSD 1
 #elif defined __QNX__
 #define GTEST_OS_QNX 1
-#endif  // __CYGWIN__
+#endif // __CYGWIN__
 
-#endif  // GTEST_INCLUDE_GTEST_INTERNAL_GTEST_PORT_ARCH_H_
+#endif // GTEST_INCLUDE_GTEST_INTERNAL_GTEST_PORT_ARCH_H_

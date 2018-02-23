@@ -45,14 +45,14 @@ using ::testing::internal::posix::StatStruct;
 namespace {
 
 class PrematureExitTest : public Test {
-public:
+  public:
     // Returns true iff the given file exists.
-    static bool FileExists(const char* filepath) {
+    static bool FileExists(const char *filepath) {
         StatStruct stat;
         return Stat(filepath, &stat) == 0;
     }
 
-protected:
+  protected:
     PrematureExitTest() {
         premature_exit_file_path_ = GetEnv("TEST_PREMATURE_EXIT_FILE");
 
@@ -67,7 +67,7 @@ protected:
         return FileExists(premature_exit_file_path_);
     }
 
-    const char* premature_exit_file_path_;
+    const char *premature_exit_file_path_;
 };
 
 typedef PrematureExitTest PrematureExitDeathTest;
@@ -107,15 +107,15 @@ TEST_F(PrematureExitTest, PrematureExitFileExistsDuringTestExecution) {
         << " should exist during test execution, but doesn't.";
 }
 
-}  // namespace
+} // namespace
 
-int main(int argc, char** argv) {
+int main(int argc, char **argv) {
     InitGoogleTest(&argc, argv);
     const int exit_code = RUN_ALL_TESTS();
 
     // Test that the premature-exit file is deleted upon return from
     // RUN_ALL_TESTS().
-    const char* const filepath = GetEnv("TEST_PREMATURE_EXIT_FILE");
+    const char *const filepath = GetEnv("TEST_PREMATURE_EXIT_FILE");
     if (filepath != NULL && *filepath != '\0') {
         if (PrematureExitTest::FileExists(filepath)) {
             printf(

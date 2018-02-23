@@ -51,10 +51,10 @@
 #undef GTEST_IMPLEMENTATION_
 
 #if GTEST_OS_WINDOWS_MOBILE
-#include <windows.h>  // NOLINT
+#include <windows.h> // NOLINT
 #elif GTEST_OS_WINDOWS
-#include <direct.h>  // NOLINT
-#endif               // GTEST_OS_WINDOWS_MOBILE
+#include <direct.h> // NOLINT
+#endif              // GTEST_OS_WINDOWS_MOBILE
 
 namespace testing {
 namespace internal {
@@ -65,14 +65,14 @@ namespace {
 // gtest-port.h.
 
 // Windows CE doesn't have the remove C function.
-int remove(const char* path) {
+int remove(const char *path) {
     LPCWSTR wpath = String::AnsiToUtf16(path);
     int ret = DeleteFile(wpath) ? 0 : -1;
     delete[] wpath;
     return ret;
 }
 // Windows CE doesn't have the _rmdir C function.
-int _rmdir(const char* path) {
+int _rmdir(const char *path) {
     FilePath filepath(path);
     LPCWSTR wpath =
         String::AnsiToUtf16(filepath.RemoveTrailingPathSeparator().c_str());
@@ -94,7 +94,7 @@ TEST(GetCurrentDirTest, ReturnsCurrentDir) {
 #if GTEST_OS_WINDOWS
 
     // Skips the ":".
-    const char* const cwd_without_drive = strchr(cwd.c_str(), ':');
+    const char *const cwd_without_drive = strchr(cwd.c_str(), ':');
     ASSERT_TRUE(cwd_without_drive != NULL);
     EXPECT_STREQ(GTEST_PATH_SEP_, cwd_without_drive + 1);
 
@@ -105,7 +105,7 @@ TEST(GetCurrentDirTest, ReturnsCurrentDir) {
 #endif
 }
 
-#endif  // GTEST_OS_WINDOWS_MOBILE
+#endif // GTEST_OS_WINDOWS_MOBILE
 
 TEST(IsEmptyTest, ReturnsTrueForEmptyPath) {
     EXPECT_TRUE(FilePath("").IsEmpty());
@@ -370,8 +370,8 @@ TEST(RemoveTrailingPathSeparatorTest, ShouldReturnUnmodified) {
 }
 
 TEST(DirectoryTest, RootDirectoryExists) {
-#if GTEST_OS_WINDOWS                // We are on Windows.
-    char current_drive[_MAX_PATH];  // NOLINT
+#if GTEST_OS_WINDOWS               // We are on Windows.
+    char current_drive[_MAX_PATH]; // NOLINT
     current_drive[0] = static_cast<char>(_getdrive() + 'A' - 1);
     current_drive[1] = ':';
     current_drive[2] = '\\';
@@ -379,7 +379,7 @@ TEST(DirectoryTest, RootDirectoryExists) {
     EXPECT_TRUE(FilePath(current_drive).DirectoryExists());
 #else
     EXPECT_TRUE(FilePath("/").DirectoryExists());
-#endif  // GTEST_OS_WINDOWS
+#endif // GTEST_OS_WINDOWS
 }
 
 #if GTEST_OS_WINDOWS
@@ -388,7 +388,7 @@ TEST(DirectoryTest, RootOfWrongDriveDoesNotExists) {
     // Find a drive that doesn't exist. Start with 'Z' to avoid common ones.
     for (char drive = 'Z'; drive >= 'A'; drive--)
         if (_chdrive(drive - 'A' + 1) == -1) {
-            char non_drive[_MAX_PATH];  // NOLINT
+            char non_drive[_MAX_PATH]; // NOLINT
             non_drive[0] = drive;
             non_drive[1] = ':';
             non_drive[2] = '\\';
@@ -398,27 +398,27 @@ TEST(DirectoryTest, RootOfWrongDriveDoesNotExists) {
         }
     _chdrive(saved_drive_);
 }
-#endif  // GTEST_OS_WINDOWS
+#endif // GTEST_OS_WINDOWS
 
 #if !GTEST_OS_WINDOWS_MOBILE
 // Windows CE _does_ consider an empty directory to exist.
 TEST(DirectoryTest, EmptyPathDirectoryDoesNotExist) {
     EXPECT_FALSE(FilePath("").DirectoryExists());
 }
-#endif  // !GTEST_OS_WINDOWS_MOBILE
+#endif // !GTEST_OS_WINDOWS_MOBILE
 
 TEST(DirectoryTest, CurrentDirectoryExists) {
-#if GTEST_OS_WINDOWS  // We are on Windows.
-#ifndef _WIN32_CE     // Windows CE doesn't have a current directory.
+#if GTEST_OS_WINDOWS // We are on Windows.
+#ifndef _WIN32_CE    // Windows CE doesn't have a current directory.
 
     EXPECT_TRUE(FilePath(".").DirectoryExists());
     EXPECT_TRUE(FilePath(".\\").DirectoryExists());
 
-#endif  // _WIN32_CE
+#endif // _WIN32_CE
 #else
     EXPECT_TRUE(FilePath(".").DirectoryExists());
     EXPECT_TRUE(FilePath("./").DirectoryExists());
-#endif  // GTEST_OS_WINDOWS
+#endif // GTEST_OS_WINDOWS
 }
 
 // "foo/bar" == foo//bar" == "foo///bar"
@@ -473,7 +473,7 @@ TEST(AssignmentOperatorTest, DefaultAssignedToNonDefault) {
     FilePath non_default_path("path");
     non_default_path = default_path;
     EXPECT_EQ("", non_default_path.string());
-    EXPECT_EQ("", default_path.string());  // RHS var is unchanged.
+    EXPECT_EQ("", default_path.string()); // RHS var is unchanged.
 }
 
 TEST(AssignmentOperatorTest, NonDefaultAssignedToDefault) {
@@ -481,7 +481,7 @@ TEST(AssignmentOperatorTest, NonDefaultAssignedToDefault) {
     FilePath default_path;
     default_path = non_default_path;
     EXPECT_EQ("path", default_path.string());
-    EXPECT_EQ("path", non_default_path.string());  // RHS var is unchanged.
+    EXPECT_EQ("path", non_default_path.string()); // RHS var is unchanged.
 }
 
 TEST(AssignmentOperatorTest, ConstAssignedToNonConst) {
@@ -492,7 +492,7 @@ TEST(AssignmentOperatorTest, ConstAssignedToNonConst) {
 }
 
 class DirectoryCreationTest : public Test {
-protected:
+  protected:
     virtual void SetUp() {
         testdata_path_.Set(FilePath(
             TempDir() + GetCurrentExecutableName().string() +
@@ -517,8 +517,8 @@ protected:
         posix::RmDir(testdata_path_.c_str());
     }
 
-    void CreateTextFile(const char* filename) {
-        FILE* f = posix::FOpen(filename, "w");
+    void CreateTextFile(const char *filename) {
+        FILE *f = posix::FOpen(filename, "w");
         fprintf(f, "text\n");
         fclose(f);
     }
@@ -526,10 +526,10 @@ protected:
     // Strings representing a directory and a file, with identical paths
     // except for the trailing separator character that distinquishes
     // a directory named 'test' from a file named 'test'. Example names:
-    FilePath testdata_path_;  // "/tmp/directory_creation/test/"
-    FilePath testdata_file_;  // "/tmp/directory_creation/test"
-    FilePath unique_file0_;   // "/tmp/directory_creation/test/unique.txt"
-    FilePath unique_file1_;   // "/tmp/directory_creation/test/unique_1.txt"
+    FilePath testdata_path_; // "/tmp/directory_creation/test/"
+    FilePath testdata_file_; // "/tmp/directory_creation/test"
+    FilePath unique_file0_;  // "/tmp/directory_creation/test/unique.txt"
+    FilePath unique_file1_;  // "/tmp/directory_creation/test/unique_1.txt"
 };
 
 TEST_F(DirectoryCreationTest, CreateDirectoriesRecursively) {
@@ -549,17 +549,17 @@ TEST_F(DirectoryCreationTest, CreateDirectoriesAndUniqueFilename) {
     FilePath file_path(FilePath::GenerateUniqueFileName(
         testdata_path_, FilePath("unique"), "txt"));
     EXPECT_EQ(unique_file0_.string(), file_path.string());
-    EXPECT_FALSE(file_path.FileOrDirectoryExists());  // file not there
+    EXPECT_FALSE(file_path.FileOrDirectoryExists()); // file not there
 
     testdata_path_.CreateDirectoriesRecursively();
-    EXPECT_FALSE(file_path.FileOrDirectoryExists());  // file still not there
+    EXPECT_FALSE(file_path.FileOrDirectoryExists()); // file still not there
     CreateTextFile(file_path.c_str());
     EXPECT_TRUE(file_path.FileOrDirectoryExists());
 
     FilePath file_path2(FilePath::GenerateUniqueFileName(
         testdata_path_, FilePath("unique"), "txt"));
     EXPECT_EQ(unique_file1_.string(), file_path2.string());
-    EXPECT_FALSE(file_path2.FileOrDirectoryExists());  // file not there
+    EXPECT_FALSE(file_path2.FileOrDirectoryExists()); // file not there
     CreateTextFile(file_path2.c_str());
     EXPECT_TRUE(file_path2.FileOrDirectoryExists());
 }
@@ -599,8 +599,7 @@ TEST(FilePathTest, StringConstructor) {
 TEST(FilePathTest, Set) {
     const FilePath apple("apple");
     FilePath mac("mac");
-    mac.Set(
-        apple);  // Implement Set() since overloading operator= is forbidden.
+    mac.Set(apple); // Implement Set() since overloading operator= is forbidden.
     EXPECT_EQ("apple", mac.string());
     EXPECT_EQ("apple", apple.string());
 }
@@ -642,7 +641,7 @@ TEST(FilePathTest, IsAbsolutePath) {
 #else
     EXPECT_TRUE(FilePath(GTEST_PATH_SEP_ "is_not" GTEST_PATH_SEP_ "relative")
                     .IsAbsolutePath());
-#endif  // GTEST_OS_WINDOWS
+#endif // GTEST_OS_WINDOWS
 }
 
 TEST(FilePathTest, IsRootDirectory) {
@@ -664,6 +663,6 @@ TEST(FilePathTest, IsRootDirectory) {
 #endif
 }
 
-}  // namespace
-}  // namespace internal
-}  // namespace testing
+} // namespace
+} // namespace internal
+} // namespace testing

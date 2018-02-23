@@ -82,13 +82,13 @@ TEST(MessageTest, StreamsDouble) {
 // Tests streaming a non-char pointer.
 TEST(MessageTest, StreamsPointer) {
     int n = 0;
-    int* p = &n;
+    int *p = &n;
     EXPECT_NE("(null)", (Message() << p).GetString());
 }
 
 // Tests streaming a NULL non-char pointer.
 TEST(MessageTest, StreamsNullPointer) {
-    int* p = NULL;
+    int *p = NULL;
     EXPECT_EQ("(null)", (Message() << p).GetString());
 }
 
@@ -99,7 +99,7 @@ TEST(MessageTest, StreamsCString) {
 
 // Tests streaming a NULL C string.
 TEST(MessageTest, StreamsNullCString) {
-    char* p = NULL;
+    char *p = NULL;
     EXPECT_EQ("(null)", (Message() << p).GetString());
 }
 
@@ -131,11 +131,11 @@ TEST(MessageTest, StreamsInt) {
 // Tests that basic IO manipulators (endl, ends, and flush) can be
 // streamed to Message.
 TEST(MessageTest, StreamsBasicIoManip) {
-    EXPECT_EQ(
-        "Line 1.\nA NUL char \\0 in line 2.",
-        (Message() << "Line 1." << std::endl
-                   << "A NUL char " << std::ends << std::flush << " in line 2.")
-            .GetString());
+    EXPECT_EQ("Line 1.\nA NUL char \\0 in line 2.",
+              (Message() << "Line 1." << std::endl
+                         << "A NUL char " << std::ends << std::flush
+                         << " in line 2.")
+                  .GetString());
 }
 
 // Tests Message::GetString()
@@ -158,4 +158,4 @@ TEST(MessageTest, DoesNotTakeUpMuchStackSpace) {
     EXPECT_LE(sizeof(Message), 16U);
 }
 
-}  // namespace
+} // namespace

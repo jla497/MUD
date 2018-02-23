@@ -49,15 +49,14 @@ const int kMaxTestThreads = 50;
 const int kRepeat = 50;
 
 class MockFoo {
-public:
-    MOCK_METHOD1(Bar, int(int n));  // NOLINT
+  public:
+    MOCK_METHOD1(Bar, int(int n)); // NOLINT
     MOCK_METHOD2(Baz,
-                 char(const char* s1, const internal::string& s2));  // NOLINT
+                 char(const char *s1, const internal::string &s2)); // NOLINT
 };
 
 // Helper for waiting for the given thread to finish and then deleting it.
-template <typename T>
-void JoinAndDelete(ThreadWithParam<T>* t) {
+template <typename T> void JoinAndDelete(ThreadWithParam<T> *t) {
     t->Join();
     delete t;
 }
@@ -67,30 +66,30 @@ using internal::linked_ptr;
 // Helper classes for testing using linked_ptr concurrently.
 
 class Base {
-public:
+  public:
     explicit Base(int a_x) : x_(a_x) {}
     virtual ~Base() {}
     int x() const { return x_; }
 
-private:
+  private:
     int x_;
 };
 
 class Derived1 : public Base {
-public:
+  public:
     Derived1(int a_x, int a_y) : Base(a_x), y_(a_y) {}
     int y() const { return y_; }
 
-private:
+  private:
     int y_;
 };
 
 class Derived2 : public Base {
-public:
+  public:
     Derived2(int a_x, int a_z) : Base(a_x), z_(a_z) {}
     int z() const { return z_; }
 
-private:
+  private:
     int z_;
 };
 
@@ -172,8 +171,8 @@ void TestConcurrentMockObjects(Dummy /* dummy */) {
 // Tests invoking methods of the same mock object in multiple threads.
 
 struct Helper1Param {
-    MockFoo* mock_foo;
-    int* count;
+    MockFoo *mock_foo;
+    int *count;
 };
 
 void Helper1(Helper1Param param) {
@@ -201,13 +200,13 @@ void TestConcurrentCallsOnSameObject(Dummy /* dummy */) {
 
     ON_CALL(foo, Bar(_)).WillByDefault(Return(1));
     EXPECT_CALL(foo, Baz(_, "b")).Times(kRepeat).WillRepeatedly(Return('a'));
-    EXPECT_CALL(foo, Baz(_, "c"));  // Expected to be unsatisfied.
+    EXPECT_CALL(foo, Baz(_, "c")); // Expected to be unsatisfied.
 
     // This chunk of code should generate kRepeat failures about
     // excessive calls, and 2*kRepeat failures about unexpected calls.
     int count1 = 0;
     const Helper1Param param = {&foo, &count1};
-    ThreadWithParam<Helper1Param>* const t =
+    ThreadWithParam<Helper1Param> *const t =
         new ThreadWithParam<Helper1Param>(Helper1, param, NULL);
 
     int count2 = 0;
@@ -224,7 +223,7 @@ void TestConcurrentCallsOnSameObject(Dummy /* dummy */) {
 // Tests using the same mock object in multiple threads when the
 // expectations are partially ordered.
 
-void Helper2(MockFoo* foo) {
+void Helper2(MockFoo *foo) {
     for (int i = 0; i < kRepeat; i++) {
         foo->Bar(2);
         foo->Bar(3);
@@ -257,8 +256,8 @@ void TestPartiallyOrderedExpectationsWithThreads(Dummy /* dummy */) {
     foo.Bar(0);
     foo.Bar(1);
 
-    ThreadWithParam<MockFoo*>* const t =
-        new ThreadWithParam<MockFoo*>(Helper2, &foo, NULL);
+    ThreadWithParam<MockFoo *> *const t =
+        new ThreadWithParam<MockFoo *>(Helper2, &foo, NULL);
     Helper2(&foo);
     JoinAndDelete(t);
 
@@ -279,7 +278,7 @@ TEST(StressTest, CanUseGMockWithThreads) {
     const int kRoutines = sizeof(test_routines) / sizeof(test_routines[0]);
     const int kCopiesOfEachRoutine = kMaxTestThreads / kRoutines;
     const int kTestThreads = kCopiesOfEachRoutine * kRoutines;
-    ThreadWithParam<Dummy>* threads[kTestThreads] = {};
+    ThreadWithParam<Dummy> *threads[kTestThreads] = {};
     for (int i = 0; i < kTestThreads; i++) {
         // Creates a thread to run the test function.
         threads[i] = new ThreadWithParam<Dummy>(test_routines[i % kRoutines],
@@ -293,21 +292,21 @@ TEST(StressTest, CanUseGMockWithThreads) {
     }
 
     // Ensures that the correct number of failures have been reported.
-    const TestInfo* const info = UnitTest::GetInstance()->current_test_info();
-    const TestResult& result = *info->result();
+    const TestInfo *const info = UnitTest::GetInstance()->current_test_info();
+    const TestResult &result = *info->result();
     const int kExpectedFailures = (3 * kRepeat + 1) * kCopiesOfEachRoutine;
     GTEST_CHECK_(kExpectedFailures == result.total_part_count())
         << "Expected " << kExpectedFailures << " failures, but got "
         << result.total_part_count();
 }
 
-}  // namespace
-}  // namespace testing
+} // namespace
+} // namespace testing
 
-int main(int argc, char** argv) {
+int main(int argc, char **argv) {
     testing::InitGoogleMock(&argc, argv);
 
-    const int exit_code = RUN_ALL_TESTS();  // Expected to fail.
+    const int exit_code = RUN_ALL_TESTS(); // Expected to fail.
     GTEST_CHECK_(exit_code != 0) << "RUN_ALL_TESTS() did not fail as expected";
 
     printf("\nPASS\n");

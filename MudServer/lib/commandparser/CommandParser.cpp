@@ -1,16 +1,16 @@
+#include <actions/PrgmAction.h>
 #include <boost/algorithm/string.hpp>
 #include <boost/tokenizer.hpp>
 #include <iostream>
 #include <memory>
 #include <sstream>
-#include <actions/PrgmAction.h>
 
 #include "actions/AttackAction.h"
 #include "actions/LookAction.h"
 #include "actions/MoveAction.h"
 #include "actions/NullAction.h"
-#include "actions/SayAction.h"
 #include "actions/PrgmAction.h"
+#include "actions/SayAction.h"
 #include "commandparser/CommandParser.h"
 #include "logging.h"
 #include "resources/commands.h"
@@ -80,13 +80,13 @@ CommandParser::actionFromPlayerCommand(PlayerCharacter &character,
 
         break;
     }
-        case ActKeyword::program: {
-            actionDescription << u8"ProgramAction will be created";
-            action = std::make_unique<PrgmAction>(character, remainderOfTokens,
-                                                  gameManager);
+    case ActKeyword::program: {
+        actionDescription << u8"ProgramAction will be created";
+        action = std::make_unique<PrgmAction>(character, remainderOfTokens,
+                                              gameManager);
 
-            break;
-        }
+        break;
+    }
     default:
         actionDescription << u8"Action was not supported";
         action = std::make_unique<NullAction>(character, remainderOfTokens,

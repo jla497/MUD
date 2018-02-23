@@ -45,104 +45,97 @@
 
 namespace testing {
 
-template <typename T>
-class Matcher;
+template <typename T> class Matcher;
 
 namespace internal {
 
 // An IgnoredValue object can be implicitly constructed from ANY value.
 // This is used in implementing the IgnoreResult(a) action.
 class IgnoredValue {
-public:
+  public:
     // This constructor template allows any value to be implicitly
     // converted to IgnoredValue.  The object has no data member and
     // doesn't try to remember anything about the argument.  We
     // deliberately omit the 'explicit' keyword in order to allow the
     // conversion to be implicit.
     template <typename T>
-    IgnoredValue(const T& /* ignored */) {}  // NOLINT(runtime/explicit)
+    IgnoredValue(const T & /* ignored */) {} // NOLINT(runtime/explicit)
 };
 
 // MatcherTuple<T>::type is a tuple type where each field is a Matcher
 // for the corresponding field in tuple type T.
-template <typename Tuple>
-struct MatcherTuple;
+template <typename Tuple> struct MatcherTuple;
 
-template <>
-struct MatcherTuple< ::testing::tuple<> > {
+template <> struct MatcherTuple<::testing::tuple<>> {
     typedef ::testing::tuple<> type;
 };
 
-template <typename A1>
-struct MatcherTuple< ::testing::tuple<A1> > {
-    typedef ::testing::tuple<Matcher<A1> > type;
+template <typename A1> struct MatcherTuple<::testing::tuple<A1>> {
+    typedef ::testing::tuple<Matcher<A1>> type;
 };
 
 template <typename A1, typename A2>
-struct MatcherTuple< ::testing::tuple<A1, A2> > {
-    typedef ::testing::tuple<Matcher<A1>, Matcher<A2> > type;
+struct MatcherTuple<::testing::tuple<A1, A2>> {
+    typedef ::testing::tuple<Matcher<A1>, Matcher<A2>> type;
 };
 
 template <typename A1, typename A2, typename A3>
-struct MatcherTuple< ::testing::tuple<A1, A2, A3> > {
-    typedef ::testing::tuple<Matcher<A1>, Matcher<A2>, Matcher<A3> > type;
+struct MatcherTuple<::testing::tuple<A1, A2, A3>> {
+    typedef ::testing::tuple<Matcher<A1>, Matcher<A2>, Matcher<A3>> type;
 };
 
 template <typename A1, typename A2, typename A3, typename A4>
-struct MatcherTuple< ::testing::tuple<A1, A2, A3, A4> > {
-    typedef ::testing::tuple<Matcher<A1>, Matcher<A2>, Matcher<A3>,
-                             Matcher<A4> >
+struct MatcherTuple<::testing::tuple<A1, A2, A3, A4>> {
+    typedef ::testing::tuple<Matcher<A1>, Matcher<A2>, Matcher<A3>, Matcher<A4>>
         type;
 };
 
 template <typename A1, typename A2, typename A3, typename A4, typename A5>
-struct MatcherTuple< ::testing::tuple<A1, A2, A3, A4, A5> > {
+struct MatcherTuple<::testing::tuple<A1, A2, A3, A4, A5>> {
     typedef ::testing::tuple<Matcher<A1>, Matcher<A2>, Matcher<A3>, Matcher<A4>,
-                             Matcher<A5> >
+                             Matcher<A5>>
         type;
 };
 
 template <typename A1, typename A2, typename A3, typename A4, typename A5,
           typename A6>
-struct MatcherTuple< ::testing::tuple<A1, A2, A3, A4, A5, A6> > {
+struct MatcherTuple<::testing::tuple<A1, A2, A3, A4, A5, A6>> {
     typedef ::testing::tuple<Matcher<A1>, Matcher<A2>, Matcher<A3>, Matcher<A4>,
-                             Matcher<A5>, Matcher<A6> >
+                             Matcher<A5>, Matcher<A6>>
         type;
 };
 
 template <typename A1, typename A2, typename A3, typename A4, typename A5,
           typename A6, typename A7>
-struct MatcherTuple< ::testing::tuple<A1, A2, A3, A4, A5, A6, A7> > {
+struct MatcherTuple<::testing::tuple<A1, A2, A3, A4, A5, A6, A7>> {
     typedef ::testing::tuple<Matcher<A1>, Matcher<A2>, Matcher<A3>, Matcher<A4>,
-                             Matcher<A5>, Matcher<A6>, Matcher<A7> >
+                             Matcher<A5>, Matcher<A6>, Matcher<A7>>
         type;
 };
 
 template <typename A1, typename A2, typename A3, typename A4, typename A5,
           typename A6, typename A7, typename A8>
-struct MatcherTuple< ::testing::tuple<A1, A2, A3, A4, A5, A6, A7, A8> > {
+struct MatcherTuple<::testing::tuple<A1, A2, A3, A4, A5, A6, A7, A8>> {
     typedef ::testing::tuple<Matcher<A1>, Matcher<A2>, Matcher<A3>, Matcher<A4>,
-                             Matcher<A5>, Matcher<A6>, Matcher<A7>,
-                             Matcher<A8> >
+                             Matcher<A5>, Matcher<A6>, Matcher<A7>, Matcher<A8>>
         type;
 };
 
 template <typename A1, typename A2, typename A3, typename A4, typename A5,
           typename A6, typename A7, typename A8, typename A9>
-struct MatcherTuple< ::testing::tuple<A1, A2, A3, A4, A5, A6, A7, A8, A9> > {
+struct MatcherTuple<::testing::tuple<A1, A2, A3, A4, A5, A6, A7, A8, A9>> {
     typedef ::testing::tuple<Matcher<A1>, Matcher<A2>, Matcher<A3>, Matcher<A4>,
                              Matcher<A5>, Matcher<A6>, Matcher<A7>, Matcher<A8>,
-                             Matcher<A9> >
+                             Matcher<A9>>
         type;
 };
 
 template <typename A1, typename A2, typename A3, typename A4, typename A5,
           typename A6, typename A7, typename A8, typename A9, typename A10>
-struct MatcherTuple<
-    ::testing::tuple<A1, A2, A3, A4, A5, A6, A7, A8, A9, A10> > {
+struct MatcherTuple<::testing::tuple<A1, A2, A3, A4, A5, A6, A7, A8, A9, A10>> {
     typedef ::testing::tuple<Matcher<A1>, Matcher<A2>, Matcher<A3>, Matcher<A4>,
                              Matcher<A5>, Matcher<A6>, Matcher<A7>, Matcher<A8>,
-                             Matcher<A9>, Matcher<A10> >
+                             Matcher<A9>, Matcher<A10>>
         type;
 };
 
@@ -159,11 +152,9 @@ struct MatcherTuple<
 //   MakeResultIgnoredValue:
 //                         the function type obtained by substituting Something
 //                         for the return type of F.
-template <typename F>
-struct Function;
+template <typename F> struct Function;
 
-template <typename R>
-struct Function<R()> {
+template <typename R> struct Function<R()> {
     typedef R Result;
     typedef ::testing::tuple<> ArgumentTuple;
     typedef typename MatcherTuple<ArgumentTuple>::type ArgumentMatcherTuple;
@@ -171,8 +162,7 @@ struct Function<R()> {
     typedef IgnoredValue MakeResultIgnoredValue();
 };
 
-template <typename R, typename A1>
-struct Function<R(A1)> : Function<R()> {
+template <typename R, typename A1> struct Function<R(A1)> : Function<R()> {
     typedef A1 Argument1;
     typedef ::testing::tuple<A1> ArgumentTuple;
     typedef typename MatcherTuple<ArgumentTuple>::type ArgumentMatcherTuple;
@@ -275,8 +265,8 @@ struct Function<R(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10)>
                                                 A9, A10);
 };
 
-}  // namespace internal
+} // namespace internal
 
-}  // namespace testing
+} // namespace testing
 
-#endif  // GMOCK_INCLUDE_GMOCK_INTERNAL_GMOCK_GENERATED_INTERNAL_UTILS_H_
+#endif // GMOCK_INCLUDE_GMOCK_INTERNAL_GMOCK_GENERATED_INTERNAL_UTILS_H_

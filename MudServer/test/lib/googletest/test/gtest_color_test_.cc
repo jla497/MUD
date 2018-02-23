@@ -54,7 +54,7 @@ using testing::internal::ShouldUseColor;
 // run the TEST itself.
 TEST(GTestColorTest, Dummy) {}
 
-int main(int argc, char** argv) {
+int main(int argc, char **argv) {
     testing::InitGoogleTest(&argc, argv);
 
     if (ShouldUseColor(true)) {

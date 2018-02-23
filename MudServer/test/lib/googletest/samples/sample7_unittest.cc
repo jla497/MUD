@@ -50,12 +50,12 @@ using ::testing::Values;
 // instead of reusing them.  In this sample we will define a simple factory
 // function for PrimeTable objects.  We will instantiate objects in test's
 // SetUp() method and delete them in TearDown() method.
-typedef PrimeTable* CreatePrimeTableFunc();
+typedef PrimeTable *CreatePrimeTableFunc();
 
-PrimeTable* CreateOnTheFlyPrimeTable() { return new OnTheFlyPrimeTable(); }
+PrimeTable *CreateOnTheFlyPrimeTable() { return new OnTheFlyPrimeTable(); }
 
 template <size_t max_precalculated>
-PrimeTable* CreatePreCalculatedPrimeTable() {
+PrimeTable *CreatePreCalculatedPrimeTable() {
     return new PreCalculatedPrimeTable(max_precalculated);
 }
 
@@ -63,8 +63,8 @@ PrimeTable* CreatePreCalculatedPrimeTable() {
 // can refer to the test parameter by GetParam().  In this case, the test
 // parameter is a factory function which we call in fixture's SetUp() to
 // create and store an instance of PrimeTable.
-class PrimeTableTest : public TestWithParam<CreatePrimeTableFunc*> {
-public:
+class PrimeTableTest : public TestWithParam<CreatePrimeTableFunc *> {
+  public:
     virtual ~PrimeTableTest() { delete table_; }
     virtual void SetUp() { table_ = (*GetParam())(); }
     virtual void TearDown() {
@@ -72,8 +72,8 @@ public:
         table_ = NULL;
     }
 
-protected:
-    PrimeTable* table_;
+  protected:
+    PrimeTable *table_;
 };
 
 TEST_P(PrimeTableTest, ReturnsFalseForNonPrimes) {
@@ -124,4 +124,4 @@ INSTANTIATE_TEST_CASE_P(OnTheFlyAndPreCalculated, PrimeTableTest,
 // must be defined). This dummy test keeps gtest_main linked in.
 TEST(DummyTest, ValueParameterizedTestsAreNotSupportedOnThisPlatform) {}
 
-#endif  // GTEST_HAS_PARAM_TEST
+#endif // GTEST_HAS_PARAM_TEST

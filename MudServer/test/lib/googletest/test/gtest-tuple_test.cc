@@ -44,21 +44,21 @@ using ::testing::StaticAssertTypeEq;
 
 // Tests that tuple_element<K, tuple<T0, T1, ..., TN> >::type returns TK.
 TEST(tuple_element_Test, ReturnsElementType) {
-    StaticAssertTypeEq<int, tuple_element<0, tuple<int, char> >::type>();
-    StaticAssertTypeEq<int&, tuple_element<1, tuple<double, int&> >::type>();
+    StaticAssertTypeEq<int, tuple_element<0, tuple<int, char>>::type>();
+    StaticAssertTypeEq<int &, tuple_element<1, tuple<double, int &>>::type>();
     StaticAssertTypeEq<bool,
-                       tuple_element<2, tuple<double, int, bool> >::type>();
+                       tuple_element<2, tuple<double, int, bool>>::type>();
 }
 
 // Tests that tuple_size<T>::value gives the number of fields in tuple
 // type T.
 TEST(tuple_size_Test, ReturnsNumberOfFields) {
-    EXPECT_EQ(0, +tuple_size<tuple<> >::value);
-    EXPECT_EQ(1, +tuple_size<tuple<void*> >::value);
-    EXPECT_EQ(1, +tuple_size<tuple<char> >::value);
-    EXPECT_EQ(1, +(tuple_size<tuple<tuple<int, double> > >::value));
-    EXPECT_EQ(2, +(tuple_size<tuple<int&, const char> >::value));
-    EXPECT_EQ(3, +(tuple_size<tuple<char*, void, const bool&> >::value));
+    EXPECT_EQ(0, +tuple_size<tuple<>>::value);
+    EXPECT_EQ(1, +tuple_size<tuple<void *>>::value);
+    EXPECT_EQ(1, +tuple_size<tuple<char>>::value);
+    EXPECT_EQ(1, +(tuple_size<tuple<tuple<int, double>>>::value));
+    EXPECT_EQ(2, +(tuple_size<tuple<int &, const char>>::value));
+    EXPECT_EQ(3, +(tuple_size<tuple<char *, void, const bool &>>::value));
 }
 
 // Tests comparing a tuple with itself.
@@ -95,7 +95,7 @@ TEST(ComparisonTest, ComparesUnequalTuplesWithoutReferenceFields) {
 
 // Tests comparing two different tuples that have reference fields.
 TEST(ComparisonTest, ComparesUnequalTuplesWithReferenceFields) {
-    typedef tuple<int&, const char&> FooTuple;
+    typedef tuple<int &, const char &> FooTuple;
 
     int i = 5;
     const char ch = 'a';
@@ -119,7 +119,7 @@ TEST(ComparisonTest, ComparesUnequalTuplesWithReferenceFields) {
 // variable it's supposed to reference.
 TEST(ReferenceFieldTest, IsAliasOfReferencedVariable) {
     int n = 0;
-    tuple<bool, int&> t(true, n);
+    tuple<bool, int &> t(true, n);
 
     n = 1;
     EXPECT_EQ(n, get<1>(t))
@@ -180,7 +180,7 @@ TEST(TupleConstructorTest, DefaultConstructorDefaultInitializesEachField) {
 TEST(TupleConstructorTest, ConstructsFromFields) {
     int n = 1;
     // Reference field.
-    tuple<int&> a(n);
+    tuple<int &> a(n);
     EXPECT_EQ(&n, &(get<0>(a)));
 
     // Non-reference fields.
@@ -190,7 +190,7 @@ TEST(TupleConstructorTest, ConstructsFromFields) {
 
     // Const reference field.
     const int m = 2;
-    tuple<bool, const int&> c(true, m);
+    tuple<bool, const int &> c(true, m);
     EXPECT_TRUE(get<0>(c));
     EXPECT_EQ(&m, &(get<1>(c)));
 }
@@ -219,7 +219,7 @@ TEST(TupleConstructorTest, ConstructsFromDifferentTupleType) {
 TEST(TupleConstructorTest, ConstructsFromPair) {
     ::std::pair<int, char> a(1, 'a');
     tuple<int, char> b(a);
-    tuple<int, const char&> c(a);
+    tuple<int, const char &> c(a);
 }
 
 // Tests assigning a tuple to another tuple with the same type.
@@ -258,7 +258,7 @@ TEST(TupleAssignmentTest, AssignsFromPair) {
 
 // A fixture for testing big tuples.
 class BigTupleTest : public testing::Test {
-protected:
+  protected:
     typedef tuple<int, int, int, int, int, int, int, int, int, int> BigTuple;
 
     BigTupleTest()
@@ -308,13 +308,13 @@ TEST(MakeTupleTest, WorksForScalarTypes) {
 
 TEST(MakeTupleTest, WorksForPointers) {
     int a[] = {1, 2, 3, 4};
-    const char* const str = "hi";
-    int* const p = a;
+    const char *const str = "hi";
+    int *const p = a;
 
-    tuple<const char*, int*> t;
+    tuple<const char *, int *> t;
     t = make_tuple(str, p);
     EXPECT_EQ(str, get<0>(t));
     EXPECT_EQ(p, get<1>(t));
 }
 
-}  // namespace
+} // namespace

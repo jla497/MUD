@@ -2,21 +2,20 @@
 #define ADMINISTRATOR_H
 
 namespace mudserver {
-    namespace gamemanager {
-        class GameManager;
-    }
+namespace gamemanager {
+class GameManager;
+}
 }
 
-namespace mudserver{
-  namespace gamemanager {
+namespace mudserver {
+namespace gamemanager {
 
-    class Administrator {
+class Administrator {
 
-    public:
-        void accessGameManager(mudserver::gamemanager::GameManager& manager);
-    };
-
-  }
+  public:
+    void accessGameManager(mudserver::gamemanager::GameManager &manager);
+};
+}
 }
 
 #endif

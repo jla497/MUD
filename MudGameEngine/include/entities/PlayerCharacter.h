@@ -10,7 +10,8 @@ class PlayerCharacter : public CharacterEntity {
 
   private:
     // Possibly race here later
-    Administrator* admin = nullptr;
+    Administrator *admin = nullptr;
+
   public:
     PlayerCharacter() = default;
     PlayerCharacter(int armor, std::string damage,
@@ -19,7 +20,7 @@ class PlayerCharacter : public CharacterEntity {
                     unsigned int level, std::vector<std::string> longDesc,
                     std::string shortDesc, int thac0);
     void getAdminPrivileges();
-    Administrator* getAdministrator();
+    Administrator *getAdministrator();
 };
 
 #endif

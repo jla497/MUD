@@ -176,7 +176,7 @@ TEST_P(DerivedTest, DoesBlah) {
   EXPECT_TRUE(foo.Blah(GetParam()));
 }
 
-#endif  // 0
+#endif // 0
 
 #include "gtest/internal/gtest-port.h"
 
@@ -243,8 +243,7 @@ internal::ParamGenerator<T> Range(T start, T end, IncrementT step) {
         new internal::RangeGenerator<T, IncrementT>(start, end, step));
 }
 
-template <typename T>
-internal::ParamGenerator<T> Range(T start, T end) {
+template <typename T> internal::ParamGenerator<T> Range(T start, T end) {
     return Range(start, end, 1);
 }
 
@@ -319,8 +318,8 @@ internal::ParamGenerator<T> ValuesIn(const T (&array)[N]) {
 }
 
 template <class Container>
-internal::ParamGenerator<typename Container::value_type> ValuesIn(
-    const Container& container) {
+internal::ParamGenerator<typename Container::value_type>
+ValuesIn(const Container &container) {
     return ValuesIn(container.begin(), container.end());
 }
 
@@ -343,8 +342,7 @@ internal::ParamGenerator<typename Container::value_type> ValuesIn(
 //
 // Currently, Values() supports from 1 to 50 parameters.
 //
-template <typename T1>
-internal::ValueArray1<T1> Values(T1 v1) {
+template <typename T1> internal::ValueArray1<T1> Values(T1 v1) {
     return internal::ValueArray1<T1>(v1);
 }
 
@@ -379,35 +377,32 @@ internal::ValueArray6<T1, T2, T3, T4, T5, T6> Values(T1 v1, T2 v2, T3 v3, T4 v4,
 
 template <typename T1, typename T2, typename T3, typename T4, typename T5,
           typename T6, typename T7>
-internal::ValueArray7<T1, T2, T3, T4, T5, T6, T7> Values(T1 v1, T2 v2, T3 v3,
-                                                         T4 v4, T5 v5, T6 v6,
-                                                         T7 v7) {
+internal::ValueArray7<T1, T2, T3, T4, T5, T6, T7>
+Values(T1 v1, T2 v2, T3 v3, T4 v4, T5 v5, T6 v6, T7 v7) {
     return internal::ValueArray7<T1, T2, T3, T4, T5, T6, T7>(v1, v2, v3, v4, v5,
                                                              v6, v7);
 }
 
 template <typename T1, typename T2, typename T3, typename T4, typename T5,
           typename T6, typename T7, typename T8>
-internal::ValueArray8<T1, T2, T3, T4, T5, T6, T7, T8> Values(T1 v1, T2 v2,
-                                                             T3 v3, T4 v4,
-                                                             T5 v5, T6 v6,
-                                                             T7 v7, T8 v8) {
+internal::ValueArray8<T1, T2, T3, T4, T5, T6, T7, T8>
+Values(T1 v1, T2 v2, T3 v3, T4 v4, T5 v5, T6 v6, T7 v7, T8 v8) {
     return internal::ValueArray8<T1, T2, T3, T4, T5, T6, T7, T8>(
         v1, v2, v3, v4, v5, v6, v7, v8);
 }
 
 template <typename T1, typename T2, typename T3, typename T4, typename T5,
           typename T6, typename T7, typename T8, typename T9>
-internal::ValueArray9<T1, T2, T3, T4, T5, T6, T7, T8, T9> Values(
-    T1 v1, T2 v2, T3 v3, T4 v4, T5 v5, T6 v6, T7 v7, T8 v8, T9 v9) {
+internal::ValueArray9<T1, T2, T3, T4, T5, T6, T7, T8, T9>
+Values(T1 v1, T2 v2, T3 v3, T4 v4, T5 v5, T6 v6, T7 v7, T8 v8, T9 v9) {
     return internal::ValueArray9<T1, T2, T3, T4, T5, T6, T7, T8, T9>(
         v1, v2, v3, v4, v5, v6, v7, v8, v9);
 }
 
 template <typename T1, typename T2, typename T3, typename T4, typename T5,
           typename T6, typename T7, typename T8, typename T9, typename T10>
-internal::ValueArray10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> Values(
-    T1 v1, T2 v2, T3 v3, T4 v4, T5 v5, T6 v6, T7 v7, T8 v8, T9 v9, T10 v10) {
+internal::ValueArray10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>
+Values(T1 v1, T2 v2, T3 v3, T4 v4, T5 v5, T6 v6, T7 v7, T8 v8, T9 v9, T10 v10) {
     return internal::ValueArray10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(
         v1, v2, v3, v4, v5, v6, v7, v8, v9, v10);
 }
@@ -415,9 +410,9 @@ internal::ValueArray10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> Values(
 template <typename T1, typename T2, typename T3, typename T4, typename T5,
           typename T6, typename T7, typename T8, typename T9, typename T10,
           typename T11>
-internal::ValueArray11<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> Values(
-    T1 v1, T2 v2, T3 v3, T4 v4, T5 v5, T6 v6, T7 v7, T8 v8, T9 v9, T10 v10,
-    T11 v11) {
+internal::ValueArray11<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>
+Values(T1 v1, T2 v2, T3 v3, T4 v4, T5 v5, T6 v6, T7 v7, T8 v8, T9 v9, T10 v10,
+       T11 v11) {
     return internal::ValueArray11<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(
         v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11);
 }
@@ -1340,14 +1335,14 @@ inline internal::ParamGenerator<bool> Bool() { return Values(false, true); }
 //                         Combine(Bool(), Bool()));
 //
 template <typename Generator1, typename Generator2>
-internal::CartesianProductHolder2<Generator1, Generator2> Combine(
-    const Generator1& g1, const Generator2& g2) {
+internal::CartesianProductHolder2<Generator1, Generator2>
+Combine(const Generator1 &g1, const Generator2 &g2) {
     return internal::CartesianProductHolder2<Generator1, Generator2>(g1, g2);
 }
 
 template <typename Generator1, typename Generator2, typename Generator3>
-internal::CartesianProductHolder3<Generator1, Generator2, Generator3> Combine(
-    const Generator1& g1, const Generator2& g2, const Generator3& g3) {
+internal::CartesianProductHolder3<Generator1, Generator2, Generator3>
+Combine(const Generator1 &g1, const Generator2 &g2, const Generator3 &g3) {
     return internal::CartesianProductHolder3<Generator1, Generator2,
                                              Generator3>(g1, g2, g3);
 }
@@ -1356,8 +1351,8 @@ template <typename Generator1, typename Generator2, typename Generator3,
           typename Generator4>
 internal::CartesianProductHolder4<Generator1, Generator2, Generator3,
                                   Generator4>
-Combine(const Generator1& g1, const Generator2& g2, const Generator3& g3,
-        const Generator4& g4) {
+Combine(const Generator1 &g1, const Generator2 &g2, const Generator3 &g3,
+        const Generator4 &g4) {
     return internal::CartesianProductHolder4<Generator1, Generator2, Generator3,
                                              Generator4>(g1, g2, g3, g4);
 }
@@ -1366,8 +1361,8 @@ template <typename Generator1, typename Generator2, typename Generator3,
           typename Generator4, typename Generator5>
 internal::CartesianProductHolder5<Generator1, Generator2, Generator3,
                                   Generator4, Generator5>
-Combine(const Generator1& g1, const Generator2& g2, const Generator3& g3,
-        const Generator4& g4, const Generator5& g5) {
+Combine(const Generator1 &g1, const Generator2 &g2, const Generator3 &g3,
+        const Generator4 &g4, const Generator5 &g5) {
     return internal::CartesianProductHolder5<Generator1, Generator2, Generator3,
                                              Generator4, Generator5>(g1, g2, g3,
                                                                      g4, g5);
@@ -1377,8 +1372,8 @@ template <typename Generator1, typename Generator2, typename Generator3,
           typename Generator4, typename Generator5, typename Generator6>
 internal::CartesianProductHolder6<Generator1, Generator2, Generator3,
                                   Generator4, Generator5, Generator6>
-Combine(const Generator1& g1, const Generator2& g2, const Generator3& g3,
-        const Generator4& g4, const Generator5& g5, const Generator6& g6) {
+Combine(const Generator1 &g1, const Generator2 &g2, const Generator3 &g3,
+        const Generator4 &g4, const Generator5 &g5, const Generator6 &g6) {
     return internal::CartesianProductHolder6<
         Generator1, Generator2, Generator3, Generator4, Generator5, Generator6>(
         g1, g2, g3, g4, g5, g6);
@@ -1390,9 +1385,9 @@ template <typename Generator1, typename Generator2, typename Generator3,
 internal::CartesianProductHolder7<Generator1, Generator2, Generator3,
                                   Generator4, Generator5, Generator6,
                                   Generator7>
-Combine(const Generator1& g1, const Generator2& g2, const Generator3& g3,
-        const Generator4& g4, const Generator5& g5, const Generator6& g6,
-        const Generator7& g7) {
+Combine(const Generator1 &g1, const Generator2 &g2, const Generator3 &g3,
+        const Generator4 &g4, const Generator5 &g5, const Generator6 &g6,
+        const Generator7 &g7) {
     return internal::CartesianProductHolder7<Generator1, Generator2, Generator3,
                                              Generator4, Generator5, Generator6,
                                              Generator7>(g1, g2, g3, g4, g5, g6,
@@ -1405,9 +1400,9 @@ template <typename Generator1, typename Generator2, typename Generator3,
 internal::CartesianProductHolder8<Generator1, Generator2, Generator3,
                                   Generator4, Generator5, Generator6,
                                   Generator7, Generator8>
-Combine(const Generator1& g1, const Generator2& g2, const Generator3& g3,
-        const Generator4& g4, const Generator5& g5, const Generator6& g6,
-        const Generator7& g7, const Generator8& g8) {
+Combine(const Generator1 &g1, const Generator2 &g2, const Generator3 &g3,
+        const Generator4 &g4, const Generator5 &g5, const Generator6 &g6,
+        const Generator7 &g7, const Generator8 &g8) {
     return internal::CartesianProductHolder8<Generator1, Generator2, Generator3,
                                              Generator4, Generator5, Generator6,
                                              Generator7, Generator8>(
@@ -1420,9 +1415,9 @@ template <typename Generator1, typename Generator2, typename Generator3,
 internal::CartesianProductHolder9<Generator1, Generator2, Generator3,
                                   Generator4, Generator5, Generator6,
                                   Generator7, Generator8, Generator9>
-Combine(const Generator1& g1, const Generator2& g2, const Generator3& g3,
-        const Generator4& g4, const Generator5& g5, const Generator6& g6,
-        const Generator7& g7, const Generator8& g8, const Generator9& g9) {
+Combine(const Generator1 &g1, const Generator2 &g2, const Generator3 &g3,
+        const Generator4 &g4, const Generator5 &g5, const Generator6 &g6,
+        const Generator7 &g7, const Generator8 &g8, const Generator9 &g9) {
     return internal::CartesianProductHolder9<
         Generator1, Generator2, Generator3, Generator4, Generator5, Generator6,
         Generator7, Generator8, Generator9>(g1, g2, g3, g4, g5, g6, g7, g8, g9);
@@ -1435,25 +1430,25 @@ template <typename Generator1, typename Generator2, typename Generator3,
 internal::CartesianProductHolder10<
     Generator1, Generator2, Generator3, Generator4, Generator5, Generator6,
     Generator7, Generator8, Generator9, Generator10>
-Combine(const Generator1& g1, const Generator2& g2, const Generator3& g3,
-        const Generator4& g4, const Generator5& g5, const Generator6& g6,
-        const Generator7& g7, const Generator8& g8, const Generator9& g9,
-        const Generator10& g10) {
+Combine(const Generator1 &g1, const Generator2 &g2, const Generator3 &g3,
+        const Generator4 &g4, const Generator5 &g5, const Generator6 &g6,
+        const Generator7 &g7, const Generator8 &g8, const Generator9 &g9,
+        const Generator10 &g10) {
     return internal::CartesianProductHolder10<
         Generator1, Generator2, Generator3, Generator4, Generator5, Generator6,
         Generator7, Generator8, Generator9, Generator10>(g1, g2, g3, g4, g5, g6,
                                                          g7, g8, g9, g10);
 }
-#endif  // GTEST_HAS_COMBINE
+#endif // GTEST_HAS_COMBINE
 
 #define TEST_P(test_case_name, test_name)                                      \
     class GTEST_TEST_CLASS_NAME_(test_case_name, test_name)                    \
         : public test_case_name {                                              \
-    public:                                                                    \
+      public:                                                                  \
         GTEST_TEST_CLASS_NAME_(test_case_name, test_name)() {}                 \
         virtual void TestBody();                                               \
                                                                                \
-    private:                                                                   \
+      private:                                                                 \
         static int AddToRegistry() {                                           \
             ::testing::UnitTest::GetInstance()                                 \
                 ->parameterized_test_registry()                                \
@@ -1493,7 +1488,7 @@ Combine(const Generator1& g1, const Generator2& g2, const Generator3& g3,
         return generator;                                                      \
     }                                                                          \
     ::std::string gtest_##prefix##test_case_name##_EvalGenerateName_(          \
-        const ::testing::TestParamInfo<test_case_name::ParamType>& info) {     \
+        const ::testing::TestParamInfo<test_case_name::ParamType> &info) {     \
         return ::testing::internal::GetParamNameGen<                           \
             test_case_name::ParamType>(__VA_ARGS__)(info);                     \
     }                                                                          \
@@ -1508,8 +1503,8 @@ Combine(const Generator1& g1, const Generator2& g2, const Generator3& g3,
                 &gtest_##prefix##test_case_name##_EvalGenerateName_, __FILE__, \
                 __LINE__)
 
-}  // namespace testing
+} // namespace testing
 
-#endif  // GTEST_HAS_PARAM_TEST
+#endif // GTEST_HAS_PARAM_TEST
 
-#endif  // GTEST_INCLUDE_GTEST_GTEST_PARAM_TEST_H_
+#endif // GTEST_INCLUDE_GTEST_GTEST_PARAM_TEST_H_

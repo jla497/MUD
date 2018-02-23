@@ -52,15 +52,15 @@
 
 // hash_map and hash_set are available under Visual C++, or on Linux.
 #if GTEST_HAS_HASH_MAP_
-#include <hash_map>  // NOLINT
-#endif               // GTEST_HAS_HASH_MAP_
+#include <hash_map> // NOLINT
+#endif              // GTEST_HAS_HASH_MAP_
 #if GTEST_HAS_HASH_SET_
-#include <hash_set>  // NOLINT
-#endif               // GTEST_HAS_HASH_SET_
+#include <hash_set> // NOLINT
+#endif              // GTEST_HAS_HASH_SET_
 
 #if GTEST_HAS_STD_FORWARD_LIST_
-#include <forward_list>  // NOLINT
-#endif                   // GTEST_HAS_STD_FORWARD_LIST_
+#include <forward_list> // NOLINT
+#endif                  // GTEST_HAS_STD_FORWARD_LIST_
 
 // Some user-defined types for testing the universal value printer.
 
@@ -73,44 +73,43 @@ enum EnumWithoutPrinter { kEWP1 = -2, kEWP2 = 42 };
 // An enum with a << operator.
 enum EnumWithStreaming { kEWS1 = 10 };
 
-std::ostream& operator<<(std::ostream& os, EnumWithStreaming e) {
+std::ostream &operator<<(std::ostream &os, EnumWithStreaming e) {
     return os << (e == kEWS1 ? "kEWS1" : "invalid");
 }
 
 // An enum with a PrintTo() function.
 enum EnumWithPrintTo { kEWPT1 = 1 };
 
-void PrintTo(EnumWithPrintTo e, std::ostream* os) {
+void PrintTo(EnumWithPrintTo e, std::ostream *os) {
     *os << (e == kEWPT1 ? "kEWPT1" : "invalid");
 }
 
 // A class implicitly convertible to BiggestInt.
 class BiggestIntConvertible {
-public:
+  public:
     operator ::testing::internal::BiggestInt() const { return 42; }
 };
 
 // A user-defined unprintable class template in the global namespace.
-template <typename T>
-class UnprintableTemplateInGlobal {
-public:
+template <typename T> class UnprintableTemplateInGlobal {
+  public:
     UnprintableTemplateInGlobal() : value_() {}
 
-private:
+  private:
     T value_;
 };
 
 // A user-defined streamable type in the global namespace.
 class StreamableInGlobal {
-public:
+  public:
     virtual ~StreamableInGlobal() {}
 };
 
-inline void operator<<(::std::ostream& os, const StreamableInGlobal& /* x */) {
+inline void operator<<(::std::ostream &os, const StreamableInGlobal & /* x */) {
     os << "StreamableInGlobal";
 }
 
-void operator<<(::std::ostream& os, const StreamableInGlobal* /* x */) {
+void operator<<(::std::ostream &os, const StreamableInGlobal * /* x */) {
     os << "StreamableInGlobal*";
 }
 
@@ -118,13 +117,13 @@ namespace foo {
 
 // A user-defined unprintable type in a user namespace.
 class UnprintableInFoo {
-public:
+  public:
     UnprintableInFoo() : z_(0) {
         memcpy(xy_, "\xEF\x12\x0\x0\x34\xAB\x0\x0", 8);
     }
     double z() const { return z_; }
 
-private:
+  private:
     char xy_[8];
     double z_;
 };
@@ -135,54 +134,52 @@ struct PrintableViaPrintTo {
     int value;
 };
 
-void PrintTo(const PrintableViaPrintTo& x, ::std::ostream* os) {
+void PrintTo(const PrintableViaPrintTo &x, ::std::ostream *os) {
     *os << "PrintableViaPrintTo: " << x.value;
 }
 
 // A type with a user-defined << for printing its pointer.
 struct PointerPrintable {};
 
-::std::ostream& operator<<(::std::ostream& os,
-                           const PointerPrintable* /* x */) {
+::std::ostream &operator<<(::std::ostream &os,
+                           const PointerPrintable * /* x */) {
     return os << "PointerPrintable*";
 }
 
 // A user-defined printable class template in a user-chosen namespace.
-template <typename T>
-class PrintableViaPrintToTemplate {
-public:
-    explicit PrintableViaPrintToTemplate(const T& a_value) : value_(a_value) {}
+template <typename T> class PrintableViaPrintToTemplate {
+  public:
+    explicit PrintableViaPrintToTemplate(const T &a_value) : value_(a_value) {}
 
-    const T& value() const { return value_; }
+    const T &value() const { return value_; }
 
-private:
+  private:
     T value_;
 };
 
 template <typename T>
-void PrintTo(const PrintableViaPrintToTemplate<T>& x, ::std::ostream* os) {
+void PrintTo(const PrintableViaPrintToTemplate<T> &x, ::std::ostream *os) {
     *os << "PrintableViaPrintToTemplate: " << x.value();
 }
 
 // A user-defined streamable class template in a user namespace.
-template <typename T>
-class StreamableTemplateInFoo {
-public:
+template <typename T> class StreamableTemplateInFoo {
+  public:
     StreamableTemplateInFoo() : value_() {}
 
-    const T& value() const { return value_; }
+    const T &value() const { return value_; }
 
-private:
+  private:
     T value_;
 };
 
 template <typename T>
-inline ::std::ostream& operator<<(::std::ostream& os,
-                                  const StreamableTemplateInFoo<T>& x) {
+inline ::std::ostream &operator<<(::std::ostream &os,
+                                  const StreamableTemplateInFoo<T> &x) {
     return os << "StreamableTemplateInFoo: " << x.value();
 }
 
-}  // namespace foo
+} // namespace foo
 
 namespace testing {
 namespace gtest_printers_test {
@@ -212,7 +209,7 @@ using ::testing::internal::string;
 // The hash_* classes are not part of the C++ standard.  STLport
 // defines them in namespace std.  MSVC defines them in ::stdext.  GCC
 // defines them in ::.
-#ifdef _STLP_HASH_MAP  // We got <hash_map> from STLport.
+#ifdef _STLP_HASH_MAP // We got <hash_map> from STLport.
 using ::std::hash_map;
 using ::std::hash_set;
 using ::std::hash_multimap;
@@ -226,8 +223,7 @@ using ::stdext::hash_multiset;
 
 // Prints a value to a string using the universal value printer.  This
 // is a helper for testing UniversalPrinter<T>::Print() for various types.
-template <typename T>
-string Print(const T& value) {
+template <typename T> string Print(const T &value) {
     ::std::stringstream ss;
     UniversalPrinter<T>::Print(value, &ss);
     return ss.str();
@@ -236,10 +232,9 @@ string Print(const T& value) {
 // Prints a value passed by reference to a string, using the universal
 // value printer.  This is a helper for testing
 // UniversalPrinter<T&>::Print() for various types.
-template <typename T>
-string PrintByRef(const T& value) {
+template <typename T> string PrintByRef(const T &value) {
     ::std::stringstream ss;
-    UniversalPrinter<T&>::Print(value, &ss);
+    UniversalPrinter<T &>::Print(value, &ss);
     return ss.str();
 }
 
@@ -342,38 +337,37 @@ TEST(PrintTypeSizeTest, Wchar_t) {
 
 // Various integer types.
 TEST(PrintBuiltInTypeTest, Integer) {
-    EXPECT_EQ("'\\xFF' (255)",
-              Print(static_cast<unsigned char>(255)));  // uint8
-    EXPECT_EQ("'\\x80' (-128)", Print(static_cast<signed char>(-128)));  // int8
-    EXPECT_EQ("65535", Print(USHRT_MAX));      // uint16
-    EXPECT_EQ("-32768", Print(SHRT_MIN));      // int16
-    EXPECT_EQ("4294967295", Print(UINT_MAX));  // uint32
-    EXPECT_EQ("-2147483648", Print(INT_MIN));  // int32
+    EXPECT_EQ("'\\xFF' (255)", Print(static_cast<unsigned char>(255))); // uint8
+    EXPECT_EQ("'\\x80' (-128)", Print(static_cast<signed char>(-128))); // int8
+    EXPECT_EQ("65535", Print(USHRT_MAX));     // uint16
+    EXPECT_EQ("-32768", Print(SHRT_MIN));     // int16
+    EXPECT_EQ("4294967295", Print(UINT_MAX)); // uint32
+    EXPECT_EQ("-2147483648", Print(INT_MIN)); // int32
     EXPECT_EQ("18446744073709551615",
-              Print(static_cast<testing::internal::UInt64>(-1)));  // uint64
+              Print(static_cast<testing::internal::UInt64>(-1))); // uint64
     EXPECT_EQ("-9223372036854775808",
-              Print(static_cast<testing::internal::Int64>(1) << 63));  // int64
+              Print(static_cast<testing::internal::Int64>(1) << 63)); // int64
 }
 
 // Size types.
 TEST(PrintBuiltInTypeTest, Size_t) {
-    EXPECT_EQ("1", Print(sizeof('a')));  // size_t.
+    EXPECT_EQ("1", Print(sizeof('a'))); // size_t.
 #if !GTEST_OS_WINDOWS
     // Windows has no ssize_t type.
-    EXPECT_EQ("-2", Print(static_cast<ssize_t>(-2)));  // ssize_t.
-#endif                                                 // !GTEST_OS_WINDOWS
+    EXPECT_EQ("-2", Print(static_cast<ssize_t>(-2))); // ssize_t.
+#endif                                                // !GTEST_OS_WINDOWS
 }
 
 // Floating-points.
 TEST(PrintBuiltInTypeTest, FloatingPoints) {
-    EXPECT_EQ("1.5", Print(1.5f));   // float
-    EXPECT_EQ("-2.5", Print(-2.5));  // double
+    EXPECT_EQ("1.5", Print(1.5f));  // float
+    EXPECT_EQ("-2.5", Print(-2.5)); // double
 }
 
 // Since ::std::stringstream::operator<<(const void *) formats the pointer
 // output differently with different compilers, we have to create the expected
 // output first and use it as our expectation.
-static string PrintPointer(const void* p) {
+static string PrintPointer(const void *p) {
     ::std::stringstream expected_result_stream;
     expected_result_stream << p;
     return expected_result_stream.str();
@@ -383,7 +377,7 @@ static string PrintPointer(const void* p) {
 
 // const char*.
 TEST(PrintCStringTest, Const) {
-    const char* p = "World";
+    const char *p = "World";
     EXPECT_EQ(PrintPointer(p) + " pointing to \"World\"", Print(p));
 }
 
@@ -391,21 +385,20 @@ TEST(PrintCStringTest, Const) {
 TEST(PrintCStringTest, NonConst) {
     char p[] = "Hi";
     EXPECT_EQ(PrintPointer(p) + " pointing to \"Hi\"",
-              Print(static_cast<char*>(p)));
+              Print(static_cast<char *>(p)));
 }
 
 // NULL C string.
 TEST(PrintCStringTest, Null) {
-    const char* p = NULL;
+    const char *p = NULL;
     EXPECT_EQ("NULL", Print(p));
 }
 
 // Tests that C strings are escaped properly.
 TEST(PrintCStringTest, EscapesProperly) {
-    const char* p = "'\"?\\\a\b\f\n\r\t\v\x7F\xFF a";
-    EXPECT_EQ(PrintPointer(p) +
-                  " pointing to \"'\\\"?\\\\\\a\\b\\f"
-                  "\\n\\r\\t\\v\\x7F\\xFF a\"",
+    const char *p = "'\"?\\\a\b\f\n\r\t\v\x7F\xFF a";
+    EXPECT_EQ(PrintPointer(p) + " pointing to \"'\\\"?\\\\\\a\\b\\f"
+                                "\\n\\r\\t\\v\\x7F\\xFF a\"",
               Print(p));
 }
 
@@ -419,7 +412,7 @@ TEST(PrintCStringTest, EscapesProperly) {
 
 // const wchar_t*.
 TEST(PrintWideCStringTest, Const) {
-    const wchar_t* p = L"World";
+    const wchar_t *p = L"World";
     EXPECT_EQ(PrintPointer(p) + " pointing to L\"World\"", Print(p));
 }
 
@@ -427,12 +420,12 @@ TEST(PrintWideCStringTest, Const) {
 TEST(PrintWideCStringTest, NonConst) {
     wchar_t p[] = L"Hi";
     EXPECT_EQ(PrintPointer(p) + " pointing to L\"Hi\"",
-              Print(static_cast<wchar_t*>(p)));
+              Print(static_cast<wchar_t *>(p)));
 }
 
 // NULL wide C string.
 TEST(PrintWideCStringTest, Null) {
-    const wchar_t* p = NULL;
+    const wchar_t *p = NULL;
     EXPECT_EQ("NULL", Print(p));
 }
 
@@ -441,18 +434,17 @@ TEST(PrintWideCStringTest, EscapesProperly) {
     const wchar_t s[] = {'\'',  '"',   '?',    '\\', '\a', '\b',
                          '\f',  '\n',  '\r',   '\t', '\v', 0xD3,
                          0x576, 0x8D3, 0xC74D, ' ',  'a',  '\0'};
-    EXPECT_EQ(PrintPointer(s) +
-                  " pointing to L\"'\\\"?\\\\\\a\\b\\f"
-                  "\\n\\r\\t\\v\\xD3\\x576\\x8D3\\xC74D a\"",
-              Print(static_cast<const wchar_t*>(s)));
+    EXPECT_EQ(PrintPointer(s) + " pointing to L\"'\\\"?\\\\\\a\\b\\f"
+                                "\\n\\r\\t\\v\\xD3\\x576\\x8D3\\xC74D a\"",
+              Print(static_cast<const wchar_t *>(s)));
 }
-#endif  // native wchar_t
+#endif // native wchar_t
 
 // Tests printing pointers to other char types.
 
 // signed char*.
 TEST(PrintCharPointerTest, SignedChar) {
-    signed char* p = reinterpret_cast<signed char*>(0x1234);
+    signed char *p = reinterpret_cast<signed char *>(0x1234);
     EXPECT_EQ(PrintPointer(p), Print(p));
     p = NULL;
     EXPECT_EQ("NULL", Print(p));
@@ -460,7 +452,7 @@ TEST(PrintCharPointerTest, SignedChar) {
 
 // const signed char*.
 TEST(PrintCharPointerTest, ConstSignedChar) {
-    signed char* p = reinterpret_cast<signed char*>(0x1234);
+    signed char *p = reinterpret_cast<signed char *>(0x1234);
     EXPECT_EQ(PrintPointer(p), Print(p));
     p = NULL;
     EXPECT_EQ("NULL", Print(p));
@@ -468,7 +460,7 @@ TEST(PrintCharPointerTest, ConstSignedChar) {
 
 // unsigned char*.
 TEST(PrintCharPointerTest, UnsignedChar) {
-    unsigned char* p = reinterpret_cast<unsigned char*>(0x1234);
+    unsigned char *p = reinterpret_cast<unsigned char *>(0x1234);
     EXPECT_EQ(PrintPointer(p), Print(p));
     p = NULL;
     EXPECT_EQ("NULL", Print(p));
@@ -476,7 +468,7 @@ TEST(PrintCharPointerTest, UnsignedChar) {
 
 // const unsigned char*.
 TEST(PrintCharPointerTest, ConstUnsignedChar) {
-    const unsigned char* p = reinterpret_cast<const unsigned char*>(0x1234);
+    const unsigned char *p = reinterpret_cast<const unsigned char *>(0x1234);
     EXPECT_EQ(PrintPointer(p), Print(p));
     p = NULL;
     EXPECT_EQ("NULL", Print(p));
@@ -486,7 +478,7 @@ TEST(PrintCharPointerTest, ConstUnsignedChar) {
 
 // bool*.
 TEST(PrintPointerToBuiltInTypeTest, Bool) {
-    bool* p = reinterpret_cast<bool*>(0xABCD);
+    bool *p = reinterpret_cast<bool *>(0xABCD);
     EXPECT_EQ(PrintPointer(p), Print(p));
     p = NULL;
     EXPECT_EQ("NULL", Print(p));
@@ -494,7 +486,7 @@ TEST(PrintPointerToBuiltInTypeTest, Bool) {
 
 // void*.
 TEST(PrintPointerToBuiltInTypeTest, Void) {
-    void* p = reinterpret_cast<void*>(0xABCD);
+    void *p = reinterpret_cast<void *>(0xABCD);
     EXPECT_EQ(PrintPointer(p), Print(p));
     p = NULL;
     EXPECT_EQ("NULL", Print(p));
@@ -502,7 +494,7 @@ TEST(PrintPointerToBuiltInTypeTest, Void) {
 
 // const void*.
 TEST(PrintPointerToBuiltInTypeTest, ConstVoid) {
-    const void* p = reinterpret_cast<const void*>(0xABCD);
+    const void *p = reinterpret_cast<const void *>(0xABCD);
     EXPECT_EQ(PrintPointer(p), Print(p));
     p = NULL;
     EXPECT_EQ("NULL", Print(p));
@@ -510,7 +502,7 @@ TEST(PrintPointerToBuiltInTypeTest, ConstVoid) {
 
 // Tests printing pointers to pointers.
 TEST(PrintPointerToPointerTest, IntPointerPointer) {
-    int** p = reinterpret_cast<int**>(0xABCD);
+    int **p = reinterpret_cast<int **>(0xABCD);
     EXPECT_EQ(PrintPointer(p), Print(p));
     p = NULL;
     EXPECT_EQ("NULL", Print(p));
@@ -525,21 +517,22 @@ TEST(PrintPointerTest, NonMemberFunctionPointer) {
     // standard disallows casting between pointers to functions and
     // pointers to objects, and some compilers (e.g. GCC 3.4) enforce
     // this limitation.
-    EXPECT_EQ(PrintPointer(reinterpret_cast<const void*>(
+    EXPECT_EQ(PrintPointer(reinterpret_cast<const void *>(
                   reinterpret_cast<internal::BiggestInt>(&MyFunction))),
               Print(&MyFunction));
-    int (*p)(bool) = NULL;  // NOLINT
+    int (*p)(bool) = NULL; // NOLINT
     EXPECT_EQ("NULL", Print(p));
 }
 
 // An assertion predicate determining whether a one string is a prefix for
 // another.
 template <typename StringType>
-AssertionResult HasPrefix(const StringType& str, const StringType& prefix) {
-    if (str.find(prefix, 0) == 0) return AssertionSuccess();
+AssertionResult HasPrefix(const StringType &str, const StringType &prefix) {
+    if (str.find(prefix, 0) == 0)
+        return AssertionSuccess();
 
     const bool is_wide_string = sizeof(prefix[0]) > 1;
-    const char* const begin_string_quote = is_wide_string ? "L\"" : "\"";
+    const char *const begin_string_quote = is_wide_string ? "L\"" : "\"";
     return AssertionFailure() << begin_string_quote << prefix
                               << "\" is not a prefix of " << begin_string_quote
                               << str << "\"\n";
@@ -551,7 +544,7 @@ AssertionResult HasPrefix(const StringType& str, const StringType& prefix) {
 // printed as raw bytes.
 
 struct Foo {
-public:
+  public:
     virtual ~Foo() {}
     int MyMethod(char x) { return x + 1; }
     virtual char MyVirtualMethod(int /* n */) { return 'a'; }
@@ -562,7 +555,7 @@ public:
 TEST(PrintPointerTest, MemberVariablePointer) {
     EXPECT_TRUE(HasPrefix(Print(&Foo::value),
                           Print(sizeof(&Foo::value)) + "-byte object "));
-    int(Foo::*p) = NULL;  // NOLINT
+    int(Foo::*p) = NULL; // NOLINT
     EXPECT_TRUE(HasPrefix(Print(p), Print(sizeof(p)) + "-byte object "));
 }
 
@@ -576,7 +569,7 @@ TEST(PrintPointerTest, MemberFunctionPointer) {
     EXPECT_TRUE(
         HasPrefix(Print(&Foo::MyVirtualMethod),
                   Print(sizeof((&Foo::MyVirtualMethod))) + "-byte object "));
-    int (Foo::*p)(char) = NULL;  // NOLINT
+    int (Foo::*p)(char) = NULL; // NOLINT
     EXPECT_TRUE(HasPrefix(Print(p), Print(sizeof(p)) + "-byte object "));
 }
 
@@ -584,8 +577,7 @@ TEST(PrintPointerTest, MemberFunctionPointer) {
 
 // The difference between this and Print() is that it ensures that the
 // argument is a reference to an array.
-template <typename T, size_t N>
-string PrintArrayHelper(T (&a)[N]) {
+template <typename T, size_t N> string PrintArrayHelper(T (&a)[N]) {
     return Print(a);
 }
 
@@ -656,7 +648,7 @@ TEST(PrintStringTest, StringInGlobalNamespace) {
     EXPECT_EQ("\"'\\\"?\\\\\\a\\b\\f\\n\\0\\r\\t\\v\\x7F\\xFF a\\0\"",
               Print(str));
 }
-#endif  // GTEST_HAS_GLOBAL_STRING
+#endif // GTEST_HAS_GLOBAL_STRING
 
 // ::std::string.
 TEST(PrintStringTest, StringInStdNamespace) {
@@ -691,22 +683,20 @@ TEST(PrintStringTest, StringAmbiguousHex) {
 TEST(PrintWideStringTest, StringInGlobalNamespace) {
     const wchar_t s[] = L"'\"?\\\a\b\f\n\0\r\t\v\xD3\x576\x8D3\xC74D a";
     const ::wstring str(s, sizeof(s) / sizeof(wchar_t));
-    EXPECT_EQ(
-        "L\"'\\\"?\\\\\\a\\b\\f\\n\\0\\r\\t\\v"
-        "\\xD3\\x576\\x8D3\\xC74D a\\0\"",
-        Print(str));
+    EXPECT_EQ("L\"'\\\"?\\\\\\a\\b\\f\\n\\0\\r\\t\\v"
+              "\\xD3\\x576\\x8D3\\xC74D a\\0\"",
+              Print(str));
 }
-#endif  // GTEST_HAS_GLOBAL_WSTRING
+#endif // GTEST_HAS_GLOBAL_WSTRING
 
 #if GTEST_HAS_STD_WSTRING
 // ::std::wstring.
 TEST(PrintWideStringTest, StringInStdNamespace) {
     const wchar_t s[] = L"'\"?\\\a\b\f\n\0\r\t\v\xD3\x576\x8D3\xC74D a";
     const ::std::wstring str(s, sizeof(s) / sizeof(wchar_t));
-    EXPECT_EQ(
-        "L\"'\\\"?\\\\\\a\\b\\f\\n\\0\\r\\t\\v"
-        "\\xD3\\x576\\x8D3\\xC74D a\\0\"",
-        Print(str));
+    EXPECT_EQ("L\"'\\\"?\\\\\\a\\b\\f\\n\\0\\r\\t\\v"
+              "\\xD3\\x576\\x8D3\\xC74D a\\0\"",
+              Print(str));
 }
 
 TEST(PrintWideStringTest, StringAmbiguousHex) {
@@ -719,7 +709,7 @@ TEST(PrintWideStringTest, StringAmbiguousHex) {
                                                                L"BANANA")));
     EXPECT_EQ("L\"!\\x5-!\"", Print(::std::wstring(L"!\x5-!")));
 }
-#endif  // GTEST_HAS_STD_WSTRING
+#endif // GTEST_HAS_STD_WSTRING
 
 // Tests printing types that support generic streaming (i.e. streaming
 // to std::basic_ostream<Char, CharTraits> for any valid Char and
@@ -730,9 +720,9 @@ TEST(PrintWideStringTest, StringAmbiguousHex) {
 class AllowsGenericStreaming {};
 
 template <typename Char, typename CharTraits>
-std::basic_ostream<Char, CharTraits>& operator<<(
-    std::basic_ostream<Char, CharTraits>& os,
-    const AllowsGenericStreaming& /* a */) {
+std::basic_ostream<Char, CharTraits> &
+operator<<(std::basic_ostream<Char, CharTraits> &os,
+           const AllowsGenericStreaming & /* a */) {
     return os << "AllowsGenericStreaming";
 }
 
@@ -743,13 +733,12 @@ TEST(PrintTypeWithGenericStreamingTest, NonTemplateType) {
 
 // Tests printing a template type that supports generic streaming.
 
-template <typename T>
-class AllowsGenericStreamingTemplate {};
+template <typename T> class AllowsGenericStreamingTemplate {};
 
 template <typename Char, typename CharTraits, typename T>
-std::basic_ostream<Char, CharTraits>& operator<<(
-    std::basic_ostream<Char, CharTraits>& os,
-    const AllowsGenericStreamingTemplate<T>& /* a */) {
+std::basic_ostream<Char, CharTraits> &
+operator<<(std::basic_ostream<Char, CharTraits> &os,
+           const AllowsGenericStreamingTemplate<T> & /* a */) {
     return os << "AllowsGenericStreamingTemplate";
 }
 
@@ -763,14 +752,14 @@ TEST(PrintTypeWithGenericStreamingTest, TemplateType) {
 
 template <typename T>
 class AllowsGenericStreamingAndImplicitConversionTemplate {
-public:
+  public:
     operator bool() const { return false; }
 };
 
 template <typename Char, typename CharTraits, typename T>
-std::basic_ostream<Char, CharTraits>& operator<<(
-    std::basic_ostream<Char, CharTraits>& os,
-    const AllowsGenericStreamingAndImplicitConversionTemplate<T>& /* a */) {
+std::basic_ostream<Char, CharTraits> &operator<<(
+    std::basic_ostream<Char, CharTraits> &os,
+    const AllowsGenericStreamingAndImplicitConversionTemplate<T> & /* a */) {
     return os << "AllowsGenericStreamingAndImplicitConversionTemplate";
 }
 
@@ -794,7 +783,7 @@ TEST(PrintStringPieceTest, UnprintableCharacters) {
     EXPECT_EQ("\"NUL (\\0) and \\r\\t\"", Print(sp));
 }
 
-#endif  // GTEST_HAS_STRING_PIECE_
+#endif // GTEST_HAS_STRING_PIECE_
 
 // Tests printing STL containers.
 
@@ -830,7 +819,7 @@ TEST(PrintStlContainerTest, HashMultiMap) {
         << " where Print(map1) returns \"" << result << "\".";
 }
 
-#endif  // GTEST_HAS_HASH_MAP_
+#endif // GTEST_HAS_HASH_MAP_
 
 #if GTEST_HAS_HASH_SET_
 
@@ -847,7 +836,7 @@ TEST(PrintStlContainerTest, HashMultiSet) {
 
     // Elements of hash_multiset can be printed in any order.
     const string result = Print(set1);
-    const string expected_pattern = "{ d, d, d, d, d }";  // d means a digit.
+    const string expected_pattern = "{ d, d, d, d, d }"; // d means a digit.
 
     // Verifies the result matches the expected pattern; also extracts
     // the numbers in the result.
@@ -869,7 +858,7 @@ TEST(PrintStlContainerTest, HashMultiSet) {
     EXPECT_TRUE(std::equal(a, a + kSize, numbers.begin()));
 }
 
-#endif  // GTEST_HAS_HASH_SET_
+#endif // GTEST_HAS_HASH_SET_
 
 TEST(PrintStlContainerTest, List) {
     const string a[] = {"hello", "world"};
@@ -920,7 +909,7 @@ TEST(PrintStlContainerTest, SinglyLinkedList) {
     const std::forward_list<int> ints(a, a + 3);
     EXPECT_EQ("{ 9, 2, 8 }", Print(ints));
 }
-#endif  // GTEST_HAS_STD_FORWARD_LIST_
+#endif // GTEST_HAS_STD_FORWARD_LIST_
 
 TEST(PrintStlContainerTest, Pair) {
     pair<const bool, int> p(true, 5);
@@ -937,10 +926,9 @@ TEST(PrintStlContainerTest, Vector) {
 TEST(PrintStlContainerTest, LongSequence) {
     const int a[100] = {1, 2, 3};
     const vector<int> v(a, a + 100);
-    EXPECT_EQ(
-        "{ 1, 2, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "
-        "0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ... }",
-        Print(v));
+    EXPECT_EQ("{ 1, 2, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "
+              "0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ... }",
+              Print(v));
 }
 
 TEST(PrintStlContainerTest, NestedContainer) {
@@ -949,7 +937,7 @@ TEST(PrintStlContainerTest, NestedContainer) {
     const list<int> l1(a1, a1 + 2);
     const list<int> l2(a2, a2 + 3);
 
-    vector<list<int> > v;
+    vector<list<int>> v;
     v.push_back(l1);
     v.push_back(l2);
     EXPECT_EQ("{ { 1, 2 }, { 3, 4, 5 } }", Print(v));
@@ -1028,13 +1016,13 @@ TEST(PrintTr1TupleTest, VariousSizes) {
         false, 2, 3, 4, true, 6, 7, true, 9);
     EXPECT_EQ("(false, 2, 3, 4, true, 6, 7, true, 9)", Print(t9));
 
-    const char* const str = "8";
+    const char *const str = "8";
     // VC++ 2010's implementation of tuple of C++0x is deficient, requiring
     // an explicit type cast of NULL to be used.
-    ::std::tr1::tuple<bool, char, short, testing::internal::Int32,  // NOLINT
-                      testing::internal::Int64, float, double, const char*,
-                      void*, string>
-        t10(false, 'a', 3, 4, 5, 1.5F, -2.5, str, ImplicitCast_<void*>(NULL),
+    ::std::tr1::tuple<bool, char, short, testing::internal::Int32, // NOLINT
+                      testing::internal::Int64, float, double, const char *,
+                      void *, string>
+        t10(false, 'a', 3, 4, 5, 1.5F, -2.5, str, ImplicitCast_<void *>(NULL),
             "10");
     EXPECT_EQ("(false, 'a' (97, 0x61), 3, 4, 5, 1.5, -2.5, " +
                   PrintPointer(str) + " pointing to \"8\", NULL, \"10\")",
@@ -1043,12 +1031,12 @@ TEST(PrintTr1TupleTest, VariousSizes) {
 
 // Nested tuples.
 TEST(PrintTr1TupleTest, NestedTuple) {
-    ::std::tr1::tuple< ::std::tr1::tuple<int, bool>, char> nested(
+    ::std::tr1::tuple<::std::tr1::tuple<int, bool>, char> nested(
         ::std::tr1::make_tuple(5, true), 'a');
     EXPECT_EQ("((5, true), 'a' (97, 0x61))", Print(nested));
 }
 
-#endif  // GTEST_HAS_TR1_TUPLE
+#endif // GTEST_HAS_TR1_TUPLE
 
 #if GTEST_HAS_STD_TUPLE_
 // Tests printing ::std::tuples.
@@ -1088,13 +1076,13 @@ TEST(PrintStdTupleTest, VariousSizes) {
         false, 2, 3, 4, true, 6, 7, true, 9);
     EXPECT_EQ("(false, 2, 3, 4, true, 6, 7, true, 9)", Print(t9));
 
-    const char* const str = "8";
+    const char *const str = "8";
     // VC++ 2010's implementation of tuple of C++0x is deficient, requiring
     // an explicit type cast of NULL to be used.
-    ::std::tuple<bool, char, short, testing::internal::Int32,  // NOLINT
-                 testing::internal::Int64, float, double, const char*, void*,
+    ::std::tuple<bool, char, short, testing::internal::Int32, // NOLINT
+                 testing::internal::Int64, float, double, const char *, void *,
                  string>
-        t10(false, 'a', 3, 4, 5, 1.5F, -2.5, str, ImplicitCast_<void*>(NULL),
+        t10(false, 'a', 3, 4, 5, 1.5F, -2.5, str, ImplicitCast_<void *>(NULL),
             "10");
     EXPECT_EQ("(false, 'a' (97, 0x61), 3, 4, 5, 1.5, -2.5, " +
                   PrintPointer(str) + " pointing to \"8\", NULL, \"10\")",
@@ -1103,12 +1091,12 @@ TEST(PrintStdTupleTest, VariousSizes) {
 
 // Nested tuples.
 TEST(PrintStdTupleTest, NestedTuple) {
-    ::std::tuple< ::std::tuple<int, bool>, char> nested(
+    ::std::tuple<::std::tuple<int, bool>, char> nested(
         ::std::make_tuple(5, true), 'a');
     EXPECT_EQ("((5, true), 'a' (97, 0x61))", Print(nested));
 }
 
-#endif  // GTEST_LANG_CXX11
+#endif // GTEST_LANG_CXX11
 
 // Tests printing user-defined unprintable types.
 
@@ -1132,15 +1120,14 @@ struct Big {
 };
 
 TEST(PrintUnpritableTypeTest, BigObject) {
-    EXPECT_EQ(
-        "257-byte object <00-00 00-00 00-00 00-00 00-00 00-00 "
-        "00-00 00-00 00-00 00-00 00-00 00-00 00-00 00-00 00-00 00-00 "
-        "00-00 00-00 00-00 00-00 00-00 00-00 00-00 00-00 00-00 00-00 "
-        "00-00 00-00 00-00 00-00 00-00 00-00 ... 00-00 00-00 00-00 "
-        "00-00 00-00 00-00 00-00 00-00 00-00 00-00 00-00 00-00 00-00 "
-        "00-00 00-00 00-00 00-00 00-00 00-00 00-00 00-00 00-00 00-00 "
-        "00-00 00-00 00-00 00-00 00-00 00-00 00-00 00-00 00>",
-        Print(Big()));
+    EXPECT_EQ("257-byte object <00-00 00-00 00-00 00-00 00-00 00-00 "
+              "00-00 00-00 00-00 00-00 00-00 00-00 00-00 00-00 00-00 00-00 "
+              "00-00 00-00 00-00 00-00 00-00 00-00 00-00 00-00 00-00 00-00 "
+              "00-00 00-00 00-00 00-00 00-00 00-00 ... 00-00 00-00 00-00 "
+              "00-00 00-00 00-00 00-00 00-00 00-00 00-00 00-00 00-00 00-00 "
+              "00-00 00-00 00-00 00-00 00-00 00-00 00-00 00-00 00-00 00-00 "
+              "00-00 00-00 00-00 00-00 00-00 00-00 00-00 00-00 00>",
+              Print(Big()));
 }
 
 // Tests printing user-defined streamable types.
@@ -1198,12 +1185,12 @@ TEST(PrintReferenceTest, PrintsAddressAndValue) {
 TEST(PrintReferenceTest, HandlesFunctionPointer) {
     void (*fp)(int n) = &MyFunction;
     const string fp_pointer_string =
-        PrintPointer(reinterpret_cast<const void*>(&fp));
+        PrintPointer(reinterpret_cast<const void *>(&fp));
     // We cannot directly cast &MyFunction to const void* because the
     // standard disallows casting between pointers to functions and
     // pointers to objects, and some compilers (e.g. GCC 3.4) enforce
     // this limitation.
-    const string fp_string = PrintPointer(reinterpret_cast<const void*>(
+    const string fp_string = PrintPointer(reinterpret_cast<const void *>(
         reinterpret_cast<internal::BiggestInt>(fp)));
     EXPECT_EQ("@" + fp_pointer_string + " " + fp_string, PrintByRef(fp));
 }
@@ -1213,22 +1200,23 @@ TEST(PrintReferenceTest, HandlesFunctionPointer) {
 TEST(PrintReferenceTest, HandlesMemberFunctionPointer) {
     int (Foo::*p)(char ch) = &Foo::MyMethod;
     EXPECT_TRUE(HasPrefix(
-        PrintByRef(p), "@" + PrintPointer(reinterpret_cast<const void*>(&p)) +
+        PrintByRef(p), "@" + PrintPointer(reinterpret_cast<const void *>(&p)) +
                            " " + Print(sizeof(p)) + "-byte object "));
 
     char (Foo::*p2)(int n) = &Foo::MyVirtualMethod;
-    EXPECT_TRUE(HasPrefix(
-        PrintByRef(p2), "@" + PrintPointer(reinterpret_cast<const void*>(&p2)) +
-                            " " + Print(sizeof(p2)) + "-byte object "));
+    EXPECT_TRUE(
+        HasPrefix(PrintByRef(p2),
+                  "@" + PrintPointer(reinterpret_cast<const void *>(&p2)) +
+                      " " + Print(sizeof(p2)) + "-byte object "));
 }
 
 // Tests that the universal printer prints a member variable pointer
 // passed by reference.
 TEST(PrintReferenceTest, HandlesMemberVariablePointer) {
-    int(Foo::*p) = &Foo::value;  // NOLINT
-    EXPECT_TRUE(HasPrefix(
-        PrintByRef(p),
-        "@" + PrintPointer(&p) + " " + Print(sizeof(p)) + "-byte object "));
+    int(Foo::*p) = &Foo::value; // NOLINT
+    EXPECT_TRUE(HasPrefix(PrintByRef(p), "@" + PrintPointer(&p) + " " +
+                                             Print(sizeof(p)) +
+                                             "-byte object "));
 }
 
 // Tests that FormatForComparisonFailureMessage(), which is used to print
@@ -1267,7 +1255,7 @@ TEST(FormatForComparisonFailureMessageTest, WorksForCharPointerVsPointer) {
     // even know if it's supposed to point to a valid C string).
 
     // const char*
-    const char* s = "hello";
+    const char *s = "hello";
     EXPECT_EQ(PrintPointer(s), FormatForComparisonFailureMessage(s, s).c_str());
 
     // char*
@@ -1284,7 +1272,7 @@ TEST(FormatForComparisonFailureMessageTest, WorksForWCharPointerVsPointer) {
     // even know if it's supposed to point to a valid wide C string).
 
     // const wchar_t*
-    const wchar_t* s = L"hello";
+    const wchar_t *s = L"hello";
     EXPECT_EQ(PrintPointer(s), FormatForComparisonFailureMessage(s, s).c_str());
 
     // wchar_t*
@@ -1299,44 +1287,42 @@ TEST(FormatForComparisonFailureMessageTest, WorksForWCharPointerVsPointer) {
 #if GTEST_HAS_GLOBAL_STRING
 // char pointer vs ::string
 TEST(FormatForComparisonFailureMessageTest, WorksForCharPointerVsString) {
-    const char* s = "hello \"world";
-    EXPECT_STREQ(
-        "\"hello \\\"world\"",  // The string content should be escaped.
-        FormatForComparisonFailureMessage(s, ::string()).c_str());
+    const char *s = "hello \"world";
+    EXPECT_STREQ("\"hello \\\"world\"", // The string content should be escaped.
+                 FormatForComparisonFailureMessage(s, ::string()).c_str());
 
     // char*
     char str[] = "hi\1";
-    char* p = str;
-    EXPECT_STREQ("\"hi\\x1\"",  // The string content should be escaped.
+    char *p = str;
+    EXPECT_STREQ("\"hi\\x1\"", // The string content should be escaped.
                  FormatForComparisonFailureMessage(p, ::string()).c_str());
 }
 #endif
 
 // char pointer vs std::string
 TEST(FormatForComparisonFailureMessageTest, WorksForCharPointerVsStdString) {
-    const char* s = "hello \"world";
-    EXPECT_STREQ(
-        "\"hello \\\"world\"",  // The string content should be escaped.
-        FormatForComparisonFailureMessage(s, ::std::string()).c_str());
+    const char *s = "hello \"world";
+    EXPECT_STREQ("\"hello \\\"world\"", // The string content should be escaped.
+                 FormatForComparisonFailureMessage(s, ::std::string()).c_str());
 
     // char*
     char str[] = "hi\1";
-    char* p = str;
-    EXPECT_STREQ("\"hi\\x1\"",  // The string content should be escaped.
+    char *p = str;
+    EXPECT_STREQ("\"hi\\x1\"", // The string content should be escaped.
                  FormatForComparisonFailureMessage(p, ::std::string()).c_str());
 }
 
 #if GTEST_HAS_GLOBAL_WSTRING
 // wchar_t pointer vs ::wstring
 TEST(FormatForComparisonFailureMessageTest, WorksForWCharPointerVsWString) {
-    const wchar_t* s = L"hi \"world";
-    EXPECT_STREQ("L\"hi \\\"world\"",  // The string content should be escaped.
+    const wchar_t *s = L"hi \"world";
+    EXPECT_STREQ("L\"hi \\\"world\"", // The string content should be escaped.
                  FormatForComparisonFailureMessage(s, ::wstring()).c_str());
 
     // wchar_t*
     wchar_t str[] = L"hi\1";
-    wchar_t* p = str;
-    EXPECT_STREQ("L\"hi\\x1\"",  // The string content should be escaped.
+    wchar_t *p = str;
+    EXPECT_STREQ("L\"hi\\x1\"", // The string content should be escaped.
                  FormatForComparisonFailureMessage(p, ::wstring()).c_str());
 }
 #endif
@@ -1344,16 +1330,16 @@ TEST(FormatForComparisonFailureMessageTest, WorksForWCharPointerVsWString) {
 #if GTEST_HAS_STD_WSTRING
 // wchar_t pointer vs std::wstring
 TEST(FormatForComparisonFailureMessageTest, WorksForWCharPointerVsStdWString) {
-    const wchar_t* s = L"hi \"world";
+    const wchar_t *s = L"hi \"world";
     EXPECT_STREQ(
-        "L\"hi \\\"world\"",  // The string content should be escaped.
+        "L\"hi \\\"world\"", // The string content should be escaped.
         FormatForComparisonFailureMessage(s, ::std::wstring()).c_str());
 
     // wchar_t*
     wchar_t str[] = L"hi\1";
-    wchar_t* p = str;
+    wchar_t *p = str;
     EXPECT_STREQ(
-        "L\"hi\\x1\"",  // The string content should be escaped.
+        "L\"hi\\x1\"", // The string content should be escaped.
         FormatForComparisonFailureMessage(p, ::std::wstring()).c_str());
 }
 #endif
@@ -1365,7 +1351,7 @@ TEST(FormatForComparisonFailureMessageTest, WorksForWCharPointerVsStdWString) {
 // char array vs pointer
 TEST(FormatForComparisonFailureMessageTest, WorksForCharArrayVsPointer) {
     char str[] = "hi \"world\"";
-    char* p = NULL;
+    char *p = NULL;
     EXPECT_EQ(PrintPointer(str),
               FormatForComparisonFailureMessage(str, p).c_str());
 }
@@ -1380,7 +1366,7 @@ TEST(FormatForComparisonFailureMessageTest, WorksForCharArrayVsCharArray) {
 // wchar_t array vs pointer
 TEST(FormatForComparisonFailureMessageTest, WorksForWCharArrayVsPointer) {
     wchar_t str[] = L"hi \"world\"";
-    wchar_t* p = NULL;
+    wchar_t *p = NULL;
     EXPECT_EQ(PrintPointer(str),
               FormatForComparisonFailureMessage(str, p).c_str());
 }
@@ -1399,8 +1385,8 @@ TEST(FormatForComparisonFailureMessageTest, WorksForWCharArrayVsWCharArray) {
 // char array vs string
 TEST(FormatForComparisonFailureMessageTest, WorksForCharArrayVsString) {
     const char str[] = "hi \"w\0rld\"";
-    EXPECT_STREQ("\"hi \\\"w\"",  // The content should be escaped.
-                                  // Embedded NUL terminates the string.
+    EXPECT_STREQ("\"hi \\\"w\"", // The content should be escaped.
+                                 // Embedded NUL terminates the string.
                  FormatForComparisonFailureMessage(str, ::string()).c_str());
 }
 #endif
@@ -1409,7 +1395,7 @@ TEST(FormatForComparisonFailureMessageTest, WorksForCharArrayVsString) {
 TEST(FormatForComparisonFailureMessageTest, WorksForCharArrayVsStdString) {
     const char str[] = "hi \"world\"";
     EXPECT_STREQ(
-        "\"hi \\\"world\\\"\"",  // The content should be escaped.
+        "\"hi \\\"world\\\"\"", // The content should be escaped.
         FormatForComparisonFailureMessage(str, ::std::string()).c_str());
 }
 
@@ -1417,7 +1403,7 @@ TEST(FormatForComparisonFailureMessageTest, WorksForCharArrayVsStdString) {
 // wchar_t array vs wstring
 TEST(FormatForComparisonFailureMessageTest, WorksForWCharArrayVsWString) {
     const wchar_t str[] = L"hi \"world\"";
-    EXPECT_STREQ("L\"hi \\\"world\\\"\"",  // The content should be escaped.
+    EXPECT_STREQ("L\"hi \\\"world\\\"\"", // The content should be escaped.
                  FormatForComparisonFailureMessage(str, ::wstring()).c_str());
 }
 #endif
@@ -1427,8 +1413,8 @@ TEST(FormatForComparisonFailureMessageTest, WorksForWCharArrayVsWString) {
 TEST(FormatForComparisonFailureMessageTest, WorksForWCharArrayVsStdWString) {
     const wchar_t str[] = L"hi \"w\0rld\"";
     EXPECT_STREQ(
-        "L\"hi \\\"w\"",  // The content should be escaped.
-                          // Embedded NUL terminates the string.
+        "L\"hi \\\"w\"", // The content should be escaped.
+                         // Embedded NUL terminates the string.
         FormatForComparisonFailureMessage(str, ::std::wstring()).c_str());
 }
 #endif
@@ -1436,31 +1422,31 @@ TEST(FormatForComparisonFailureMessageTest, WorksForWCharArrayVsStdWString) {
 // Useful for testing PrintToString().  We cannot use EXPECT_EQ()
 // there as its implementation uses PrintToString().  The caller must
 // ensure that 'value' has no side effect.
-#define EXPECT_PRINT_TO_STRING_(value, expected_string)    \
-    EXPECT_TRUE(PrintToString(value) == (expected_string)) \
+#define EXPECT_PRINT_TO_STRING_(value, expected_string)                        \
+    EXPECT_TRUE(PrintToString(value) == (expected_string))                     \
         << " where " #value " prints as " << (PrintToString(value))
 
 TEST(PrintToStringTest, WorksForScalar) { EXPECT_PRINT_TO_STRING_(123, "123"); }
 
 TEST(PrintToStringTest, WorksForPointerToConstChar) {
-    const char* p = "hello";
+    const char *p = "hello";
     EXPECT_PRINT_TO_STRING_(p, "\"hello\"");
 }
 
 TEST(PrintToStringTest, WorksForPointerToNonConstChar) {
     char s[] = "hello";
-    char* p = s;
+    char *p = s;
     EXPECT_PRINT_TO_STRING_(p, "\"hello\"");
 }
 
 TEST(PrintToStringTest, EscapesForPointerToConstChar) {
-    const char* p = "hello\n";
+    const char *p = "hello\n";
     EXPECT_PRINT_TO_STRING_(p, "\"hello\\n\"");
 }
 
 TEST(PrintToStringTest, EscapesForPointerToNonConstChar) {
     char s[] = "hello\1";
-    char* p = s;
+    char *p = s;
     EXPECT_PRINT_TO_STRING_(p, "\"hello\\x1\"");
 }
 
@@ -1491,24 +1477,24 @@ TEST(UniversalTersePrintTest, WorksForNonReference) {
 }
 
 TEST(UniversalTersePrintTest, WorksForReference) {
-    const int& n = 123;
+    const int &n = 123;
     ::std::stringstream ss;
     UniversalTersePrint(n, &ss);
     EXPECT_EQ("123", ss.str());
 }
 
 TEST(UniversalTersePrintTest, WorksForCString) {
-    const char* s1 = "abc";
+    const char *s1 = "abc";
     ::std::stringstream ss1;
     UniversalTersePrint(s1, &ss1);
     EXPECT_EQ("\"abc\"", ss1.str());
 
-    char* s2 = const_cast<char*>(s1);
+    char *s2 = const_cast<char *>(s1);
     ::std::stringstream ss2;
     UniversalTersePrint(s2, &ss2);
     EXPECT_EQ("\"abc\"", ss2.str());
 
-    const char* s3 = NULL;
+    const char *s3 = NULL;
     ::std::stringstream ss3;
     UniversalTersePrint(s3, &ss3);
     EXPECT_EQ("NULL", ss3.str());
@@ -1521,24 +1507,24 @@ TEST(UniversalPrintTest, WorksForNonReference) {
 }
 
 TEST(UniversalPrintTest, WorksForReference) {
-    const int& n = 123;
+    const int &n = 123;
     ::std::stringstream ss;
     UniversalPrint(n, &ss);
     EXPECT_EQ("123", ss.str());
 }
 
 TEST(UniversalPrintTest, WorksForCString) {
-    const char* s1 = "abc";
+    const char *s1 = "abc";
     ::std::stringstream ss1;
     UniversalPrint(s1, &ss1);
     EXPECT_EQ(PrintPointer(s1) + " pointing to \"abc\"", string(ss1.str()));
 
-    char* s2 = const_cast<char*>(s1);
+    char *s2 = const_cast<char *>(s1);
     ::std::stringstream ss2;
     UniversalPrint(s2, &ss2);
     EXPECT_EQ(PrintPointer(s2) + " pointing to \"abc\"", string(ss2.str()));
 
-    const char* s3 = NULL;
+    const char *s3 = NULL;
     ::std::stringstream ss3;
     UniversalPrint(s3, &ss3);
     EXPECT_EQ("NULL", ss3.str());
@@ -1582,13 +1568,13 @@ TEST(UniversalTersePrintTupleFieldsToStringsTestWithTr1, PrintsTwoTuple) {
 TEST(UniversalTersePrintTupleFieldsToStringsTestWithTr1, PrintsTersely) {
     const int n = 1;
     Strings result = UniversalTersePrintTupleFieldsToStrings(
-        ::std::tr1::tuple<const int&, const char*>(n, "a"));
+        ::std::tr1::tuple<const int &, const char *>(n, "a"));
     ASSERT_EQ(2u, result.size());
     EXPECT_EQ("1", result[0]);
     EXPECT_EQ("\"a\"", result[1]);
 }
 
-#endif  // GTEST_HAS_TR1_TUPLE
+#endif // GTEST_HAS_TR1_TUPLE
 
 #if GTEST_HAS_STD_TUPLE_
 
@@ -1616,13 +1602,13 @@ TEST(UniversalTersePrintTupleFieldsToStringsTestWithStd, PrintsTwoTuple) {
 TEST(UniversalTersePrintTupleFieldsToStringsTestWithStd, PrintsTersely) {
     const int n = 1;
     Strings result = UniversalTersePrintTupleFieldsToStrings(
-        ::std::tuple<const int&, const char*>(n, "a"));
+        ::std::tuple<const int &, const char *>(n, "a"));
     ASSERT_EQ(2u, result.size());
     EXPECT_EQ("1", result[0]);
     EXPECT_EQ("\"a\"", result[1]);
 }
 
-#endif  // GTEST_HAS_STD_TUPLE_
+#endif // GTEST_HAS_STD_TUPLE_
 
-}  // namespace gtest_printers_test
-}  // namespace testing
+} // namespace gtest_printers_test
+} // namespace testing

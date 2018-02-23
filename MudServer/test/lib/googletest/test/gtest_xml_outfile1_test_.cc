@@ -35,7 +35,7 @@
 #include "gtest/gtest.h"
 
 class PropertyOne : public testing::Test {
-protected:
+  protected:
     virtual void SetUp() { RecordProperty("SetUpProp", 1); }
     virtual void TearDown() { RecordProperty("TearDownProp", 1); }
 };

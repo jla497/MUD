@@ -10,8 +10,8 @@ class GameManager;
 #include "entities/Entity.h"
 #include "entities/PlayerCharacter.h"
 #include <string>
-#include <vector>
 #include <unordered_map>
+#include <vector>
 
 /**
  * The Action class defines the interface that all actions implement.
@@ -21,6 +21,7 @@ class GameManager;
  */
 class Action {
     static std::unordered_map<std::string, bool> isAdminAction;
+
   public:
     Action(PlayerCharacter &characterPerformingAction,
            std::vector<std::string> actionArguments,
@@ -32,7 +33,7 @@ class Action {
      * the game manager, they can alter state and send messages in this method.
      */
     void execute();
-    
+
     friend std::ostream &operator<<(std::ostream &os, const Action &action);
 
   private:

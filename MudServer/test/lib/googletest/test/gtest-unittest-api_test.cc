@@ -36,28 +36,27 @@
 #include "gtest/gtest.h"
 
 #include <algorithm>
-#include <string.h>  // For strcmp.
+#include <string.h> // For strcmp.
 
 using ::testing::InitGoogleTest;
 
 namespace testing {
 namespace internal {
 
-template <typename T>
-struct LessByName {
-    bool operator()(const T* a, const T* b) {
+template <typename T> struct LessByName {
+    bool operator()(const T *a, const T *b) {
         return strcmp(a->name(), b->name()) < 0;
     }
 };
 
 class UnitTestHelper {
-public:
+  public:
     // Returns the array of pointers to all test cases sorted by the test case
     // name.  The caller is responsible for deleting the array.
-    static TestCase const** GetSortedTestCases() {
-        UnitTest& unit_test = *UnitTest::GetInstance();
-        TestCase const** const test_cases =
-            new const TestCase*[unit_test.total_test_case_count()];
+    static TestCase const **GetSortedTestCases() {
+        UnitTest &unit_test = *UnitTest::GetInstance();
+        TestCase const **const test_cases =
+            new const TestCase *[unit_test.total_test_case_count()];
 
         for (int i = 0; i < unit_test.total_test_case_count(); ++i)
             test_cases[i] = unit_test.GetTestCase(i);
@@ -69,11 +68,12 @@ public:
 
     // Returns the test case by its name.  The caller doesn't own the returned
     // pointer.
-    static const TestCase* FindTestCase(const char* name) {
-        UnitTest& unit_test = *UnitTest::GetInstance();
+    static const TestCase *FindTestCase(const char *name) {
+        UnitTest &unit_test = *UnitTest::GetInstance();
         for (int i = 0; i < unit_test.total_test_case_count(); ++i) {
-            const TestCase* test_case = unit_test.GetTestCase(i);
-            if (0 == strcmp(test_case->name(), name)) return test_case;
+            const TestCase *test_case = unit_test.GetTestCase(i);
+            if (0 == strcmp(test_case->name(), name))
+                return test_case;
         }
         return NULL;
     }
@@ -81,9 +81,9 @@ public:
     // Returns the array of pointers to all tests in a particular test case
     // sorted by the test name.  The caller is responsible for deleting the
     // array.
-    static TestInfo const** GetSortedTests(const TestCase* test_case) {
-        TestInfo const** const tests =
-            new const TestInfo*[test_case->total_test_count()];
+    static TestInfo const **GetSortedTests(const TestCase *test_case) {
+        TestInfo const **const tests =
+            new const TestInfo *[test_case->total_test_count()];
 
         for (int i = 0; i < test_case->total_test_count(); ++i)
             tests[i] = test_case->GetTestInfo(i);
@@ -95,8 +95,7 @@ public:
 };
 
 #if GTEST_HAS_TYPED_TEST
-template <typename T>
-class TestCaseWithCommentTest : public Test {};
+template <typename T> class TestCaseWithCommentTest : public Test {};
 TYPED_TEST_CASE(TestCaseWithCommentTest, Types<int>);
 TYPED_TEST(TestCaseWithCommentTest, Dummy) {}
 
@@ -105,13 +104,13 @@ const int kTypedTests = 1;
 #else
 const int kTypedTestCases = 0;
 const int kTypedTests = 0;
-#endif  // GTEST_HAS_TYPED_TEST
+#endif // GTEST_HAS_TYPED_TEST
 
 // We can only test the accessors that do not change value while tests run.
 // Since tests can be run in any order, the values the accessors that track
 // test execution (such as failed_test_count) can not be predicted.
 TEST(ApiTest, UnitTestImmutableAccessorsWork) {
-    UnitTest* unit_test = UnitTest::GetInstance();
+    UnitTest *unit_test = UnitTest::GetInstance();
 
     ASSERT_EQ(2 + kTypedTestCases, unit_test->total_test_case_count());
     EXPECT_EQ(1 + kTypedTestCases, unit_test->test_case_to_run_count());
@@ -119,13 +118,13 @@ TEST(ApiTest, UnitTestImmutableAccessorsWork) {
     EXPECT_EQ(5 + kTypedTests, unit_test->total_test_count());
     EXPECT_EQ(3 + kTypedTests, unit_test->test_to_run_count());
 
-    const TestCase** const test_cases = UnitTestHelper::GetSortedTestCases();
+    const TestCase **const test_cases = UnitTestHelper::GetSortedTestCases();
 
     EXPECT_STREQ("ApiTest", test_cases[0]->name());
     EXPECT_STREQ("DISABLED_Test", test_cases[1]->name());
 #if GTEST_HAS_TYPED_TEST
     EXPECT_STREQ("TestCaseWithCommentTest/0", test_cases[2]->name());
-#endif  // GTEST_HAS_TYPED_TEST
+#endif // GTEST_HAS_TYPED_TEST
 
     delete[] test_cases;
 
@@ -136,7 +135,7 @@ TEST(ApiTest, UnitTestImmutableAccessorsWork) {
     RecordProperty("key", "value");
 }
 
-AssertionResult IsNull(const char* str) {
+AssertionResult IsNull(const char *str) {
     if (str != NULL) {
         return testing::AssertionFailure() << "argument is " << str;
     }
@@ -144,7 +143,7 @@ AssertionResult IsNull(const char* str) {
 }
 
 TEST(ApiTest, TestCaseImmutableAccessorsWork) {
-    const TestCase* test_case = UnitTestHelper::FindTestCase("ApiTest");
+    const TestCase *test_case = UnitTestHelper::FindTestCase("ApiTest");
     ASSERT_TRUE(test_case != NULL);
 
     EXPECT_STREQ("ApiTest", test_case->name());
@@ -154,7 +153,7 @@ TEST(ApiTest, TestCaseImmutableAccessorsWork) {
     EXPECT_EQ(3, test_case->test_to_run_count());
     ASSERT_EQ(4, test_case->total_test_count());
 
-    const TestInfo** tests = UnitTestHelper::GetSortedTests(test_case);
+    const TestInfo **tests = UnitTestHelper::GetSortedTests(test_case);
 
     EXPECT_STREQ("DISABLED_Dummy1", tests[0]->name());
     EXPECT_STREQ("ApiTest", tests[0]->test_case_name());
@@ -203,11 +202,11 @@ TEST(ApiTest, TestCaseImmutableAccessorsWork) {
     EXPECT_TRUE(tests[0]->should_run());
 
     delete[] tests;
-#endif  // GTEST_HAS_TYPED_TEST
+#endif // GTEST_HAS_TYPED_TEST
 }
 
 TEST(ApiTest, TestCaseDisabledAccessorsWork) {
-    const TestCase* test_case = UnitTestHelper::FindTestCase("DISABLED_Test");
+    const TestCase *test_case = UnitTestHelper::FindTestCase("DISABLED_Test");
     ASSERT_TRUE(test_case != NULL);
 
     EXPECT_STREQ("DISABLED_Test", test_case->name());
@@ -217,7 +216,7 @@ TEST(ApiTest, TestCaseDisabledAccessorsWork) {
     EXPECT_EQ(0, test_case->test_to_run_count());
     ASSERT_EQ(1, test_case->total_test_count());
 
-    const TestInfo* const test_info = test_case->GetTestInfo(0);
+    const TestInfo *const test_info = test_case->GetTestInfo(0);
     EXPECT_STREQ("Dummy2", test_info->name());
     EXPECT_STREQ("DISABLED_Test", test_info->test_case_name());
     EXPECT_TRUE(IsNull(test_info->value_param()));
@@ -231,9 +230,9 @@ TEST(ApiTest, DISABLED_Dummy1) {}
 TEST(DISABLED_Test, Dummy2) {}
 
 class FinalSuccessChecker : public Environment {
-protected:
+  protected:
     virtual void TearDown() {
-        UnitTest* unit_test = UnitTest::GetInstance();
+        UnitTest *unit_test = UnitTest::GetInstance();
 
         EXPECT_EQ(1 + kTypedTestCases, unit_test->successful_test_case_count());
         EXPECT_EQ(3 + kTypedTests, unit_test->successful_test_count());
@@ -243,7 +242,7 @@ protected:
         EXPECT_FALSE(unit_test->Failed());
         ASSERT_EQ(2 + kTypedTestCases, unit_test->total_test_case_count());
 
-        const TestCase** const test_cases =
+        const TestCase **const test_cases =
             UnitTestHelper::GetSortedTestCases();
 
         EXPECT_STREQ("ApiTest", test_cases[0]->name());
@@ -274,10 +273,10 @@ protected:
         EXPECT_EQ(0, test_cases[2]->failed_test_count());
         EXPECT_TRUE(test_cases[2]->Passed());
         EXPECT_FALSE(test_cases[2]->Failed());
-#endif  // GTEST_HAS_TYPED_TEST
+#endif // GTEST_HAS_TYPED_TEST
 
-        const TestCase* test_case = UnitTestHelper::FindTestCase("ApiTest");
-        const TestInfo** tests = UnitTestHelper::GetSortedTests(test_case);
+        const TestCase *test_case = UnitTestHelper::FindTestCase("ApiTest");
+        const TestInfo **tests = UnitTestHelper::GetSortedTests(test_case);
         EXPECT_STREQ("DISABLED_Dummy1", tests[0]->name());
         EXPECT_STREQ("ApiTest", tests[0]->test_case_name());
         EXPECT_FALSE(tests[0]->should_run());
@@ -305,7 +304,7 @@ protected:
         EXPECT_TRUE(tests[3]->should_run());
         EXPECT_TRUE(tests[3]->result()->Passed());
         EXPECT_EQ(1, tests[3]->result()->test_property_count());
-        const TestProperty& property = tests[3]->result()->GetTestProperty(0);
+        const TestProperty &property = tests[3]->result()->GetTestProperty(0);
         EXPECT_STREQ("key", property.key());
         EXPECT_STREQ("value", property.value());
 
@@ -324,15 +323,15 @@ protected:
         EXPECT_EQ(0, tests[0]->result()->test_property_count());
 
         delete[] tests;
-#endif  // GTEST_HAS_TYPED_TEST
+#endif // GTEST_HAS_TYPED_TEST
         delete[] test_cases;
     }
 };
 
-}  // namespace internal
-}  // namespace testing
+} // namespace internal
+} // namespace testing
 
-int main(int argc, char** argv) {
+int main(int argc, char **argv) {
     InitGoogleTest(&argc, argv);
 
     AddGlobalTestEnvironment(new testing::internal::FinalSuccessChecker());

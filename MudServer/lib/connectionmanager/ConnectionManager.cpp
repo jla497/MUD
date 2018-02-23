@@ -119,7 +119,7 @@ void ConnectionManager::receiveFromGameManager(
 bool ConnectionManager::update() {
     try {
         server.update();
-    } catch (std::exception& e) {
+    } catch (std::exception &e) {
         printf("Exception from Server update:\n%s\n\n", e.what());
         return true;
     }

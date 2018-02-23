@@ -50,25 +50,25 @@ namespace {
 // Provides alternative output mode which produces minimal amount of
 // information about tests.
 class TersePrinter : public EmptyTestEventListener {
-private:
+  private:
     // Called before any test activity starts.
-    virtual void OnTestProgramStart(const UnitTest& /* unit_test */) {}
+    virtual void OnTestProgramStart(const UnitTest & /* unit_test */) {}
 
     // Called after all test activities have ended.
-    virtual void OnTestProgramEnd(const UnitTest& unit_test) {
+    virtual void OnTestProgramEnd(const UnitTest &unit_test) {
         fprintf(stdout, "TEST %s\n", unit_test.Passed() ? "PASSED" : "FAILED");
         fflush(stdout);
     }
 
     // Called before a test starts.
-    virtual void OnTestStart(const TestInfo& test_info) {
+    virtual void OnTestStart(const TestInfo &test_info) {
         fprintf(stdout, "*** Test %s.%s starting.\n",
                 test_info.test_case_name(), test_info.name());
         fflush(stdout);
     }
 
     // Called after a failed assertion or a SUCCEED() invocation.
-    virtual void OnTestPartResult(const TestPartResult& test_part_result) {
+    virtual void OnTestPartResult(const TestPartResult &test_part_result) {
         fprintf(stdout, "%s in %s:%d\n%s\n",
                 test_part_result.failed() ? "*** Failure" : "Success",
                 test_part_result.file_name(), test_part_result.line_number(),
@@ -77,12 +77,12 @@ private:
     }
 
     // Called after a test ends.
-    virtual void OnTestEnd(const TestInfo& test_info) {
+    virtual void OnTestEnd(const TestInfo &test_info) {
         fprintf(stdout, "*** Test %s.%s ending.\n", test_info.test_case_name(),
                 test_info.name());
         fflush(stdout);
     }
-};  // class TersePrinter
+}; // class TersePrinter
 
 TEST(CustomOutputTest, PrintsMessage) {
     printf("Printing something from the test body...\n");
@@ -97,25 +97,24 @@ TEST(CustomOutputTest, Fails) {
                        "failure messages";
 }
 
-}  // namespace
+} // namespace
 
-int main(int argc, char** argv) {
+int main(int argc, char **argv) {
     InitGoogleTest(&argc, argv);
 
     bool terse_output = false;
     if (argc > 1 && strcmp(argv[1], "--terse_output") == 0)
         terse_output = true;
     else
-        printf("%s\n",
-               "Run this program with --terse_output to change the way "
-               "it prints its output.");
+        printf("%s\n", "Run this program with --terse_output to change the way "
+                       "it prints its output.");
 
-    UnitTest& unit_test = *UnitTest::GetInstance();
+    UnitTest &unit_test = *UnitTest::GetInstance();
 
     // If we are given the --terse_output command line flag, suppresses the
     // standard output and attaches own result printer.
     if (terse_output) {
-        TestEventListeners& listeners = unit_test.listeners();
+        TestEventListeners &listeners = unit_test.listeners();
 
         // Removes the default console output listener from the list so it will
         // not receive events from Google Test and won't print any output. Since
@@ -135,9 +134,9 @@ int main(int argc, char** argv) {
     // results. Here we discount failures from the tests we expected to fail.
     int unexpectedly_failed_tests = 0;
     for (int i = 0; i < unit_test.total_test_case_count(); ++i) {
-        const TestCase& test_case = *unit_test.GetTestCase(i);
+        const TestCase &test_case = *unit_test.GetTestCase(i);
         for (int j = 0; j < test_case.total_test_count(); ++j) {
-            const TestInfo& test_info = *test_case.GetTestInfo(j);
+            const TestInfo &test_info = *test_case.GetTestInfo(j);
             // Counts failed tests that were not meant to fail (those without
             // 'Fails' in the name).
             if (test_info.result()->Failed() &&
@@ -148,7 +147,8 @@ int main(int argc, char** argv) {
     }
 
     // Test that were meant to fail should not affect the test program outcome.
-    if (unexpectedly_failed_tests == 0) ret_val = 0;
+    if (unexpectedly_failed_tests == 0)
+        ret_val = 0;
 
     return ret_val;
 }

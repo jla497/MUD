@@ -23,9 +23,9 @@ using std::vector;
 
 GameManager::GameManager(connection::ConnectionManager &connMan,
                          GameState &gameState)
-    : connectionManager{connMan}, gameState{gameState},
-      commandParser(), tick{DEFAULT_TICK_LENGTH_MS}, done{false}, players(),
-      outgoingMessages(), actions() {}
+    : connectionManager{connMan}, gameState{gameState}, commandParser(),
+      tick{DEFAULT_TICK_LENGTH_MS}, done{false}, players(), outgoingMessages(),
+      actions() {}
 
 /**
  * Runs a standard game loop, which consists of the following steps:
@@ -68,7 +68,7 @@ void GameManager::mainLoop() {
 void GameManager::processMessages(gameAndUserMsgs &messages) {
     static auto logger = logging::getLogger("GameManager::processMessages");
 
-    for (auto& message : messages) {
+    for (auto &message : messages) {
         // look up player from ID
         auto playerId = message->conn.id;
         logger->debug(std::to_string(playerId) + ": " + message->text);
@@ -83,12 +83,12 @@ void GameManager::processMessages(gameAndUserMsgs &messages) {
             auto player = players.at(playerId);
             player.getAdminPrivilege();
             players[playerId] = player;
-            std::cout<<"player got admin priv"<<std::endl;
+            std::cout << "player got admin priv" << std::endl;
 #ifdef DEBUG
             auto player = players.at(playerId);
             player.getAdminPrivilege();
             players[playerId] = player;
-            std::cout<<"player got admin priv"<<std::endl;
+            std::cout << "player got admin priv" << std::endl;
 
 #endif
         }
@@ -145,7 +145,7 @@ void GameManager::performQueuedActions() {
     }
 }
 
-GameState& GameManager::getState() { return gameState; }
+GameState &GameManager::getState() { return gameState; }
 
 void GameManager::sendCharacterMessage(UniqueId characterId,
                                        std::string message) {
@@ -185,15 +185,16 @@ Player &GameManager::characterIdToPlayer(UniqueId characterId) {
 void GameManager::addPlayerCharacter(PlayerId playerId) {
     auto testShortDesc =
         "TestPlayerName" + std::to_string(playerCharacterBimap.size());
-    
+
     auto character = std::make_unique<PlayerCharacter>(
         pc::ARMOR, std::string{pc::DAMAGE}, std::vector<std::string>{}, pc::EXP,
         pc::GOLD, std::string{pc::HIT}, std::vector<std::string>{}, pc::LEVEL,
         std::vector<std::string>{}, testShortDesc, pc::THAC0);
 
     auto player = players.at(playerId);
-    
-    //check if player has admin privilege then give admin component to player's character
+
+    // check if player has admin privilege then give admin component to player's
+    // character
     if (player.hasAdminPrivilege()) {
         character->getAdminPrivileges();
     }

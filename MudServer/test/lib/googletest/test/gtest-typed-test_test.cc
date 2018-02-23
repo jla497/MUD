@@ -41,11 +41,10 @@ using testing::Test;
 // Used for testing that SetUpTestCase()/TearDownTestCase(), fixture
 // ctor/dtor, and SetUp()/TearDown() work correctly in typed tests and
 // type-parameterized test.
-template <typename T>
-class CommonTest : public Test {
+template <typename T> class CommonTest : public Test {
     // For some technical reason, SetUpTestCase() and TearDownTestCase()
     // must be public.
-public:
+  public:
     static void SetUpTestCase() { shared_ = new T(5); }
 
     static void TearDownTestCase() {
@@ -55,7 +54,7 @@ public:
 
     // This 'protected:' is optional.  There's no harm in making all
     // members of this fixture class template public.
-protected:
+  protected:
     // We used to use std::list here, but switched to std::vector since
     // MSVC's <list> doesn't compile cleanly with /W4.
     typedef std::vector<T> Vector;
@@ -76,11 +75,10 @@ protected:
     }
 
     T value_;
-    static T* shared_;
+    static T *shared_;
 };
 
-template <typename T>
-T* CommonTest<T>::shared_ = NULL;
+template <typename T> T *CommonTest<T>::shared_ = NULL;
 
 // This #ifdef block tests typed tests.
 #if GTEST_HAS_TYPED_TEST
@@ -126,16 +124,14 @@ TYPED_TEST(CommonTest, ValuesAreStillCorrect) {
 // Tests that multiple TYPED_TEST_CASE's can be defined in the same
 // translation unit.
 
-template <typename T>
-class TypedTest1 : public Test {};
+template <typename T> class TypedTest1 : public Test {};
 
 // Verifies that the second argument of TYPED_TEST_CASE can be a
 // single type.
 TYPED_TEST_CASE(TypedTest1, int);
 TYPED_TEST(TypedTest1, A) {}
 
-template <typename T>
-class TypedTest2 : public Test {};
+template <typename T> class TypedTest2 : public Test {};
 
 // Verifies that the second argument of TYPED_TEST_CASE can be a
 // Types<...> type list.
@@ -149,17 +145,16 @@ TYPED_TEST(TypedTest2, A) {}
 
 namespace library1 {
 
-template <typename T>
-class NumericTest : public Test {};
+template <typename T> class NumericTest : public Test {};
 
 typedef Types<int, long> NumericTypes;
 TYPED_TEST_CASE(NumericTest, NumericTypes);
 
 TYPED_TEST(NumericTest, DefaultIsZero) { EXPECT_EQ(0, TypeParam()); }
 
-}  // namespace library1
+} // namespace library1
 
-#endif  // GTEST_HAS_TYPED_TEST
+#endif // GTEST_HAS_TYPED_TEST
 
 // This #ifdef block tests type-parameterized tests.
 #if GTEST_HAS_TYPED_TEST_P
@@ -170,7 +165,7 @@ using testing::internal::TypedTestCasePState;
 // Tests TypedTestCasePState.
 
 class TypedTestCasePStateTest : public Test {
-protected:
+  protected:
     virtual void SetUp() {
         state_.AddTestName("foo.cc", 0, "FooTest", "A");
         state_.AddTestName("foo.cc", 0, "FooTest", "B");
@@ -181,14 +176,14 @@ protected:
 };
 
 TEST_F(TypedTestCasePStateTest, SucceedsForMatchingList) {
-    const char* tests = "A, B, C";
+    const char *tests = "A, B, C";
     EXPECT_EQ(tests, state_.VerifyRegisteredTestNames("foo.cc", 1, tests));
 }
 
 // Makes sure that the order of the tests and spaces around the names
 // don't matter.
 TEST_F(TypedTestCasePStateTest, IgnoresOrderAndSpaces) {
-    const char* tests = "A,C,   B";
+    const char *tests = "A,C,   B";
     EXPECT_EQ(tests, state_.VerifyRegisteredTestNames("foo.cc", 1, tests));
 }
 
@@ -225,8 +220,7 @@ TEST_F(TypedTestCasePStateDeathTest, DetectsTestAfterRegistration) {
 // Tests that SetUpTestCase()/TearDownTestCase(), fixture ctor/dtor,
 // and SetUp()/TearDown() work correctly in type-parameterized tests.
 
-template <typename T>
-class DerivedTest : public CommonTest<T> {};
+template <typename T> class DerivedTest : public CommonTest<T> {};
 
 TYPED_TEST_CASE_P(DerivedTest);
 
@@ -259,8 +253,7 @@ INSTANTIATE_TYPED_TEST_CASE_P(My, DerivedTest, MyTwoTypes);
 // Tests that multiple TYPED_TEST_CASE_P's can be defined in the same
 // translation unit.
 
-template <typename T>
-class TypedTestP1 : public Test {};
+template <typename T> class TypedTestP1 : public Test {};
 
 TYPED_TEST_CASE_P(TypedTestP1);
 
@@ -277,8 +270,7 @@ typedef int IntBeforeRegisterTypedTestCaseP;
 
 REGISTER_TYPED_TEST_CASE_P(TypedTestP1, A, B);
 
-template <typename T>
-class TypedTestP2 : public Test {};
+template <typename T> class TypedTestP2 : public Test {};
 
 TYPED_TEST_CASE_P(TypedTestP2);
 
@@ -305,7 +297,7 @@ INSTANTIATE_TYPED_TEST_CASE_P(Double, TypedTestP2, Types<double>);
 // Tests that the same type-parameterized test case can be
 // instantiated in different translation units linked together.
 // (ContainerTest is also instantiated in gtest-typed-test_test.cc.)
-typedef Types<std::vector<double>, std::set<char> > MyContainers;
+typedef Types<std::vector<double>, std::set<char>> MyContainers;
 INSTANTIATE_TYPED_TEST_CASE_P(My, ContainerTest, MyContainers);
 
 // Tests that a type-parameterized test case can be defined and
@@ -313,8 +305,7 @@ INSTANTIATE_TYPED_TEST_CASE_P(My, ContainerTest, MyContainers);
 
 namespace library2 {
 
-template <typename T>
-class NumericTest : public Test {};
+template <typename T> class NumericTest : public Test {};
 
 TYPED_TEST_CASE_P(NumericTest);
 
@@ -328,12 +319,11 @@ REGISTER_TYPED_TEST_CASE_P(NumericTest, DefaultIsZero, ZeroIsLessThanOne);
 typedef Types<int, double> NumericTypes;
 INSTANTIATE_TYPED_TEST_CASE_P(My, NumericTest, NumericTypes);
 
-static const char* GetTestName() {
+static const char *GetTestName() {
     return testing::UnitTest::GetInstance()->current_test_info()->name();
 }
 // Test the stripping of space from test names
-template <typename T>
-class TrimmedTest : public Test {};
+template <typename T> class TrimmedTest : public Test {};
 TYPED_TEST_CASE_P(TrimmedTest);
 TYPED_TEST_P(TrimmedTest, Test1) { EXPECT_STREQ("Test1", GetTestName()); }
 TYPED_TEST_P(TrimmedTest, Test2) { EXPECT_STREQ("Test2", GetTestName()); }
@@ -341,16 +331,15 @@ TYPED_TEST_P(TrimmedTest, Test3) { EXPECT_STREQ("Test3", GetTestName()); }
 TYPED_TEST_P(TrimmedTest, Test4) { EXPECT_STREQ("Test4", GetTestName()); }
 TYPED_TEST_P(TrimmedTest, Test5) { EXPECT_STREQ("Test5", GetTestName()); }
 REGISTER_TYPED_TEST_CASE_P(TrimmedTest, Test1, Test2, Test3, Test4,
-                           Test5);  // NOLINT
-template <typename T1, typename T2>
-struct MyPair {};
+                           Test5); // NOLINT
+template <typename T1, typename T2> struct MyPair {};
 // Be sure to try a type with a comma in its name just in case it matters.
-typedef Types<int, double, MyPair<int, int> > TrimTypes;
+typedef Types<int, double, MyPair<int, int>> TrimTypes;
 INSTANTIATE_TYPED_TEST_CASE_P(My, TrimmedTest, TrimTypes);
 
-}  // namespace library2
+} // namespace library2
 
-#endif  // GTEST_HAS_TYPED_TEST_P
+#endif // GTEST_HAS_TYPED_TEST_P
 
 #if !defined(GTEST_HAS_TYPED_TEST) && !defined(GTEST_HAS_TYPED_TEST_P)
 
@@ -362,5 +351,5 @@ INSTANTIATE_TYPED_TEST_CASE_P(My, TrimmedTest, TrimTypes);
 // must be defined). This dummy test keeps gtest_main linked in.
 TEST(DummyTest, TypedTestsAreNotSupportedOnThisPlatform) {}
 
-#endif  // #if !defined(GTEST_HAS_TYPED_TEST) &&
-        // !defined(GTEST_HAS_TYPED_TEST_P)
+#endif // #if !defined(GTEST_HAS_TYPED_TEST) &&
+       // !defined(GTEST_HAS_TYPED_TEST_P)

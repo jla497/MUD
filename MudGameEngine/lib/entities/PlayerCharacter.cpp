@@ -3,7 +3,6 @@
 
 #include "entities/PlayerCharacter.h"
 
-
 PlayerCharacter::PlayerCharacter(int armor, std::string damage,
                                  std::vector<std::string> desc,
                                  unsigned int exp, int gold, std::string hit,
@@ -16,11 +15,11 @@ PlayerCharacter::PlayerCharacter(int armor, std::string damage,
                                        keywords, level, longDesc, shortDesc,
                                        thac0) {}
 
-    void PlayerCharacter::getAdminPrivileges() {
-    	admin = new mudserver::gamemanager::Administrator();
-        std::cout<<"you got admin privilege"<<std::endl;
-    }
+void PlayerCharacter::getAdminPrivileges() {
+    admin = new mudserver::gamemanager::Administrator();
+    std::cout << "you got admin privilege" << std::endl;
+}
 
-mudserver::gamemanager::Administrator* PlayerCharacter::getAdministrator() {
+mudserver::gamemanager::Administrator *PlayerCharacter::getAdministrator() {
     return admin;
 }

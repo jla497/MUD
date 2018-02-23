@@ -90,7 +90,7 @@ TEST(InvalidCharactersTest, InvalidCharactersInMessage) {
 }
 
 class PropertyRecordingTest : public Test {
-public:
+  public:
     static void SetUpTestCase() { RecordProperty("SetUpTestCase", "yes"); }
     static void TearDownTestCase() {
         RecordProperty("TearDownTestCase", "aye");
@@ -116,12 +116,12 @@ TEST_F(PropertyRecordingTest, TwoValuesForOneKeyUsesLastValue) {
 
 TEST(NoFixtureTest, RecordProperty) { RecordProperty("key", "1"); }
 
-void ExternalUtilityThatCallsRecordProperty(const std::string& key, int value) {
+void ExternalUtilityThatCallsRecordProperty(const std::string &key, int value) {
     testing::Test::RecordProperty(key, value);
 }
 
-void ExternalUtilityThatCallsRecordProperty(const std::string& key,
-                                            const std::string& value) {
+void ExternalUtilityThatCallsRecordProperty(const std::string &key,
+                                            const std::string &value) {
     testing::Test::RecordProperty(key, value);
 }
 
@@ -143,8 +143,7 @@ INSTANTIATE_TEST_CASE_P(Single, ValueParamTest, Values(33, 42));
 #if GTEST_HAS_TYPED_TEST
 // Verifies that the type parameter name is output in the 'type_param'
 // XML attribute for typed tests.
-template <typename T>
-class TypedTest : public Test {};
+template <typename T> class TypedTest : public Test {};
 typedef testing::Types<int, long> TypedTestTypes;
 TYPED_TEST_CASE(TypedTest, TypedTestTypes);
 TYPED_TEST(TypedTest, HasTypeParamAttribute) {}
@@ -153,8 +152,7 @@ TYPED_TEST(TypedTest, HasTypeParamAttribute) {}
 #if GTEST_HAS_TYPED_TEST_P
 // Verifies that the type parameter name is output in the 'type_param'
 // XML attribute for type-parameterized tests.
-template <typename T>
-class TypeParameterizedTestCase : public Test {};
+template <typename T> class TypeParameterizedTestCase : public Test {};
 TYPED_TEST_CASE_P(TypeParameterizedTestCase);
 TYPED_TEST_P(TypeParameterizedTestCase, HasTypeParamAttribute) {}
 REGISTER_TYPED_TEST_CASE_P(TypeParameterizedTestCase, HasTypeParamAttribute);
@@ -163,11 +161,11 @@ INSTANTIATE_TYPED_TEST_CASE_P(Single, TypeParameterizedTestCase,
                               TypeParameterizedTestCaseTypes);
 #endif
 
-int main(int argc, char** argv) {
+int main(int argc, char **argv) {
     InitGoogleTest(&argc, argv);
 
     if (argc > 1 && strcmp(argv[1], "--shut_down_xml") == 0) {
-        TestEventListeners& listeners = UnitTest::GetInstance()->listeners();
+        TestEventListeners &listeners = UnitTest::GetInstance()->listeners();
         delete listeners.Release(listeners.default_xml_generator());
     }
     testing::Test::RecordProperty("ad_hoc_property", "42");

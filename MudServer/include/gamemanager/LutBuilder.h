@@ -8,9 +8,9 @@
 
 #include "Player.h"
 #include "UniqueId.h"
-#include "entities/Entity.h"
 #include "entities/AreaEntity.h"
 #include "entities/DoorEntity.h"
+#include "entities/Entity.h"
 #include "entities/NonPlayerCharacter.h"
 #include "entities/ObjectEntity.h"
 #include "entities/PlayerCharacter.h"
@@ -27,8 +27,8 @@ class LutBuilder {
   public:
     std::map<roomId, RoomEntity *>
     createLUT(std::deque<unique_ptr<RoomEntity>> &mVector);
-    std::map<Id, NonPlayerCharacter> createNpcLUT(
-        std::vector<std::unique_ptr<NonPlayerCharacter>>& mVector);
+    std::map<Id, NonPlayerCharacter>
+    createNpcLUT(std::vector<std::unique_ptr<NonPlayerCharacter>> &mVector);
 };
 
 } // namespace gamemanager

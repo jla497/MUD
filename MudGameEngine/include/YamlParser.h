@@ -53,7 +53,7 @@ class YamlParser {
     void getAllHelps();
     std::vector<std::unique_ptr<ShopEntity>> getAllShops();
     std::unique_ptr<AreaEntity> getArea();
-    mudserver::gamemanager::EntityFactory* makeFactory();
+    mudserver::gamemanager::EntityFactory *makeFactory();
 };
 
 #endif

@@ -41,29 +41,29 @@ using testing::Message;
 using testing::internal::linked_ptr;
 
 int num;
-Message* history = NULL;
+Message *history = NULL;
 
 // Class which tracks allocation/deallocation
 class A {
-public:
+  public:
     A() : mynum(num++) { *history << "A" << mynum << " ctor\n"; }
     virtual ~A() { *history << "A" << mynum << " dtor\n"; }
     virtual void Use() { *history << "A" << mynum << " use\n"; }
 
-protected:
+  protected:
     int mynum;
 };
 
 // Subclass
 class B : public A {
-public:
+  public:
     B() { *history << "B" << mynum << " ctor\n"; }
     ~B() { *history << "B" << mynum << " dtor\n"; }
     virtual void Use() { *history << "B" << mynum << " use\n"; }
 };
 
 class LinkedPtrTest : public testing::Test {
-public:
+  public:
     LinkedPtrTest() {
         num = 0;
         history = new Message;
@@ -82,9 +82,9 @@ TEST_F(LinkedPtrTest, GeneralTest) {
         // warning.
         a0.operator=(a0);
         a1 = a2;
-        ASSERT_EQ(a0.get(), static_cast<A*>(NULL));
-        ASSERT_EQ(a1.get(), static_cast<A*>(NULL));
-        ASSERT_EQ(a2.get(), static_cast<A*>(NULL));
+        ASSERT_EQ(a0.get(), static_cast<A *>(NULL));
+        ASSERT_EQ(a1.get(), static_cast<A *>(NULL));
+        ASSERT_EQ(a2.get(), static_cast<A *>(NULL));
         ASSERT_TRUE(a0 == NULL);
         ASSERT_TRUE(a1 == NULL);
         ASSERT_TRUE(a2 == NULL);
@@ -129,28 +129,27 @@ TEST_F(LinkedPtrTest, GeneralTest) {
         linked_ptr<A> a7;
     }
 
-    ASSERT_STREQ(
-        "A0 ctor\n"
-        "A1 ctor\n"
-        "A2 ctor\n"
-        "B2 ctor\n"
-        "A0 use\n"
-        "A0 use\n"
-        "B2 use\n"
-        "B2 use\n"
-        "B2 use\n"
-        "B2 use\n"
-        "B2 use\n"
-        "B2 dtor\n"
-        "A2 dtor\n"
-        "A0 use\n"
-        "A0 use\n"
-        "A1 use\n"
-        "A3 ctor\n"
-        "A0 dtor\n"
-        "A3 dtor\n"
-        "A1 dtor\n",
-        history->GetString().c_str());
+    ASSERT_STREQ("A0 ctor\n"
+                 "A1 ctor\n"
+                 "A2 ctor\n"
+                 "B2 ctor\n"
+                 "A0 use\n"
+                 "A0 use\n"
+                 "B2 use\n"
+                 "B2 use\n"
+                 "B2 use\n"
+                 "B2 use\n"
+                 "B2 use\n"
+                 "B2 dtor\n"
+                 "A2 dtor\n"
+                 "A0 use\n"
+                 "A0 use\n"
+                 "A1 use\n"
+                 "A3 ctor\n"
+                 "A0 dtor\n"
+                 "A3 dtor\n"
+                 "A1 dtor\n",
+                 history->GetString().c_str());
 }
 
-}  // Unnamed namespace
+} // Unnamed namespace

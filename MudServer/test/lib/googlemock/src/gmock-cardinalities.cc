@@ -38,7 +38,7 @@
 #include "gmock/internal/gmock-internal-utils.h"
 #include "gtest/gtest.h"
 #include <limits.h>
-#include <ostream>  // NOLINT
+#include <ostream> // NOLINT
 #include <sstream>
 #include <string>
 
@@ -48,7 +48,7 @@ namespace {
 
 // Implements the Between(m, n) cardinality.
 class BetweenCardinalityImpl : public CardinalityInterface {
-public:
+  public:
     BetweenCardinalityImpl(int min, int max)
         : min_(min >= 0 ? min : 0), max_(max >= min_ ? max : min_) {
         std::stringstream ss;
@@ -80,9 +80,9 @@ public:
         return call_count >= max_;
     }
 
-    virtual void DescribeTo(::std::ostream* os) const;
+    virtual void DescribeTo(::std::ostream *os) const;
 
-private:
+  private:
     const int min_;
     const int max_;
 
@@ -103,7 +103,7 @@ inline internal::string FormatTimes(int n) {
 }
 
 // Describes the Between(m, n) cardinality in human-friendly text.
-void BetweenCardinalityImpl::DescribeTo(::std::ostream* os) const {
+void BetweenCardinalityImpl::DescribeTo(::std::ostream *os) const {
     if (min_ == 0) {
         if (max_ == 0) {
             *os << "never called";
@@ -122,11 +122,11 @@ void BetweenCardinalityImpl::DescribeTo(::std::ostream* os) const {
     }
 }
 
-}  // Unnamed namespace
+} // Unnamed namespace
 
 // Describes the given call count to an ostream.
 void Cardinality::DescribeActualCallCountTo(int actual_call_count,
-                                            ::std::ostream* os) {
+                                            ::std::ostream *os) {
     if (actual_call_count > 0) {
         *os << "called " << FormatTimes(actual_call_count);
     } else {
@@ -151,4 +151,4 @@ GTEST_API_ Cardinality Between(int min, int max) {
 // Creates a cardinality that allows exactly n calls.
 GTEST_API_ Cardinality Exactly(int n) { return Between(n, n); }
 
-}  // namespace testing
+} // namespace testing

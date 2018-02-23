@@ -72,7 +72,7 @@ class GameState {
     RoomEntity *getRoomFromLUT(const roomId);
     void clearAreas();
     void clearCharacterRoomLUT();
-    EntityFactory& getFactory();
+    EntityFactory &getFactory();
     void doReset();
 };
 

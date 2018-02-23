@@ -1,10 +1,11 @@
-#include "gamemanager/GameManager.h"
 #include "gamemanager/Administrator.h"
+#include "gamemanager/GameManager.h"
 
-namespace mudserver{
-    namespace gamemanager {
-        void Administrator::accessGameManager(mudserver::gamemanager::GameManager& manager) {
-            //TODO might need to access GameManager methods
-        }
-    }
+namespace mudserver {
+namespace gamemanager {
+void Administrator::accessGameManager(
+    mudserver::gamemanager::GameManager &manager) {
+    // TODO might need to access GameManager methods
+}
+}
 }

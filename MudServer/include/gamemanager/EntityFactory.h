@@ -29,13 +29,13 @@ class EntityFactory {
     NpcLookUp npcLookUp;
     NpcVector npcs;
 
-public:
+  public:
     EntityFactory(NpcVector npcs);
     void init();
 
     NonPlayerCharacter buildNpc(Id id);
 };
-}  // namespace gamemanager
+} // namespace gamemanager
 }
 
 #endif

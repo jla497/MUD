@@ -39,12 +39,12 @@
 // This must not be defined inside the ::testing namespace, or it will
 // clash with ::testing::Mock.
 class Mock {
-public:
+  public:
     Mock() {}
 
     MOCK_METHOD0(DoThis, void());
 
-private:
+  private:
     GTEST_DISALLOW_COPY_AND_ASSIGN_(Mock);
 };
 
@@ -66,7 +66,7 @@ using testing::internal::GetCapturedStdout;
 // Defines some mock classes needed by the tests.
 
 class Foo {
-public:
+  public:
     virtual ~Foo() {}
 
     virtual void DoThis() = 0;
@@ -74,23 +74,23 @@ public:
 };
 
 class MockFoo : public Foo {
-public:
+  public:
     MockFoo() {}
     void Delete() { delete this; }
 
     MOCK_METHOD0(DoThis, void());
     MOCK_METHOD1(DoThat, int(bool flag));
 
-private:
+  private:
     GTEST_DISALLOW_COPY_AND_ASSIGN_(MockFoo);
 };
 
 class MockBar {
-public:
-    explicit MockBar(const string& s) : str_(s) {}
+  public:
+    explicit MockBar(const string &s) : str_(s) {}
 
     MockBar(char a1, char a2, string a3, string a4, int a5, int a6,
-            const string& a7, const string& a8, bool a9, bool a10) {
+            const string &a7, const string &a8, bool a9, bool a10) {
         str_ = string() + a1 + a2 + a3 + a4 + static_cast<char>(a5) +
                static_cast<char>(a6) + a7 + a8 + (a9 ? 'T' : 'F') +
                (a10 ? 'T' : 'F');
@@ -98,12 +98,12 @@ public:
 
     virtual ~MockBar() {}
 
-    const string& str() const { return str_; }
+    const string &str() const { return str_; }
 
     MOCK_METHOD0(This, int());
     MOCK_METHOD2(That, string(int, bool));
 
-private:
+  private:
     string str_;
 
     GTEST_DISALLOW_COPY_AND_ASSIGN_(MockBar);
@@ -133,7 +133,7 @@ TEST(RawMockTest, WarningForUninterestingCallAfterDeath) {
     const string saved_flag = GMOCK_FLAG(verbose);
     GMOCK_FLAG(verbose) = "warning";
 
-    MockFoo* const raw_foo = new MockFoo;
+    MockFoo *const raw_foo = new MockFoo;
 
     ON_CALL(*raw_foo, DoThis())
         .WillByDefault(Invoke(raw_foo, &MockFoo::Delete));
@@ -174,7 +174,7 @@ TEST(NiceMockTest, NoWarningForUninterestingCall) {
 // Tests that a nice mock generates no warning for uninteresting calls
 // that delete the mock object.
 TEST(NiceMockTest, NoWarningForUninterestingCallAfterDeath) {
-    NiceMock<MockFoo>* const nice_foo = new NiceMock<MockFoo>;
+    NiceMock<MockFoo> *const nice_foo = new NiceMock<MockFoo>;
 
     ON_CALL(*nice_foo, DoThis())
         .WillByDefault(Invoke(nice_foo, &MockFoo::Delete));
@@ -199,7 +199,7 @@ TEST(NiceMockTest, InfoForUninterestingCall) {
     GMOCK_FLAG(verbose) = saved_flag;
 }
 
-#endif  // GTEST_HAS_STREAM_REDIRECTION
+#endif // GTEST_HAS_STREAM_REDIRECTION
 
 // Tests that a nice mock allows expected calls.
 TEST(NiceMockTest, AllowsExpectedCall) {
@@ -249,11 +249,11 @@ TEST(NiceMockTest, NonDefaultConstructor10) {
 // We have to skip this test on Symbian and Windows Mobile, as it
 // causes the program to crash there, for reasons unclear to us yet.
 TEST(NiceMockTest, AcceptsClassNamedMock) {
-    NiceMock< ::Mock> nice;
+    NiceMock<::Mock> nice;
     EXPECT_CALL(nice, DoThis());
     nice.DoThis();
 }
-#endif  // !GTEST_OS_SYMBIAN && !GTEST_OS_WINDOWS_MOBILE
+#endif // !GTEST_OS_SYMBIAN && !GTEST_OS_WINDOWS_MOBILE
 
 #if GTEST_HAS_STREAM_REDIRECTION
 
@@ -279,7 +279,7 @@ TEST(NaggyMockTest, WarningForUninterestingCallAfterDeath) {
     const string saved_flag = GMOCK_FLAG(verbose);
     GMOCK_FLAG(verbose) = "warning";
 
-    NaggyMock<MockFoo>* const naggy_foo = new NaggyMock<MockFoo>;
+    NaggyMock<MockFoo> *const naggy_foo = new NaggyMock<MockFoo>;
 
     ON_CALL(*naggy_foo, DoThis())
         .WillByDefault(Invoke(naggy_foo, &MockFoo::Delete));
@@ -292,7 +292,7 @@ TEST(NaggyMockTest, WarningForUninterestingCallAfterDeath) {
     GMOCK_FLAG(verbose) = saved_flag;
 }
 
-#endif  // GTEST_HAS_STREAM_REDIRECTION
+#endif // GTEST_HAS_STREAM_REDIRECTION
 
 // Tests that a naggy mock allows expected calls.
 TEST(NaggyMockTest, AllowsExpectedCall) {
@@ -342,11 +342,11 @@ TEST(NaggyMockTest, NonDefaultConstructor10) {
 // We have to skip this test on Symbian and Windows Mobile, as it
 // causes the program to crash there, for reasons unclear to us yet.
 TEST(NaggyMockTest, AcceptsClassNamedMock) {
-    NaggyMock< ::Mock> naggy;
+    NaggyMock<::Mock> naggy;
     EXPECT_CALL(naggy, DoThis());
     naggy.DoThis();
 }
-#endif  // !GTEST_OS_SYMBIAN && !GTEST_OS_WINDOWS_MOBILE
+#endif // !GTEST_OS_SYMBIAN && !GTEST_OS_WINDOWS_MOBILE
 
 // Tests that a strict mock allows expected calls.
 TEST(StrictMockTest, AllowsExpectedCall) {
@@ -376,7 +376,7 @@ TEST(StrictMockTest, UninterestingCallFails) {
 // Tests that an uninteresting call on a strict mock fails, even if
 // the call deletes the mock object.
 TEST(StrictMockTest, UninterestingCallFailsAfterDeath) {
-    StrictMock<MockFoo>* const strict_foo = new StrictMock<MockFoo>;
+    StrictMock<MockFoo> *const strict_foo = new StrictMock<MockFoo>;
 
     ON_CALL(*strict_foo, DoThis())
         .WillByDefault(Invoke(strict_foo, &MockFoo::Delete));
@@ -416,11 +416,11 @@ TEST(StrictMockTest, NonDefaultConstructor10) {
 // We have to skip this test on Symbian and Windows Mobile, as it
 // causes the program to crash there, for reasons unclear to us yet.
 TEST(StrictMockTest, AcceptsClassNamedMock) {
-    StrictMock< ::Mock> strict;
+    StrictMock<::Mock> strict;
     EXPECT_CALL(strict, DoThis());
     strict.DoThis();
 }
-#endif  // !GTEST_OS_SYMBIAN && !GTEST_OS_WINDOWS_MOBILE
+#endif // !GTEST_OS_SYMBIAN && !GTEST_OS_WINDOWS_MOBILE
 
-}  // namespace gmock_nice_strict_test
-}  // namespace testing
+} // namespace gmock_nice_strict_test
+} // namespace testing

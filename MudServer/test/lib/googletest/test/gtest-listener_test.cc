@@ -47,21 +47,21 @@ using ::testing::TestPartResult;
 using ::testing::UnitTest;
 
 // Used by tests to register their events.
-std::vector<std::string>* g_events = NULL;
+std::vector<std::string> *g_events = NULL;
 
 namespace testing {
 namespace internal {
 
 class EventRecordingListener : public TestEventListener {
-public:
-    explicit EventRecordingListener(const char* name) : name_(name) {}
+  public:
+    explicit EventRecordingListener(const char *name) : name_(name) {}
 
-protected:
-    virtual void OnTestProgramStart(const UnitTest& /*unit_test*/) {
+  protected:
+    virtual void OnTestProgramStart(const UnitTest & /*unit_test*/) {
         g_events->push_back(GetFullMethodName("OnTestProgramStart"));
     }
 
-    virtual void OnTestIterationStart(const UnitTest& /*unit_test*/,
+    virtual void OnTestIterationStart(const UnitTest & /*unit_test*/,
                                       int iteration) {
         Message message;
         message << GetFullMethodName("OnTestIterationStart") << "(" << iteration
@@ -69,43 +69,43 @@ protected:
         g_events->push_back(message.GetString());
     }
 
-    virtual void OnEnvironmentsSetUpStart(const UnitTest& /*unit_test*/) {
+    virtual void OnEnvironmentsSetUpStart(const UnitTest & /*unit_test*/) {
         g_events->push_back(GetFullMethodName("OnEnvironmentsSetUpStart"));
     }
 
-    virtual void OnEnvironmentsSetUpEnd(const UnitTest& /*unit_test*/) {
+    virtual void OnEnvironmentsSetUpEnd(const UnitTest & /*unit_test*/) {
         g_events->push_back(GetFullMethodName("OnEnvironmentsSetUpEnd"));
     }
 
-    virtual void OnTestCaseStart(const TestCase& /*test_case*/) {
+    virtual void OnTestCaseStart(const TestCase & /*test_case*/) {
         g_events->push_back(GetFullMethodName("OnTestCaseStart"));
     }
 
-    virtual void OnTestStart(const TestInfo& /*test_info*/) {
+    virtual void OnTestStart(const TestInfo & /*test_info*/) {
         g_events->push_back(GetFullMethodName("OnTestStart"));
     }
 
-    virtual void OnTestPartResult(const TestPartResult& /*test_part_result*/) {
+    virtual void OnTestPartResult(const TestPartResult & /*test_part_result*/) {
         g_events->push_back(GetFullMethodName("OnTestPartResult"));
     }
 
-    virtual void OnTestEnd(const TestInfo& /*test_info*/) {
+    virtual void OnTestEnd(const TestInfo & /*test_info*/) {
         g_events->push_back(GetFullMethodName("OnTestEnd"));
     }
 
-    virtual void OnTestCaseEnd(const TestCase& /*test_case*/) {
+    virtual void OnTestCaseEnd(const TestCase & /*test_case*/) {
         g_events->push_back(GetFullMethodName("OnTestCaseEnd"));
     }
 
-    virtual void OnEnvironmentsTearDownStart(const UnitTest& /*unit_test*/) {
+    virtual void OnEnvironmentsTearDownStart(const UnitTest & /*unit_test*/) {
         g_events->push_back(GetFullMethodName("OnEnvironmentsTearDownStart"));
     }
 
-    virtual void OnEnvironmentsTearDownEnd(const UnitTest& /*unit_test*/) {
+    virtual void OnEnvironmentsTearDownEnd(const UnitTest & /*unit_test*/) {
         g_events->push_back(GetFullMethodName("OnEnvironmentsTearDownEnd"));
     }
 
-    virtual void OnTestIterationEnd(const UnitTest& /*unit_test*/,
+    virtual void OnTestIterationEnd(const UnitTest & /*unit_test*/,
                                     int iteration) {
         Message message;
         message << GetFullMethodName("OnTestIterationEnd") << "(" << iteration
@@ -113,12 +113,12 @@ protected:
         g_events->push_back(message.GetString());
     }
 
-    virtual void OnTestProgramEnd(const UnitTest& /*unit_test*/) {
+    virtual void OnTestProgramEnd(const UnitTest & /*unit_test*/) {
         g_events->push_back(GetFullMethodName("OnTestProgramEnd"));
     }
 
-private:
-    std::string GetFullMethodName(const char* name) {
+  private:
+    std::string GetFullMethodName(const char *name) {
         return name_ + "." + name;
     }
 
@@ -126,14 +126,14 @@ private:
 };
 
 class EnvironmentInvocationCatcher : public Environment {
-protected:
+  protected:
     virtual void SetUp() { g_events->push_back("Environment::SetUp"); }
 
     virtual void TearDown() { g_events->push_back("Environment::TearDown"); }
 };
 
 class ListenerTest : public Test {
-protected:
+  protected:
     static void SetUpTestCase() {
         g_events->push_back("ListenerTest::SetUpTestCase");
     }
@@ -151,23 +151,23 @@ TEST_F(ListenerTest, DoesFoo) {
     // Test execution order within a test case is not guaranteed so we are not
     // recording the test name.
     g_events->push_back("ListenerTest::* Test Body");
-    SUCCEED();  // Triggers OnTestPartResult.
+    SUCCEED(); // Triggers OnTestPartResult.
 }
 
 TEST_F(ListenerTest, DoesBar) {
     g_events->push_back("ListenerTest::* Test Body");
-    SUCCEED();  // Triggers OnTestPartResult.
+    SUCCEED(); // Triggers OnTestPartResult.
 }
 
-}  // namespace internal
+} // namespace internal
 
-}  // namespace testing
+} // namespace testing
 
 using ::testing::internal::EnvironmentInvocationCatcher;
 using ::testing::internal::EventRecordingListener;
 
-void VerifyResults(const std::vector<std::string>& data,
-                   const char* const* expected_data,
+void VerifyResults(const std::vector<std::string> &data,
+                   const char *const *expected_data,
                    size_t expected_data_size) {
     const size_t actual_size = data.size();
     // If the following assertion fails, a new entry will be appended to
@@ -189,7 +189,7 @@ void VerifyResults(const std::vector<std::string>& data,
     }
 }
 
-int main(int argc, char** argv) {
+int main(int argc, char **argv) {
     std::vector<std::string> events;
     g_events = &events;
     InitGoogleTest(&argc, argv);
@@ -207,7 +207,7 @@ int main(int argc, char** argv) {
     ::testing::GTEST_FLAG(repeat) = 2;
     int ret_val = RUN_ALL_TESTS();
 
-    const char* const expected_events[] = {"1st.OnTestProgramStart",
+    const char *const expected_events[] = {"1st.OnTestProgramStart",
                                            "2nd.OnTestProgramStart",
                                            "1st.OnTestIterationStart(0)",
                                            "2nd.OnTestIterationStart(0)",
@@ -292,7 +292,8 @@ int main(int argc, char** argv) {
 
     // We need to check manually for ad hoc test failures that happen after
     // RUN_ALL_TESTS finishes.
-    if (UnitTest::GetInstance()->Failed()) ret_val = 1;
+    if (UnitTest::GetInstance()->Failed())
+        ret_val = 1;
 
     return ret_val;
 }

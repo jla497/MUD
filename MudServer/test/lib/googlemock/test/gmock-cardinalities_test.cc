@@ -51,11 +51,11 @@ using testing::IsSubstring;
 using testing::MakeCardinality;
 
 class MockFoo {
-public:
+  public:
     MockFoo() {}
-    MOCK_METHOD0(Bar, int());  // NOLINT
+    MOCK_METHOD0(Bar, int()); // NOLINT
 
-private:
+  private:
     GTEST_DISALLOW_COPY_AND_ASSIGN_(MockFoo);
 };
 
@@ -131,7 +131,7 @@ TEST(AnyNumberTest, HasCorrectBounds) {
 
 TEST(AtLeastTest, OnNegativeNumber) {
     EXPECT_NONFATAL_FAILURE(
-        {  // NOLINT
+        { // NOLINT
             AtLeast(-1);
         },
         "The invocation lower bound must be >= 0");
@@ -184,7 +184,7 @@ TEST(AtLeastTest, HasCorrectBounds) {
 
 TEST(AtMostTest, OnNegativeNumber) {
     EXPECT_NONFATAL_FAILURE(
-        {  // NOLINT
+        { // NOLINT
             AtMost(-1);
         },
         "The invocation upper bound must be >= 0");
@@ -237,7 +237,7 @@ TEST(AtMostTest, HasCorrectBounds) {
 
 TEST(BetweenTest, OnNegativeStart) {
     EXPECT_NONFATAL_FAILURE(
-        {  // NOLINT
+        { // NOLINT
             Between(-1, 2);
         },
         "The invocation lower bound must be >= 0, but is actually -1");
@@ -245,7 +245,7 @@ TEST(BetweenTest, OnNegativeStart) {
 
 TEST(BetweenTest, OnNegativeEnd) {
     EXPECT_NONFATAL_FAILURE(
-        {  // NOLINT
+        { // NOLINT
             Between(1, -2);
         },
         "The invocation upper bound must be >= 0, but is actually -2");
@@ -253,7 +253,7 @@ TEST(BetweenTest, OnNegativeEnd) {
 
 TEST(BetweenTest, OnStartBiggerThanEnd) {
     EXPECT_NONFATAL_FAILURE(
-        {  // NOLINT
+        { // NOLINT
             Between(2, 1);
         },
         "The invocation upper bound (1) must be >= "
@@ -338,7 +338,7 @@ TEST(BetweenTest, HasCorrectBounds) {
 
 TEST(ExactlyTest, OnNegativeNumber) {
     EXPECT_NONFATAL_FAILURE(
-        {  // NOLINT
+        { // NOLINT
             Exactly(-1);
         },
         "The invocation lower bound must be >= 0");
@@ -388,7 +388,7 @@ TEST(ExactlyTest, HasCorrectBounds) {
 // CardinalityInterface and calling MakeCardinality().
 
 class EvenCardinality : public CardinalityInterface {
-public:
+  public:
     // Returns true iff call_count calls will satisfy this cardinality.
     virtual bool IsSatisfiedByCallCount(int call_count) const {
         return (call_count % 2 == 0);
@@ -400,7 +400,7 @@ public:
     }
 
     // Describes self to an ostream.
-    virtual void DescribeTo(::std::ostream* ss) const {
+    virtual void DescribeTo(::std::ostream *ss) const {
         *ss << "called even number of times";
     }
 };
@@ -418,4 +418,4 @@ TEST(MakeCardinalityTest, ConstructsCardinalityFromInterface) {
     EXPECT_EQ("called even number of times", ss.str());
 }
 
-}  // Unnamed namespace
+} // Unnamed namespace

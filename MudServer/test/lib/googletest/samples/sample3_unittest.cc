@@ -67,8 +67,8 @@
 
 // To use a test fixture, derive a class from testing::Test.
 class QueueTest : public testing::Test {
-protected:  // You should make the members protected s.t. they can be
-            // accessed from sub-classes.
+  protected: // You should make the members protected s.t. they can be
+             // accessed from sub-classes.
 
     // virtual void SetUp() will be called before each test is run.  You
     // should define it if you need to initialize the varaibles.
@@ -90,10 +90,10 @@ protected:  // You should make the members protected s.t. they can be
     static int Double(int n) { return 2 * n; }
 
     // A helper function for testing Queue::Map().
-    void MapTester(const Queue<int>* q) {
+    void MapTester(const Queue<int> *q) {
         // Creates a new queue, where each element is twice as big as the
         // corresponding one in q.
-        const Queue<int>* const new_q = q->Map(Double);
+        const Queue<int> *const new_q = q->Map(Double);
 
         // Verifies that the new queue has the same size as q.
         ASSERT_EQ(q->Size(), new_q->Size());
@@ -124,7 +124,7 @@ TEST_F(QueueTest, DefaultConstructor) {
 
 // Tests Dequeue().
 TEST_F(QueueTest, Dequeue) {
-    int* n = q0_.Dequeue();
+    int *n = q0_.Dequeue();
     EXPECT_TRUE(n == NULL);
 
     n = q1_.Dequeue();

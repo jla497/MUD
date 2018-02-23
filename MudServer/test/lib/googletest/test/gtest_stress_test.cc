@@ -61,7 +61,7 @@ using internal::scoped_ptr;
 // How many threads to create?
 const int kThreadCount = 50;
 
-std::string IdToKey(int id, const char* suffix) {
+std::string IdToKey(int id, const char *suffix) {
     Message key;
     key << "key_" << id << "_" << suffix;
     return key.GetString();
@@ -74,7 +74,7 @@ std::string IdToString(int id) {
 }
 
 void ExpectKeyAndValueWereRecordedForId(
-    const std::vector<TestProperty>& properties, int id, const char* suffix) {
+    const std::vector<TestProperty> &properties, int id, const char *suffix) {
     TestPropertyKeyIs matches_key(IdToKey(id, suffix).c_str());
     const std::vector<TestProperty>::const_iterator property =
         std::find_if(properties.begin(), properties.end(), matches_key);
@@ -115,8 +115,8 @@ void ManyAsserts(int id) {
 }
 
 void CheckTestFailureCount(int expected_failures) {
-    const TestInfo* const info = UnitTest::GetInstance()->current_test_info();
-    const TestResult* const result = info->result();
+    const TestInfo *const info = UnitTest::GetInstance()->current_test_info();
+    const TestResult *const result = info->result();
     GTEST_CHECK_(expected_failures == result->total_part_count())
         << "Logged " << result->total_part_count() << " failures "
         << " vs. " << expected_failures << " expected";
@@ -126,7 +126,7 @@ void CheckTestFailureCount(int expected_failures) {
 // concurrently.
 TEST(StressTest, CanUseScopedTraceAndAssertionsInManyThreads) {
     {
-        scoped_ptr<ThreadWithParam<int> > threads[kThreadCount];
+        scoped_ptr<ThreadWithParam<int>> threads[kThreadCount];
         Notification threads_can_start;
         for (int i = 0; i != kThreadCount; i++)
             threads[i].reset(
@@ -135,12 +135,13 @@ TEST(StressTest, CanUseScopedTraceAndAssertionsInManyThreads) {
         threads_can_start.Notify();
 
         // Blocks until all the threads are done.
-        for (int i = 0; i != kThreadCount; i++) threads[i]->Join();
+        for (int i = 0; i != kThreadCount; i++)
+            threads[i]->Join();
     }
 
     // Ensures that kThreadCount*kThreadCount failures have been reported.
-    const TestInfo* const info = UnitTest::GetInstance()->current_test_info();
-    const TestResult* const result = info->result();
+    const TestInfo *const info = UnitTest::GetInstance()->current_test_info();
+    const TestResult *const result = info->result();
 
     std::vector<TestProperty> properties;
     // We have no access to the TestResult's list of properties but we can
@@ -229,13 +230,13 @@ TEST(NonFatalFailureOnAllThreadsTest, ExpectNonFatalFailureOnAllThreads) {
     ADD_FAILURE() << "This is an expected non-fatal failure.";
 }
 
-}  // namespace
-}  // namespace testing
+} // namespace
+} // namespace testing
 
-int main(int argc, char** argv) {
+int main(int argc, char **argv) {
     testing::InitGoogleTest(&argc, argv);
 
-    const int result = RUN_ALL_TESTS();  // Expected to fail.
+    const int result = RUN_ALL_TESTS(); // Expected to fail.
     GTEST_CHECK_(result == 1) << "RUN_ALL_TESTS() did not fail as expected";
 
     printf("\nPASS\n");
@@ -250,4 +251,4 @@ int main(int argc, char **argv) {
     testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
 }
-#endif  // GTEST_IS_THREADSAFE
+#endif // GTEST_IS_THREADSAFE

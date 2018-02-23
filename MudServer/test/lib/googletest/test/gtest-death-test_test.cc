@@ -41,11 +41,11 @@ using testing::internal::AlwaysTrue;
 #if GTEST_HAS_DEATH_TEST
 
 #if GTEST_OS_WINDOWS
-#include <direct.h>  // For chdir().
+#include <direct.h> // For chdir().
 #else
-#include <sys/wait.h>  // For waitpid.
+#include <sys/wait.h> // For waitpid.
 #include <unistd.h>
-#endif  // GTEST_OS_WINDOWS
+#endif // GTEST_OS_WINDOWS
 
 #include <limits.h>
 #include <signal.h>
@@ -53,7 +53,7 @@ using testing::internal::AlwaysTrue;
 
 #if GTEST_OS_LINUX
 #include <sys/time.h>
-#endif  // GTEST_OS_LINUX
+#endif // GTEST_OS_LINUX
 
 #include "gtest/gtest-spi.h"
 
@@ -83,8 +83,8 @@ namespace internal {
 // A helper class whose objects replace the death test factory for a
 // single UnitTest object during their lifetimes.
 class ReplaceDeathTestFactory {
-public:
-    explicit ReplaceDeathTestFactory(DeathTestFactory* new_factory)
+  public:
+    explicit ReplaceDeathTestFactory(DeathTestFactory *new_factory)
         : unit_test_impl_(GetUnitTestImpl()) {
         old_factory_ = unit_test_impl_->death_test_factory_.release();
         unit_test_impl_->death_test_factory_.reset(new_factory);
@@ -95,21 +95,21 @@ public:
         unit_test_impl_->death_test_factory_.reset(old_factory_);
     }
 
-private:
+  private:
     // Prevents copying ReplaceDeathTestFactory objects.
-    ReplaceDeathTestFactory(const ReplaceDeathTestFactory&);
-    void operator=(const ReplaceDeathTestFactory&);
+    ReplaceDeathTestFactory(const ReplaceDeathTestFactory &);
+    void operator=(const ReplaceDeathTestFactory &);
 
-    UnitTestImpl* unit_test_impl_;
-    DeathTestFactory* old_factory_;
+    UnitTestImpl *unit_test_impl_;
+    DeathTestFactory *old_factory_;
 };
 
-}  // namespace internal
-}  // namespace testing
+} // namespace internal
+} // namespace testing
 
-void DieWithMessage(const ::std::string& message) {
+void DieWithMessage(const ::std::string &message) {
     fprintf(stderr, "%s", message.c_str());
-    fflush(stderr);  // Make sure the text is printed before the process exits.
+    fflush(stderr); // Make sure the text is printed before the process exits.
 
     // We call _exit() instead of exit(), as the former is a direct
     // system call and thus safer in the presence of threads.  exit()
@@ -119,17 +119,18 @@ void DieWithMessage(const ::std::string& message) {
     // Some compilers can recognize that _exit() never returns and issue the
     // 'unreachable code' warning for code following this function, unless
     // fooled by a fake condition.
-    if (AlwaysTrue()) _exit(1);
+    if (AlwaysTrue())
+        _exit(1);
 }
 
-void DieInside(const ::std::string& function) {
+void DieInside(const ::std::string &function) {
     DieWithMessage("death inside " + function + "().");
 }
 
 // Tests that death tests work.
 
 class TestForDeathTest : public testing::Test {
-protected:
+  protected:
     TestForDeathTest() : original_dir_(FilePath::GetCurrentDir()) {}
 
     virtual ~TestForDeathTest() { posix::ChDir(original_dir_.c_str()); }
@@ -139,7 +140,8 @@ protected:
 
     // A method of the test fixture that may die.
     void MemberFunction() {
-        if (should_die_) DieInside("MemberFunction");
+        if (should_die_)
+            DieInside("MemberFunction");
     }
 
     // True iff MemberFunction() should die.
@@ -149,15 +151,16 @@ protected:
 
 // A class with a member function that may die.
 class MayDie {
-public:
+  public:
     explicit MayDie(bool should_die) : should_die_(should_die) {}
 
     // A member function that may die.
     void MemberFunction() const {
-        if (should_die_) DieInside("MayDie::MemberFunction");
+        if (should_die_)
+            DieInside("MayDie::MemberFunction");
     }
 
-private:
+  private:
     // True iff MemberFunction() should die.
     bool should_die_;
 };
@@ -173,7 +176,8 @@ int NonVoidFunction() {
 
 // A unary function that may die.
 void DieIf(bool should_die) {
-    if (should_die) DieInside("DieIf");
+    if (should_die)
+        DieInside("DieIf");
 }
 
 // A binary function that may die.
@@ -191,14 +195,15 @@ void DeathTestSubroutine() {
 }
 
 // Death in dbg, not opt.
-int DieInDebugElse12(int* sideeffect) {
-    if (sideeffect) *sideeffect = 12;
+int DieInDebugElse12(int *sideeffect) {
+    if (sideeffect)
+        *sideeffect = 12;
 
 #ifndef NDEBUG
 
     DieInside("DieInDebugElse12");
 
-#endif  // NDEBUG
+#endif // NDEBUG
 
     return 12;
 }
@@ -275,7 +280,7 @@ TEST(ExitStatusPredicateTest, KilledBySignal) {
     EXPECT_FALSE(pred_kill(status_segv));
 }
 
-#endif  // GTEST_OS_WINDOWS
+#endif // GTEST_OS_WINDOWS
 
 // Tests that the death test macros expand to code which may or may not
 // be followed by operator<<, and that in either case the complete text
@@ -292,7 +297,8 @@ TEST_F(TestForDeathTest, SingleStatement) {
         // doesn't expand into an "if" statement without an "else"
         ;
 
-    if (AlwaysFalse()) ASSERT_DEATH(return, "") << "did not die";
+    if (AlwaysFalse())
+        ASSERT_DEATH(return, "") << "did not die";
 
     if (AlwaysFalse())
         ;
@@ -315,7 +321,7 @@ TEST_F(TestForDeathTest, EmbeddedNulInMessage) {
     EXPECT_DEATH(DieWithEmbeddedNul(), "my null world");
     ASSERT_DEATH(DieWithEmbeddedNul(), "my null world");
 }
-#endif  // GTEST_USES_PCRE
+#endif // GTEST_USES_PCRE
 
 // Tests that death test macros expand to code which interacts well with switch
 // statements.
@@ -365,7 +371,7 @@ TEST_F(TestForDeathTest, FastDeathTestInChangedDir) {
 }
 
 #if GTEST_OS_LINUX
-void SigprofAction(int, siginfo_t*, void*) { /* no op */
+void SigprofAction(int, siginfo_t *, void *) { /* no op */
 }
 
 // Sets SIGPROF action and ITIMER_PROF timer (interval: 1ms).
@@ -384,7 +390,7 @@ void SetSigprofActionAndTimer() {
 }
 
 // Disables ITIMER_PROF timer and ignores SIGPROF signal.
-void DisableSigprofActionAndTimer(struct sigaction* old_signal_action) {
+void DisableSigprofActionAndTimer(struct sigaction *old_signal_action) {
     struct itimerval timer;
     timer.it_interval.tv_sec = 0;
     timer.it_interval.tv_usec = 0;
@@ -415,7 +421,7 @@ TEST_F(TestForDeathTest, ThreadSafeSigprofActionSet) {
     DisableSigprofActionAndTimer(&old_signal_action);
     EXPECT_TRUE(old_signal_action.sa_sigaction == SigprofAction);
 }
-#endif  // GTEST_OS_LINUX
+#endif // GTEST_OS_LINUX
 
 // Repeats a representative sample of death tests in the "threadsafe" style:
 
@@ -462,7 +468,7 @@ bool pthread_flag;
 
 void SetPthreadFlag() { pthread_flag = true; }
 
-}  // namespace
+} // namespace
 
 TEST_F(TestForDeathTest, DoesNotExecuteAtforkHooks) {
     if (!testing::GTEST_FLAG(death_test_use_fork)) {
@@ -474,7 +480,7 @@ TEST_F(TestForDeathTest, DoesNotExecuteAtforkHooks) {
     }
 }
 
-#endif  // GTEST_HAS_CLONE && GTEST_HAS_PTHREAD
+#endif // GTEST_HAS_CLONE && GTEST_HAS_PTHREAD
 
 // Tests that a method of another class can be used in a death test.
 TEST_F(TestForDeathTest, MethodOfAnotherClass) {
@@ -501,14 +507,14 @@ TEST_F(TestForDeathTest, AcceptsAnythingConvertibleToRE) {
     const string regex_str(regex_c_str);
     EXPECT_DEATH(GlobalFunction(), regex_str);
 
-#endif  // GTEST_HAS_GLOBAL_STRING
+#endif // GTEST_HAS_GLOBAL_STRING
 
 #if !GTEST_USES_PCRE
 
     const ::std::string regex_std_str(regex_c_str);
     EXPECT_DEATH(GlobalFunction(), regex_std_str);
 
-#endif  // !GTEST_USES_PCRE
+#endif // !GTEST_USES_PCRE
 }
 
 // Tests that a non-void function can be used in a death test.
@@ -536,7 +542,7 @@ TEST_F(TestForDeathTest, InsideLoop) {
 // Tests that a compound statement can be used in a death test.
 TEST_F(TestForDeathTest, CompoundStatement) {
     EXPECT_DEATH(
-        {  // NOLINT
+        { // NOLINT
             const int x = 2;
             const int y = x + 1;
             DieIfLessThan(x, y);
@@ -553,7 +559,7 @@ TEST_F(TestForDeathTest, DoesNotDie) {
 // Tests that a death test fails when the error message isn't expected.
 TEST_F(TestForDeathTest, ErrorMessageMismatch) {
     EXPECT_NONFATAL_FAILURE(
-        {  // NOLINT
+        { // NOLINT
             EXPECT_DEATH(DieIf(true), "DieIfLessThan")
                 << "End of death test message.";
         },
@@ -562,9 +568,9 @@ TEST_F(TestForDeathTest, ErrorMessageMismatch) {
 
 // On exit, *aborted will be true iff the EXPECT_DEATH() statement
 // aborted the function.
-void ExpectDeathTestHelper(bool* aborted) {
+void ExpectDeathTestHelper(bool *aborted) {
     *aborted = true;
-    EXPECT_DEATH(DieIf(false), "DieIf");  // This assertion should fail.
+    EXPECT_DEATH(DieIf(false), "DieIf"); // This assertion should fail.
     *aborted = false;
 }
 
@@ -579,9 +585,9 @@ TEST_F(TestForDeathTest, EXPECT_DEATH) {
 TEST_F(TestForDeathTest, ASSERT_DEATH) {
     static bool aborted;
     EXPECT_FATAL_FAILURE(
-        {  // NOLINT
+        { // NOLINT
             aborted = true;
-            ASSERT_DEATH(DieIf(false), "DieIf");  // This assertion should fail.
+            ASSERT_DEATH(DieIf(false), "DieIf"); // This assertion should fail.
             aborted = false;
         },
         "failed to die");
@@ -593,8 +599,8 @@ TEST_F(TestForDeathTest, SingleEvaluation) {
     int x = 3;
     EXPECT_DEATH(DieIf((++x) == 4), "DieIf");
 
-    const char* regex = "DieIf";
-    const char* regex_save = regex;
+    const char *regex = "DieIf";
+    const char *regex_save = regex;
     EXPECT_DEATH(DieIfLessThan(3, 4), regex++);
     EXPECT_EQ(regex_save + 1, regex);
 }
@@ -666,7 +672,7 @@ TEST_F(TestForDeathTest, TestAssertDebugDeath) {
 
 #ifndef NDEBUG
 
-void ExpectDebugDeathHelper(bool* aborted) {
+void ExpectDebugDeathHelper(bool *aborted) {
     *aborted = true;
     EXPECT_DEBUG_DEATH(return, "") << "This is expected to fail.";
     *aborted = false;
@@ -674,9 +680,8 @@ void ExpectDebugDeathHelper(bool* aborted) {
 
 #if GTEST_OS_WINDOWS
 TEST(PopUpDeathTest, DoesNotShowPopUpOnAbort) {
-    printf(
-        "This test should be considered failing if it shows "
-        "any pop-up dialogs.\n");
+    printf("This test should be considered failing if it shows "
+           "any pop-up dialogs.\n");
     fflush(stdout);
 
     EXPECT_DEATH(
@@ -686,7 +691,7 @@ TEST(PopUpDeathTest, DoesNotShowPopUpOnAbort) {
         },
         "");
 }
-#endif  // GTEST_OS_WINDOWS
+#endif // GTEST_OS_WINDOWS
 
 // Tests that EXPECT_DEBUG_DEATH in debug mode does not abort
 // the function.
@@ -696,7 +701,7 @@ TEST_F(TestForDeathTest, ExpectDebugDeathDoesNotAbort) {
     EXPECT_FALSE(aborted);
 }
 
-void AssertDebugDeathHelper(bool* aborted) {
+void AssertDebugDeathHelper(bool *aborted) {
     *aborted = true;
     GTEST_LOG_(INFO) << "Before ASSERT_DEBUG_DEATH";
     ASSERT_DEBUG_DEATH(GTEST_LOG_(INFO) << "In ASSERT_DEBUG_DEATH"; return, "")
@@ -777,7 +782,7 @@ TEST_F(TestForDeathTest, AssertDebugDeathAborts10) {
     EXPECT_TRUE(aborted);
 }
 
-#endif  // _NDEBUG
+#endif // _NDEBUG
 
 // Tests the *_EXIT family of macros, using a variety of predicates.
 static void TestExitMacros() {
@@ -797,16 +802,16 @@ static void TestExitMacros() {
     ASSERT_EXIT(raise(SIGUSR2), testing::KilledBySignal(SIGUSR2), "") << "bar";
 
     EXPECT_FATAL_FAILURE(
-        {  // NOLINT
+        { // NOLINT
             ASSERT_EXIT(_exit(0), testing::KilledBySignal(SIGSEGV), "")
                 << "This failure is expected, too.";
         },
         "This failure is expected, too.");
 
-#endif  // GTEST_OS_WINDOWS
+#endif // GTEST_OS_WINDOWS
 
     EXPECT_NONFATAL_FAILURE(
-        {  // NOLINT
+        { // NOLINT
             EXPECT_EXIT(raise(SIGSEGV), testing::ExitedWithCode(0), "")
                 << "This failure is expected.";
         },
@@ -823,7 +828,7 @@ TEST_F(TestForDeathTest, ExitMacrosUsingFork) {
 TEST_F(TestForDeathTest, InvalidStyle) {
     testing::GTEST_FLAG(death_test_style) = "rococo";
     EXPECT_NONFATAL_FAILURE(
-        {  // NOLINT
+        { // NOLINT
             EXPECT_DEATH(_exit(0), "") << "This failure is expected.";
         },
         "This failure is expected.");
@@ -881,11 +886,11 @@ TEST_F(TestForDeathTest, DeathTestMultiLineMatchPass) {
 
 // A DeathTestFactory that returns MockDeathTests.
 class MockDeathTestFactory : public DeathTestFactory {
-public:
+  public:
     MockDeathTestFactory();
-    virtual bool Create(const char* statement,
-                        const ::testing::internal::RE* regex, const char* file,
-                        int line, DeathTest** test);
+    virtual bool Create(const char *statement,
+                        const ::testing::internal::RE *regex, const char *file,
+                        int line, DeathTest **test);
 
     // Sets the parameters for subsequent calls to Create.
     void SetParameters(bool create, DeathTest::TestRole role, int status,
@@ -900,7 +905,7 @@ public:
     DeathTest::AbortReason AbortArgument(int n) const { return abort_args_[n]; }
     bool TestDeleted() const { return test_deleted_; }
 
-private:
+  private:
     friend class MockDeathTest;
     // If true, Create will return a MockDeathTest; otherwise it returns
     // NULL.
@@ -932,8 +937,8 @@ private:
 // reports calls to those methods to its parent MockDeathTestFactory
 // object.
 class MockDeathTest : public DeathTest {
-public:
-    MockDeathTest(MockDeathTestFactory* parent, TestRole role, int status,
+  public:
+    MockDeathTest(MockDeathTestFactory *parent, TestRole role, int status,
                   bool passed)
         : parent_(parent), role_(role), status_(status), passed_(passed) {}
     virtual ~MockDeathTest() { parent_->test_deleted_ = true; }
@@ -953,8 +958,8 @@ public:
         parent_->abort_args_.push_back(reason);
     }
 
-private:
-    MockDeathTestFactory* const parent_;
+  private:
+    MockDeathTestFactory *const parent_;
     const TestRole role_;
     const int status_;
     const bool passed_;
@@ -962,14 +967,8 @@ private:
 
 // MockDeathTestFactory constructor.
 MockDeathTestFactory::MockDeathTestFactory()
-    : create_(true),
-      role_(DeathTest::OVERSEE_TEST),
-      status_(0),
-      passed_(true),
-      assume_role_calls_(0),
-      wait_calls_(0),
-      passed_args_(),
-      abort_args_() {}
+    : create_(true), role_(DeathTest::OVERSEE_TEST), status_(0), passed_(true),
+      assume_role_calls_(0), wait_calls_(0), passed_args_(), abort_args_() {}
 
 // Sets the parameters for subsequent calls to Create.
 void MockDeathTestFactory::SetParameters(bool create, DeathTest::TestRole role,
@@ -988,10 +987,10 @@ void MockDeathTestFactory::SetParameters(bool create, DeathTest::TestRole role,
 // Sets test to NULL (if create_ is false) or to the address of a new
 // MockDeathTest object with parameters taken from the last call
 // to SetParameters (if create_ is true).  Always returns true.
-bool MockDeathTestFactory::Create(const char* /*statement*/,
-                                  const ::testing::internal::RE* /*regex*/,
-                                  const char* /*file*/, int /*line*/,
-                                  DeathTest** test) {
+bool MockDeathTestFactory::Create(const char * /*statement*/,
+                                  const ::testing::internal::RE * /*regex*/,
+                                  const char * /*file*/, int /*line*/,
+                                  DeathTest **test) {
     test_deleted_ = false;
     if (create_) {
         *test = new MockDeathTest(this, role_, status_, passed_);
@@ -1005,9 +1004,9 @@ bool MockDeathTestFactory::Create(const char* /*statement*/,
 // It installs a MockDeathTestFactory that is used for the duration
 // of the test case.
 class MacroLogicDeathTest : public testing::Test {
-protected:
-    static testing::internal::ReplaceDeathTestFactory* replacer_;
-    static MockDeathTestFactory* factory_;
+  protected:
+    static testing::internal::ReplaceDeathTestFactory *replacer_;
+    static MockDeathTestFactory *factory_;
 
     static void SetUpTestCase() {
         factory_ = new MockDeathTestFactory;
@@ -1024,9 +1023,9 @@ protected:
     // Runs a death test that breaks the rules by returning.  Such a death
     // test cannot be run directly from a test routine that uses a
     // MockDeathTest, or the remainder of the routine will not be executed.
-    static void RunReturningDeathTest(bool* flag) {
+    static void RunReturningDeathTest(bool *flag) {
         ASSERT_DEATH(
-            {  // NOLINT
+            { // NOLINT
                 *flag = true;
                 return;
             },
@@ -1034,9 +1033,9 @@ protected:
     }
 };
 
-testing::internal::ReplaceDeathTestFactory* MacroLogicDeathTest::replacer_ =
+testing::internal::ReplaceDeathTestFactory *MacroLogicDeathTest::replacer_ =
     NULL;
-MockDeathTestFactory* MacroLogicDeathTest::factory_ = NULL;
+MockDeathTestFactory *MacroLogicDeathTest::factory_ = NULL;
 
 // Test that nothing happens when the factory doesn't return a DeathTest:
 TEST_F(MacroLogicDeathTest, NothingHappens) {
@@ -1132,12 +1131,12 @@ TEST(StreamingAssertionsDeathTest, DeathTest) {
     EXPECT_DEATH(_exit(1), "") << "unexpected failure";
     ASSERT_DEATH(_exit(1), "") << "unexpected failure";
     EXPECT_NONFATAL_FAILURE(
-        {  // NOLINT
+        { // NOLINT
             EXPECT_DEATH(_exit(0), "") << "expected failure";
         },
         "expected failure");
     EXPECT_FATAL_FAILURE(
-        {  // NOLINT
+        { // NOLINT
             ASSERT_DEATH(_exit(0), "") << "expected failure";
         },
         "expected failure");
@@ -1177,7 +1176,7 @@ TEST(AutoHandleTest, AutoHandleWorks) {
     testing::internal::AutoHandle auto_handle2;
     EXPECT_EQ(INVALID_HANDLE_VALUE, auto_handle2.Get());
 }
-#endif  // GTEST_OS_WINDOWS
+#endif // GTEST_OS_WINDOWS
 
 #if GTEST_OS_WINDOWS
 typedef unsigned __int64 BiggestParsable;
@@ -1185,7 +1184,7 @@ typedef signed __int64 BiggestSignedParsable;
 #else
 typedef unsigned long long BiggestParsable;
 typedef signed long long BiggestSignedParsable;
-#endif  // GTEST_OS_WINDOWS
+#endif // GTEST_OS_WINDOWS
 
 // We cannot use std::numeric_limits<T>::max() as it clashes with the
 // max() macro defined by <windows.h>.
@@ -1283,7 +1282,7 @@ TEST(EnvironmentTest, HandleFitsIntoSizeT) {
     // GetStatusFileDescriptor.
     ASSERT_TRUE(sizeof(HANDLE) <= sizeof(size_t));
 }
-#endif  // GTEST_OS_WINDOWS
+#endif // GTEST_OS_WINDOWS
 
 // Tests that EXPECT_DEATH_IF_SUPPORTED/ASSERT_DEATH_IF_SUPPORTED trigger
 // failures when death tests are available on the system.
@@ -1322,7 +1321,7 @@ TEST(InDeathTestChildDeathTest, ReportsDeathTestCorrectlyInThreadSafeStyle) {
         "Inside");
 }
 
-#else  // !GTEST_HAS_DEATH_TEST follows
+#else // !GTEST_HAS_DEATH_TEST follows
 
 using testing::internal::CaptureStderr;
 using testing::internal::GetCapturedStderr;
@@ -1348,7 +1347,7 @@ TEST(ConditionalDeathMacrosTest, WarnsWhenDeathTestsNotAvailable) {
     ASSERT_TRUE(NULL == strstr(output.c_str(), "streamed message"));
 
     CaptureStderr();
-    ASSERT_DEATH_IF_SUPPORTED(;, "");  // NOLINT
+    ASSERT_DEATH_IF_SUPPORTED(;, ""); // NOLINT
     output = GetCapturedStderr();
     ASSERT_TRUE(NULL !=
                 strstr(output.c_str(),
@@ -1356,12 +1355,12 @@ TEST(ConditionalDeathMacrosTest, WarnsWhenDeathTestsNotAvailable) {
     ASSERT_TRUE(NULL != strstr(output.c_str(), ";"));
 
     CaptureStderr();
-    ASSERT_DEATH_IF_SUPPORTED(;, "") << "streamed message";  // NOLINT
+    ASSERT_DEATH_IF_SUPPORTED(;, "") << "streamed message"; // NOLINT
     output = GetCapturedStderr();
     ASSERT_TRUE(NULL == strstr(output.c_str(), "streamed message"));
 }
 
-void FuncWithAssert(int* n) {
+void FuncWithAssert(int *n) {
     ASSERT_DEATH_IF_SUPPORTED(return;, "");
     (*n)++;
 }
@@ -1374,7 +1373,7 @@ TEST(ConditionalDeathMacrosTest, AssertDeatDoesNotReturnhIfUnsupported) {
     EXPECT_EQ(1, n);
 }
 
-#endif  // !GTEST_HAS_DEATH_TEST
+#endif // !GTEST_HAS_DEATH_TEST
 
 // Tests that the death test macros expand to code which may or may not
 // be followed by operator<<, and that in either case the complete text
@@ -1391,12 +1390,13 @@ TEST(ConditionalDeathMacrosSyntaxDeathTest, SingleStatement) {
     else
         // This empty "else" branch is meant to ensure that EXPECT_DEATH
         // doesn't expand into an "if" statement without an "else"
-        ;  // NOLINT
-
-    if (AlwaysFalse()) ASSERT_DEATH_IF_SUPPORTED(return, "") << "did not die";
+        ; // NOLINT
 
     if (AlwaysFalse())
-        ;  // NOLINT
+        ASSERT_DEATH_IF_SUPPORTED(return, "") << "did not die";
+
+    if (AlwaysFalse())
+        ; // NOLINT
     else
         EXPECT_DEATH_IF_SUPPORTED(_exit(1), "") << 1 << 2 << 3;
 }

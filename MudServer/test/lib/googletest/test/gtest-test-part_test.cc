@@ -45,7 +45,7 @@ namespace {
 
 // The test fixture for testing TestPartResult.
 class TestPartResultTest : public Test {
-protected:
+  protected:
     TestPartResultTest()
         : r1_(TestPartResult::kSuccess, "foo/bar.cc", 10, "Success!"),
           r2_(TestPartResult::kNonFatalFailure, "foo/bar.cc", -1, "Failure!"),
@@ -57,7 +57,7 @@ protected:
 TEST_F(TestPartResultTest, ConstructorWorks) {
     Message message;
     message << "something is terribly wrong";
-    message << static_cast<const char*>(testing::internal::kStackTraceMarker);
+    message << static_cast<const char *>(testing::internal::kStackTraceMarker);
     message << "some unimportant stack trace";
 
     const TestPartResult result(TestPartResult::kNonFatalFailure,
@@ -147,7 +147,7 @@ TEST_F(TestPartResultTest, NonfatallyFailed) {
 // Tests the TestPartResultArray class.
 
 class TestPartResultArrayTest : public Test {
-protected:
+  protected:
     TestPartResultArrayTest()
         : r1_(TestPartResult::kNonFatalFailure, "foo/bar.cc", -1, "Failure 1"),
           r2_(TestPartResult::kFatalFailure, "foo/bar.cc", -1, "Failure 2") {}
@@ -195,4 +195,4 @@ TEST_F(TestPartResultArrayDeathTest, DiesWhenIndexIsOutOfBound) {
 
 // TODO(mheule@google.com): Add a test for the class HasNewFatalFailureHelper.
 
-}  // namespace
+} // namespace
