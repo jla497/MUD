@@ -14,3 +14,7 @@ PlayerCharacter::PlayerCharacter(int armor, std::string damage,
     : CharacterEntity::CharacterEntity(armor, damage, desc, exp, gold, hit,
                                        keywords, level, longDesc, shortDesc,
                                        thac0) {}
+
+    void PlayerCharacter::getAdminPrivileges() {
+    	admin = std::make_unique<Administrator>();
+    }

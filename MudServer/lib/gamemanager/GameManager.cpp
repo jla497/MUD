@@ -184,7 +184,7 @@ void GameManager::addPlayerCharacter(PlayerId playerId) {
     
     //check if player has admin privilege then give admin component to player's character
     if (player.isAdmin) {
-      character.admin = std::make_unique<Administrator>();
+      character.getAdminPrivileges();
     }
 
     playerCharacterBimap.insert(
