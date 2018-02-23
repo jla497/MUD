@@ -12,7 +12,7 @@
 using boost::algorithm::join;
 // namespace actmess = mudserver::resources::actions;
 
-void LookAction::execute() {
+void LookAction::execute_impl() {
     static auto logger = mudserver::logging::getLogger("LookAction::execute");
 
     auto &gameState = gameManager.getState();

@@ -174,11 +174,18 @@ Player &GameManager::characterIdToPlayer(UniqueId characterId) {
 void GameManager::addPlayerCharacter(PlayerId playerId) {
     auto testShortDesc =
         "TestPlayerName" + std::to_string(playerCharacterBimap.size());
-
+    
     auto character = std::make_unique<PlayerCharacter>(
         pc::ARMOR, std::string{pc::DAMAGE}, std::vector<std::string>{}, pc::EXP,
         pc::GOLD, std::string{pc::HIT}, std::vector<std::string>{}, pc::LEVEL,
         std::vector<std::string>{}, testShortDesc, pc::THAC0);
+
+    auto player = players.at(playerId);
+    
+    //check if player has admin privilege then give admin component to player's character
+    if (player.isAdmin) {
+      character.admin = std::make_unique<Administrator>();
+    }
 
     playerCharacterBimap.insert(
         PcBmType::value_type(playerId, character->getEntityId()));

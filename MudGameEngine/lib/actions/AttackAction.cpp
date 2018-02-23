@@ -6,7 +6,7 @@
 #include "gamemanager/GameManager.h"
 #include "logging.h"
 
-void AttackAction::execute() {
+void AttackAction::execute_impl() {
     static auto logger = mudserver::logging::getLogger("AttackAction::execute");
 
     // get gamestate

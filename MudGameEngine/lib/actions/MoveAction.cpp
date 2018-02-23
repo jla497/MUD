@@ -4,7 +4,7 @@
 std::vector<std::string> MoveAction::moveLookup = {"north", "south", "east",
                                                    "west"};
 
-void MoveAction::execute() {
+void MoveAction::execute_impl() {
     static auto logger = mudserver::logging::getLogger("Action::MoveAction");
 
     logger->info("MoveAction...");

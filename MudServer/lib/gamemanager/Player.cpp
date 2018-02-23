@@ -9,5 +9,6 @@ Player::Player(PlayerId id, std::string username, std::string password)
 
 PlayerId Player::getId() const { return id; }
 
+void Player::getAdminPrivilege() { isAdmin = true; }
 } // namespace gamemanager
 } // namespace mudserver

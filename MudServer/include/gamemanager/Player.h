@@ -16,6 +16,7 @@ using PlayerId = uintptr_t;
  */
 class Player {
     PlayerId id;
+    bool isAdmin = false;
     std::string username;
     std::string password;
     CharacterEntity *character;
@@ -34,6 +35,8 @@ class Player {
      * @return the player's id number
      */
     PlayerId getId() const;
+
+    void getAdminPrivilege();
 };
 
 } // namespace gamemanager

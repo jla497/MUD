@@ -29,9 +29,12 @@ class Action {
      * processed, execute() is called on the actions. As they have reference to
      * the game manager, they can alter state and send messages in this method.
      */
-    virtual void execute() = 0;
-
+    void execute();
+    
     friend std::ostream &operator<<(std::ostream &os, const Action &action);
+
+  private:
+    virtual void execute_impl() = 0;
 
   protected:
     virtual std::string description() const = 0;
