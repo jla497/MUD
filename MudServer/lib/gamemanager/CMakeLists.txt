@@ -31,7 +31,7 @@ target_link_libraries(gamemanager
     commandparser
     reset
     factory
-        administrator
+    administrator
 )
 
 set_target_properties(gamemanager

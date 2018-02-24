@@ -7,7 +7,10 @@
 #include <unordered_map>
 
 #include "Action.h"
+#include "resources/commands.h"
 #include "gamemanager/GameManager.h"
+#include "logging.h"
+#include "resources/PlayerCharacterDefaults.h"
 
 /**
  * The Program Action class defines the behavior for when a admin creates a
@@ -20,6 +23,7 @@ class PrgmAction : public Action {
     void prgmNpc();
     void prgmPc();
     void prgmObject();
+    void createPc();
 
   public:
     using Action::Action;

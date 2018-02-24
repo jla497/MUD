@@ -12,7 +12,7 @@ set_target_properties(actions
 	LINKER_LANGUAGE CXX
 	CXX_STANDARD 14)
 
-target_link_libraries(actions gamemanager)
+target_link_libraries(actions gamemanager resources)
 
 install(TARGETS	actions
 		ARCHIVE DESTINATION lib)

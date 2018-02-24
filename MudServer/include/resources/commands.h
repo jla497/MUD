@@ -7,14 +7,14 @@ namespace mudserver {
 namespace resources {
 namespace commands {
 
-static const char *SAY = u8"say";
-static const char *LOOK = u8"look";
-static const char *MOVE = u8"move";
-static const char *ATTACK = u8"attack";
-static const char *PROGRAM = u8"program";
-static const char *NPC = u8"npc";
-static const char *PC = u8"pc";
-static const char *OBJECT = u8"object";
+extern const char *SAY;
+extern const char *LOOK;
+    extern const char *MOVE;
+    extern const char *ATTACK;
+    extern const char *PROGRAM;
+    extern const char *NPC;
+    extern const char *PC;
+    extern const char *OBJECT;
 
 } // namespace commands
 } // namespace resources

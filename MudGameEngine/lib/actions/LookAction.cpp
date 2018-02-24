@@ -35,14 +35,25 @@ void LookAction::execute_impl() {
         std::string roomName = characterCurrentRoom->getName();
         std::vector<std::string> roomDesc = characterCurrentRoom->getDesc();
         std::vector<std::string> roomDirs = characterCurrentRoom->getDirs();
+
+        auto characterIds = gameState.getCharactersInRoom(characterCurrentRoom);
+        std::vector<std::string> characterDescs {};
+
+        for(auto &id: characterIds){
+          auto ch = gameState.getCharacterFromLUT(id);
+            auto chId = std::to_string(id.getId());
+            auto desc = ch->getShortDesc();
+            characterDescs.push_back(chId+": "+desc);
+        }
+
         std::string roomDescs = join(roomDesc, " ");
         std::string roomExits = join(roomDirs, " ");
-
+        std::string chDescs = join(characterDescs, " ");
         gameManager.sendCharacterMessage(
             characterPerformingAction.getEntityId(),
-            boost::str(boost::format{"%s: %s\n%s: %s\n%s: %s"} % "Room Name" %
+            boost::str(boost::format{"%s: %s\n%s: %s\n%s: %s\n%s: %s"} % "Room Name" %
                        roomName % "Description" % roomDescs % "Exits" %
-                       roomExits));
+                       roomExits %"Characters" % chDescs));
 
     } else if (actionArguments.size() == MAX_LOOK_ARGS) {
         // TODO: look at object

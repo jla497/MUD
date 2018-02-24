@@ -1,12 +1,9 @@
-#include <resources/DataFields.h>
-
 #include "actions/PrgmAction.h"
-#include "resources/commands.h"
-#include "gamemanager/GameManager.h"
-#include "logging.h"
+
 
 using boost::algorithm::to_lower;
 using namespace mudserver::resources::commands;
+using namespace mudserver::resources::playercharacter;
 
 std::unordered_map<std::string, PrgmAction::PrgmKeyword> PrgmAction::prgmLookup = {
         {NPC, PrgmAction::PrgmKeyword::npc},
@@ -14,8 +11,6 @@ std::unordered_map<std::string, PrgmAction::PrgmKeyword> PrgmAction::prgmLookup 
         {OBJECT, PrgmAction::PrgmKeyword::object}
 };
 void PrgmAction::execute_impl() {
-
-
     static auto logger =
         mudserver::logging::getLogger("ProgramAction::execute");
 
@@ -48,7 +43,7 @@ void PrgmAction::execute_impl() {
             break;
         }
         case PrgmKeyword::pc: {
-            prgmPc();
+            createPc();
             break;
         }
         case PrgmKeyword::object: {
@@ -62,14 +57,39 @@ void PrgmAction::execute_impl() {
 }
 
 void PrgmAction::prgmNpc() {
+    static auto logger =
+            mudserver::logging::getLogger("ProgramAction::execute");
+
     logger->debug("prgmNpc executed");
 }
 
 void PrgmAction::prgmPc() {
-    logger->debug("prgmPc executed");
+
+}
+
+
+
+void PrgmAction::createPc() {
+    static auto logger =
+            mudserver::logging::getLogger("ProgramAction::execute");
+
+    auto spawnLocationId =std::stoi(actionArguments[1]);
+    auto &state = gameManager.getState();
+    auto newPc = std::make_unique<PlayerCharacter>(
+            ARMOR, std::string{DAMAGE}, std::vector<std::string>{}, EXP,
+            GOLD, std::string{HIT}, std::vector<std::string>{}, LEVEL,
+            std::vector<std::string>{}, "new character added by admin", THAC0);
+
+    auto newPcPtr = newPc.get();
+    state.addCharacter(std::move(newPc));
+    state.addCharacterRoomRelationToLUT(newPcPtr->getEntityId(),spawnLocationId);
+
 }
 
 
 void PrgmAction::prgmObject() {
+    static auto logger =
+            mudserver::logging::getLogger("ProgramAction::execute");
+
     logger->debug("prgmObject executed");
 }
