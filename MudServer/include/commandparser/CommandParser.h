@@ -20,8 +20,8 @@ class GameManager;
 
 namespace commandparser {
 
-using gamemanager::UsernameType;
 using gamemanager::PasswordType;
+using gamemanager::UsernameType;
 using StrView = std::experimental::string_view;
 
 enum class ActKeyword { undefined, say, look, move, attack, actions };

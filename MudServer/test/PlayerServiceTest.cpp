@@ -1,17 +1,16 @@
-#include <gtest/gtest.h>
 #include "gamemanager/PlayerService.h"
 #include "gamemanager/Player.h"
+#include <gtest/gtest.h>
 
 using namespace mudserver::gamemanager;
 
 class PlayerServiceTests : public testing::Test {
   protected:
     PlayerService ps;
+
   public:
     PlayerServiceTests() = default;
-    virtual void SetUp() {
-        PlayerService ps{};
-    }
+    virtual void SetUp() { PlayerService ps{}; }
 };
 
 TEST_F(PlayerServiceTests, AddNewPlayer) {

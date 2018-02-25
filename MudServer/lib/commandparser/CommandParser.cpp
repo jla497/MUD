@@ -89,8 +89,8 @@ CommandParser::actionFromPlayerCommand(PlayerCharacter &character,
     return action;
 }
 
-std::pair<UsernameType,
-          PasswordType> CommandParser::identifiersFromIdentifyCommand(StrView command) {
+std::pair<UsernameType, PasswordType>
+CommandParser::identifiersFromIdentifyCommand(StrView command) {
     Tokenizer tokens{command};
     auto tokenIterator = tokens.begin();
 

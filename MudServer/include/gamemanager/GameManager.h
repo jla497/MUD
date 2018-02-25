@@ -9,6 +9,7 @@
 
 #include "GameState.h"
 #include "Player.h"
+#include "PlayerService.h"
 #include "UniqueId.h"
 #include "actions/Action.h"
 #include "commandparser/CommandParser.h"
@@ -16,7 +17,6 @@
 #include "entities/CharacterEntity.h"
 #include "entities/Entity.h"
 #include "entities/PlayerCharacter.h"
-#include "PlayerService.h"
 
 namespace mudserver {
 namespace gamemanager {
@@ -42,8 +42,7 @@ using std::vector;
 class GameManager {
     constexpr static auto &PLEASE_LOGIN =
         u8"Please login/register using identify <username> <password>\n";
-    constexpr static auto &LOGIN_SUCCESS =
-        u8"Logged in successfully\n";
+    constexpr static auto &LOGIN_SUCCESS = u8"Logged in successfully\n";
 
     GameState &gameState;
     GameLoopTick tick;

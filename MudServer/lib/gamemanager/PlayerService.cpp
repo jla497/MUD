@@ -1,12 +1,12 @@
+#include "gamemanager/PlayerService.h"
 #include "entities/PlayerCharacter.h"
 #include "resources/PlayerCharacterDefaults.h"
-#include "gamemanager/PlayerService.h"
 
 namespace pc = mudserver::resources::playercharacter;
 using namespace mudserver::gamemanager;
 
-boost::optional<Player&> PlayerService::identify(UsernameType username,
-                                PasswordType password) {
+boost::optional<Player &> PlayerService::identify(UsernameType username,
+                                                  PasswordType password) {
     auto id = getPlayerIdByName(username);
     auto player = players.find(id);
 
@@ -22,15 +22,12 @@ AddPlayerResult PlayerService::addPlayer(UsernameType username,
     PlayerId id = getNextPlayerId();
     Player player{id, username, std::move(password)};
     playerIdByName[username] = id;
-    players.emplace(std::make_pair(
-        id, player));
+    players.emplace(std::make_pair(id, player));
 
     return AddPlayerResult::playerAdded;
 }
 
-PlayerId PlayerService::getNextPlayerId() {
-    return ++nextPlayerId;
-}
+PlayerId PlayerService::getNextPlayerId() { return ++nextPlayerId; }
 
 PlayerId PlayerService::getPlayerIdByName(const UsernameType &username) {
     auto id = playerIdByName.find(username);
@@ -40,9 +37,7 @@ PlayerId PlayerService::getPlayerIdByName(const UsernameType &username) {
         return 0;
     }
 }
-PlayerService::PlayerService() : nextPlayerId{1} {
-
-}
+PlayerService::PlayerService() : nextPlayerId{1} {}
 
 boost::optional<Player &>
 PlayerService::getPlayerByConnection(networking::ConnectionId connectionId) {
@@ -71,10 +66,17 @@ PlayerCharacter PlayerService::createPlayerCharacter(PlayerId playerId) {
     auto testShortDesc =
         "TestPlayerName" + std::to_string(playerCharacterBimap.size());
 
-    PlayerCharacter character{
-        pc::ARMOR, std::string{pc::DAMAGE}, std::vector<std::string>{}, pc::EXP,
-        pc::GOLD, std::string{pc::HIT}, std::vector<std::string>{}, pc::LEVEL,
-        std::vector<std::string>{}, testShortDesc, pc::THAC0};
+    PlayerCharacter character{pc::ARMOR,
+                              std::string{pc::DAMAGE},
+                              std::vector<std::string>{},
+                              pc::EXP,
+                              pc::GOLD,
+                              std::string{pc::HIT},
+                              std::vector<std::string>{},
+                              pc::LEVEL,
+                              std::vector<std::string>{},
+                              testShortDesc,
+                              pc::THAC0};
 
     playerCharacterBimap.insert(
         PcBmType::value_type(playerId, character.getEntityId()));
@@ -96,7 +98,7 @@ networking::ConnectionId PlayerService::setPlayerConnection(PlayerId playerId) {
     return 0;
 }
 
-boost::optional<Player&> PlayerService::getPlayerById(PlayerId playerId) {
+boost::optional<Player &> PlayerService::getPlayerById(PlayerId playerId) {
     auto playerPair = players.find(playerId);
     if (playerPair != players.end()) {
         return playerPair->second;

@@ -1,5 +1,5 @@
-#include <Server.h>
 #include "gamemanager/Player.h"
+#include <Server.h>
 
 namespace mudserver {
 namespace gamemanager {
@@ -18,9 +18,7 @@ bool Player::passwordEquals(const PasswordType &password) const {
 networking::ConnectionId Player::getConnectionId() const {
     return connectionId;
 }
-void Player::setConnectionId(networking::ConnectionId id) {
-    connectionId = id;
-}
+void Player::setConnectionId(networking::ConnectionId id) { connectionId = id; }
 
 } // namespace gamemanager
 } // namespace mudserver

@@ -60,7 +60,8 @@ void GameManager::mainLoop() {
     }
 }
 
-boost::optional<Player&> GameManager::getPlayerFromLogin(const gameAndUserInterface &message) {
+boost::optional<Player &>
+GameManager::getPlayerFromLogin(const gameAndUserInterface &message) {
     static auto logger = logging::getLogger("GameManager::getPlayerFromLogin");
 
     // look up player from ID
@@ -69,19 +70,19 @@ boost::optional<Player&> GameManager::getPlayerFromLogin(const gameAndUserInterf
 
     auto player = playerService.getPlayerByConnection(connectionId);
     if (!player) {
-        auto uAndP =
-            commandParser.identifiersFromIdentifyCommand(message.text);
+        auto uAndP = commandParser.identifiersFromIdentifyCommand(message.text);
         if (!uAndP.first.empty()) {
             player = playerService.identify(uAndP.first, uAndP.second);
             if (!player) {
                 auto addPlayerResult =
                     playerService.addPlayer(uAndP.first, uAndP.second);
-                if (addPlayerResult==AddPlayerResult::playerAdded) {
+                if (addPlayerResult == AddPlayerResult::playerAdded) {
                     player = playerService.identify(uAndP.first, uAndP.second);
                 }
             }
             if (player) {
-                playerService.setPlayerConnection(player->getId(), message.conn.id);
+                playerService.setPlayerConnection(player->getId(),
+                                                  message.conn.id);
                 enqueueMessage(message.conn, LOGIN_SUCCESS);
                 return player;
             }
@@ -100,7 +101,8 @@ void GameManager::processMessages(gameAndUserMsgs &messages) {
 
         auto player = getPlayerFromLogin(*message);
 
-        if (!player) continue;
+        if (!player)
+            continue;
 
         // look up player's character
         // pointer is used as player may not have character yet
@@ -113,15 +115,17 @@ void GameManager::processMessages(gameAndUserMsgs &messages) {
             gameState.addCharacter(
                 std::make_unique<PlayerCharacter>(std::move(newCharacter)));
         }
-        auto &playerCharacterId = *playerService.playerToCharacter(player->getId());
-        auto &playerCharacter = *gameState.getCharacterFromLUT(playerCharacterId);
+        auto &playerCharacterId =
+            *playerService.playerToCharacter(player->getId());
+        auto &playerCharacter =
+            *gameState.getCharacterFromLUT(playerCharacterId);
 
         // parse message into verb/object
         std::unique_ptr<Action> action = commandParser.actionFromPlayerCommand(
             playerCharacter, message->text, *this);
 
         std::stringstream retMessage;
-        //retMessage << "DEBUG: " << *action;
+        // retMessage << "DEBUG: " << *action;
 
         enqueueAction(std::move(action));
 

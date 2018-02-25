@@ -1,14 +1,14 @@
 #ifndef PLAYERSERVICE_H
 #define PLAYERSERVICE_H
 
-#include <unordered_map>
-#include <boost/optional.hpp>
-#include <boost/bimap.hpp>
 #include "Player.h"
 #include "entities/PlayerCharacter.h"
+#include <boost/bimap.hpp>
+#include <boost/optional.hpp>
+#include <unordered_map>
 
 namespace mudserver {
-namespace gamemanager{
+namespace gamemanager {
 
 using PcBmType = boost::bimap<PlayerId, UniqueId>;
 
@@ -30,12 +30,15 @@ class PlayerService {
 
   public:
     PlayerService();
-    boost::optional<Player&> getPlayerById(PlayerId playerId);
+    boost::optional<Player &> getPlayerById(PlayerId playerId);
     PlayerId getPlayerIdByName(const UsernameType &username);
-    boost::optional<Player&> getPlayerByConnection(networking::ConnectionId connectionId);
+    boost::optional<Player &>
+    getPlayerByConnection(networking::ConnectionId connectionId);
     networking::ConnectionId setPlayerConnection(PlayerId playerId);
-    void setPlayerConnection(PlayerId playerId, networking::ConnectionId connectionId);
-    boost::optional<Player&> identify(UsernameType username, PasswordType password);
+    void setPlayerConnection(PlayerId playerId,
+                             networking::ConnectionId connectionId);
+    boost::optional<Player &> identify(UsernameType username,
+                                       PasswordType password);
     AddPlayerResult addPlayer(UsernameType username, PasswordType password);
 
     /**
@@ -52,7 +55,6 @@ class PlayerService {
      */
     PlayerId characterToPlayer(UniqueId characterId);
 
-
     /**
      * Create and add a new player character to the game state.
      * @param playerId the player's id
@@ -60,7 +62,7 @@ class PlayerService {
     PlayerCharacter createPlayerCharacter(PlayerId playerId);
 };
 
-}
-}
+} // namespace gamemanager
+} // namespace mudserver
 
-#endif //PLAYERSERVICE_H
+#endif // PLAYERSERVICE_H
