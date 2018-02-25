@@ -1,13 +1,17 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include "entities/CharacterEntity.h"
+
 #include <string>
+#include "entities/CharacterEntity.h"
+#include "Server.h"
 
 namespace mudserver {
 namespace gamemanager {
 
 using PlayerId = uintptr_t;
+using UsernameType = std::string;
+using PasswordType = std::string;
 
 /**
  * The Player is a representation of the human logged in to the server. This is
@@ -18,6 +22,7 @@ class Player {
     PlayerId id;
     std::string username;
     std::string password;
+    networking::ConnectionId connectionId;
     CharacterEntity *character;
 
   public:
@@ -34,6 +39,10 @@ class Player {
      * @return the player's id number
      */
     PlayerId getId() const;
+    UsernameType getUsername() const;
+    bool passwordEquals(const PasswordType &password) const;
+    networking::ConnectionId getConnectionId() const;
+    void setConnectionId(networking::ConnectionId id);
 };
 
 } // namespace gamemanager

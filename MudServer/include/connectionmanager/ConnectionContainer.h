@@ -51,7 +51,7 @@ class ConnectionContainer {
     networking::Connection getConnection() const;
 
   private:
-    static const int DEFAULT_NUM_OF_MUD_PROTOCOLS;
+    static const unsigned int DEFAULT_NUM_OF_MUD_PROTOCOLS;
 };
 } // namespace connection
 } // namespace mudserver

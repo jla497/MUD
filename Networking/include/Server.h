@@ -19,13 +19,14 @@
 namespace networking {
 
 using Port = unsigned short;
+using ConnectionId = uintptr_t;
 
 /**
  *  An identifier for a Client connected to a Server. The ID of a Connection is
  *  guaranteed to be unique across all actively connected Client instances.
  */
 struct Connection {
-    uintptr_t id;
+    ConnectionId id;
 
     bool operator==(Connection other) const { return id == other.id; }
 };

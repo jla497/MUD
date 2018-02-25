@@ -3,7 +3,7 @@ add_library(gamemanager
     GameState.cpp
     Player.cpp
     LutBuilder.cpp
-)
+        PlayerService.cpp ../../include/gamemanager/PlayerService.h)
 
 target_link_libraries(gamemanager
     connectionmanager

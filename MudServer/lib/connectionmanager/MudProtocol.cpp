@@ -5,7 +5,7 @@ namespace connection {
 
 MudProtocol::MudProtocol() : maxBufSize(512) {}
 
-MudProtocol::MudProtocol(unsigned int max_buf) : maxBufSize(max_buf) {}
+MudProtocol::MudProtocol(const unsigned int max_buf) : maxBufSize(max_buf) {}
 
 void MudProtocol::receive(std::string str) {
     // pass only alphanumeric characters, backspace nad cr

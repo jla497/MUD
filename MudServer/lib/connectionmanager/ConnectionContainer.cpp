@@ -3,16 +3,14 @@
 namespace mudserver {
 namespace connection {
 
-const int ConnectionContainer::DEFAULT_NUM_OF_MUD_PROTOCOLS = 512;
+const unsigned int ConnectionContainer::DEFAULT_NUM_OF_MUD_PROTOCOLS = 512;
 
 ConnectionContainer::ConnectionContainer()
-    : mProtocol(std::unique_ptr<MudProtocol>(
-          new MudProtocol(DEFAULT_NUM_OF_MUD_PROTOCOLS))) {}
+    : mProtocol(std::make_unique<MudProtocol>(DEFAULT_NUM_OF_MUD_PROTOCOLS)) {}
 
 ConnectionContainer::ConnectionContainer(const networking::Connection &c)
     : mConnection(c), isConnected(true),
-      mProtocol(std::unique_ptr<MudProtocol>(
-          new MudProtocol(DEFAULT_NUM_OF_MUD_PROTOCOLS))) {}
+      mProtocol(std::make_unique<MudProtocol>(DEFAULT_NUM_OF_MUD_PROTOCOLS)) {}
 
 ConnectionContainer::ConnectionContainer(ConnectionContainer &&container)
     : mConnection(container.mConnection),
@@ -29,8 +27,6 @@ void ConnectionContainer::receiveFromServer(std::string &str) {
         isConnected = false;
         return;
     }
-
-    return;
 }
 
 // send to GameManager

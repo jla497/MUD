@@ -5,7 +5,7 @@ add_executable(mudserver
 target_link_libraries(mudserver networking)
 target_link_libraries(mudserver connectionmanager)
 target_link_libraries(mudserver gamemanager)
-#target_link_libraries(mudserver -lpthread)
+target_link_libraries(mudserver -lpthread)
 target_link_libraries(mudserver logging)
 target_link_libraries(mudserver parser)
 
