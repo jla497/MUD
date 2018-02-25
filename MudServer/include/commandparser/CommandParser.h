@@ -10,6 +10,7 @@
 
 #include "actions/Action.h"
 #include "entities/PlayerCharacter.h"
+#include "gamemanager/Player.h"
 
 class Action; // forward declaration
 namespace mudserver {
@@ -19,6 +20,8 @@ class GameManager;
 
 namespace commandparser {
 
+using gamemanager::UsernameType;
+using gamemanager::PasswordType;
 using StrView = std::experimental::string_view;
 
 enum class ActKeyword { undefined, say, look, move, attack, actions };
@@ -47,6 +50,8 @@ class CommandParser {
     std::unique_ptr<Action>
     actionFromPlayerCommand(PlayerCharacter &character, StrView command,
                             gamemanager::GameManager &gameManager);
+    std::pair<UsernameType, PasswordType>
+    identifiersFromIdentifyCommand(StrView command);
 };
 
 } // namespace commandparser

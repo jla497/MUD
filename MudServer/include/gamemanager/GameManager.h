@@ -16,18 +16,19 @@
 #include "entities/CharacterEntity.h"
 #include "entities/Entity.h"
 #include "entities/PlayerCharacter.h"
+#include "PlayerService.h"
 
 namespace mudserver {
 namespace gamemanager {
 
 using GameLoopTick = std::chrono::milliseconds;
-using PcBmType = boost::bimap<PlayerId, UniqueId>;
 constexpr GameLoopTick DEFAULT_TICK_LENGTH_MS = GameLoopTick(1000);
 
 using mudserver::commandparser::CommandParser;
 
 /* Type definitions used in GameManager */
 using connection::gameAndUserMsgs;
+using connection::gameAndUserInterface;
 using std::unique_ptr;
 using std::vector;
 
@@ -39,14 +40,18 @@ using std::vector;
  * actions. It fetches batches of incoming messages from the network.
  */
 class GameManager {
+    constexpr static auto &PLEASE_LOGIN =
+        u8"Please login/register using identify <username> <password>\n";
+    constexpr static auto &LOGIN_SUCCESS =
+        u8"Logged in successfully\n";
+
     GameState &gameState;
     GameLoopTick tick;
     bool done;
     CommandParser commandParser;
     connection::ConnectionManager &connectionManager;
 
-    std::unordered_map<PlayerId, Player> players;
-    PcBmType playerCharacterBimap;
+    PlayerService playerService;
     std::queue<connection::gameAndUserInterface> outgoingMessages;
     std::queue<std::unique_ptr<Action>> actions;
 
@@ -78,37 +83,8 @@ class GameManager {
      */
     void performQueuedActions();
 
-    /**
-     * Given a player, return a pointer to the player's character.
-     * @param player the player
-     * @return the player's character (may be null)
-     */
-    PlayerCharacter *playerToCharacter(const Player &player);
-    /**
-     * Given a player's id, return a pointer to the player's character.
-     * @param playerId the player's id
-     * @return the player's character (may be null)
-     */
-    /**
-     * Given a character, return a reference to the character's player.
-     * @param character the character
-     * @return the character's player
-     */
-    Player &characterToPlayer(const PlayerCharacter &character);
-    /**
-     * Given a character's id, return a reference to the character's player.
-     * @param characterId the character's id
-     * @return the character's player
-     */
-    Player &characterIdToPlayer(UniqueId characterId);
-
-    PlayerCharacter *playerIdToCharacter(PlayerId playerId);
-
-    /**
-     * Create and add a new player character to the game state.
-     * @param playerId the player's id
-     */
-    void addPlayerCharacter(PlayerId playerId);
+    boost::optional<Player &>
+    getPlayerFromLogin(const gameAndUserInterface &message);
 
   public:
     /**

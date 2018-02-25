@@ -89,5 +89,17 @@ CommandParser::actionFromPlayerCommand(PlayerCharacter &character,
     return action;
 }
 
+std::pair<UsernameType,
+          PasswordType> CommandParser::identifiersFromIdentifyCommand(StrView command) {
+    Tokenizer tokens{command};
+    auto tokenIterator = tokens.begin();
+
+    if (to_lower_copy(*tokenIterator++) != IDENTIFY) {
+        return std::make_pair("", "");
+    }
+
+    return std::make_pair(*tokenIterator++, *tokenIterator);
+}
+
 } // namespace commandparser
 } // namespace mudserver
