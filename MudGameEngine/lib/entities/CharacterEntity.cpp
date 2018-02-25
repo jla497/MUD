@@ -6,16 +6,19 @@
 CharacterEntity::CharacterEntity(int armor, std::string &damage,
                                  std::vector<std::string> &desc,
                                  unsigned int exp, int gold, std::string &hit,
+                                 unsigned int typeId,
                                  std::vector<std::string> &keywords,
                                  unsigned int level,
                                  std::vector<std::string> &longDesc,
                                  std::string &shortDesc, int thac0)
-    : Entity::Entity(), m_armor(armor), m_damage(damage), m_desc(desc),
-      m_exp(exp), m_gold(gold), m_hit(hit), m_keywords(keywords),
+    : Entity::Entity(), m_armor(armor), /*m_damage(damage),*/ m_desc(desc),
+      m_typeId(typeId), m_exp(exp), m_gold(gold), /*m_hit(hit),*/ m_keywords(keywords),
       m_level(level), m_longDesc(longDesc), m_shortDesc(shortDesc),
       m_thac0(thac0), m_combatState(CombatStates::NOT_FIGHTING) {
 
     // TODO set Roll parameters using hit and damage
+    m_damageRollData = {}; // TODO: parse damage string
+    m_hitRollData = {}; // TODO: parse hit string
 }
 
 std::string CharacterEntity::getDamage() const { return m_damage; }
@@ -27,6 +30,8 @@ unsigned int CharacterEntity::getExp() const { return m_exp; }
 int CharacterEntity::getGold() const { return m_gold; }
 
 std::string CharacterEntity::CharacterEntity::getHit() const { return m_hit; }
+
+unsigned int getTypeId() const { return m_typeId; }
 
 std::vector<std::string> CharacterEntity::CharacterEntity::getKeywords() const {
     return m_keywords;
