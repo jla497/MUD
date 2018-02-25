@@ -28,7 +28,7 @@ std::unordered_map<std::string, ActKeyword> CommandParser::actionLookup = {
     {MOVE, ActKeyword::move}};
 
 std::unique_ptr<Action>
-CommandParser::actionFromPlayerCommand(PlayerCharacter &character,
+CommandParser::actionFromPlayerCommand(CharacterEntity &character,
                                        StrView command,
                                        gamemanager::GameManager &gameManager) {
 

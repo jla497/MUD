@@ -8,7 +8,7 @@ namespace gamemanager {
 class GameStateTest : public testing::Test {
 
   public:
-    unique_ptr<PlayerCharacter> createCharacter() {
+    unique_ptr<CharacterEntity> createCharacter() {
         int armor = 1;
         std::string damage = "1";
         std::vector<std::string> desc{};
@@ -23,9 +23,10 @@ class GameStateTest : public testing::Test {
         longDesc.push_back("desc1");
         std::string shortDesc = "test";
         int thac0 = 1;
-        auto character = std::make_unique<PlayerCharacter>(
-            armor, damage, desc, exp, gold, hit, keywords, level, longDesc,
-            shortDesc, thac0);
+        // TODO typeId for player characters
+        auto character = std::make_unique<CharacterEntity>(
+            armor, damage, desc, exp, gold, hit, 0, keywords, level, longDesc,
+            shortDesc, thac0);        
         return character;
     }
 
@@ -90,7 +91,7 @@ TEST_F(GameStateTest, GetCharacterFromString) {
     auto character = createCharacter();
     UniqueId id = character->getEntityId();
     state.addCharacter(std::move(character));
-    PlayerCharacter *returnedChar = state.getCharacterFromLUT(id);
+    CharacterEntity *returnedChar = state.getCharacterFromLUT(id);
     EXPECT_EQ(returnedChar->getEntityId(), id);
 }
 

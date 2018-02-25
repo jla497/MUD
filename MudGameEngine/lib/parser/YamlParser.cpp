@@ -22,7 +22,7 @@ std::string YamlParser::parseString(YAML::Node node) {
     return node.as<std::string>();
 }
 
-std::unique_ptr<NonPlayerCharacter> YamlParser::parseNPC(YAML::Node npcNode) {
+std::unique_ptr<CharacterEntity> YamlParser::parseNPC(YAML::Node npcNode) {
     int armor = npcNode[ARMOR].as<int>();
     std::string damage = npcNode[DAMAGE].as<std::string>();
 
@@ -48,7 +48,7 @@ std::unique_ptr<NonPlayerCharacter> YamlParser::parseNPC(YAML::Node npcNode) {
     std::string shortDesc = npcNode[SHORTDESC].as<std::string>();
     int thac0 = npcNode[THAC0].as<int>();
 
-    auto npc = std::make_unique<NonPlayerCharacter>(
+    auto npc = std::make_unique<CharacterEntity>(
         armor, damage, description, exp, gold, hit, npcTypeId, keywords, level,
         longdesc, shortDesc, thac0);
 
@@ -198,8 +198,8 @@ std::unique_ptr<ShopEntity> YamlParser::parseShop(YAML::Node shopNode) {
     return shop;
 }
 
-std::vector<std::unique_ptr<NonPlayerCharacter>> YamlParser::getAllNPCS() {
-    std::vector<std::unique_ptr<NonPlayerCharacter>> npcs;
+std::vector<std::unique_ptr<CharacterEntity>> YamlParser::getAllNPCS() {
+    std::vector<std::unique_ptr<CharacterEntity>> npcs;
     for (auto &document : data) {
         std::for_each(document[NPCS_ENT].begin(), document[NPCS_ENT].end(),
                       [&](YAML::Node node) {

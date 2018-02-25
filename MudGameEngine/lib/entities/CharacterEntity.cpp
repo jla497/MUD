@@ -21,7 +21,7 @@ CharacterEntity::CharacterEntity(int armor, std::string &damage,
     m_hitRollData = {}; // TODO: parse hit string
 }
 
-std::string CharacterEntity::getDamage() const { return m_damage; }
+Roll CharacterEntity::getDamage() const { return m_damageRollData; }
 
 std::vector<std::string> CharacterEntity::getDesc() const { return m_desc; }
 
@@ -29,27 +29,27 @@ unsigned int CharacterEntity::getExp() const { return m_exp; }
 
 int CharacterEntity::getGold() const { return m_gold; }
 
-std::string CharacterEntity::CharacterEntity::getHit() const { return m_hit; }
+Roll CharacterEntity::getHit() const { return m_hitRollData; }
 
-unsigned int getTypeId() const { return m_typeId; }
+unsigned int CharacterEntity::getTypeId() const { return m_typeId; }
 
-std::vector<std::string> CharacterEntity::CharacterEntity::getKeywords() const {
+std::vector<std::string> CharacterEntity::getKeywords() const {
     return m_keywords;
 }
 
-unsigned int CharacterEntity::CharacterEntity::getLevel() const {
+unsigned int CharacterEntity::getLevel() const {
     return m_level;
 }
 
-std::vector<std::string> CharacterEntity::CharacterEntity::getLongDesc() const {
+std::vector<std::string> CharacterEntity::getLongDesc() const {
     return m_longDesc;
 }
 
-std::string CharacterEntity::CharacterEntity::getShortDesc() const {
+std::string CharacterEntity::getShortDesc() const {
     return m_shortDesc;
 }
 
-int CharacterEntity::CharacterEntity::getThac0() const { return m_thac0; }
+int CharacterEntity::getThac0() const { return m_thac0; }
 
 CombatStates CharacterEntity::getCombatState() const { return m_combatState; }
 void CharacterEntity::engageCombatState() {

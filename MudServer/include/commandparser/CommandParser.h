@@ -8,9 +8,6 @@
 #include "actions/Action.h"
 #include "entities/CharacterEntity.h"
 
-#include "actions/Action.h"
-#include "entities/PlayerCharacter.h"
-
 class Action; // forward declaration
 namespace mudserver {
 namespace gamemanager {
@@ -45,7 +42,7 @@ class CommandParser {
      * @return the generated Action (will be a derived class)
      */
     std::unique_ptr<Action>
-    actionFromPlayerCommand(PlayerCharacter &character, StrView command,
+    actionFromPlayerCommand(CharacterEntity &character, StrView command,
                             gamemanager::GameManager &gameManager);
 };
 

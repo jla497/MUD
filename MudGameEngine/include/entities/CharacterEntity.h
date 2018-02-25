@@ -39,7 +39,7 @@ class CharacterEntity : public Entity {
                     std::string &shortDesc, int thac0);
 
     // Getters
-    std::string getDamage() const;
+    Roll getDamage() const;
 
     std::vector<std::string> getDesc() const;
 
@@ -47,7 +47,7 @@ class CharacterEntity : public Entity {
 
     int getGold() const;
 
-    std::string getHit() const;
+    Roll getHit() const;
 
     unsigned int getTypeId() const;
 
