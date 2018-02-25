@@ -17,14 +17,14 @@
 #include "entities/RoomEntity.h"
 #include "entities/ShopEntity.h"
 #include "gamemanager/LutBuilder.h"
-
+#include "resources/commands.h"
 #include "UniqueId.h"
 
 namespace mudserver {
 namespace gamemanager {
 using NpcLookUp = std::map<Id, NonPlayerCharacter>;
 using NpcVector = std::vector<std::unique_ptr<NonPlayerCharacter>>;
-
+using attributeMap = std::unordered_map<std::string,std::string>;
 class EntityFactory {
     NpcLookUp npcLookUp;
     NpcVector npcs;
@@ -34,6 +34,8 @@ class EntityFactory {
     void init();
 
     NonPlayerCharacter buildNpc(Id id);
+
+    void modifyCharacter(CharacterEntity* entity, attributeMap map );
 };
 } // namespace gamemanager
 }
