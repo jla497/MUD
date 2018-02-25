@@ -12,7 +12,7 @@ class UniqueId {
 
   public:
     UniqueId() : id(nextUniqueId++) {}
-    UniqueId( int id ):id((unsigned int)id) {}
+    UniqueId(int id) : id((unsigned int)id) {}
     unsigned int getId() const;
 
     bool operator==(const UniqueId &rhs) const { return (id == rhs.id); }
