@@ -10,12 +10,12 @@ class GameStateTest : public testing::Test {
   public:
     unique_ptr<CharacterEntity> createCharacter() {
         int armor = 1;
-        std::string damage = "1";
+        std::string damage = "1d8+32";
         std::vector<std::string> desc{};
         desc.push_back("desc1");
         unsigned int exp = 1;
         int gold = 1;
-        std::string hit = "1";
+        std::string hit = "1d1+30000";
         std::vector<std::string> keywords{};
         keywords.push_back("keyword1");
         unsigned int level = 1;
