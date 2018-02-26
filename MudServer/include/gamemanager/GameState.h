@@ -10,7 +10,7 @@
 #include <unordered_map>
 
 #include "entities/AreaEntity.h"
-#include "entities/PlayerCharacter.h"
+#include "entities/CharacterEntity.h"
 //#include "Room.h"
 #include "UniqueId.h"
 #include "YamlParser.h"
@@ -28,7 +28,7 @@ using std::vector;
 
 using CharacterRoomLookupTable = bimap<set_of<UniqueId>, list_of<roomId>>;
 using RoomLookupTable = std::map<roomId, RoomEntity *>;
-using CharacterLookUp = std::map<UniqueId, unique_ptr<PlayerCharacter>>;
+using CharacterLookUp = std::map<UniqueId, unique_ptr<CharacterEntity>>;
 
 /**
  * The overarching idea of GameState is that it should
@@ -53,16 +53,16 @@ class GameState {
     void initRoomLUT();
 
     void addAreaFromParser();
-    void addCharacter(unique_ptr<PlayerCharacter> character);
+    void addCharacter(unique_ptr<CharacterEntity> character);
     void addCharacterRoomRelationToLUT(UniqueId characterId,
                                        unsigned int roomId);
     void addRoomToLUT(RoomEntity *);
     AreaEntity *getAreaFromParser();
     deque<unique_ptr<AreaEntity>> &getAreas();
     vector<UniqueId> getCharactersInRoom(RoomEntity *room);
-    PlayerCharacter *getCharacterFromLUT(UniqueId id);
-    RoomEntity *getCharacterLocation(PlayerCharacter *character);
-    RoomEntity *getCharacterLocation(PlayerCharacter &character);
+    CharacterEntity *getCharacterFromLUT(UniqueId id);
+    RoomEntity *getCharacterLocation(CharacterEntity *character);
+    RoomEntity *getCharacterLocation(CharacterEntity &character);
     RoomEntity *getRoomFromLUT(const roomId);
     void clearAreas();
     void clearCharacterRoomLUT();

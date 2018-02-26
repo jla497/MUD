@@ -32,11 +32,11 @@ class CharacterEntity : public Entity {
 
   public:
     CharacterEntity() = default;
-    CharacterEntity(int armor, std::string &damage,
-                    std::vector<std::string> &desc, unsigned int exp, int gold,
-                    std::string &hit, unsigned int typeId, std::vector<std::string> &keywords,
-                    unsigned int level, std::vector<std::string> &longDesc,
-                    std::string &shortDesc, int thac0);
+    CharacterEntity(int armor, std::string damage,
+                    std::vector<std::string> desc, unsigned int exp, int gold,
+                    std::string hit, unsigned int typeId, std::vector<std::string> keywords,
+                    unsigned int level, std::vector<std::string> longDesc,
+                    std::string shortDesc, int thac0); // TODO make by reference
 
     // Getters
     Roll getDamage() const;

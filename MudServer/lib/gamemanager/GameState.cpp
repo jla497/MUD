@@ -39,7 +39,7 @@ void GameState::addRoomToLUT(RoomEntity *room) {
     roomLookUp[room->getId()] = room;
 }
 
-void GameState::addCharacter(unique_ptr<PlayerCharacter> character) {
+void GameState::addCharacter(unique_ptr<CharacterEntity> character) {
     auto id = character->getEntityId();
     characterLookUp[id] = std::move(character);
     // TODO: implement a configurable default spawn point
@@ -64,16 +64,16 @@ RoomEntity *GameState::getRoomFromLUT(const roomId id) {
     return roomLookUp.find(id)->second;
 }
 
-PlayerCharacter *GameState::getCharacterFromLUT(UniqueId id) {
+CharacterEntity *GameState::getCharacterFromLUT(UniqueId id) {
     return characterLookUp.find(id)->second.get();
 }
 
-RoomEntity *GameState::getCharacterLocation(PlayerCharacter *character) {
+RoomEntity *GameState::getCharacterLocation(CharacterEntity *character) {
     auto id = characterRoomLookUp.left.find(character->getEntityId())->second;
     return roomLookUp.find(id)->second;
 }
 
-RoomEntity *GameState::getCharacterLocation(PlayerCharacter &character) {
+RoomEntity *GameState::getCharacterLocation(CharacterEntity &character) {
     auto roomid =
         characterRoomLookUp.left.find(character.getEntityId())->second;
 

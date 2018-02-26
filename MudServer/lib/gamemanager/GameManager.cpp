@@ -7,7 +7,7 @@
 #include <vector>
 
 #include "connectionmanager/ConnectionManager.h"
-#include "entities/PlayerCharacter.h"
+#include "entities/CharacterEntity.h"
 #include "gamemanager/GameManager.h"
 #include "logging.h"
 #include "resources/PlayerCharacterDefaults.h"
@@ -146,7 +146,7 @@ void GameManager::sendCharacterMessage(UniqueId characterId,
 // I believe the player-character mapping is complex enough to factor out into
 // a new class - possibly will be the LoginManager once we get that far
 
-PlayerCharacter *GameManager::playerIdToCharacter(PlayerId playerId) {
+CharacterEntity *GameManager::playerIdToCharacter(PlayerId playerId) {
     auto entry = playerCharacterBimap.left.find(playerId);
     if (entry != playerCharacterBimap.left.end()) {
         auto characterId = entry->second;
@@ -156,11 +156,11 @@ PlayerCharacter *GameManager::playerIdToCharacter(PlayerId playerId) {
     return nullptr;
 }
 
-PlayerCharacter *GameManager::playerToCharacter(const Player &player) {
+CharacterEntity *GameManager::playerToCharacter(const Player &player) {
     return playerIdToCharacter(player.getId());
 }
 
-Player &GameManager::characterToPlayer(const PlayerCharacter &character) {
+Player &GameManager::characterToPlayer(const CharacterEntity &character) {
     return characterIdToPlayer(character.getEntityId());
 }
 
@@ -173,9 +173,9 @@ void GameManager::addPlayerCharacter(PlayerId playerId) {
     auto testShortDesc =
         "TestPlayerName" + std::to_string(playerCharacterBimap.size());
 
-    auto character = std::make_unique<PlayerCharacter>(
+    auto character = std::make_unique<CharacterEntity>(
         pc::ARMOR, std::string{pc::DAMAGE}, std::vector<std::string>{}, pc::EXP,
-        pc::GOLD, std::string{pc::HIT}, std::vector<std::string>{}, pc::LEVEL,
+        pc::GOLD, std::string{pc::HIT}, pc::TYPEID, std::vector<std::string>{}, pc::LEVEL,
         std::vector<std::string>{}, testShortDesc, pc::THAC0);
 
     playerCharacterBimap.insert(
