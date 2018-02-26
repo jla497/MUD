@@ -1,5 +1,6 @@
 #include <string>
 #include <vector>
+#include <boost/algorithm/string.hpp>
 
 #include "entities/CharacterEntity.h"
 
@@ -13,9 +14,13 @@ CharacterEntity::CharacterEntity(int armor, std::string damage,
       m_level(level), m_longDesc(longDesc), m_shortDesc(shortDesc),
       m_thac0(thac0), m_combatState(CombatStates::NOT_FIGHTING) {
 
-    // TODO set Roll parameters using hit and damage
-    m_damageRollData = {}; // TODO: parse damage string
-    m_hitRollData = {}; // TODO: parse hit string
+    std::vector<std::string> tmpHit;
+    boost::split(tmpHit, hit, boost::is_any_of("+d"));
+    m_hitRollData = {std::stoi(tmpHit.at(0)), std::stoi(tmpHit.at(1)), std::stoi(tmpHit.at(2))}; 
+    
+    std::vector<std::string> tmpDamage;
+    boost::split(tmpDamage, damage, boost::is_any_of("+d"));
+    m_damageRollData = {std::stoi(tmpDamage.at(0)), std::stoi(tmpDamage.at(1)), std::stoi(tmpDamage.at(2))}; 
 }
 
 Roll CharacterEntity::getDamage() const { return m_damageRollData; }
