@@ -1,17 +1,18 @@
 #ifndef PRGMACTION_H
 #define PRGMACTION_H
 
+#include <type_traits>
 #include <boost/algorithm/string.hpp>
 #include <string>
 #include <unordered_map>
-#include <vector>
 
+#include <vector>
 #include "Action.h"
 #include "gamemanager/GameManager.h"
 #include "logging.h"
 #include "resources/PlayerCharacterDefaults.h"
 #include "resources/commands.h"
-
+#define typeof(x) std::remove_reference<decltype((x))>::type
 /**
  * The Program Action class defines the behavior for when a admin creates a
  * character
@@ -57,6 +58,7 @@ class PrgmAction : public Action {
             return ss.str();
         };
 
+        template<typename T>
         std::string getArgument(std::string arg);
 
         OptValMap parseOptValPairs(std::vector<std::string> args);

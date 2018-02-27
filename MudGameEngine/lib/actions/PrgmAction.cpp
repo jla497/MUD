@@ -158,11 +158,25 @@ PrgmAction::PrgmParser::OptValMap PrgmAction::PrgmParser::parseOptValPairs(
     optionValuePairs = optionMap;
     return optionMap;
 };
+//
+//std::string PrgmAction::PrgmParser::getArgument(std::string arg) {
+//    auto itr = optionValuePairs.find(arg);
+//    if (itr == optionValuePairs.end()) {
+//        throw "invalid arg";
+//    }
+//    return itr->second;
+//}
 
+template<typename T>
 std::string PrgmAction::PrgmParser::getArgument(std::string arg) {
     auto itr = optionValuePairs.find(arg);
     if (itr == optionValuePairs.end()) {
         throw "invalid arg";
     }
+
+    if(typeof(T) == typeof(arg)){
+        std::cout<<"both are str"<<std::endl;
+    }
     return itr->second;
+
 }
