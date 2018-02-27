@@ -3,6 +3,7 @@
 #include <sstream>
 #include <type_traits>
 #include <memory>
+#include <utility>
 #include <vector>
 
 #include <boost/algorithm/string.hpp>
@@ -37,18 +38,16 @@ using ActionGenerator = std::unique_ptr<Action> (*)(PlayerCharacter&,
                                                     gamemanager::GameManager&);
 
 template<typename T, typename = std::enable_if<std::is_base_of<Action, T>::value>>
-constexpr ActionGenerator generator() noexcept {
-    return [](PlayerCharacter &pc, std::vector<std::string> &args, gamemanager::GameManager &manager) -> std::unique_ptr<Action> {
-        return std::make_unique<T>(pc, args, manager);
-    };
-}
+std::unique_ptr<Action> generator(PlayerCharacter &pc, std::vector<std::string> &args, gamemanager::GameManager &manager) {
+    return std::make_unique<T>(pc, args, manager);
+};
 
 const static std::vector<ActionGenerator> actionGenerators = { // NOLINT
-        generator<NullAction>(), //undefined
-        generator<SayAction>(),
-        generator<LookAction>(),
-        generator<MoveAction>(),
-        generator<AttackAction>(),
+        &generator<NullAction>, //undefined
+        &generator<SayAction>,
+        &generator<LookAction>,
+        &generator<MoveAction>,
+        &generator<AttackAction>,
 };
 
 std::unique_ptr<Action> CommandParser::actionFromPlayerCommand(
