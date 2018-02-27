@@ -21,7 +21,7 @@ drop connection.*/
 void ConnectionManager::dropConnections() {
 
     std::remove_if(mList.begin(), mList.end(), [this](auto &c) {
-        if (c.getIsConnected()) {
+        if (!c.getIsConnected()) {
             server.disconnect(c.getConnection());
             return true;
         }
