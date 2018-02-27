@@ -9,7 +9,7 @@ RoomEntity::RoomEntity(const std::vector<std::string>& desc,
                        unsigned int roomId)
     : Entity::Entity(),
       m_desc(desc),
-      m_doors(),
+      m_doors(doors),
       m_name(name),
       m_extDesc{descExt, keywordsExt},
     m_roomId(roomId)
