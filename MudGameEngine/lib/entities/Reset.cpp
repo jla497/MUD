@@ -17,8 +17,10 @@ void Reset::resetNpc(mudserver::gamemanager::GameState &state) {
     static auto logger =
         mudserver::logging::getLogger("Reset::execute::resetNPC");
     auto &factory = state.getFactory();
-    auto npc = factory.buildNpc(id);
+    auto npc_ptr = std::make_unique<CharacterEntity>(factory.buildNpc(id));
     logger->info("npc: " + npc.getShortDesc());
+    //state.addCharacter(std::move(npc_ptr));
+
 }
 
 void Reset::execute(mudserver::gamemanager::GameState &state) {
