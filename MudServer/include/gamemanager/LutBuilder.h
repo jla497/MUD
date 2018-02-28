@@ -14,14 +14,12 @@
 namespace mudserver {
 namespace gamemanager {
 
-using std::unique_ptr;
-using std::unordered_map;
 using roomId = unsigned int;
 
 class LutBuilder {
   public:
-    std::map<roomId, RoomEntity *>
-    createLUT(std::deque<unique_ptr<RoomEntity>> &mVector);
+    std::unordered_map<roomId, RoomEntity>
+    createLUT(std::deque<RoomEntity> &mVector);
 };
 
 } // namespace gamemanager

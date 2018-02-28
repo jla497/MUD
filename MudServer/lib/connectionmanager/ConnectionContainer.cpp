@@ -3,49 +3,34 @@
 namespace mudserver {
 namespace connection {
 
-const int ConnectionContainer::DEFAULT_NUM_OF_MUD_PROTOCOLS = 512;
-
-ConnectionContainer::ConnectionContainer()
-    : mProtocol(std::unique_ptr<MudProtocol>(
-          new MudProtocol(DEFAULT_NUM_OF_MUD_PROTOCOLS))) {}
-
 ConnectionContainer::ConnectionContainer(const networking::Connection &c)
-    : mConnection(c), isConnected(true),
-      mProtocol(std::unique_ptr<MudProtocol>(
-          new MudProtocol(DEFAULT_NUM_OF_MUD_PROTOCOLS))) {}
-
-ConnectionContainer::ConnectionContainer(ConnectionContainer &&container)
-    : mConnection(container.mConnection),
-      mProtocol(std::move(container.mProtocol)) {}
+    : mConnection(c), isConnected(true) {}
 
 // receives messages from Server ->
 // ConnectionManager->ConnectionContainer->Protocol
 void ConnectionContainer::receiveFromServer(std::string &str) {
     // translated = mProtocol.receive(str);
     try {
-        mProtocol->receive(str);
+        mProtocol.receive(str);
     } catch (std::exception &e) {
         // kick user out
         isConnected = false;
         return;
     }
-
-    return;
 }
 
 // send to GameManager
 std::string ConnectionContainer::sendToGameManager() {
-    auto str = mProtocol->send();
-    return str;
+    return mProtocol.send();
 }
 
-void ConnectionContainer::receiveFromGameManager(std::string &str) {
+void ConnectionContainer::receiveFromGameManager(const std::string &str) {
     // std::cout<<"connection container received from game manager:
     // "<<str<<std::endl;
 
     // translated = mProtocol.receive(str);
     try {
-        mProtocol->receive(str);
+        mProtocol.receive(str);
     } catch (std::exception &e) {
         // kick user out
         // std::cout << e.what() << std::endl;
@@ -55,7 +40,7 @@ void ConnectionContainer::receiveFromGameManager(std::string &str) {
     return;
 }
 
-std::string ConnectionContainer::sendToServer() { return mProtocol->send(); }
+std::string ConnectionContainer::sendToServer() { return mProtocol.send(); }
 
 bool ConnectionContainer::getIsConnected() const { return isConnected; }
 
