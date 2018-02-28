@@ -34,12 +34,12 @@ using mudserver::commandparser::CommandParser;
  * actions. It fetches batches of incoming messages from the network.
  */
 class GameManager {
-private:
-    GameState& gameState;
+  private:
+    GameState &gameState;
     GameLoopTick tick = DEFAULT_TICK_LENGTH_MS;
     bool done = false;
     CommandParser commandParser;
-    connection::ConnectionManager& connectionManager;
+    connection::ConnectionManager &connectionManager;
 
     std::unordered_map<PlayerId, Player> players;
     PcBmType playerCharacterBimap;
@@ -51,7 +51,8 @@ private:
      * as required.
      * @param messages the messages
      */
-    void processMessages(std::vector<connection::gameAndUserInterface>& messages);
+    void
+    processMessages(std::vector<connection::gameAndUserInterface> &messages);
     /**
      * Given a connection (network layer concept), put a message on the queue
      * for that connection.
@@ -79,28 +80,28 @@ private:
      * @param player the player
      * @return the player's character (may be null)
      */
-    PlayerCharacter* playerToCharacter(const Player& player);
+    PlayerCharacter *playerToCharacter(const Player &player);
 
     /**
      * Given a character, return a reference to the character's player.
      * @param character the character
      * @return the character's player
      */
-    Player& characterToPlayer(const PlayerCharacter& character);
+    Player &characterToPlayer(const PlayerCharacter &character);
 
     /**
      * Given a character's id, return a reference to the character's player.
      * @param characterId the character's id
      * @return the character's player
      */
-    Player& characterIdToPlayer(UniqueId characterId);
+    Player &characterIdToPlayer(UniqueId characterId);
 
     /**
      * Given a player's id, return a pointer to the player's character.
      * @param playerId the player's id
      * @return the player's character (may be null)
      */
-    PlayerCharacter* playerIdToCharacter(PlayerId playerId);
+    PlayerCharacter *playerIdToCharacter(PlayerId playerId);
 
     /**
      * Create and add a new player character to the game state.
@@ -108,7 +109,7 @@ private:
      */
     void addPlayerCharacter(PlayerId playerId);
 
-public:
+  public:
     /**
      * The GameManager is constructed with references to a ConnectionManager and
      * a GameState. These should both be owned in the same or higher scope as
@@ -116,7 +117,7 @@ public:
      * @param connMan the connection manager
      * @param gameState the game state
      */
-    GameManager(connection::ConnectionManager& connMan, GameState& gameState);
+    GameManager(connection::ConnectionManager &connMan, GameState &gameState);
 
     /**
      * The main game loop. Updates game state once per tick, processes messages
@@ -128,7 +129,7 @@ public:
      * Gets a reference to the game state.
      * @return the game state
      */
-    GameState& getState();
+    GameState &getState();
 
     /**
      * Send a message to a given character. This will translate to sending a
@@ -140,7 +141,7 @@ public:
     void sendCharacterMessage(UniqueId characterId, std::string message);
 };
 
-}  // namespace gamemanager
-}  // namespace mudserver
+} // namespace gamemanager
+} // namespace mudserver
 
 #endif

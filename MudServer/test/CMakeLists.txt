@@ -1,4 +1,4 @@
-add_subdirectory(lib/googlemock)
+
 enable_testing()
 
 add_executable(mudtest

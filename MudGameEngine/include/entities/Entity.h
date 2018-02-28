@@ -12,12 +12,11 @@
 /*Entity Interface for making other types of entities like:
   players, rooms, objects*/
 class Entity {
-private:
+  private:
     // Unique id that every created entity has
     UniqueId m_entityId{};
 
-public:
-
+  public:
     UniqueId getEntityId() const;
 
     // default destructor does nothing

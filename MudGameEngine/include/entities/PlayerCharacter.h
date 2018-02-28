@@ -4,9 +4,9 @@
 #include "CharacterEntity.h"
 
 class PlayerCharacter : public CharacterEntity {
-private:
+  private:
     // Possibly race here later
-public:
+  public:
     PlayerCharacter() = default;
     PlayerCharacter(int armor, std::string damage,
                     std::vector<std::string> desc, unsigned int exp, int gold,

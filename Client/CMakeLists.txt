@@ -1,3 +1,4 @@
+find_package(yaml-cpp)
 
 add_executable(chatclient
   chatclient.cpp
@@ -25,7 +26,9 @@ target_link_libraries(chatclient
   ${Boost_LIBRARIES}
   ${CURSES_LIBRARIES}
   ${CMAKE_THREAD_LIBS_INIT}
+  yaml-cpp
 )
+
 
 install(TARGETS chatclient
   RUNTIME DESTINATION bin

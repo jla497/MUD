@@ -23,11 +23,9 @@ namespace pc = mudserver::resources::playercharacter;
 using boost::format;
 using boost::str;
 
-GameManager::GameManager(connection::ConnectionManager& connMan,
-                         GameState& gameState)
-    : gameState{gameState},
-      connectionManager{connMan}
-{}
+GameManager::GameManager(connection::ConnectionManager &connMan,
+                         GameState &gameState)
+    : gameState{gameState}, connectionManager{connMan} {}
 
 /**
  * Runs a standard game loop, which consists of the following steps:
@@ -48,7 +46,7 @@ void GameManager::mainLoop() {
             done = true;
             continue;
         }
-    
+
         auto messages = connectionManager.sendToGameManager();
 
         processMessages(messages);
@@ -64,14 +62,14 @@ void GameManager::mainLoop() {
             performQueuedActions();
             sendMessagesToPlayers();
         }
-
     }
 }
 
-void GameManager::processMessages(std::vector<connection::gameAndUserInterface>& messages) {
+void GameManager::processMessages(
+    std::vector<connection::gameAndUserInterface> &messages) {
     static auto logger = logging::getLogger("GameManager::processMessages");
 
-    for (const auto& message : messages) {
+    for (const auto &message : messages) {
 
         // look up player from ID
         auto playerId = message.conn.id;
@@ -81,7 +79,8 @@ void GameManager::processMessages(std::vector<connection::gameAndUserInterface>&
             // We should add a login service that can deal with
             //      - players not existing
             //      - authenticating players
-            players[playerId] = {playerId, "player" + std::to_string(playerId), ""};
+            players[playerId] = {playerId, "player" + std::to_string(playerId),
+                                 ""};
         }
 
         // Guaranteed not to throw out_of_range - Player has been created
@@ -100,7 +99,7 @@ void GameManager::processMessages(std::vector<connection::gameAndUserInterface>&
 
         // parse message into verb/object
         auto action = commandParser.actionFromPlayerCommand(
-                *playerCharacter, message.text, *this);
+            *playerCharacter, message.text, *this);
 
         std::ostringstream retMessage;
         retMessage << "DEBUG: " << *action;
@@ -138,12 +137,12 @@ void GameManager::performQueuedActions() {
     }
 }
 
-GameState &GameManager::getState() {
-    return gameState;
-}
+GameState &GameManager::getState() { return gameState; }
 
-void GameManager::sendCharacterMessage(UniqueId characterId, std::string message) {
-    enqueueMessage({characterIdToPlayer(characterId).getId()}, std::move(message));
+void GameManager::sendCharacterMessage(UniqueId characterId,
+                                       std::string message) {
+    enqueueMessage({characterIdToPlayer(characterId).getId()},
+                   std::move(message));
 }
 
 // TODO: Factor out into a new class
@@ -151,8 +150,7 @@ void GameManager::sendCharacterMessage(UniqueId characterId, std::string message
 // I believe the player-character mapping is complex enough to factor out into
 // a new class - possibly will be the LoginManager once we get that far
 
-
-PlayerCharacter* GameManager::playerIdToCharacter(PlayerId playerId) {
+PlayerCharacter *GameManager::playerIdToCharacter(PlayerId playerId) {
     auto entry = playerCharacterBimap.left.find(playerId);
     if (entry != playerCharacterBimap.left.end()) {
         auto characterId = entry->second;
@@ -162,29 +160,32 @@ PlayerCharacter* GameManager::playerIdToCharacter(PlayerId playerId) {
     return nullptr;
 }
 
-PlayerCharacter* GameManager::playerToCharacter(const Player& player) {
+PlayerCharacter *GameManager::playerToCharacter(const Player &player) {
     return playerIdToCharacter(player.getId());
 }
 
-Player& GameManager::characterToPlayer(const PlayerCharacter& character) {
+Player &GameManager::characterToPlayer(const PlayerCharacter &character) {
     return characterIdToPlayer(character.getEntityId());
 }
 
-Player& GameManager::characterIdToPlayer(UniqueId characterId) {
+Player &GameManager::characterIdToPlayer(UniqueId characterId) {
     auto playerId = playerCharacterBimap.right.find(characterId)->second;
     return players.at(playerId);
 }
 
 void GameManager::addPlayerCharacter(PlayerId playerId) {
-    auto testShortDesc = "TestPlayerName" + std::to_string(playerCharacterBimap.size());
+    auto testShortDesc =
+        "TestPlayerName" + std::to_string(playerCharacterBimap.size());
 
-    PlayerCharacter pc(pc::ARMOR, std::string{pc::DAMAGE}, std::vector<std::string>{}, pc::EXP,
-            pc::GOLD, std::string{pc::HIT}, std::vector<std::string>{}, pc::LEVEL,
-            std::vector<std::string>{}, testShortDesc, pc::THAC0);
+    PlayerCharacter pc(
+        pc::ARMOR, std::string{pc::DAMAGE}, std::vector<std::string>{}, pc::EXP,
+        pc::GOLD, std::string{pc::HIT}, std::vector<std::string>{}, pc::LEVEL,
+        std::vector<std::string>{}, testShortDesc, pc::THAC0);
 
-    playerCharacterBimap.insert(PcBmType::value_type(playerId, pc.getEntityId()));
+    playerCharacterBimap.insert(
+        PcBmType::value_type(playerId, pc.getEntityId()));
     gameState.addCharacter(pc);
 }
 
-}  // namespace gamemanager
-}  // namespace mudserver
+} // namespace gamemanager
+} // namespace mudserver

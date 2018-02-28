@@ -18,9 +18,9 @@ class Player {
     PlayerId id = static_cast<PlayerId>(-1);
     std::string username;
     std::string password;
-    CharacterEntity* character = nullptr;
+    CharacterEntity *character = nullptr;
 
-public:
+  public:
     Player() = default;
 
     /**
@@ -38,6 +38,6 @@ public:
     PlayerId getId() const;
 };
 
-}  // namespace gamemanager
-}  // namespace mudserver
-#endif  // PLAYER_H
+} // namespace gamemanager
+} // namespace mudserver
+#endif // PLAYER_H

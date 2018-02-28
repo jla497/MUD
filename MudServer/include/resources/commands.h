@@ -13,8 +13,8 @@ static const char *LOOK = u8"look";
 static const char *MOVE = u8"move";
 static const char *ATTACK = u8"attack";
 
-}
-}
-}
+} // namespace commands
+} // namespace resources
+} // namespace mudserver
 
-#endif //ADVENTURE2018_COMMANDS_H
+#endif // ADVENTURE2018_COMMANDS_H

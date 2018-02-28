@@ -1,8 +1,8 @@
 
 #include <iostream>
+#include <memory>
 #include <sstream>
 #include <type_traits>
-#include <memory>
 #include <utility>
 #include <vector>
 
@@ -10,10 +10,10 @@
 #include <boost/tokenizer.hpp>
 
 #include "actions/AttackAction.h"
-#include "actions/NullAction.h"
-#include "actions/MoveAction.h"
-#include "actions/SayAction.h"
 #include "actions/LookAction.h"
+#include "actions/MoveAction.h"
+#include "actions/NullAction.h"
+#include "actions/SayAction.h"
 #include "commandparser/CommandParser.h"
 #include "resources/commands.h"
 
@@ -26,33 +26,35 @@ using boost::algorithm::to_lower_copy;
 using namespace resources::commands;
 
 static std::unordered_map<std::string, ActKeyword> actionLookup = { // NOLINT
-        {UNDEFINED, ActKeyword::undefined},
-        {SAY, ActKeyword::say},
-        {LOOK, ActKeyword::look},
-        {ATTACK, ActKeyword::attack},
-        {MOVE, ActKeyword::move}
-};
+    {UNDEFINED, ActKeyword::undefined},
+    {SAY, ActKeyword::say},
+    {LOOK, ActKeyword::look},
+    {ATTACK, ActKeyword::attack},
+    {MOVE, ActKeyword::move}};
 
-using ActionGenerator = std::unique_ptr<Action> (*)(PlayerCharacter&,
-                                                    std::vector<std::string>&,
-                                                    gamemanager::GameManager&);
+using ActionGenerator = std::unique_ptr<Action> (*)(PlayerCharacter &,
+                                                    std::vector<std::string> &,
+                                                    gamemanager::GameManager &);
 
-template<typename T, typename = std::enable_if<std::is_base_of<Action, T>::value>>
-std::unique_ptr<Action> generator(PlayerCharacter &pc, std::vector<std::string> &args, gamemanager::GameManager &manager) {
+template <typename T,
+          typename = std::enable_if<std::is_base_of<Action, T>::value>>
+std::unique_ptr<Action> generator(PlayerCharacter &pc,
+                                  std::vector<std::string> &args,
+                                  gamemanager::GameManager &manager) {
     return std::make_unique<T>(pc, args, manager);
 };
 
-const static std::vector<ActionGenerator> actionGenerators = { // NOLINT
-        &generator<NullAction>, //undefined
-        &generator<SayAction>,
-        &generator<LookAction>,
-        &generator<MoveAction>,
-        &generator<AttackAction>,
+const static std::vector<ActionGenerator> actionGenerators = {
+    // NOLINT
+    &generator<NullAction>, // undefined
+    &generator<SayAction>,  &generator<LookAction>,
+    &generator<MoveAction>, &generator<AttackAction>,
 };
 
-std::unique_ptr<Action> CommandParser::actionFromPlayerCommand(
-    PlayerCharacter& character, StrView command,
-    gamemanager::GameManager& gameManager) {
+std::unique_ptr<Action>
+CommandParser::actionFromPlayerCommand(PlayerCharacter &character,
+                                       StrView command,
+                                       gamemanager::GameManager &gameManager) {
 
     Tokenizer tokens{command};
     auto tokenIterator = tokens.begin();
@@ -67,13 +69,13 @@ std::unique_ptr<Action> CommandParser::actionFromPlayerCommand(
                                 ? ActKeyword::undefined
                                 : actionTypeIter->second;
 
-    auto index = static_cast<std::vector<ActionGenerator>::size_type>(actionType);
-    if (index >= actionGenerators.size())
-    {
+    auto index =
+        static_cast<std::vector<ActionGenerator>::size_type>(actionType);
+    if (index >= actionGenerators.size()) {
         return nullptr;
     }
     return actionGenerators[index](character, remainderOfTokens, gameManager);
 }
 
-}  // namespace commandparser
-}  // namespace mudserver
+} // namespace commandparser
+} // namespace mudserver

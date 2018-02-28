@@ -9,41 +9,51 @@
 
 #include "ChatWindow.h"
 #include "Client.h"
+#include "configparser/ConfigParser.h"
+#include <boost/optional/optional.hpp>
 
-int main(int argc, char* argv[]) {
-    if (argc < 3) {
-        printf("Usage:\n%s <ip address> <port>\ne.g. %s localhost 4002\n",
-               argv[0], argv[0]);
+using networking::Port;
+
+int main(int argc, char *argv[]) {
+    if (argc < 2) {
+        printf("Usage:\n%s <config_file_path>\ne.g. %s config.yaml\n", argv[0],
+               argv[0]);
         return 1;
     }
 
-    networking::Client client{argv[1], argv[2]};
+    auto configData = parseConfigFile(argv[1]);
 
-    bool done = false;
-    auto onTextEntry = [&done, &client](std::string text) {
-        if ("exit" == text || "quit" == text) {
-            done = true;
-        } else {
-            client.send(text);
-        }
-    };
+    if (configData) {
+        auto url = configData->url;
+        auto port = configData->clientPort;
+        networking::Client client{url.c_str(), port.c_str()};
 
-    ChatWindow chatWindow(onTextEntry);
-    while (!done && !client.isDisconnected()) {
-        try {
-            client.update();
-        } catch (std::exception& e) {
-            chatWindow.displayText("Exception from Client update:");
-            chatWindow.displayText(e.what());
-            done = true;
+        bool done = false;
+        auto onTextEntry = [&done, &client](std::string text) {
+            if ("exit" == text || "quit" == text) {
+                done = true;
+            } else {
+                client.send(text);
+            }
+        };
+
+        ChatWindow chatWindow(onTextEntry);
+        while (!done && !client.isDisconnected()) {
+            try {
+                client.update();
+            } catch (std::exception &e) {
+                chatWindow.displayText("Exception from Client update:");
+                chatWindow.displayText(e.what());
+                done = true;
+            }
+
+            auto response = client.receive();
+            if (!response.empty()) {
+                chatWindow.displayText(response);
+            }
+            chatWindow.update();
         }
 
-        auto response = client.receive();
-        if (!response.empty()) {
-            chatWindow.displayText(response);
-        }
-        chatWindow.update();
+        return 0;
     }
-
-    return 0;
 }

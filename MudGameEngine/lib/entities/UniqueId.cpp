@@ -2,6 +2,4 @@
 
 unsigned int UniqueId::nextUniqueId = 1;
 
-unsigned int UniqueId::getId() const {
-    return id;
-}
+unsigned int UniqueId::getId() const { return id; }

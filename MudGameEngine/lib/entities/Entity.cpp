@@ -2,6 +2,4 @@
 
 #include "entities/Entity.h"
 
-UniqueId Entity::getEntityId() const {
-    return m_entityId;
-}
+UniqueId Entity::getEntityId() const { return m_entityId; }

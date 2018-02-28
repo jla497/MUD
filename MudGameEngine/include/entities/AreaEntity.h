@@ -7,18 +7,17 @@
 #include "RoomEntity.h"
 
 class AreaEntity : public Entity {
-   private:
+  private:
     // add unique id
     std::string m_name;
     std::deque<RoomEntity> m_rooms;
 
-   public:
+  public:
     AreaEntity() = default;
 
-    AreaEntity(const std::string& name,
-               std::deque<RoomEntity> rooms);
+    AreaEntity(const std::string &name, std::deque<RoomEntity> rooms);
 
-    std::deque<RoomEntity>& getAllRooms();
+    std::deque<RoomEntity> &getAllRooms();
 
     std::string getName() const;
 };

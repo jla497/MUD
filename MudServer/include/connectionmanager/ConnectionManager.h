@@ -27,7 +27,7 @@ struct findGameAndUserInterface {
         return this->conn.id == conn.conn.id;
     }
 
-private:
+  private:
     networking::Connection conn;
 };
 
@@ -38,7 +38,7 @@ struct findContainer {
         return this->conn.id == conn.getConnection().id;
     }
 
-private:
+  private:
     networking::Connection conn;
 };
 
@@ -58,7 +58,7 @@ class ConnectionManager {
     std::vector<ConnectionContainer> mList;
     networking::Server server;
 
-public:
+  public:
     ConnectionManager(networking::Port port);
     // pass signals to server to drop connections
     void dropConnections();
@@ -66,7 +66,7 @@ public:
     void addConnection(const networking::Connection c);
 
     // pass incoming Messages from server to connection containers
-    void rxFromServer(std::deque<networking::Message>& incoming);
+    void rxFromServer(std::deque<networking::Message> &incoming);
 
     // send Messages to server
     std::deque<networking::Message> sendToServer();
@@ -75,11 +75,12 @@ public:
     std::vector<gameAndUserInterface> sendToGameManager();
 
     // collect and pass msgs from GameManager to ConnectionManager
-    void receiveFromGameManager(const std::vector<gameAndUserInterface> &fromGame);
+    void
+    receiveFromGameManager(const std::vector<gameAndUserInterface> &fromGame);
 
     bool update();
 };
 
-}  // end of namespace connection
-}
+} // end of namespace connection
+} // namespace mudserver
 #endif

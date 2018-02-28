@@ -10,7 +10,7 @@ void AttackAction::execute() {
     static auto logger = mudserver::logging::getLogger("AttackAction::execute");
 
     // get gamestate
-    auto& gameState = gameManager.getState();
+    auto &gameState = gameManager.getState();
 
     // get player who is attacking
     auto playerWhoIsAttacking = characterPerformingAction;
@@ -46,7 +46,8 @@ void AttackAction::execute() {
     // see if my target is in the same room
     for (auto characterID : IDsOfPlayersInRoom) {
         auto currentEntity = gameState.getCharacterFromLUT(characterID);
-        if (!currentEntity) return;
+        if (!currentEntity)
+            return;
         auto shortDescOfCurrentPlayer = currentEntity->getShortDesc();
         if (boost::to_lower_copy(shortDescOfCurrentPlayer)
                 .compare(boost::to_lower_copy(nameOfAttackTarget)) == 0) {
@@ -72,7 +73,7 @@ void AttackAction::execute() {
 
     // if we didnt find the target we tell the player
     logger->info("No Target found");
-    gameManager.sendCharacterMessage(
-        attackingPlayersUniqueId,
-        "Attack failed: could not find " + nameOfAttackTarget);
+    gameManager.sendCharacterMessage(attackingPlayersUniqueId,
+                                     "Attack failed: could not find " +
+                                         nameOfAttackTarget);
 }

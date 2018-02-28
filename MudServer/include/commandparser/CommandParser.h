@@ -2,8 +2,8 @@
 #define COMMANDPARSER_H
 
 #include <experimental/string_view>
-#include <unordered_map>
 #include <string>
+#include <unordered_map>
 
 #include "actions/Action.h"
 #include "entities/CharacterEntity.h"
@@ -11,7 +11,7 @@
 #include "actions/Action.h"
 #include "entities/PlayerCharacter.h"
 
-class Action;                                     // forward declaration
+class Action; // forward declaration
 
 namespace mudserver {
 namespace gamemanager {
@@ -37,7 +37,7 @@ enum class ActKeyword {
  * input.
  */
 class CommandParser {
-public:
+  public:
     CommandParser() = default;
 
     /**
@@ -51,12 +51,12 @@ public:
      *                    queue messages or alter game state
      * @return the generated Action (will be a derived class)
      */
-    std::unique_ptr<Action> actionFromPlayerCommand(
-        PlayerCharacter& character, StrView command,
-        gamemanager::GameManager& gameManager);
+    std::unique_ptr<Action>
+    actionFromPlayerCommand(PlayerCharacter &character, StrView command,
+                            gamemanager::GameManager &gameManager);
 };
 
-}  // namespace commandparser
-}  // namespace mudserver
+} // namespace commandparser
+} // namespace mudserver
 
-#endif  // COMMANDPARSER_H
+#endif // COMMANDPARSER_H

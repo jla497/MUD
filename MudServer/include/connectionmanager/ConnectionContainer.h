@@ -22,7 +22,7 @@ class ConnectionContainer {
     bool isConnected = false;
     MudProtocol mProtocol{DEFAULT_NUM_OF_MUD_PROTOCOLS};
 
-public:
+  public:
     ConnectionContainer() = default;
     ConnectionContainer(const networking::Connection &c);
 
@@ -39,9 +39,9 @@ public:
 
     networking::Connection getConnection() const;
 
-private:
+  private:
 };
-}  // namespace connection
-}  // namespace mudserver
+} // namespace connection
+} // namespace mudserver
 
 #endif
