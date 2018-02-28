@@ -23,11 +23,6 @@ compile:
     paths:
     - build
 
-clang-format-check:
-  stage: test
-  script:
-    - ./format-checker.sh
-
 mudserver-unit-test:
   stage: test
   script:
