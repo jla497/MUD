@@ -12,7 +12,7 @@
 #include "logging.h"
 #include "resources/PlayerCharacterDefaults.h"
 #include "resources/commands.h"
-#define typeof(x) std::remove_reference<decltype((x))>::type
+
 /**
  * The Program Action class defines the behavior for when a admin creates a
  * character

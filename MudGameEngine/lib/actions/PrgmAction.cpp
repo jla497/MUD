@@ -174,9 +174,6 @@ std::string PrgmAction::PrgmParser::getArgument(std::string arg) {
         throw "invalid arg";
     }
 
-    if(typeof(T) == typeof(arg)){
-        std::cout<<"both are str"<<std::endl;
-    }
     return itr->second;
 
 }

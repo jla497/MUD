@@ -18,7 +18,7 @@ void Reset::resetNpc(mudserver::gamemanager::GameState &state) {
         mudserver::logging::getLogger("Reset::execute::resetNPC");
     auto &factory = state.getFactory();
     auto npc_ptr = std::make_unique<CharacterEntity>(factory.buildNpc(id));
-    logger->info("npc: " + npc.getShortDesc());
+    logger->info(npc_ptr->getShortDesc());
     //state.addCharacter(std::move(npc_ptr));
 
 }
@@ -39,17 +39,17 @@ void Reset::execute(mudserver::gamemanager::GameState &state) {
     }
 
     case Reset::ResetKeyword::object: {
-        logger->info("object reset");
+//        logger->info("object reset");
         break;
     }
 
     case Reset::ResetKeyword::door: {
-        logger->info("door reset");
+//        logger->info("door reset");
         break;
     }
 
     case Reset::ResetKeyword::equip: {
-        logger->info("equip reset");
+//        logger->info("equip reset");
         break;
     }
     default:
