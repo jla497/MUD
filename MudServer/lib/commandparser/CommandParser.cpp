@@ -37,8 +37,7 @@ CommandParser::actionFromPlayerCommand(PlayerCharacter &character,
 
     auto logger = logging::getLogger("CommandParser::actionFromPlayerCommand");
 
-    boost::char_separator<char> sep(" ");
-    Tokenizer tokens{command, sep};
+    Tokenizer tokens{command};
     auto tokenIterator = tokens.begin();
     auto actionTypeIter = actionLookup.find(to_lower_copy(*tokenIterator));
 

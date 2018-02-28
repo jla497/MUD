@@ -49,16 +49,8 @@ class PrgmAction : public Action {
             optionLookup[arg] = info;
         };
 
-        std::string printHelp() {
-            std::stringstream ss;
-            for (const auto &pair : optionLookup) {
-                ss << "option: " << pair.first << " info: " << pair.second
-                   << "\n";
-            }
-            return ss.str();
-        };
+        std::string printHelp();
 
-        template<typename T>
         std::string getArgument(std::string arg);
 
         OptValMap parseOptValPairs(std::vector<std::string> args);

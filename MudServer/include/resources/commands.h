@@ -28,7 +28,7 @@ extern const char *CLEVEL;
 extern const char *CLONGDESC;
 extern const char *CSHORTDESC;
 extern const char *CTHAC0;
-extern const char *HELP;
+extern const char *CHELP;
 extern const char *CREATE;
 extern const char *MODIFY;
 
