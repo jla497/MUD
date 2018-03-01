@@ -10,7 +10,7 @@
 #include <boost/format.hpp>
 
 #include "connectionmanager/ConnectionManager.h"
-#include "entities/PlayerCharacter.h"
+#include "entities/CharacterEntity.h"
 #include "gamemanager/GameManager.h"
 #include "logging.h"
 #include "resources/PlayerCharacterDefaults.h"
@@ -150,23 +150,23 @@ namespace mudserver {
 // I believe the player-character mapping is complex enough to factor out into
 // a new class - possibly will be the LoginManager once we get that far
 
-        PlayerCharacter *GameManager::playerIdToCharacter(PlayerId playerId) {
-            auto entry = playerCharacterBimap.left.find(playerId);
-            if (entry != playerCharacterBimap.left.end()) {
-                auto characterId = entry->second;
-                return gameState.getCharacterFromLUT(characterId);
-            }
-
+CharacterEntity *GameManager::playerIdToCharacter(PlayerId playerId) {
+    auto entry = playerCharacterBimap.left.find(playerId);
+    if (entry != playerCharacterBimap.left.end()) {
+        auto characterId = entry->second;
+        return gameState.getCharacterFromLUT(characterId);
+    }
             return nullptr;
         }
 
-        PlayerCharacter *GameManager::playerToCharacter(const Player &player) {
-            return playerIdToCharacter(player.getId());
-        }
 
-        Player &GameManager::characterToPlayer(const PlayerCharacter &character) {
-            return characterIdToPlayer(character.getEntityId());
-        }
+CharacterEntity *GameManager::playerToCharacter(const Player &player) {
+    return playerIdToCharacter(player.getId());
+}
+
+Player &GameManager::characterToPlayer(const CharacterEntity &character) {
+    return characterIdToPlayer(character.getEntityId());
+}
 
         Player &GameManager::characterIdToPlayer(UniqueId characterId) {
             auto playerId = playerCharacterBimap.right.find(characterId)->second;
@@ -177,12 +177,11 @@ namespace mudserver {
             auto testShortDesc =
                     "TestPlayerName" + std::to_string(playerCharacterBimap.size());
 
-            PlayerCharacter pc(
-                    pc::ARMOR, std::string{pc::DAMAGE}, std::vector<std::string>{}, pc::EXP,
-                    pc::GOLD, std::string{pc::HIT}, std::vector<std::string>{}, pc::LEVEL,
-                    std::vector<std::string>{}, testShortDesc, pc::THAC0);
-
-            playerCharacterBimap.insert(
+    CharacterEntity pc(
+        pc::ARMOR, std::string{pc::DAMAGE}, std::vector<std::string>{}, pc::EXP,
+        pc::GOLD, std::string{pc::HIT}, pc::TYPEID, std::vector<std::string>{}, pc::LEVEL,
+        std::vector<std::string>{}, testShortDesc, pc::THAC0);
+       playerCharacterBimap.insert(
                     PcBmType::value_type(playerId, pc.getEntityId()));
             gameState.addCharacter(pc);
         }

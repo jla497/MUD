@@ -7,7 +7,7 @@
 std::unordered_map<std::string, bool> Action::isAdminAction = {
     {"Program action", true}};
 
-Action::Action(PlayerCharacter &characterPerformingAction,
+Action::Action(CharacterEntity &characterPerformingAction,
                std::vector<std::string> actionArguments,
                mudserver::gamemanager::GameManager &gameManager)
     : characterPerformingAction{characterPerformingAction},

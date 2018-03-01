@@ -8,7 +8,7 @@ class GameManager;
 } // namespace mudserver
 
 #include "entities/Entity.h"
-#include "entities/PlayerCharacter.h"
+#include "entities/CharacterEntity.h"
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -23,7 +23,7 @@ class Action {
     static std::unordered_map<std::string, bool> isAdminAction;
 
   public:
-    Action(PlayerCharacter &characterPerformingAction,
+    Action(CharacterEntity &characterPerformingAction,
            std::vector<std::string> actionArguments,
            mudserver::gamemanager::GameManager &gameManager);
 
@@ -41,7 +41,7 @@ class Action {
 
   protected:
     virtual std::string description() const = 0;
-    PlayerCharacter &characterPerformingAction;
+    CharacterEntity &characterPerformingAction;
     std::vector<std::string> actionArguments;
     mudserver::gamemanager::GameManager &gameManager;
 };

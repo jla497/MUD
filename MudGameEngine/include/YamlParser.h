@@ -4,7 +4,7 @@
 #include "Reset.h"
 #include "entities/AreaEntity.h"
 #include "entities/DoorEntity.h"
-#include "entities/NonPlayerCharacter.h"
+#include "entities/CharacterEntity.h"
 #include "entities/ObjectEntity.h"
 #include "entities/RoomEntity.h"
 #include "entities/ShopEntity.h"
@@ -32,7 +32,7 @@ class YamlParser {
     static std::string parseString(YAML::Node node);
 
     // calls constructors of each object and adds data to each respective object
-    NonPlayerCharacter parseNPC(YAML::Node npcNode) const;
+    CharacterEntity parseNPC(YAML::Node npcNode) const;
     ObjectEntity parseObject(YAML::Node objectNode) const;
     Reset parseReset(YAML::Node resetNode) const; // needs reset constructor
     void parseHelp(YAML::Node helpNode) const;    // needs help constructor
@@ -48,7 +48,7 @@ class YamlParser {
     // loads the YAML file into data (std::vector of YAML nodes)
     // each entity makes up one node in data (ex. "NPCs" make up one node)
     bool loadYamlFile(const std::string &path);
-    std::vector<NonPlayerCharacter> getAllNPCS() const;
+    std::vector<CharacterEntity> getAllNPCS() const;
     std::vector<ObjectEntity> getAllObjects() const;
     std::vector<Reset> getAllResets() const;
     void getAllHelps() const;
