@@ -10,15 +10,16 @@ class AreaEntity : public Entity {
   private:
     // add unique id
     std::string m_name;
-    std::deque<std::unique_ptr<RoomEntity>> m_rooms;
+    std::deque<RoomEntity> m_rooms;
 
   public:
-    AreaEntity(std::string &name,
-               std::deque<std::unique_ptr<RoomEntity>> rooms);
+    AreaEntity() = default;
 
-    std::deque<std::unique_ptr<RoomEntity>> &getAllRooms();
+    AreaEntity(const std::string &name, std::deque<RoomEntity> rooms);
 
-    std::string getName();
+    std::deque<RoomEntity> &getAllRooms();
+
+    std::string getName() const;
 };
 
 #endif

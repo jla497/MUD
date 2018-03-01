@@ -16,10 +16,10 @@ class CharacterEntity : public Entity {
     // std::string m_hit; // TODO: string for now
     unsigned int m_typeId; // npcs have types, what to do for players?
     std::vector<std::string> m_keywords;
-    unsigned int m_level;
+    unsigned int m_level{};
     std::vector<std::string> m_longDesc;
     std::string m_shortDesc;
-    int m_thac0;
+    int m_thac0{};
 
     CombatStates m_combatState;
 
@@ -37,6 +37,7 @@ class CharacterEntity : public Entity {
                     std::string hit, unsigned int typeId, std::vector<std::string> keywords,
                     unsigned int level, std::vector<std::string> longDesc,
                     std::string shortDesc, int thac0); // TODO make by reference
+
 
     // Getters
     Roll getDamage() const;
@@ -71,7 +72,7 @@ class CharacterEntity : public Entity {
     // ASSUME: no limit to debt or max money
     void addGold(unsigned int amount);
     void subtractGold(unsigned int amount);
-    bool hasGold();
+    bool hasGold() const;
 
     // Experience is unsigned to assume no negative exp
     void incExp(unsigned int expPoints);

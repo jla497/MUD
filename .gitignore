@@ -2,5 +2,6 @@
 build*/
 *.kdev4
 *.user
-cmake-build-*
+cmake-build-*/
 *.swp
+build/

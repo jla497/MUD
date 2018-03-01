@@ -3,10 +3,6 @@
 
 #include "Entity.h"
 
-class ShopEntity : public Entity {
-  private:
-  public:
-    ShopEntity();
-};
+class ShopEntity : public Entity {};
 
 #endif

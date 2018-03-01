@@ -21,14 +21,9 @@ namespace gamemanager {
 
 using GameLoopTick = std::chrono::milliseconds;
 using PcBmType = boost::bimap<PlayerId, UniqueId>;
-constexpr GameLoopTick DEFAULT_TICK_LENGTH_MS = GameLoopTick(1000);
+constexpr GameLoopTick DEFAULT_TICK_LENGTH_MS{1000};
 
 using mudserver::commandparser::CommandParser;
-
-/* Type definitions used in GameManager */
-using connection::gameAndUserMsgs;
-using std::unique_ptr;
-using std::vector;
 
 /**
  * The game manager is in charge of carrying out the main game loop. As a
@@ -38,9 +33,10 @@ using std::vector;
  * actions. It fetches batches of incoming messages from the network.
  */
 class GameManager {
+  private:
     GameState &gameState;
-    GameLoopTick tick;
-    bool done;
+    GameLoopTick tick = DEFAULT_TICK_LENGTH_MS;
+    bool done = false;
     CommandParser commandParser;
     connection::ConnectionManager &connectionManager;
 
@@ -54,7 +50,8 @@ class GameManager {
      * as required.
      * @param messages the messages
      */
-    void processMessages(gameAndUserMsgs &messages);
+    void
+    processMessages(std::vector<connection::gameAndUserInterface> &messages);
     /**
      * Given a connection (network layer concept), put a message on the queue
      * for that connection.
@@ -71,7 +68,7 @@ class GameManager {
      * Given an action, put it on the pending action queue
      * @param action the action to enqueue
      */
-    void enqueueAction(unique_ptr<Action> action);
+    void enqueueAction(std::unique_ptr<Action> action);
     /**
      * Process the pending action queue, calling execute() on each action.
      */
@@ -82,18 +79,16 @@ class GameManager {
      * @param player the player
      * @return the player's character (may be null)
      */
+
     CharacterEntity *playerToCharacter(const Player &player);
-    /**
-     * Given a player's id, return a pointer to the player's character.
-     * @param playerId the player's id
-     * @return the player's character (may be null)
-     */
+
     /**
      * Given a character, return a reference to the character's player.
      * @param character the character
      * @return the character's player
      */
     Player &characterToPlayer(const CharacterEntity &character);
+
     /**
      * Given a character's id, return a reference to the character's player.
      * @param characterId the character's id
@@ -101,6 +96,11 @@ class GameManager {
      */
     Player &characterIdToPlayer(UniqueId characterId);
 
+    /**
+     * Given a player's id, return a pointer to the player's character.
+     * @param playerId the player's id
+     * @return the player's character (may be null)
+     */
     CharacterEntity *playerIdToCharacter(PlayerId playerId);
 
     /**
@@ -118,7 +118,6 @@ class GameManager {
      * @param gameState the game state
      */
     GameManager(connection::ConnectionManager &connMan, GameState &gameState);
-    GameManager(const GameManager &gm) = delete;
 
     /**
      * The main game loop. Updates game state once per tick, processes messages
