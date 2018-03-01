@@ -98,30 +98,10 @@ void PrgmAction::prgmNpc() {
             factory.modifyCharacter(character, map);
         }
 
-        // check in lut if it's valid option
-        // if it's valid option convert  to correct datatype
-        // pass params to entityfactory to build new npc and replace old one
-
     } catch (std::exception& e) {
         gameManager.sendCharacterMessage(characterID, "error parsing program options");
         logger->debug("error parsing program options");
     }
-}
-
-void PrgmAction::prgmPc() {}
-
-void PrgmAction::createPc() {
-    static auto logger =
-        mudserver::logging::getLogger("ProgramAction::execute");
-
-    auto spawnLocationId = std::stoi(actionArguments[1]);
-    auto &state = gameManager.getState();
-    auto newPc = PlayerCharacter(
-        ARMOR, std::string{DAMAGE}, std::vector<std::string>{}, EXP, GOLD,
-        std::string{HIT}, std::vector<std::string>{}, LEVEL,
-        std::vector<std::string>{}, "new character added by admin", THAC0);
-
-    state.addCharacter(newPc);
 }
 
 void PrgmAction::prgmObject() {

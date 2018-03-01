@@ -12,6 +12,7 @@ extern const int GOLD;
 extern const char *HIT;
 extern const unsigned int LEVEL;
 extern const int THAC0;
+extern const unsigned int TYPEID;
 
 } // namespace playercharacter
 } // namespace resources

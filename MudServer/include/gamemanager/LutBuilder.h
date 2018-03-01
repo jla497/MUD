@@ -11,9 +11,8 @@
 #include "entities/AreaEntity.h"
 #include "entities/DoorEntity.h"
 #include "entities/Entity.h"
-#include "entities/NonPlayerCharacter.h"
 #include "entities/ObjectEntity.h"
-#include "entities/PlayerCharacter.h"
+#include "entities/CharacterEntity.h"
 #include "entities/RoomEntity.h"
 #include "entities/ShopEntity.h"
 namespace mudserver {
@@ -24,8 +23,8 @@ using Id = unsigned int;
 class LutBuilder {
   public:
 
-    std::map<Id, NonPlayerCharacter>
-    createNpcLUT(std::vector<NonPlayerCharacter> &mVector);
+    std::map<Id, CharacterEntity>
+    createNpcLUT(std::vector<CharacterEntity> &mVector);
     std::unordered_map<roomId, RoomEntity>
     createLUT(std::deque<RoomEntity> &mVector);
 };

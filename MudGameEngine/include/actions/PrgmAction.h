@@ -63,9 +63,7 @@ class PrgmAction : public Action {
     static std::unordered_map<std::string, PrgmKeyword> prgmLookup;
 
     void prgmNpc();
-    void prgmPc();
     void prgmObject();
-    void createPc();
 
   public:
     using Action::Action;
