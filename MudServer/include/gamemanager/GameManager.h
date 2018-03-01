@@ -15,7 +15,6 @@
 #include "connectionmanager/ConnectionManager.h"
 #include "entities/CharacterEntity.h"
 #include "entities/Entity.h"
-#include "entities/PlayerCharacter.h"
 
 namespace mudserver {
 namespace gamemanager {
@@ -80,14 +79,15 @@ class GameManager {
      * @param player the player
      * @return the player's character (may be null)
      */
-    PlayerCharacter *playerToCharacter(const Player &player);
+
+    CharacterEntity *playerToCharacter(const Player &player);
 
     /**
      * Given a character, return a reference to the character's player.
      * @param character the character
      * @return the character's player
      */
-    Player &characterToPlayer(const PlayerCharacter &character);
+    Player &characterToPlayer(const CharacterEntity &character);
 
     /**
      * Given a character's id, return a reference to the character's player.
@@ -101,7 +101,7 @@ class GameManager {
      * @param playerId the player's id
      * @return the player's character (may be null)
      */
-    PlayerCharacter *playerIdToCharacter(PlayerId playerId);
+    CharacterEntity *playerIdToCharacter(PlayerId playerId);
 
     /**
      * Create and add a new player character to the game state.
