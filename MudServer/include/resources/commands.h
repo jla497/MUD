@@ -33,7 +33,6 @@ extern const char *CHELP;
 extern const char *CREATE;
 extern const char *MODIFY;
 
-
 } // namespace commands
 } // namespace resources
 } // namespace mudserver

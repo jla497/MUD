@@ -23,7 +23,6 @@ class Player {
     bool isAdmin = false;
 
   public:
-
     /**
      * The player is constructed with ID, username, and password.
      * @param id the player's ID, currently matching the connection ID

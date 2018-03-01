@@ -18,5 +18,4 @@ boost::optional<ConfigData> parseConfigFile(const std::string filePath) {
 
     ConfigData serverData{Port{serverPort}, clientPort, ymlFile, url};
     return serverData;
-
 };

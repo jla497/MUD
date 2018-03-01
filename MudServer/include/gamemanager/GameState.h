@@ -11,12 +11,12 @@
 
 #include "Reset.h"
 #include "UniqueId.h"
-#include "YamlParser.h"
-#include "entities/AreaEntity.h"
-#include "entities/DoorEntity.h"
-#include "entities/CharacterEntity.h"
 #include "UniqueId.h"
 #include "YamlParser.h"
+#include "YamlParser.h"
+#include "entities/AreaEntity.h"
+#include "entities/CharacterEntity.h"
+#include "entities/DoorEntity.h"
 #include "gamemanager/LutBuilder.h"
 
 class Reset;
@@ -24,7 +24,6 @@ namespace mudserver {
 namespace gamemanager {
 
 using namespace boost::bimaps;
-
 
 struct UniqueIdHash {
   public:
@@ -46,7 +45,6 @@ class GameState {
     YamlParser parser;
     AreaEntity area;
     std::unique_ptr<EntityFactory> factory;
-
 
   public:
     void initFromYaml(std::string filename);

@@ -9,10 +9,10 @@
 #include "Player.h"
 #include "UniqueId.h"
 #include "entities/AreaEntity.h"
+#include "entities/CharacterEntity.h"
 #include "entities/DoorEntity.h"
 #include "entities/Entity.h"
 #include "entities/ObjectEntity.h"
-#include "entities/CharacterEntity.h"
 #include "entities/RoomEntity.h"
 #include "entities/ShopEntity.h"
 namespace mudserver {
@@ -22,7 +22,6 @@ using roomId = unsigned int;
 using Id = unsigned int;
 class LutBuilder {
   public:
-
     std::map<Id, CharacterEntity>
     createNpcLUT(std::vector<CharacterEntity> &mVector);
     std::unordered_map<roomId, RoomEntity>

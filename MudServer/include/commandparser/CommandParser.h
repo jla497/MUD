@@ -8,7 +8,6 @@
 #include "actions/Action.h"
 #include "entities/CharacterEntity.h"
 
-
 class Action; // forward declaration
 
 namespace mudserver {

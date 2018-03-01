@@ -16,16 +16,16 @@
 #include "resources/PlayerCharacterDefaults.h"
 
 namespace mudserver {
-    namespace gamemanager {
+namespace gamemanager {
 
-        namespace pc = mudserver::resources::playercharacter;
+namespace pc = mudserver::resources::playercharacter;
 
-        using boost::format;
-        using boost::str;
+using boost::format;
+using boost::str;
 
-        GameManager::GameManager(connection::ConnectionManager &connMan,
-                                 GameState &gameState)
-                : gameState{gameState}, connectionManager{connMan} {}
+GameManager::GameManager(connection::ConnectionManager &connMan,
+                         GameState &gameState)
+    : gameState{gameState}, connectionManager{connMan} {}
 
 /**
  * Runs a standard game loop, which consists of the following steps:
@@ -33,117 +33,117 @@ namespace mudserver {
  *      - update the game state using the input
  *      - render, i.e. send broadcast messages to players.
  */
-        void GameManager::mainLoop() {
-            static auto logger = logging::getLogger("GameManager::mainLoop");
-            logger->info("Entered main game loop");
+void GameManager::mainLoop() {
+    static auto logger = logging::getLogger("GameManager::mainLoop");
+    logger->info("Entered main game loop");
 
-            using clock = std::chrono::high_resolution_clock;
-            auto startTime = clock::now();
-            gameState.doReset();
-            while (!done) {
-                if (connectionManager.update()) {
-                    // An error was encountered, stop
-                    done = true;
-                    continue;
-                }
-
-                auto messages = connectionManager.sendToGameManager();
-
-                processMessages(messages);
-
-                /*
-                 * FIXME
-                 * This eventually causes the tick to go out of sync.
-                 * If tick = delta + n, n time units get lost every tick.
-                 */
-                auto delta = clock::now() - startTime;
-                if (delta >= tick) {
-                    startTime = clock::now();
-                    performQueuedActions();
-                    sendMessagesToPlayers();
-                }
-            }
+    using clock = std::chrono::high_resolution_clock;
+    auto startTime = clock::now();
+    gameState.doReset();
+    while (!done) {
+        if (connectionManager.update()) {
+            // An error was encountered, stop
+            done = true;
+            continue;
         }
 
-        void GameManager::processMessages(
-                std::vector<connection::gameAndUserInterface> &messages) {
-            static auto logger = logging::getLogger("GameManager::processMessages");
+        auto messages = connectionManager.sendToGameManager();
 
-            for (const auto &message : messages) {
+        processMessages(messages);
 
-                // look up player from ID
-                auto playerId = message.conn.id;
-                logger->debug(std::to_string(playerId) + ": " + message.text);
+        /*
+         * FIXME
+         * This eventually causes the tick to go out of sync.
+         * If tick = delta + n, n time units get lost every tick.
+         */
+        auto delta = clock::now() - startTime;
+        if (delta >= tick) {
+            startTime = clock::now();
+            performQueuedActions();
+            sendMessagesToPlayers();
+        }
+    }
+}
 
-                if (players.find(playerId) == players.end()) {
-                    // We should add a login service that can deal with
-                    //      - players not existing
-                    //      - authenticating players
-                    players[playerId] = {playerId, "player" + std::to_string(playerId),
-                                         ""};
-                }
+void GameManager::processMessages(
+    std::vector<connection::gameAndUserInterface> &messages) {
+    static auto logger = logging::getLogger("GameManager::processMessages");
 
-                // Guaranteed not to throw out_of_range - Player has been created
-                auto player = players.at(playerId);
+    for (const auto &message : messages) {
 
-                // look up player's character
-                // pointer is used as player may not have character yet
-                auto character = playerToCharacter(player);
-                if (character == nullptr) {
-                    // create a new character for the player and add it to the game
-                    // state
-                    addPlayerCharacter(playerId);
-                }
-                auto playerCharacter = playerToCharacter(player);
-                assert(playerCharacter != nullptr);
+        // look up player from ID
+        auto playerId = message.conn.id;
+        logger->debug(std::to_string(playerId) + ": " + message.text);
 
-                // parse message into verb/object
-                auto action = commandParser.actionFromPlayerCommand(
-                        *playerCharacter, message.text, *this);
-
-                std::ostringstream retMessage;
-                retMessage << "DEBUG: " << *action;
-
-                enqueueAction(std::move(action));
-
-                enqueueMessage(message.conn, retMessage.str());
-            }
+        if (players.find(playerId) == players.end()) {
+            // We should add a login service that can deal with
+            //      - players not existing
+            //      - authenticating players
+            players[playerId] = {playerId, "player" + std::to_string(playerId),
+                                 ""};
         }
 
-        void GameManager::enqueueMessage(networking::Connection conn, std::string msg) {
-            outgoingMessages.push({std::move(msg), conn});
+        // Guaranteed not to throw out_of_range - Player has been created
+        auto player = players.at(playerId);
+
+        // look up player's character
+        // pointer is used as player may not have character yet
+        auto character = playerToCharacter(player);
+        if (character == nullptr) {
+            // create a new character for the player and add it to the game
+            // state
+            addPlayerCharacter(playerId);
         }
+        auto playerCharacter = playerToCharacter(player);
+        assert(playerCharacter != nullptr);
 
-        void GameManager::sendMessagesToPlayers() {
-            std::vector<connection::gameAndUserInterface> toSend;
-            toSend.reserve(outgoingMessages.size());
+        // parse message into verb/object
+        auto action = commandParser.actionFromPlayerCommand(
+            *playerCharacter, message.text, *this);
 
-            while (!outgoingMessages.empty()) {
-                toSend.push_back(outgoingMessages.front());
-                outgoingMessages.pop();
-            }
-            connectionManager.receiveFromGameManager(toSend);
-            connectionManager.sendToServer();
-        }
+        std::ostringstream retMessage;
+        retMessage << "DEBUG: " << *action;
 
-        void GameManager::enqueueAction(std::unique_ptr<Action> action) {
-            actions.push(std::move(action));
-        }
+        enqueueAction(std::move(action));
 
-        void GameManager::performQueuedActions() {
-            while (!actions.empty()) {
-                actions.front()->execute();
-                actions.pop();
-            }
-        }
+        enqueueMessage(message.conn, retMessage.str());
+    }
+}
 
-        GameState &GameManager::getState() { return gameState; }
+void GameManager::enqueueMessage(networking::Connection conn, std::string msg) {
+    outgoingMessages.push({std::move(msg), conn});
+}
 
-        void GameManager::sendCharacterMessage(UniqueId characterId,
-                                               std::string message) {
-            enqueueMessage({characterIdToPlayer(characterId).getId()},
-                           std::move(message));
-        }
+void GameManager::sendMessagesToPlayers() {
+    std::vector<connection::gameAndUserInterface> toSend;
+    toSend.reserve(outgoingMessages.size());
+
+    while (!outgoingMessages.empty()) {
+        toSend.push_back(outgoingMessages.front());
+        outgoingMessages.pop();
+    }
+    connectionManager.receiveFromGameManager(toSend);
+    connectionManager.sendToServer();
+}
+
+void GameManager::enqueueAction(std::unique_ptr<Action> action) {
+    actions.push(std::move(action));
+}
+
+void GameManager::performQueuedActions() {
+    while (!actions.empty()) {
+        actions.front()->execute();
+        actions.pop();
+    }
+}
+
+GameState &GameManager::getState() { return gameState; }
+
+void GameManager::sendCharacterMessage(UniqueId characterId,
+                                       std::string message) {
+    enqueueMessage({characterIdToPlayer(characterId).getId()},
+                   std::move(message));
+}
 
 // TODO: Factor out into a new class
 // Technical debt alert:
@@ -156,9 +156,8 @@ CharacterEntity *GameManager::playerIdToCharacter(PlayerId playerId) {
         auto characterId = entry->second;
         return gameState.getCharacterFromLUT(characterId);
     }
-            return nullptr;
-        }
-
+    return nullptr;
+}
 
 CharacterEntity *GameManager::playerToCharacter(const Player &player) {
     return playerIdToCharacter(player.getId());
@@ -168,29 +167,33 @@ Player &GameManager::characterToPlayer(const CharacterEntity &character) {
     return characterIdToPlayer(character.getEntityId());
 }
 
-        Player &GameManager::characterIdToPlayer(UniqueId characterId) {
-            auto playerId = playerCharacterBimap.right.find(characterId)->second;
-            return players.at(playerId);
-        }
+Player &GameManager::characterIdToPlayer(UniqueId characterId) {
+    auto playerId = playerCharacterBimap.right.find(characterId)->second;
+    return players.at(playerId);
+}
 
-        void GameManager::addPlayerCharacter(PlayerId playerId) {
-            auto testShortDesc =
-                    "TestPlayerName" + std::to_string(playerCharacterBimap.size());
+void GameManager::addPlayerCharacter(PlayerId playerId) {
+    auto testShortDesc =
+        "TestPlayerName" + std::to_string(playerCharacterBimap.size());
 
-            //throws this error: terminate called after throwing an instance of 'std::out_of_range'
-//            what():  vector::_M_range_check: __n (which is 2) >= this->size() (which is 2)
-//            Aborted (core dumped)
+    // throws this error: terminate called after throwing an instance of
+    // 'std::out_of_range'
+    //            what():  vector::_M_range_check: __n (which is 2) >=
+    //            this->size() (which is 2)
+    //            Aborted (core dumped)
 
-//            CharacterEntity pc(
-//                    pc::ARMOR, std::string{pc::DAMAGE}, std::vector<std::string>{}, pc::EXP,
-//                    pc::GOLD, std::string{pc::HIT}, pc::TYPEID, std::vector<std::string>{}, pc::LEVEL,
-//                    std::vector<std::string>{}, testShortDesc, pc::THAC0);
+    //            CharacterEntity pc(
+    //                    pc::ARMOR, std::string{pc::DAMAGE},
+    //                    std::vector<std::string>{}, pc::EXP,
+    //                    pc::GOLD, std::string{pc::HIT}, pc::TYPEID,
+    //                    std::vector<std::string>{}, pc::LEVEL,
+    //                    std::vector<std::string>{}, testShortDesc, pc::THAC0);
 
-            CharacterEntity pChar {};
-       playerCharacterBimap.insert(
-                    PcBmType::value_type(playerId, pChar.getEntityId()));
-            gameState.addCharacter(pChar);
-        }
+    CharacterEntity pChar{};
+    playerCharacterBimap.insert(
+        PcBmType::value_type(playerId, pChar.getEntityId()));
+    gameState.addCharacter(pChar);
+}
 
-    } // namespace gamemanager
+} // namespace gamemanager
 } // namespace mudserver

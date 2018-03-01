@@ -1,9 +1,9 @@
-#include <string>
-#include <utility>
-#include <vector>
 #include "Reset.h"
 #include "gamemanager/GameState.h"
 #include <boost/algorithm/string.hpp>
+#include <string>
+#include <utility>
+#include <vector>
 
 std::unordered_map<std::string, Reset::ResetKeyword> Reset::resetLookUp = {
     {"object", Reset::ResetKeyword::object},
@@ -12,14 +12,15 @@ std::unordered_map<std::string, Reset::ResetKeyword> Reset::resetLookUp = {
     {"equip", Reset::ResetKeyword::equip}};
 
 Reset::Reset(int id, std::string action, std::string comment, std::string state,
-             int slot, int limit, int roomID) : id{id}, action{action}, comment{comment}, state{state}, slot{slot},
+             int slot, int limit, int roomID)
+    : id{id}, action{action}, comment{comment}, state{state}, slot{slot},
       limit{limit}, roomID{roomID} {}
 
 void Reset::resetNpc(mudserver::gamemanager::GameState &state) {
     static auto logger =
         mudserver::logging::getLogger("Reset::execute::resetNPC");
     auto &factory = state.getFactory();
-    auto npc =factory.buildNpc(id);\
+    auto npc = factory.buildNpc(id);
     state.addCharacter(npc);
 }
 
@@ -39,17 +40,17 @@ void Reset::execute(mudserver::gamemanager::GameState &state) {
     }
 
     case Reset::ResetKeyword::object: {
-//        logger->info("object reset");
+        //        logger->info("object reset");
         break;
     }
 
     case Reset::ResetKeyword::door: {
-//        logger->info("door reset");
+        //        logger->info("door reset");
         break;
     }
 
     case Reset::ResetKeyword::equip: {
-//        logger->info("equip reset");
+        //        logger->info("equip reset");
         break;
     }
     default:

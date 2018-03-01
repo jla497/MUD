@@ -11,9 +11,9 @@
 
 #include "UniqueId.h"
 #include "entities/AreaEntity.h"
+#include "entities/CharacterEntity.h"
 #include "entities/DoorEntity.h"
 #include "entities/ObjectEntity.h"
-#include "entities/CharacterEntity.h"
 #include "entities/RoomEntity.h"
 #include "entities/ShopEntity.h"
 #include "gamemanager/LutBuilder.h"

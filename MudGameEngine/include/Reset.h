@@ -55,6 +55,5 @@ class Reset {
     int roomID;
 
     void resetNpc(mudserver::gamemanager::GameState &state);
-
 };
 #endif

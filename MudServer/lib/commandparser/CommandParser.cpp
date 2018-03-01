@@ -26,13 +26,11 @@ using boost::algorithm::to_lower_copy;
 
 using namespace resources::commands;
 
-static std::unordered_map<std::string, ActKeyword> actionLookup = { // NOLINT
-    {UNDEFINED, ActKeyword::undefined},
-    {SAY, ActKeyword::say},
-    {LOOK, ActKeyword::look},
-    {ATTACK, ActKeyword::attack},
-    {MOVE, ActKeyword::move},
-    {PROGRAM, ActKeyword::program}};
+static std::unordered_map<std::string, ActKeyword> actionLookup =
+    { // NOLINT
+        {UNDEFINED, ActKeyword::undefined}, {SAY, ActKeyword::say},
+        {LOOK, ActKeyword::look},           {ATTACK, ActKeyword::attack},
+        {MOVE, ActKeyword::move},           {PROGRAM, ActKeyword::program}};
 
 using ActionGenerator = std::unique_ptr<Action> (*)(CharacterEntity &,
                                                     std::vector<std::string> &,
@@ -49,9 +47,8 @@ std::unique_ptr<Action> generator(CharacterEntity &pc,
 const static std::vector<ActionGenerator> actionGenerators = {
     // NOLINT
     &generator<NullAction>, // undefined
-    &generator<SayAction>,  &generator<LookAction>,
-    &generator<MoveAction>, &generator<AttackAction>,
-    &generator<PrgmAction>,
+    &generator<SayAction>,    &generator<LookAction>, &generator<MoveAction>,
+    &generator<AttackAction>, &generator<PrgmAction>,
 };
 
 std::unique_ptr<Action>
@@ -79,7 +76,6 @@ CommandParser::actionFromPlayerCommand(CharacterEntity &character,
     }
 
     return actionGenerators[index](character, remainderOfTokens, gameManager);
-
 }
 
 } // namespace commandparser

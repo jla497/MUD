@@ -3,8 +3,8 @@
 
 #include "Reset.h"
 #include "entities/AreaEntity.h"
-#include "entities/DoorEntity.h"
 #include "entities/CharacterEntity.h"
+#include "entities/DoorEntity.h"
 #include "entities/ObjectEntity.h"
 #include "entities/RoomEntity.h"
 #include "entities/ShopEntity.h"
@@ -55,7 +55,6 @@ class YamlParser {
     std::vector<ShopEntity> getAllShops() const;
     AreaEntity getArea() const;
     mudserver::gamemanager::EntityFactory *makeFactory();
-
 };
 
 #endif

@@ -11,7 +11,7 @@ void EntityFactory::init() {
     npcLookUp = lutBuilder.createNpcLUT(npcs);
 }
 
-    CharacterEntity EntityFactory::buildNpc(Id id) {
+CharacterEntity EntityFactory::buildNpc(Id id) {
     return npcLookUp.find(id)->second;
 }
 

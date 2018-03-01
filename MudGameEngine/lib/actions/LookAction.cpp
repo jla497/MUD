@@ -43,7 +43,7 @@ void LookAction::execute_impl() {
             auto ch = gameState.getCharacterFromLUT(id);
             auto chId = std::to_string(id.getId());
             auto desc = ch->getShortDesc();
-            characterDescs.push_back(chId + ": " + desc+"\n");
+            characterDescs.push_back(chId + ": " + desc + "\n");
         }
 
         std::string roomDescs = join(roomDesc, " ");

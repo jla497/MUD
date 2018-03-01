@@ -7,8 +7,8 @@ class GameManager;
 }
 } // namespace mudserver
 
-#include "entities/Entity.h"
 #include "entities/CharacterEntity.h"
+#include "entities/Entity.h"
 #include <string>
 #include <unordered_map>
 #include <vector>
