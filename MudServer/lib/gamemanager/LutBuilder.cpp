@@ -14,11 +14,10 @@ LutBuilder::createLUT(std::deque<RoomEntity> &rooms) {
 }
 
 std::map<Id, NonPlayerCharacter> LutBuilder::createNpcLUT(
-    std::vector<std::unique_ptr<NonPlayerCharacter>> &npcs) {
+    std::vector<NonPlayerCharacter> &npcs) {
     std::map<Id, NonPlayerCharacter> map;
     for (auto &npc : npcs) {
-        auto npcPtr = npc.get();
-        map[npc->getNpcTypeId()] = *npcPtr;
+        map[npc.getNpcTypeId()] = npc;
     }
     return map;
 }

@@ -114,7 +114,7 @@ void GameState::doReset() {
     auto resets = parser.getAllResets();
 
     for (auto &reset : resets) {
-        reset->execute(*this);
+        reset.execute(*this);
     }
 }
 } // namespace gamemanager

@@ -21,12 +21,8 @@ void Action::execute() {
     // check if action is admin action and if character has an administrator
     // role
     if (Action::isAdminAction[description()]) {
-        if (characterPerformingAction.getAdministrator() != nullptr) {
-            execute_impl();
-
-        } else {
-            return;
-        }
+        //TODO check if player has admin privilege else return
+        execute_impl();
     } else {
         execute_impl();
     }

@@ -47,27 +47,15 @@ class YamlParser {
   public:
     // loads the YAML file into data (std::vector of YAML nodes)
     // each entity makes up one node in data (ex. "NPCs" make up one node)
-<<<<<<< HEAD
-    bool loadYamlFile(const std::string path);
-
-    // Returns vectors of respective entities
-    std::vector<std::unique_ptr<NonPlayerCharacter>> getAllNPCS();
-    std::vector<std::unique_ptr<ObjectEntity>> getAllObjects();
-    std::vector<std::unique_ptr<Reset>> getAllResets();
-    void getAllHelps();
-    std::vector<std::unique_ptr<ShopEntity>> getAllShops();
-    std::unique_ptr<AreaEntity> getArea();
-    mudserver::gamemanager::EntityFactory *makeFactory();
-=======
     bool loadYamlFile(const std::string &path);
-
     std::vector<NonPlayerCharacter> getAllNPCS() const;
     std::vector<ObjectEntity> getAllObjects() const;
     std::vector<Reset> getAllResets() const;
     void getAllHelps() const;
     std::vector<ShopEntity> getAllShops() const;
     AreaEntity getArea() const;
->>>>>>> master
+    mudserver::gamemanager::EntityFactory *makeFactory();
+
 };
 
 #endif

@@ -116,15 +116,12 @@ void PrgmAction::createPc() {
 
     auto spawnLocationId = std::stoi(actionArguments[1]);
     auto &state = gameManager.getState();
-    auto newPc = std::make_unique<PlayerCharacter>(
+    auto newPc = PlayerCharacter(
         ARMOR, std::string{DAMAGE}, std::vector<std::string>{}, EXP, GOLD,
         std::string{HIT}, std::vector<std::string>{}, LEVEL,
         std::vector<std::string>{}, "new character added by admin", THAC0);
 
-    auto newPcPtr = newPc.get();
-    state.addCharacter(std::move(newPc));
-    state.addCharacterRoomRelationToLUT(newPcPtr->getEntityId(),
-                                        spawnLocationId);
+    state.addCharacter(newPc);
 }
 
 void PrgmAction::prgmObject() {
@@ -167,14 +164,6 @@ PrgmAction::PrgmParser::OptValMap PrgmAction::PrgmParser::parseOptValPairs(
     optionValuePairs = optionMap;
     return optionMap;
 };
-//
-//std::string PrgmAction::PrgmParser::getArgument(std::string arg) {
-//    auto itr = optionValuePairs.find(arg);
-//    if (itr == optionValuePairs.end()) {
-//        throw "invalid arg";
-//    }
-//    return itr->second;
-//}
 
 std::string PrgmAction::PrgmParser::getArgument(std::string arg) {
     auto itr = optionValuePairs.find(arg);

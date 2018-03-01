@@ -51,6 +51,7 @@ const static std::vector<ActionGenerator> actionGenerators = {
     &generator<NullAction>, // undefined
     &generator<SayAction>,  &generator<LookAction>,
     &generator<MoveAction>, &generator<AttackAction>,
+    &generator<PrgmAction>,
 };
 
 std::unique_ptr<Action>

@@ -23,7 +23,7 @@
 namespace mudserver {
 namespace gamemanager {
 using NpcLookUp = std::map<Id, NonPlayerCharacter>;
-using NpcVector = std::vector<std::unique_ptr<NonPlayerCharacter>>;
+using NpcVector = std::vector<NonPlayerCharacter>;
 using attributeMap = std::unordered_map<std::string, std::string>;
 class EntityFactory {
     NpcLookUp npcLookUp;

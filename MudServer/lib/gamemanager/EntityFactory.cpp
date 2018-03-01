@@ -4,7 +4,7 @@ namespace mudserver {
 namespace gamemanager {
 using namespace mudserver::resources::commands;
 
-EntityFactory::EntityFactory(NpcVector npcs) : npcs(std::move(npcs)) {}
+EntityFactory::EntityFactory(NpcVector npcs) : npcs(npcs) {}
 
 void EntityFactory::init() {
     LutBuilder lutBuilder;

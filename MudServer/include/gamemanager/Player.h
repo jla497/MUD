@@ -20,9 +20,9 @@ class Player {
     std::string username;
     std::string password;
     CharacterEntity *character = nullptr;
+    bool isAdmin = false;
 
   public:
-    Player() = default;
 
     /**
      * The player is constructed with ID, username, and password.
