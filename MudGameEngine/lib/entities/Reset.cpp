@@ -1,3 +1,6 @@
+#include <string>
+#include <utility>
+#include <vector>
 #include "Reset.h"
 #include "gamemanager/GameState.h"
 #include <boost/algorithm/string.hpp>
@@ -9,8 +12,7 @@ std::unordered_map<std::string, Reset::ResetKeyword> Reset::resetLookUp = {
     {"equip", Reset::ResetKeyword::equip}};
 
 Reset::Reset(int id, std::string action, std::string comment, std::string state,
-             int slot, int limit, int roomID)
-    : id{id}, action{action}, comment{comment}, state{state}, slot{slot},
+             int slot, int limit, int roomID) : id{id}, action{action}, comment{comment}, state{state}, slot{slot},
       limit{limit}, roomID{roomID} {}
 
 void Reset::resetNpc(mudserver::gamemanager::GameState &state) {

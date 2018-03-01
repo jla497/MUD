@@ -22,7 +22,7 @@ void SayAction::execute_impl() {
 
     //--get the room the player is in
     auto characterCurrentRoom =
-        gameState.getCharacterLocation(&playerSayingMessage);
+        gameState.getCharacterLocation(playerSayingMessage);
     if (!characterCurrentRoom) {
         logger->error(
             "Character is not in a room! Suspect incorrect world init");

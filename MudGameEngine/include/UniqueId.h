@@ -8,7 +8,7 @@
 class UniqueId {
   private:
     static unsigned int nextUniqueId;
-    unsigned int id;
+    unsigned int id = nextUniqueId++;
 
   public:
     UniqueId() : id(nextUniqueId++) {}

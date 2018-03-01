@@ -45,7 +45,7 @@ class Reset {
     // TODO: figure out Id, it seems that Id may refer to different things
     // depending on the reset action.
     // If the action is equip, than it is talking about the object with the id.
-    int id;
+    int id{};
     // maybe change action from string to its own type
     std::string action;
     std::string comment;
@@ -55,5 +55,6 @@ class Reset {
     int roomID;
 
     void resetNpc(mudserver::gamemanager::GameState &state);
+
 };
 #endif

@@ -28,14 +28,10 @@ namespace gamemanager {
 
 using namespace boost::bimaps;
 
-using std::deque;
-using std::unique_ptr;
-using std::unordered_map;
-using std::vector;
-
-using CharacterRoomLookupTable = bimap<set_of<UniqueId>, list_of<roomId>>;
-using RoomLookupTable = std::map<roomId, RoomEntity *>;
-using CharacterLookUp = std::map<UniqueId, unique_ptr<PlayerCharacter>>;
+struct UniqueIdHash {
+  public:
+    std::size_t operator()(UniqueId id) const;
+};
 
 /**
  * The overarching idea of GameState is that it should
@@ -44,31 +40,30 @@ using CharacterLookUp = std::map<UniqueId, unique_ptr<PlayerCharacter>>;
  *      - be the source of truth for all state relating to the world
  */
 class GameState {
-    CharacterRoomLookupTable characterRoomLookUp;
-    RoomLookupTable roomLookUp;
-    CharacterLookUp characterLookUp;
-    deque<unique_ptr<AreaEntity>> areas;
+  private:
+    bimap<set_of<UniqueId>, list_of<roomId>> characterRoomLookUp;
+    std::unordered_map<roomId, RoomEntity> roomLookUp;
+    std::unordered_map<UniqueId, PlayerCharacter, UniqueIdHash> characterLookUp;
+    std::deque<AreaEntity> areas;
     YamlParser parser;
-    std::unique_ptr<AreaEntity> area;
+    AreaEntity area;
     std::unique_ptr<EntityFactory> factory;
 
-  public:
-    GameState() = default;
 
+  public:
     void initFromYaml(std::string filename);
     void parseYamlFile(std::string string);
     void initRoomLUT();
     void addAreaFromParser();
-    void addCharacter(unique_ptr<PlayerCharacter> character);
+    void addCharacter(PlayerCharacter &character);
     void addCharacterRoomRelationToLUT(UniqueId characterId,
                                        unsigned int roomId);
-    void addRoomToLUT(RoomEntity *);
-    AreaEntity *getAreaFromParser();
-    deque<unique_ptr<AreaEntity>> &getAreas();
-    vector<UniqueId> getCharactersInRoom(RoomEntity *room);
+    void addRoomToLUT(const RoomEntity &room);
+    AreaEntity getAreaFromParser();
+    std::deque<AreaEntity> &getAreas();
+    std::vector<UniqueId> getCharactersInRoom(RoomEntity *room);
     PlayerCharacter *getCharacterFromLUT(UniqueId id);
-    RoomEntity *getCharacterLocation(PlayerCharacter *character);
-    RoomEntity *getCharacterLocation(PlayerCharacter &character);
+    RoomEntity *getCharacterLocation(const PlayerCharacter &character);
     RoomEntity *getRoomFromLUT(const roomId);
     void clearAreas();
     void clearCharacterRoomLUT();

@@ -17,7 +17,7 @@ void AttackAction::execute_impl() {
 
     //--get the room the player is in
     auto characterCurrentRoom =
-        gameState.getCharacterLocation(&playerWhoIsAttacking);
+        gameState.getCharacterLocation(playerWhoIsAttacking);
     if (!characterCurrentRoom) {
         logger->error(
             "Character is not in a room! Suspect incorrect world init");

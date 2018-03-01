@@ -7,6 +7,7 @@ namespace mudserver {
 namespace resources {
 namespace commands {
 
+<<<<<<< HEAD
 extern const char *SAY;
 extern const char *LOOK;
 extern const char *MOVE;
@@ -31,6 +32,7 @@ extern const char *CTHAC0;
 extern const char *CHELP;
 extern const char *CREATE;
 extern const char *MODIFY;
+
 
 } // namespace commands
 } // namespace resources
