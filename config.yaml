@@ -1,8 +1,8 @@
 SERVER:
   port: 4000
-  yml_file: /home/jla497/CLionProjects/adventure2018/build/MudGameEngine/lib/dataFiles/detailed_smurf.yml
+  yml_file: ../build/MudGameEngine/lib/dataFiles/detailed_smurf.yml
   url: localhost
 CLIENT:
   port: 4000
-  yml_file: /home/jla497/CLionProjects/adventure2018/build/MudGameEngine/lib/dataFiles/detailed_smurf.yml
+  yml_file: ../build/MudGameEngine/lib/dataFiles/detailed_smurf.yml
   url: localhost
