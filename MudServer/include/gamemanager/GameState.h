@@ -10,7 +10,7 @@
 #include <unordered_map>
 
 #include "entities/AreaEntity.h"
-#include "entities/PlayerCharacter.h"
+#include "entities/CharacterEntity.h"
 //#include "Room.h"
 #include "UniqueId.h"
 #include "YamlParser.h"
@@ -20,6 +20,7 @@ namespace mudserver {
 namespace gamemanager {
 
 using namespace boost::bimaps;
+
 
 struct UniqueIdHash {
   public:
@@ -36,7 +37,7 @@ class GameState {
   private:
     bimap<set_of<UniqueId>, list_of<roomId>> characterRoomLookUp;
     std::unordered_map<roomId, RoomEntity> roomLookUp;
-    std::unordered_map<UniqueId, PlayerCharacter, UniqueIdHash> characterLookUp;
+    std::unordered_map<UniqueId, CharacterEntity, UniqueIdHash> characterLookUp;
     std::deque<AreaEntity> areas;
     YamlParser parser;
     AreaEntity area;
@@ -47,15 +48,16 @@ class GameState {
     void initRoomLUT();
 
     void addAreaFromParser();
-    void addCharacter(PlayerCharacter &character);
+
+    void addCharacter(CharacterEntity &character);
     void addCharacterRoomRelationToLUT(UniqueId characterId,
                                        unsigned int roomId);
     void addRoomToLUT(const RoomEntity &room);
     AreaEntity getAreaFromParser();
     std::deque<AreaEntity> &getAreas();
     std::vector<UniqueId> getCharactersInRoom(RoomEntity *room);
-    PlayerCharacter *getCharacterFromLUT(UniqueId id);
-    RoomEntity *getCharacterLocation(const PlayerCharacter &character);
+    CharacterEntity *getCharacterFromLUT(UniqueId id);
+    RoomEntity *getCharacterLocation(const CharacterEntity &character);
     RoomEntity *getRoomFromLUT(const roomId);
     void clearAreas();
     void clearCharacterRoomLUT();

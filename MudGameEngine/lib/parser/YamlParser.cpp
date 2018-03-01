@@ -24,7 +24,7 @@ std::string YamlParser::parseString(YAML::Node node) {
     return node.as<std::string>();
 }
 
-NonPlayerCharacter YamlParser::parseNPC(YAML::Node npcNode) const {
+CharacterEntity YamlParser::parseNPC(YAML::Node npcNode) const {
     auto armor = npcNode[ARMOR].as<int>();
     auto damage = npcNode[DAMAGE].as<std::string>();
 
@@ -179,8 +179,8 @@ RoomEntity YamlParser::parseRoom(YAML::Node roomNode) const {
 
 ShopEntity YamlParser::parseShop(YAML::Node shopNode) const { return {}; }
 
-std::vector<NonPlayerCharacter> YamlParser::getAllNPCS() const {
-    std::vector<NonPlayerCharacter> npcs;
+std::vector<CharacterEntity> YamlParser::getAllNPCS() const {
+    std::vector<CharacterEntity> npcs;
     for (auto &document : data) {
         std::for_each(document[NPCS_ENT].begin(), document[NPCS_ENT].end(),
                       [&](YAML::Node node) { npcs.push_back(parseNPC(node)); });

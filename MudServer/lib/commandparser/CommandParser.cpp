@@ -32,13 +32,13 @@ static std::unordered_map<std::string, ActKeyword> actionLookup = { // NOLINT
     {ATTACK, ActKeyword::attack},
     {MOVE, ActKeyword::move}};
 
-using ActionGenerator = std::unique_ptr<Action> (*)(PlayerCharacter &,
+using ActionGenerator = std::unique_ptr<Action> (*)(CharacterEntity &,
                                                     std::vector<std::string> &,
                                                     gamemanager::GameManager &);
 
 template <typename T,
           typename = std::enable_if<std::is_base_of<Action, T>::value>>
-std::unique_ptr<Action> generator(PlayerCharacter &pc,
+std::unique_ptr<Action> generator(CharacterEntity &pc,
                                   std::vector<std::string> &args,
                                   gamemanager::GameManager &manager) {
     return std::make_unique<T>(pc, args, manager);
@@ -52,7 +52,7 @@ const static std::vector<ActionGenerator> actionGenerators = {
 };
 
 std::unique_ptr<Action>
-CommandParser::actionFromPlayerCommand(PlayerCharacter &character,
+CommandParser::actionFromPlayerCommand(CharacterEntity &character,
                                        StrView command,
                                        gamemanager::GameManager &gameManager) {
 
