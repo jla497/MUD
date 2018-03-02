@@ -85,10 +85,11 @@ void GameManager::processMessages(
 
         // Guaranteed not to throw out_of_range - Player has been created
         auto player = players.at(playerId);
-
+        logger->debug("test");
         // look up player's character
         // pointer is used as player may not have character yet
         auto character = playerToCharacter(player);
+        logger->debug("test1.5");
         if (character == nullptr) {
             // create a new character for the player and add it to the game
             // state
@@ -96,7 +97,6 @@ void GameManager::processMessages(
         }
         auto playerCharacter = playerToCharacter(player);
         assert(playerCharacter != nullptr);
-
         // parse message into verb/object
         auto action = commandParser.actionFromPlayerCommand(
             *playerCharacter, message.text, *this);
@@ -185,6 +185,20 @@ void GameManager::addPlayerCharacter(PlayerId playerId) {
     playerCharacterBimap.insert(
         PcBmType::value_type(playerId, pc.getEntityId()));
     gameState.addCharacter(pc);
+}
+
+void GameManager::swapCharacters(UniqueId initCharacterId, UniqueId targetCharacterId) {
+    auto initPlayer = characterIdToPlayer(initCharacterId);
+    auto targetPlayer = characterIdToPlayer(targetCharacterId);
+
+//    auto character1 = playerIdToCharacter(playerId1);
+//    auto character2 = playerIdToCharacter(playerId2);
+    playerCharacterBimap.insert(
+            PcBmType::value_type(initPlayer.getId(), targetCharacterId));
+    playerCharacterBimap.insert(
+            PcBmType::value_type(targetPlayer.getId(), initCharacterId));
+//    playerCharacterBimap.left[playerId1] = character2->getEntityId();
+//    playerCharacterBimap.left[playerId2] = character1->getEntityId();
 }
 
 } // namespace gamemanager

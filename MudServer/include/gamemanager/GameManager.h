@@ -139,6 +139,14 @@ class GameManager {
      * @param message the message to send
      */
     void sendCharacterMessage(UniqueId characterId, std::string message);
+
+
+    /**
+     * Swap two player's characters
+     * @param playerId1 the player's id
+     * @param playerId2 the player's id
+     */
+    void swapCharacters(UniqueId initCharacterId, UniqueId targetCharacterId);
 };
 
 } // namespace gamemanager

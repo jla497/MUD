@@ -25,6 +25,7 @@ enum class ActKeyword {
     look,
     move,
     attack,
+    swap,
 
     _N_ACTIONS_
 };
