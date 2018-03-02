@@ -31,15 +31,32 @@ struct findNpc {
 };
 
 class Reset {
-    enum class ResetKeyword { undefined, object, npc, door, equip, resets };
+    enum class ResetKeyword {
+        undefined,
+        object,
+        npc,
+        door,
+        equip,
+        give,
+        resets
+    };
 
     static std::unordered_map<std::string, ResetKeyword> resetLookUp;
 
   public:
+    Reset() = default;
     Reset(int id, std::string action, std::string comment, std::string state,
           int slot, int limit, int roomID);
 
     void execute(mudserver::gamemanager::GameState &state);
+
+    std::string getAction();
+
+    int getTypeId();
+
+    int getRoomId();
+
+    int getLimit();
 
   private:
     // TODO: figure out Id, it seems that Id may refer to different things

@@ -9,7 +9,6 @@
 #include <memory>
 #include <unordered_map>
 
-#include "reset/Reset.h"
 #include "UniqueId.h"
 #include "UniqueId.h"
 #include "YamlParser.h"
@@ -18,6 +17,8 @@
 #include "entities/CharacterEntity.h"
 #include "entities/DoorEntity.h"
 #include "gamemanager/LutBuilder.h"
+#include "reset/Reset.h"
+#include "reset/ResetManager.h"
 
 class Reset;
 namespace mudserver {

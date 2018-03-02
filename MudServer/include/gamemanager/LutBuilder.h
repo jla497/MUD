@@ -24,6 +24,8 @@ class LutBuilder {
   public:
     std::map<Id, CharacterEntity>
     createNpcLUT(std::vector<CharacterEntity> &mVector);
+    std::map<Id, ObjectEntity>
+    createObjectLUT(std::vector<ObjectEntity> &mVector);
     std::unordered_map<roomId, RoomEntity>
     createLUT(std::deque<RoomEntity> &mVector);
 };

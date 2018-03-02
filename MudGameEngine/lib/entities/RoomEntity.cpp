@@ -53,3 +53,19 @@ std::vector<unsigned int> RoomEntity::getEntitiesInRoom() const {
 }
 
 std::string RoomEntity::removeEntity(unsigned int entityToRemove) { return {}; }
+
+void RoomEntity::equipObject(ObjectEntity &object) {
+    m_objects[object.getObjectTypeId()] = object;
+}
+ObjectEntity RoomEntity::getObject(int id) {
+    auto objectItr = m_objects.find(id);
+    if (objectItr != m_objects.end()) {
+        auto object = objectItr->second;
+        m_objects.erase(objectItr);
+        return object;
+    } else {
+        throw "no such object found";
+    }
+}
+
+std::map<int, ObjectEntity> RoomEntity::getObjects() { return m_objects; };

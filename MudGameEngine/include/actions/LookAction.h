@@ -12,6 +12,10 @@
  *  	Look with more than one argument would return an error?
  */
 class LookAction : public Action {
+
+    std::string getCharacterDescriptions(RoomEntity *characterCurrentRoom);
+    std::string getObjectDescriptions(RoomEntity *characterCurrentRoom);
+
   public:
     using Action::Action;
     void execute_impl();

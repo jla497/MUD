@@ -21,5 +21,14 @@ LutBuilder::createNpcLUT(std::vector<CharacterEntity> &npcs) {
     }
     return map;
 }
+
+std::map<Id, ObjectEntity>
+LutBuilder::createObjectLUT(std::vector<ObjectEntity> &objects) {
+    std::map<Id, ObjectEntity> map;
+    for (auto &obj : objects) {
+        map[obj.getObjectTypeId()] = obj;
+    }
+    return map;
+}
 } // namespace gamemanager
 } // namespace mudserver

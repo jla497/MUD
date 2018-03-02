@@ -9,12 +9,19 @@ std::unordered_map<std::string, Reset::ResetKeyword> Reset::resetLookUp = {
     {"object", Reset::ResetKeyword::object},
     {"npc", Reset::ResetKeyword::npc},
     {"door", Reset::ResetKeyword::door},
-    {"equip", Reset::ResetKeyword::equip}};
+    {"equip", Reset::ResetKeyword::equip},
+    {"give", Reset::ResetKeyword::give}};
 
 Reset::Reset(int id, std::string action, std::string comment, std::string state,
              int slot, int limit, int roomID)
     : id{id}, action{action}, comment{comment}, state{state}, slot{slot},
       limit{limit}, roomID{roomID} {}
+
+std::string Reset::getAction() { return action; }
+
+int Reset::getTypeId() { return id; }
+int Reset::getRoomId() { return roomID; }
+int Reset::getLimit() { return limit; }
 
 void Reset::resetNpc(mudserver::gamemanager::GameState &state) {
     static auto logger =
@@ -23,7 +30,7 @@ void Reset::resetNpc(mudserver::gamemanager::GameState &state) {
     auto npc = factory.buildNpc(id);
     try {
         state.addCharacter(npc, roomID);
-    } catch (std::exception e){
+    } catch (std::exception e) {
         logger->debug(e.what());
     }
 }

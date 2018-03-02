@@ -4,15 +4,21 @@ namespace mudserver {
 namespace gamemanager {
 using namespace mudserver::resources::commands;
 
-EntityFactory::EntityFactory(NpcVector npcs) : npcs(npcs) {}
+EntityFactory::EntityFactory(NpcVector npcs, ObjectVector objects)
+    : objects(objects), npcs(npcs) {}
 
 void EntityFactory::init() {
     LutBuilder lutBuilder;
     npcLookUp = lutBuilder.createNpcLUT(npcs);
+    objectLookUp = lutBuilder.createObjectLUT(objects);
 }
 
 CharacterEntity EntityFactory::buildNpc(Id id) {
     return npcLookUp.find(id)->second;
+}
+
+ObjectEntity EntityFactory::buildObject(Id id) {
+    return objectLookUp.find(id)->second;
 }
 
 void EntityFactory::modifyCharacter(CharacterEntity *entity, attributeMap map) {

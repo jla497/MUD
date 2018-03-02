@@ -249,6 +249,7 @@ AreaEntity YamlParser::getArea() const {
 
 mudserver::gamemanager::EntityFactory *YamlParser::makeFactory() {
     mudserver::gamemanager::EntityFactory *factory =
-        new mudserver::gamemanager::EntityFactory(getAllNPCS());
+        new mudserver::gamemanager::EntityFactory(getAllNPCS(),
+                                                  getAllObjects());
     return factory;
 }

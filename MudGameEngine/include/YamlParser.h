@@ -1,7 +1,6 @@
 #ifndef YAML_PARSER_H
 #define YAML_PARSER_H
 
-#include "reset/Reset.h"
 #include "entities/AreaEntity.h"
 #include "entities/CharacterEntity.h"
 #include "entities/DoorEntity.h"
@@ -9,6 +8,7 @@
 #include "entities/RoomEntity.h"
 #include "entities/ShopEntity.h"
 #include "gamemanager/EntityFactory.h"
+#include "reset/Reset.h"
 #include <algorithm>
 #include <fstream>
 #include <iostream>
