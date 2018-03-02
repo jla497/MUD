@@ -10,8 +10,8 @@
 class NullAction : public Action {
   public:
     using Action::Action;
-    void execute() override;
-
+    void execute_impl();
+    NullAction * clone();
   protected:
     std::string description() const override { return u8"Null action"; }
 };

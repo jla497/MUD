@@ -19,6 +19,7 @@ class GameManager;
  * actually affects.
  */
 class Action {
+    using Tick = int;
   public:
     Action(CharacterEntity &characterPerformingAction,
            std::vector<std::string> actionArguments,
@@ -29,8 +30,10 @@ class Action {
      * processed, execute() is called on the actions. As they have reference to
      * the game manager, they can alter state and send messages in this method.
      */
-    virtual void execute() = 0;
-
+     void execute();
+     virtual Action *clone() = 0;
+private:
+    virtual void execute_impl() = 0;
     friend std::ostream &operator<<(std::ostream &os, const Action &action);
 
   protected:
@@ -38,5 +41,7 @@ class Action {
     CharacterEntity &characterPerformingAction;
     std::vector<std::string> actionArguments;
     mudserver::gamemanager::GameManager &gameManager;
+    Tick timeRemaining = -1;
+
 };
 #endif

@@ -25,6 +25,7 @@ enum class ActKeyword {
     look,
     move,
     attack,
+    timed,
 
     _N_ACTIONS_
 };

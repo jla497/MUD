@@ -5,8 +5,11 @@
 #include "actions/AttackAction.h"
 #include "gamemanager/GameManager.h"
 #include "logging.h"
+AttackAction * AttackAction::clone() {
+    return new AttackAction(*this);
+}
 
-void AttackAction::execute() {
+void AttackAction::execute_impl() {
     static auto logger = mudserver::logging::getLogger("AttackAction::execute");
 
     // get gamestate

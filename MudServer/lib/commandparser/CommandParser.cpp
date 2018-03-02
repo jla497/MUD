@@ -14,6 +14,7 @@
 #include "actions/MoveAction.h"
 #include "actions/NullAction.h"
 #include "actions/SayAction.h"
+#include "actions/TimedAction.h"
 #include "commandparser/CommandParser.h"
 #include "resources/commands.h"
 
@@ -30,7 +31,8 @@ static std::unordered_map<std::string, ActKeyword> actionLookup = { // NOLINT
     {SAY, ActKeyword::say},
     {LOOK, ActKeyword::look},
     {ATTACK, ActKeyword::attack},
-    {MOVE, ActKeyword::move}};
+    {MOVE, ActKeyword::move},
+    {"timed", ActKeyword::timed}};
 
 using ActionGenerator = std::unique_ptr<Action> (*)(CharacterEntity &,
                                                     std::vector<std::string> &,
@@ -49,6 +51,7 @@ const static std::vector<ActionGenerator> actionGenerators = {
     &generator<NullAction>, // undefined
     &generator<SayAction>,  &generator<LookAction>,
     &generator<MoveAction>, &generator<AttackAction>,
+    &generator<TimedAction>
 };
 
 std::unique_ptr<Action>
