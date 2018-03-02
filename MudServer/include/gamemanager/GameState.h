@@ -9,7 +9,7 @@
 #include <memory>
 #include <unordered_map>
 
-#include "Reset.h"
+#include "reset/Reset.h"
 #include "UniqueId.h"
 #include "UniqueId.h"
 #include "YamlParser.h"
@@ -60,6 +60,7 @@ class GameState {
     std::deque<AreaEntity> &getAreas();
     std::vector<UniqueId> getCharactersInRoom(RoomEntity *room);
     CharacterEntity *getCharacterFromLUT(UniqueId id);
+    void addCharacter(CharacterEntity &character, Id roomID);
     RoomEntity *getCharacterLocation(const CharacterEntity &character);
     RoomEntity *getRoomFromLUT(const roomId);
     void clearAreas();

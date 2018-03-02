@@ -58,6 +58,19 @@ void GameState::addCharacter(CharacterEntity &character) {
     }
 }
 
+    void GameState::addCharacter(CharacterEntity &character, Id roomID) {
+        auto id = character.getEntityId();
+        characterLookUp[id] = std::move(character);
+        // TODO: implement a configurable default spawn point
+        // currently just takes the first room loaded
+        auto roomIt = roomLookUp.find(roomID);
+        if(roomIt != roomLookUp.end()) {
+            addCharacterRoomRelationToLUT(id, roomIt->second.getId());
+        }else {
+            throw "couldn't add character to room";
+        }
+    }
+
 void GameState::addAreaFromParser() { areas.push_back(parser.getArea()); }
 
 /**

@@ -1,4 +1,4 @@
-#include "Reset.h"
+#include "reset/Reset.h"
 #include "gamemanager/GameState.h"
 #include <boost/algorithm/string.hpp>
 #include <string>
@@ -21,7 +21,11 @@ void Reset::resetNpc(mudserver::gamemanager::GameState &state) {
         mudserver::logging::getLogger("Reset::execute::resetNPC");
     auto &factory = state.getFactory();
     auto npc = factory.buildNpc(id);
-    state.addCharacter(npc);
+    try {
+        state.addCharacter(npc, roomID);
+    } catch (std::exception e){
+        logger->debug(e.what());
+    }
 }
 
 void Reset::execute(mudserver::gamemanager::GameState &state) {

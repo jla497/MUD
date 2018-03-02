@@ -1,4 +1,4 @@
-#include "Reset.h"
+#include "reset/Reset.h"
 #include "YamlParser.h"
 #include "entities/Entity.h"
 #include "entities/RoomEntity.h"

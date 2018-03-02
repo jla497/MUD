@@ -1,7 +1,7 @@
 #ifndef YAML_PARSER_H
 #define YAML_PARSER_H
 
-#include "Reset.h"
+#include "reset/Reset.h"
 #include "entities/AreaEntity.h"
 #include "entities/CharacterEntity.h"
 #include "entities/DoorEntity.h"
