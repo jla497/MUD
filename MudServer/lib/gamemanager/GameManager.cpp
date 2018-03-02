@@ -39,11 +39,10 @@ void GameManager::mainLoop() {
 
     using clock = std::chrono::high_resolution_clock;
     auto startTime = clock::now();
-        currentAQueuePtr = &actionsA;
-        nextAQueuePtr = &actionsB;
-    //point currentActionQueuePtr to actionQueueA
-        //point nextActionQueuePtr to actionQueueB
-
+    currentAQueuePtr = &actionsA;
+    nextAQueuePtr = &actionsB;
+    // point currentActionQueuePtr to actionQueueA
+    // point nextActionQueuePtr to actionQueueB
 
     while (!done) {
         if (connectionManager.update()) {
@@ -66,7 +65,7 @@ void GameManager::mainLoop() {
             startTime = clock::now();
             performQueuedActions();
             swapQueuePtrs();
-            //swap action QueuePtrs
+            // swap action QueuePtrs
             sendMessagesToPlayers();
         }
     }
@@ -134,7 +133,7 @@ void GameManager::sendMessagesToPlayers() {
 }
 
 void GameManager::enqueueAction(std::unique_ptr<Action> action) {
-    //currentActionQueuePtr->push(std::move(action));
+    // currentActionQueuePtr->push(std::move(action));
     nextAQueuePtr->push(std::move(action));
 }
 
@@ -146,10 +145,10 @@ void GameManager::performQueuedActions() {
 }
 
 void GameManager::swapQueuePtrs() {
- std::swap(currentAQueuePtr, nextAQueuePtr);
- }
+    std::swap(currentAQueuePtr, nextAQueuePtr);
+}
 
-void GameManager::addActionToQueue(std::unique_ptr<Action> action){
+void GameManager::addActionToQueue(std::unique_ptr<Action> action) {
     nextAQueuePtr->push(std::move(action));
 }
 GameState &GameManager::getState() { return gameState; }
@@ -192,10 +191,12 @@ void GameManager::addPlayerCharacter(PlayerId playerId) {
     auto testShortDesc =
         "TestPlayerName" + std::to_string(playerCharacterBimap.size());
 
-//    CharacterEntity pc(
-//        pc::ARMOR, std::string{pc::DAMAGE}, std::vector<std::string>{}, pc::EXP,
-//        pc::GOLD, std::string{pc::HIT}, pc::TYPEID, std::vector<std::string>{}, pc::LEVEL,
-//        std::vector<std::string>{}, testShortDesc, pc::THAC0);
+    //    CharacterEntity pc(
+    //        pc::ARMOR, std::string{pc::DAMAGE}, std::vector<std::string>{},
+    //        pc::EXP,
+    //        pc::GOLD, std::string{pc::HIT}, pc::TYPEID,
+    //        std::vector<std::string>{}, pc::LEVEL,
+    //        std::vector<std::string>{}, testShortDesc, pc::THAC0);
 
     CharacterEntity pc{};
     playerCharacterBimap.insert(

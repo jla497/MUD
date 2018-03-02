@@ -7,8 +7,8 @@ class GameManager;
 }
 } // namespace mudserver
 
-#include "entities/Entity.h"
 #include "entities/CharacterEntity.h"
+#include "entities/Entity.h"
 #include <string>
 #include <vector>
 
@@ -20,6 +20,7 @@ class GameManager;
  */
 class Action {
     using Tick = int;
+
   public:
     Action(CharacterEntity &characterPerformingAction,
            std::vector<std::string> actionArguments,
@@ -30,9 +31,10 @@ class Action {
      * processed, execute() is called on the actions. As they have reference to
      * the game manager, they can alter state and send messages in this method.
      */
-     void execute();
-     virtual Action *clone() = 0;
-private:
+    void execute();
+    virtual Action *clone() = 0;
+
+  private:
     virtual void execute_impl() = 0;
     friend std::ostream &operator<<(std::ostream &os, const Action &action);
 
@@ -42,6 +44,5 @@ private:
     std::vector<std::string> actionArguments;
     mudserver::gamemanager::GameManager &gameManager;
     Tick timeRemaining = -1;
-
 };
 #endif

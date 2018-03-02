@@ -11,12 +11,12 @@
  * The NullAction class is instantiated to indicate a no-op
  */
 class TimedAction : public Action {
-public:
+  public:
     using Action::Action;
     void execute_impl();
-    TimedAction * clone();
+    TimedAction *clone();
 
-protected:
+  protected:
     std::string description() const override { return u8"Timed action"; }
 };
-#endif //ADVENTURE2018_TIMEDACTION_H
+#endif // ADVENTURE2018_TIMEDACTION_H

@@ -21,7 +21,6 @@ namespace gamemanager {
 
 using namespace boost::bimaps;
 
-
 struct UniqueIdHash {
   public:
     std::size_t operator()(UniqueId id) const;

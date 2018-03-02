@@ -2,14 +2,13 @@
 #define CONFIG_PARSER_H
 
 #include "Server.h"
+#include "yaml-cpp/yaml.h"
 #include <algorithm>
 #include <boost/optional/optional.hpp>
 #include <fstream>
 #include <iostream>
 #include <string>
 #include <vector>
-#include "yaml-cpp/yaml.h"
-
 
 using networking::Port;
 

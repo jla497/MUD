@@ -4,10 +4,7 @@
 std::vector<std::string> MoveAction::moveLookup = {"north", "south", "east",
                                                    "west"};
 
-MoveAction * MoveAction::clone() {
-    return new MoveAction(*this);
-}
-
+MoveAction *MoveAction::clone() { return new MoveAction(*this); }
 
 void MoveAction::execute_impl() {
     static auto logger = mudserver::logging::getLogger("Action::MoveAction");

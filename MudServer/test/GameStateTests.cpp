@@ -7,7 +7,7 @@ namespace gamemanager {
 
 class GameStateTest : public testing::Test {
   public:
-// <<<<<<< HEAD
+    // <<<<<<< HEAD
     CharacterEntity createCharacter() {
         int armor = 1;
         std::string damage = "1d8+32";
@@ -24,26 +24,26 @@ class GameStateTest : public testing::Test {
         std::string shortDesc = "test";
         int thac0 = 1;
         // TODO typeId for player characters
-        auto character = CharacterEntity (
-            armor, damage, desc, exp, gold, hit, 0, keywords, level, longDesc,
-            shortDesc, thac0);        
+        auto character =
+            CharacterEntity(armor, damage, desc, exp, gold, hit, 0, keywords,
+                            level, longDesc, shortDesc, thac0);
         return character;
-// =======
-//     PlayerCharacter createCharacter() {
-//         return {
-//             1,            // armor
-//             "1",          // damage
-//             {"desc1"},    // desc
-//             1,            // exp
-//             1,            // gold
-//             "1",          // hit
-//             {"keyword1"}, // keywords
-//             1,            // level
-//             {"desc1"},    // longdesc
-//             "shortdesc",  // shortdesc
-//             1             // thac0
-//         };
-// >>>>>>> master
+        // =======
+        //     PlayerCharacter createCharacter() {
+        //         return {
+        //             1,            // armor
+        //             "1",          // damage
+        //             {"desc1"},    // desc
+        //             1,            // exp
+        //             1,            // gold
+        //             "1",          // hit
+        //             {"keyword1"}, // keywords
+        //             1,            // level
+        //             {"desc1"},    // longdesc
+        //             "shortdesc",  // shortdesc
+        //             1             // thac0
+        //         };
+        // >>>>>>> master
     }
 
   protected:

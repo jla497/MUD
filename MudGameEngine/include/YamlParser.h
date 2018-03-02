@@ -3,8 +3,8 @@
 
 #include "Reset.h"
 #include "entities/AreaEntity.h"
-#include "entities/DoorEntity.h"
 #include "entities/CharacterEntity.h"
+#include "entities/DoorEntity.h"
 #include "entities/ObjectEntity.h"
 #include "entities/RoomEntity.h"
 #include "entities/ShopEntity.h"

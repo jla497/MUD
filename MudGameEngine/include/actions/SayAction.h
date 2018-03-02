@@ -12,7 +12,7 @@ class SayAction : public Action {
   public:
     using Action::Action;
     void execute_impl();
-    SayAction * clone();
+    SayAction *clone();
 
   protected:
     std::string description() const override { return u8"Say action"; }
