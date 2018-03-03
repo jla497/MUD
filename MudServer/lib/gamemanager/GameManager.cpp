@@ -1,6 +1,6 @@
 
-#include <cassert>
 #include <boost/optional.hpp>
+#include <cassert>
 #include <iomanip>
 #include <iostream>
 #include <memory>
@@ -121,8 +121,7 @@ void GameManager::processMessages(
             // state
             auto newCharacter =
                 playerService.createPlayerCharacter(player->getId());
-            gameState.addCharacter(
-                newCharacter);
+            gameState.addCharacter(newCharacter);
         }
 
         auto &playerCharacterId =

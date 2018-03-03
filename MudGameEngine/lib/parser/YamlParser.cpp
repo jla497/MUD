@@ -1,7 +1,7 @@
 
+#include <algorithm>
 #include <cassert>
 #include <deque>
-#include <algorithm>
 
 #include "YamlParser.h"
 #include "resources/DataFields.h"

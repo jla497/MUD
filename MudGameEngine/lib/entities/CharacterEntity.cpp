@@ -24,7 +24,7 @@ CharacterEntity::CharacterEntity(int armor, std::string damage,
     boost::split(tmpHit, hit, boost::is_any_of("+d"));
     m_hitRollData = {std::stoi(tmpHit.at(0)), std::stoi(tmpHit.at(1)),
                      tmpHit.size() > 2 ? std::stoi(tmpHit.at(2)) : 0};
-    
+
     std::vector<std::string> tmpDamage;
     boost::split(tmpDamage, damage, boost::is_any_of("+d"));
     m_damageRollData = {std::stoi(tmpDamage.at(0)), std::stoi(tmpDamage.at(1)),
