@@ -32,6 +32,7 @@ const char *CTHAC0 = u8"thac0";
 const char *CHELP = u8"help";
 const char *CREATE = u8"create";
 const char *MODIFY = u8"modify";
+const char *IDENTIFY = u8"identify";
 }
 }
 }

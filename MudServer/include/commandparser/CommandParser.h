@@ -40,8 +40,6 @@ enum class ActKeyword {
  * input.
  */
 class CommandParser {
-    static std::unordered_map<std::string, ActKeyword> actionLookup;
-
   public:
     CommandParser() = default;
 
