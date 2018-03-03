@@ -18,11 +18,13 @@ using PasswordType = std::string;
  * and the PlayerCharacter, which is the actual fantasy being in the game world.
  */
 class Player {
+
     PlayerId id = static_cast<PlayerId>(-1);
     UsernameType username;
     PasswordType password;
     networking::ConnectionId connectionId;
     CharacterEntity *character = nullptr;
+    bool isAdmin = false;
 
   public:
     Player() = default;
@@ -40,6 +42,8 @@ class Player {
      * @return the player's id number
      */
     PlayerId getId() const;
+    bool hasAdminPrivilege();
+    void getAdminPrivilege();
     UsernameType getUsername() const;
     bool passwordEquals(const PasswordType &password) const;
     networking::ConnectionId getConnectionId() const;

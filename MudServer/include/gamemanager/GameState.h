@@ -9,18 +9,22 @@
 #include <memory>
 #include <unordered_map>
 
-#include "entities/AreaEntity.h"
-#include "entities/CharacterEntity.h"
-//#include "Room.h"
+#include "UniqueId.h"
 #include "UniqueId.h"
 #include "YamlParser.h"
+#include "YamlParser.h"
+#include "entities/AreaEntity.h"
+#include "entities/CharacterEntity.h"
+#include "entities/DoorEntity.h"
 #include "gamemanager/LutBuilder.h"
+#include "reset/Reset.h"
+#include "reset/ResetManager.h"
 
+class Reset;
 namespace mudserver {
 namespace gamemanager {
 
 using namespace boost::bimaps;
-
 
 struct UniqueIdHash {
   public:
@@ -41,12 +45,12 @@ class GameState {
     std::deque<AreaEntity> areas;
     YamlParser parser;
     AreaEntity area;
+    std::unique_ptr<EntityFactory> factory;
 
   public:
     void initFromYaml(std::string filename);
     void parseYamlFile(std::string string);
     void initRoomLUT();
-
     void addAreaFromParser();
 
     void addCharacter(CharacterEntity &character);
@@ -57,10 +61,13 @@ class GameState {
     std::deque<AreaEntity> &getAreas();
     std::vector<UniqueId> getCharactersInRoom(RoomEntity *room);
     CharacterEntity *getCharacterFromLUT(UniqueId id);
+    void addCharacter(CharacterEntity &character, Id roomID);
     RoomEntity *getCharacterLocation(const CharacterEntity &character);
     RoomEntity *getRoomFromLUT(const roomId);
     void clearAreas();
     void clearCharacterRoomLUT();
+    EntityFactory &getFactory();
+    void doReset();
 };
 
 } // namespace gamemanager

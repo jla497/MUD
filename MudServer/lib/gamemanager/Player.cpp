@@ -20,5 +20,7 @@ networking::ConnectionId Player::getConnectionId() const {
 }
 void Player::setConnectionId(networking::ConnectionId id) { connectionId = id; }
 
+bool Player::hasAdminPrivilege() { return isAdmin; }
+void Player::getAdminPrivilege() { isAdmin = true; }
 } // namespace gamemanager
 } // namespace mudserver

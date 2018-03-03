@@ -39,7 +39,7 @@ void GameManager::mainLoop() {
 
     using clock = std::chrono::high_resolution_clock;
     auto startTime = clock::now();
-
+    gameState.doReset();
     while (!done) {
         if (connectionManager.update()) {
             // An error was encountered, stop

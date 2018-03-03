@@ -3,4 +3,4 @@
 
 #include "actions/NullAction.h"
 
-void NullAction::execute() {}
+void NullAction::execute_impl() {}
