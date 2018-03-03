@@ -3,8 +3,8 @@
 #include <utility>
 #include <vector>
 
-#include "entities/ObjectEntity.h"
 #include "entities/CharacterEntity.h"
+#include "entities/ObjectEntity.h"
 
 CharacterEntity::CharacterEntity(
     int armor, std::string damage, std::vector<std::string> desc,
@@ -21,8 +21,8 @@ CharacterEntity::CharacterEntity(
     std::vector<std::string> tmpHit;
     boost::split(tmpHit, hit, boost::is_any_of("+d"));
     m_hitRollData = {std::stoi(tmpHit.at(0)), std::stoi(tmpHit.at(1)),
-                     tmpHit.size() > 2 ? std::stoi(tmpHit.at(2)): 0};
-    
+                     tmpHit.size() > 2 ? std::stoi(tmpHit.at(2)) : 0};
+
     std::vector<std::string> tmpDamage;
     boost::split(tmpDamage, damage, boost::is_any_of("+d"));
     m_damageRollData = {std::stoi(tmpDamage.at(0)), std::stoi(tmpDamage.at(1)),

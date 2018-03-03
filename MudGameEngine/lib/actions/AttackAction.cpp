@@ -49,8 +49,8 @@ void AttackAction::execute_impl() {
         if (!currentEntity)
             return;
         auto shortDescOfCurrentPlayer = currentEntity->getShortDesc();
-        if (boost::to_lower_copy(shortDescOfCurrentPlayer)
-                == boost::to_lower_copy(nameOfAttackTarget)) {
+        if (boost::to_lower_copy(shortDescOfCurrentPlayer) ==
+            boost::to_lower_copy(nameOfAttackTarget)) {
             // TODO: change this to allow attacking any entity rather than just
             // players
             // TODO: implement proper use of combat states

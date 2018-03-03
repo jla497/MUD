@@ -57,21 +57,18 @@ void GameManager::mainLoop() {
 
         processMessages(messages);
 
-
         performQueuedActions();
         sendMessagesToPlayers();
 
         auto delta = std::chrono::duration_cast<std::chrono::milliseconds>(
             clock::now() - startTime);
-        std::this_thread::sleep_for(tick -  delta);
+        std::this_thread::sleep_for(tick - delta);
     }
 
     persistData();
 }
 
-void GameManager::persistData() {
-    persistenceService.save(playerService);
-}
+void GameManager::persistData() { persistenceService.save(playerService); }
 
 void GameManager::loadPersistedData() {
     playerService = persistenceService.loadPlayerService();
@@ -137,8 +134,8 @@ void GameManager::processMessages(
         }
 
         // parse message into verb/object
-        auto action = commandParser.actionFromPlayerCommand(
-            *player, message.text, *this);
+        auto action =
+            commandParser.actionFromPlayerCommand(*player, message.text, *this);
 
         enqueueAction(std::move(action));
     }

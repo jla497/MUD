@@ -44,7 +44,7 @@ class GameManager {
     bool done = false;
     CommandParser commandParser;
     connection::ConnectionManager &connectionManager;
-    persistence::PersistenceService & persistenceService;
+    persistence::PersistenceService &persistenceService;
 
     PlayerService playerService;
     std::queue<connection::gameAndUserInterface> outgoingMessages;
@@ -92,7 +92,7 @@ class GameManager {
      * @param persistenceService the persistence service for saving game
      */
     GameManager(connection::ConnectionManager &connMan, GameState &gameState,
-        persistence::PersistenceService &persistenceService);
+                persistence::PersistenceService &persistenceService);
 
     /**
      * The main game loop. Updates game state once per tick, processes messages

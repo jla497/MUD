@@ -1,8 +1,8 @@
 #ifndef PERSISTENCE_SERVICE_H
 #define PERSISTENCE_SERVICE_H
 
-#include <string>
 #include <boost/filesystem.hpp>
+#include <string>
 
 #include "gamemanager/PlayerService.h"
 
@@ -12,16 +12,17 @@ namespace persistence {
 using mudserver::gamemanager::PlayerService;
 
 class PersistenceService {
-private:
+  private:
     boost::filesystem::path configDir;
-public:
+
+  public:
     explicit PersistenceService(std::string configDir);
     void save(PlayerService &ps);
 
     PlayerService loadPlayerService();
 };
 
-}
-}
+} // namespace persistence
+} // namespace mudserver
 
 #endif // PERSISTENCE_SERVICE_H

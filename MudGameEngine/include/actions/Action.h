@@ -9,9 +9,9 @@ class Player;
 } // namespace mudserver
 
 #include "entities/CharacterEntity.h"
-#include "gamemanager/Player.h"
-#include "gamemanager/GameManager.h"
 #include "entities/Entity.h"
+#include "gamemanager/GameManager.h"
+#include "gamemanager/Player.h"
 #include <string>
 #include <unordered_map>
 #include <vector>

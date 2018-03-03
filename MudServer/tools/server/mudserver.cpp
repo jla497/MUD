@@ -33,9 +33,8 @@ int main(int argc, char *argv[]) {
         mudserver::persistence::PersistenceService persistenceService{
             configData->configDir};
 
-        mudserver::gamemanager::GameManager gameManager{connectionManager,
-                                                        gameState,
-                                                        persistenceService};
+        mudserver::gamemanager::GameManager gameManager{
+            connectionManager, gameState, persistenceService};
 
         std::cout
             << "---------------------MUD Server Console---------------------"

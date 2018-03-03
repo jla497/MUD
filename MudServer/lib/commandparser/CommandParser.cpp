@@ -27,12 +27,14 @@ using boost::algorithm::to_lower_copy;
 
 using namespace resources::commands;
 
-static std::unordered_map<std::string, ActKeyword> actionLookup =
-    { // NOLINT
-        {UNDEFINED, ActKeyword::undefined}, {SAY, ActKeyword::say},
-        {LOOK, ActKeyword::look},           {ATTACK, ActKeyword::attack},
-        {MOVE, ActKeyword::move},           {PROGRAM, ActKeyword::program},
-        {SAVE, ActKeyword::save}};
+static std::unordered_map<std::string, ActKeyword> actionLookup = { // NOLINT
+    {UNDEFINED, ActKeyword::undefined},
+    {SAY, ActKeyword::say},
+    {LOOK, ActKeyword::look},
+    {ATTACK, ActKeyword::attack},
+    {MOVE, ActKeyword::move},
+    {PROGRAM, ActKeyword::program},
+    {SAVE, ActKeyword::save}};
 
 using ActionGenerator = std::unique_ptr<Action> (*)(Player &,
                                                     std::vector<std::string> &,
@@ -50,12 +52,10 @@ const static std::vector<ActionGenerator> actionGenerators = {
     // NOLINT
     &generator<NullAction>, // undefined
     &generator<SayAction>,    &generator<LookAction>, &generator<MoveAction>,
-    &generator<AttackAction>, &generator<PrgmAction>, &generator<SaveAction>
-};
+    &generator<AttackAction>, &generator<PrgmAction>, &generator<SaveAction>};
 
 std::unique_ptr<Action>
-CommandParser::actionFromPlayerCommand(Player &player,
-                                       StrView command,
+CommandParser::actionFromPlayerCommand(Player &player, StrView command,
                                        gamemanager::GameManager &gameManager) {
 
     Tokenizer tokens{command};

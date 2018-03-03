@@ -22,8 +22,8 @@ class GameManager; // forward declaration
 namespace commandparser {
 
 using gamemanager::PasswordType;
-using gamemanager::UsernameType;
 using gamemanager::Player;
+using gamemanager::UsernameType;
 using StrView = std::experimental::string_view;
 
 enum class ActKeyword {

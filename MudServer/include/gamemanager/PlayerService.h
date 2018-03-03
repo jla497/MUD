@@ -24,7 +24,7 @@ enum class AddPlayerResult {
 };
 
 class PlayerService {
-private:
+  private:
     PlayerId nextPlayerId;
     std::unordered_map<PlayerId, Player> players;
     std::unordered_map<UsernameType, PlayerId> playerIdByName;
@@ -33,12 +33,12 @@ private:
 
     friend class boost::serialization::access;
 
-    template<class Archive>
+    template <class Archive>
     void serialize(Archive &ar, const unsigned int version) {
         ar &nextPlayerId;
         ar &players;
         ar &playerIdByName;
-        //ar &playerCharacterBimap;
+        // ar &playerCharacterBimap;
     }
 
     PlayerId getNextPlayerId();

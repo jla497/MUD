@@ -5,7 +5,8 @@
 
 class MockGameManager : public mudserver::gamemanager::GameManager {
     mudserver::persistence::PersistenceService ps;
-public:
+
+  public:
     MockGameManager(mudserver::connection::ConnectionManager &cm,
                     mudserver::gamemanager::GameState &gs)
         : ps{""}, GameManager(cm, gs, ps) {}

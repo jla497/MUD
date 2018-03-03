@@ -3,6 +3,4 @@
 
 #include "actions/SaveAction.h"
 
-void SaveAction::execute_impl() {
-    gameManager.persistData();
-}
+void SaveAction::execute_impl() { gameManager.persistData(); }

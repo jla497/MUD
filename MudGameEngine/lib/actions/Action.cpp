@@ -4,7 +4,8 @@
 #include "actions/Action.h"
 #include "logging.h"
 
-//FIXME: this should possibly work on the enum keyword rather than the description string
+// FIXME: this should possibly work on the enum keyword rather than the
+// description string
 std::unordered_map<std::string, bool> Action::isAdminAction = {
     {"Program action", true}, {"Save action", true}};
 
@@ -19,10 +20,10 @@ void Action::execute() {
     static auto logger = mudserver::logging::getLogger("Action::Action");
 
     auto &playerService = gameManager.getPlayerService();
-    auto characterId = playerService.playerToCharacter(
-        playerPerformingAction.getId());
-    characterPerformingAction = gameManager.getState().getCharacterFromLUT(
-        *characterId);
+    auto characterId =
+        playerService.playerToCharacter(playerPerformingAction.getId());
+    characterPerformingAction =
+        gameManager.getState().getCharacterFromLUT(*characterId);
 
     logger->debug("Checking if " + description() + " is AdminAction...");
     // check if action is admin action and if character has an administrator
