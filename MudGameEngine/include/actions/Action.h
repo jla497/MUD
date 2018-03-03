@@ -38,6 +38,7 @@ class Action {
      * the game manager, they can alter state and send messages in this method.
      */
     void execute();
+    virtual ~Action() = default;
 
     friend std::ostream &operator<<(std::ostream &os, const Action &action);
 
