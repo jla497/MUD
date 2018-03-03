@@ -162,9 +162,11 @@ int Spell::calculateSpellEffect(unsigned int characterLevel) {
 	if(isCharacterValidLevel(characterLevel)) {
 		std::string formula = getEffectsFormula();
 		if (formula.length() > 0) {
-			
+			//"parse" the formula to calculate
+			return 0; //temporary
 		}
 	}
+	return 0; //temorary
 }
 
 bool Spell::isCharacterValidLevel(unsigned int characterLevel) {
