@@ -1,8 +1,9 @@
 
 #include <string>
+#include <boost/algorithm/string/find.hpp>
 #include "Spell.h"
 
-Spell Spell() {
+Spell Spell::Spell() {
 	effect = "";
 	mana = 0;
 	minlevel = 0;
@@ -19,125 +20,154 @@ Spell Spell() {
 	damage = "";
 } 
 
-std::string getEffect() {
+std::string Spell::getEffect() {
 	return effect;
 }
 
-int getMana() {
+int Spell::getMana() {
 	return mana;
 }
 
-unsigned int getMinLevel() {
+unsigned int Spell::getMinLevel() {
 	return minlevel;
 }
 
-std::string getName() {
+std::string Spell::getName() {
 	return name
 }
 
-int getDuration() {
+int Spell::getDuration() {
 	return duration;
 }
 
-std::string getHitChar() {
+std::string Spell::getHitChar() {
 	//use stringf to replace all $x's with character names
 	return hitchar;
 }
 
-std::string getHitRoom() {
+std::string Spell::getHitRoom() {
 	return hitroom;
 }
 		
-std::string getHitVict() {
+std::string Spell::getHitVict() {
 	return hitvict;
 }
 
-std::string getMissRoom() {
+std::string Spell::getMissRoom() {
 	return missroom;
 }
 
-std::string getMissChar() {
+std::string Spell::getMissChar() {
 	return misschar;
 }
 		
-std::string getDammsg() {
+std::string Spell::getDammsg() {
 	return dammsg;
 }
 		
-std::string getWearoff() {
+std::string Spell::getWearoff() {
 	return wearoff;
 }
 		
-std::string getImmchar() {
+std::string Spell::getImmchar() {
 	return immchar;
 }
 		
-std::string getDamage() {
+std::string Spell::getDamage() {
 	return damage;
 }
 
-void setEffect(std::string effect) {
+void Spell::setEffect(std::string effect) {
 	this->effect = effect;
 }
 		
-void setMana(int mana) {
+void Spell::setMana(int mana) {
 	this->mana = mana;
 }
 		
-void setMinLevel(unsigned int minlevel) {
+void Spell::setMinLevel(unsigned int minlevel) {
 	this->minlevel = minlevel;
 }
 
-void setName(std::string name) {
+void Spell::setName(std::string name) {
 	this->name = name;
 }
 		
-void setDuration(int duration) {
+void Spell::setDuration(int duration) {
 	this->duration = duration;
 }
 
-void setHitChar(std::string hitchar) {
+void Spell::setHitChar(std::string hitchar) {
 	this->hitchar = hitchar;
 }
 
-void setHitRoom(std::string hitroom) {
+void Spell::setHitRoom(std::string hitroom) {
 	this->hitroom = hitroom;
 }
 
-void setHitVict(std::string hitvict) {
+void Spell::setHitVict(std::string hitvict) {
 	this->hitvict = hitvict;
 }
 
-void setMissRoom(std::string missroom) {
+void Spell::setMissRoom(std::string missroom) {
 	this->missroom = missroom;
 }
 
-void setMissChar(std::string misschar) {
+void Spell::setMissChar(std::string misschar) {
 	this->misschar = misschar;
 }
 
-void setDammsg(std::string dammsg) {
+void Spell::setDammsg(std::string dammsg) {
 	this->dammsg = dammsg;
 }
 		
-void setWearoff(std::string wearoff) {
+void Spell::setWearoff(std::string wearoff) {
 	this->wearoff = wearoff;
 }
 
-void setImmchar(std::string immchar) {
+void Spell::setImmchar(std::string immchar) {
 	this->immchar = immchar;
 }
 
-void setDamage(std::string damage) {
+void Spell::setDamage(std::string damage) {
 	this->damage = damage;
 }
 
-
-int calculateSpellEffect(unsigned int characterLevel) {
-
+size_t Spell::findNthQuoteInEffects(size_t position, size_t nth) {
+	if (effect.length() <= position) {
+		return string::npos;
+	}
+	size_t found_position = effect.find("'", position);
+	if (1 == nth || string::npos == found_position) {
+		return found_position;
+	} else {
+		return findNthQuoteInEffects(found_position + 1, nth - 1);
+	}
 }
 
-bool isCharacterValidLevel(unsigned int characterLevel) {
+std::string Spell::getEffectsFormula() {
+	size_t start = string::npos;
+	size_t end = string::npos;
+	start = findNthQuoteInEffects(0, EFFECT_QUOTE_POSITION);
+	end = findNthQuoteInEffects(0, EFFECT_QUOTE_POSITION + 1);
+	if (start != string::npos && end != string::npos) {
+		return effect.substr(start + 1, end - start);
+	} else {
+		return "";
+	}
+}
+
+int Spell::calculateSpellEffect(unsigned int characterLevel) {
+	//check if spell is valid type as well (once dictionary/lookup is implemented)
+	if(isCharacterValidLevel(characterLevel)) {
+		std::string formula = getEffectsFormula();
+		if (formula.length() > 0) {
+			
+		}
+	}
+}
+
+bool Spell::isCharacterValidLevel(unsigned int characterLevel) {
 	if (minlevel <= characterLevel) {
 		return true;
 	} else {

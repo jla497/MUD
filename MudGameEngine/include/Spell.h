@@ -18,6 +18,10 @@ class Spell {
 		std::string immchar:
 		std::string damage;
 
+		//this finds the substring that starts directly after the Nth quote character (') in the string
+		//Returns an empty string if quote number is invalid or if there is no characters in between the Nth and N+1 quote
+		std::string getEffectsFormula();
+
 	public:
 		Spell() = default;
 
@@ -57,8 +61,14 @@ class Spell {
 		//Rolls a dice, the result may not always be the same!)
 		int calculateSpellEffect(unsigned int characterLevel);
 
+		//calculates damage on victim
+		int calculateDamage(unsigned int characterLevel);
+
 		//returns true if character is above the minimum level to use the spell
-		bool isCharacterValidLevel();
+		bool isCharacterValidLevel(unsigned int characterLevel);
+
+		//returns true if character has enough mana to perform spell
+		bool isEnoughMana(int characterMana);
 }
 
 #endif
