@@ -20,66 +20,46 @@ using mudserver::gamemanager::GameState;
 class CommandParserTest : public ::testing::Test {
   public:
     CommandParserTest() : cp{}, cm{}, gs{}, gm{cm, gs} {
-
-        int armor = 1;
-        std::string damage = "1d8+32";
-        std::vector<std::string> desc{};
-        desc.push_back("desc1");
-        unsigned int exp = 1;
-        int gold = 1;
-        std::string hit = "1d1+30000";
-        std::vector<std::string> keywords{};
-        keywords.push_back("keyword1");
-        unsigned int level = 1;
-        std::vector<std::string> longDesc{};
-        longDesc.push_back("desc1");
-        std::string shortDesc = "test";
-        int thac0 = 1;
-        unsigned int typeId = 0;
-
-        // TODO typeId for player characters
-        ch = CharacterEntity{armor, damage,   desc,      exp,
-                             gold,  hit,      typeId,    keywords,
-                             level, longDesc, shortDesc, thac0};
+        pl = Player{42, "jimbob", "hunter2"};
     }
 
     CommandParser cp;
     MockConnectionManager cm;
     GameState gs;
     MockGameManager gm;
-    CharacterEntity ch;
+    Player pl;
 };
 
 TEST_F(CommandParserTest, parsesSayAction) {
-    auto action = cp.actionFromPlayerCommand(ch, "say stuff", gm);
+    auto action = cp.actionFromPlayerCommand(pl, "say stuff", gm);
     auto realType = dynamic_cast<SayAction *>(action.get());
     EXPECT_TRUE(realType);
 };
 
 TEST_F(CommandParserTest, parsesAttackAction) {
-    auto action = cp.actionFromPlayerCommand(ch, "attack frog", gm);
+    auto action = cp.actionFromPlayerCommand(pl, "attack frog", gm);
     auto realType = dynamic_cast<AttackAction *>(action.get());
     EXPECT_TRUE(realType);
 };
 
 TEST_F(CommandParserTest, parsesMoveAction) {
-    auto action = cp.actionFromPlayerCommand(ch, "move north", gm);
+    auto action = cp.actionFromPlayerCommand(pl, "move north", gm);
     auto realType = dynamic_cast<MoveAction *>(action.get());
     EXPECT_TRUE(realType);
 };
 
 TEST_F(CommandParserTest, defaultsToNullAction) {
-    auto action = cp.actionFromPlayerCommand(ch, "blarghidibah foo", gm);
+    auto action = cp.actionFromPlayerCommand(pl, "blarghidibah foo", gm);
     auto realType = dynamic_cast<NullAction *>(action.get());
     EXPECT_TRUE(realType);
 };
 
 TEST_F(CommandParserTest, caseInsensitive) {
-    auto action1 = cp.actionFromPlayerCommand(ch, "sAy bla", gm);
+    auto action1 = cp.actionFromPlayerCommand(pl, "sAy bla", gm);
     auto realType1 = dynamic_cast<SayAction *>(action1.get());
     EXPECT_TRUE(realType1);
 
-    auto action2 = cp.actionFromPlayerCommand(ch, "SAY bla", gm);
+    auto action2 = cp.actionFromPlayerCommand(pl, "SAY bla", gm);
     auto realType2 = dynamic_cast<SayAction *>(action2.get());
     EXPECT_TRUE(realType2);
 };

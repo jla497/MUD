@@ -38,9 +38,10 @@ void GameManager::mainLoop() {
     logger->info("Entered main game loop");
 
     using clock = std::chrono::high_resolution_clock;
-    auto startTime = clock::now();
     gameState.doReset();
     while (!done) {
+        auto startTime = clock::now();
+
         if (connectionManager.update()) {
             // An error was encountered, stop
             done = true;
@@ -51,17 +52,13 @@ void GameManager::mainLoop() {
 
         processMessages(messages);
 
-        /*
-         * FIXME
-         * This eventually causes the tick to go out of sync.
-         * If tick = delta + n, n time units get lost every tick.
-         */
-        auto delta = clock::now() - startTime;
-        if (delta >= tick) {
-            startTime = clock::now();
-            performQueuedActions();
-            sendMessagesToPlayers();
-        }
+
+        performQueuedActions();
+        sendMessagesToPlayers();
+
+        auto delta = std::chrono::duration_cast<std::chrono::milliseconds>(
+            clock::now() - startTime);
+        std::this_thread::sleep_for(tick -  delta);
     }
 }
 
@@ -124,14 +121,9 @@ void GameManager::processMessages(
             gameState.addCharacter(newCharacter);
         }
 
-        auto &playerCharacterId =
-            *playerService.playerToCharacter(player->getId());
-        auto &playerCharacter =
-            *gameState.getCharacterFromLUT(playerCharacterId);
-
         // parse message into verb/object
         auto action = commandParser.actionFromPlayerCommand(
-            playerCharacter, message.text, *this);
+            *player, message.text, *this);
 
         std::ostringstream retMessage;
         // retMessage << "DEBUG: " << *action;
@@ -181,7 +173,7 @@ void GameManager::sendCharacterMessage(UniqueId characterId,
     }
 }
 
-
+PlayerService &GameManager::getPlayerService() { return playerService; }
 
 } // namespace gamemanager
 } // namespace mudserver

@@ -32,16 +32,16 @@ static std::unordered_map<std::string, ActKeyword> actionLookup =
         {LOOK, ActKeyword::look},           {ATTACK, ActKeyword::attack},
         {MOVE, ActKeyword::move},           {PROGRAM, ActKeyword::program}};
 
-using ActionGenerator = std::unique_ptr<Action> (*)(CharacterEntity &,
+using ActionGenerator = std::unique_ptr<Action> (*)(Player &,
                                                     std::vector<std::string> &,
                                                     gamemanager::GameManager &);
 
 template <typename T,
           typename = std::enable_if<std::is_base_of<Action, T>::value>>
-std::unique_ptr<Action> generator(CharacterEntity &pc,
+std::unique_ptr<Action> generator(Player &player,
                                   std::vector<std::string> &args,
                                   gamemanager::GameManager &manager) {
-    return std::make_unique<T>(pc, args, manager);
+    return std::make_unique<T>(player, args, manager);
 };
 
 const static std::vector<ActionGenerator> actionGenerators = {
@@ -52,7 +52,7 @@ const static std::vector<ActionGenerator> actionGenerators = {
 };
 
 std::unique_ptr<Action>
-CommandParser::actionFromPlayerCommand(CharacterEntity &character,
+CommandParser::actionFromPlayerCommand(Player &player,
                                        StrView command,
                                        gamemanager::GameManager &gameManager) {
 
@@ -75,7 +75,7 @@ CommandParser::actionFromPlayerCommand(CharacterEntity &character,
         return nullptr;
     }
 
-    return actionGenerators[index](character, remainderOfTokens, gameManager);
+    return actionGenerators[index](player, remainderOfTokens, gameManager);
 }
 
 std::pair<UsernameType, PasswordType>

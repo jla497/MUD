@@ -23,6 +23,7 @@ namespace commandparser {
 
 using gamemanager::PasswordType;
 using gamemanager::UsernameType;
+using gamemanager::Player;
 using StrView = std::experimental::string_view;
 
 enum class ActKeyword {
@@ -55,7 +56,7 @@ class CommandParser {
      * @return the generated Action (will be a derived class)
      */
     std::unique_ptr<Action>
-    actionFromPlayerCommand(CharacterEntity &character, StrView command,
+    actionFromPlayerCommand(Player &player, StrView command,
                             gamemanager::GameManager &gameManager);
     std::pair<UsernameType, PasswordType>
     identifiersFromIdentifyCommand(StrView command);

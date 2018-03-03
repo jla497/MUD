@@ -11,7 +11,7 @@
 class SayAction : public Action {
   public:
     using Action::Action;
-    void execute_impl();
+    void execute_impl() override;
 
   protected:
     std::string description() const override { return u8"Say action"; }

@@ -17,12 +17,9 @@ void SayAction::execute_impl() {
 
     auto &gameState = gameManager.getState();
 
-    // get player who is saying the message
-    auto playerSayingMessage = characterPerformingAction;
-
     //--get the room the player is in
     auto characterCurrentRoom =
-        gameState.getCharacterLocation(playerSayingMessage);
+        gameState.getCharacterLocation(*characterPerformingAction);
     if (!characterCurrentRoom) {
         logger->error(
             "Character is not in a room! Suspect incorrect world init");
@@ -45,8 +42,8 @@ void SayAction::execute_impl() {
         return;
     }
 
-    auto speakingCharacterDesc = playerSayingMessage.getShortDesc();
-    auto speakingCharacterId = playerSayingMessage.getEntityId();
+    auto speakingCharacterDesc = characterPerformingAction->getShortDesc();
+    auto speakingCharacterId = characterPerformingAction->getEntityId();
 
     // send the message to all the players in the room
     for (auto characterID : characterIdsInRoom) {

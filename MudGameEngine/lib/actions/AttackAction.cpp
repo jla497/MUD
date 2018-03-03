@@ -17,7 +17,7 @@ void AttackAction::execute_impl() {
 
     //--get the room the player is in
     auto characterCurrentRoom =
-        gameState.getCharacterLocation(playerWhoIsAttacking);
+        gameState.getCharacterLocation(*playerWhoIsAttacking);
     if (!characterCurrentRoom) {
         logger->error(
             "Character is not in a room! Suspect incorrect world init");
@@ -31,7 +31,7 @@ void AttackAction::execute_impl() {
     if (IDsOfPlayersInRoom.empty()) {
         return;
     }
-    auto attackingPlayersUniqueId = playerWhoIsAttacking.getEntityId();
+    auto attackingPlayersUniqueId = playerWhoIsAttacking->getEntityId();
     if (actionArguments.empty()) {
         // user did not pass an attack target
         gameManager.sendCharacterMessage(attackingPlayersUniqueId,
@@ -50,7 +50,7 @@ void AttackAction::execute_impl() {
             return;
         auto shortDescOfCurrentPlayer = currentEntity->getShortDesc();
         if (boost::to_lower_copy(shortDescOfCurrentPlayer)
-                .compare(boost::to_lower_copy(nameOfAttackTarget)) == 0) {
+                == boost::to_lower_copy(nameOfAttackTarget)) {
             // TODO: change this to allow attacking any entity rather than just
             // players
             // TODO: implement proper use of combat states
@@ -59,13 +59,13 @@ void AttackAction::execute_impl() {
             // send messages to characters fighting
             auto playerWhoIsBeingAttacking = currentEntity;
             gameManager.sendCharacterMessage(
-                playerWhoIsAttacking.getEntityId(),
+                playerWhoIsAttacking->getEntityId(),
                 "You attack " + playerWhoIsBeingAttacking->getShortDesc() +
-                    "and do 1 damage");
+                    " and do 1 damage");
 
             gameManager.sendCharacterMessage(
                 playerWhoIsBeingAttacking->getEntityId(),
-                "You are attacked by " + playerWhoIsAttacking.getShortDesc() +
+                "You are attacked by " + playerWhoIsAttacking->getShortDesc() +
                     "and take 1 damage");
             return;
         }

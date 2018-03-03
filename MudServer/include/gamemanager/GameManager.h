@@ -20,8 +20,7 @@
 namespace mudserver {
 namespace gamemanager {
 
-using GameLoopTick = std::chrono::milliseconds;
-constexpr GameLoopTick DEFAULT_TICK_LENGTH_MS{1000};
+constexpr std::chrono::milliseconds DEFAULT_TICK_LENGTH_MS{1000};
 
 using mudserver::commandparser::CommandParser;
 
@@ -40,7 +39,7 @@ class GameManager {
         u8"Incorrect username and/or password\n";
 
     GameState &gameState;
-    GameLoopTick tick = DEFAULT_TICK_LENGTH_MS;
+    std::chrono::milliseconds tick = DEFAULT_TICK_LENGTH_MS;
     bool done = false;
     CommandParser commandParser;
     connection::ConnectionManager &connectionManager;
@@ -111,6 +110,7 @@ class GameManager {
      * @param message the message to send
      */
     void sendCharacterMessage(UniqueId characterId, std::string message);
+    PlayerService &getPlayerService();
 };
 
 } // namespace gamemanager

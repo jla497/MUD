@@ -4,14 +4,19 @@
 namespace mudserver {
 namespace gamemanager {
 class GameManager;
+class Player;
 }
 } // namespace mudserver
 
 #include "entities/CharacterEntity.h"
+#include "gamemanager/Player.h"
+#include "gamemanager/GameManager.h"
 #include "entities/Entity.h"
 #include <string>
 #include <unordered_map>
 #include <vector>
+
+using mudserver::gamemanager::Player;
 
 /**
  * The Action class defines the interface that all actions implement.
@@ -23,7 +28,7 @@ class Action {
     static std::unordered_map<std::string, bool> isAdminAction;
 
   public:
-    Action(CharacterEntity &characterPerformingAction,
+    Action(Player &playerPerformingAction,
            std::vector<std::string> actionArguments,
            mudserver::gamemanager::GameManager &gameManager);
 
@@ -41,7 +46,8 @@ class Action {
 
   protected:
     virtual std::string description() const = 0;
-    CharacterEntity &characterPerformingAction;
+    CharacterEntity *characterPerformingAction;
+    Player &playerPerformingAction;
     std::vector<std::string> actionArguments;
     mudserver::gamemanager::GameManager &gameManager;
 };
