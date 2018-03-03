@@ -18,6 +18,7 @@ TEST_F(PlayerServiceTests, AddNewPlayer) {
     ASSERT_FALSE(playerResult);
 
     ASSERT_EQ(ps.addPlayer("jimbob", "hunter2"), AddPlayerResult::playerAdded);
+    ASSERT_EQ(ps.addPlayer("jimbob", "hunter3"), AddPlayerResult::playerExists);
 
     playerResult = ps.identify("jimbob", "hunter2");
     ASSERT_TRUE(playerResult);
