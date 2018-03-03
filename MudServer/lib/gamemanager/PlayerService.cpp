@@ -26,6 +26,9 @@ AddPlayerResult PlayerService::addPlayer(UsernameType username,
 
     PlayerId id = getNextPlayerId();
     Player player{id, username, std::move(password)};
+    if (!players.size()) {
+        player.getAdminPrivilege();
+    }
     playerIdByName[username] = id;
     players.emplace(std::make_pair(id, player));
 
@@ -96,7 +99,8 @@ void PlayerService::setPlayerConnection(PlayerId playerId,
         player->setConnectionId(connectionId);
     }
 }
-networking::ConnectionId PlayerService::setPlayerConnection(PlayerId playerId) {
+
+networking::ConnectionId PlayerService::getPlayerConnection(PlayerId playerId) {
     auto player = getPlayerById(playerId);
     if (player) {
         return player->getConnectionId();

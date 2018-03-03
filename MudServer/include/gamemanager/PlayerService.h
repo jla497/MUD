@@ -3,9 +3,13 @@
 
 #include "Player.h"
 #include "entities/CharacterEntity.h"
+
 #include <boost/bimap.hpp>
 #include <boost/optional.hpp>
 #include <unordered_map>
+
+#include <boost/serialization/access.hpp>
+#include <boost/serialization/unordered_map.hpp>
 
 namespace mudserver {
 namespace gamemanager {
@@ -20,11 +24,22 @@ enum class AddPlayerResult {
 };
 
 class PlayerService {
+private:
     PlayerId nextPlayerId;
     std::unordered_map<PlayerId, Player> players;
     std::unordered_map<UsernameType, PlayerId> playerIdByName;
     std::unordered_map<networking::ConnectionId, PlayerId> playerIdByConnection;
     PcBmType playerCharacterBimap;
+
+    friend class boost::serialization::access;
+
+    template<class Archive>
+    void serialize(Archive &ar, const unsigned int version) {
+        ar &nextPlayerId;
+        ar &players;
+        ar &playerIdByName;
+        //ar &playerCharacterBimap;
+    }
 
     PlayerId getNextPlayerId();
 
@@ -60,6 +75,7 @@ class PlayerService {
      * @param playerId the player's id
      */
     CharacterEntity createPlayerCharacter(PlayerId playerId);
+    networking::ConnectionId getPlayerConnection(PlayerId playerId);
 };
 
 } // namespace gamemanager

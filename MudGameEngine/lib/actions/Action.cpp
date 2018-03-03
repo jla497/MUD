@@ -4,8 +4,9 @@
 #include "actions/Action.h"
 #include "logging.h"
 
+//FIXME: this should possibly work on the enum keyword rather than the description string
 std::unordered_map<std::string, bool> Action::isAdminAction = {
-    {"Program action", true}};
+    {"Program action", true}, {"Save action", true}};
 
 Action::Action(Player &playerPerformingAction,
                std::vector<std::string> actionArguments,
@@ -23,7 +24,7 @@ void Action::execute() {
     characterPerformingAction = gameManager.getState().getCharacterFromLUT(
         *characterId);
 
-    logger->info("Checking if Action is AdminAction...");
+    logger->debug("Checking if " + description() + " is AdminAction...");
     // check if action is admin action and if character has an administrator
     // role
     if (Action::isAdminAction[description()]) {

@@ -33,6 +33,7 @@ const char *CHELP = u8"help";
 const char *CREATE = u8"create";
 const char *MODIFY = u8"modify";
 const char *IDENTIFY = u8"identify";
+const char *SAVE = u8"save";
 }
 }
 }

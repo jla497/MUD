@@ -9,6 +9,7 @@
 #include <vector>
 
 #include <boost/format.hpp>
+#include <persistence/PersistenceService.h>
 
 #include "connectionmanager/ConnectionManager.h"
 #include "entities/CharacterEntity.h"
@@ -24,8 +25,10 @@ using boost::str;
 using connection::gameAndUserInterface;
 
 GameManager::GameManager(connection::ConnectionManager &connMan,
-                         GameState &gameState)
-    : gameState{gameState}, connectionManager{connMan} {}
+                         GameState &gameState,
+                         persistence::PersistenceService &persistenceService)
+    : gameState{gameState}, connectionManager{connMan},
+      persistenceService{persistenceService} {}
 
 /**
  * Runs a standard game loop, which consists of the following steps:
@@ -36,6 +39,8 @@ GameManager::GameManager(connection::ConnectionManager &connMan,
 void GameManager::mainLoop() {
     static auto logger = logging::getLogger("GameManager::mainLoop");
     logger->info("Entered main game loop");
+
+    loadPersistedData();
 
     using clock = std::chrono::high_resolution_clock;
     gameState.doReset();
@@ -60,6 +65,16 @@ void GameManager::mainLoop() {
             clock::now() - startTime);
         std::this_thread::sleep_for(tick -  delta);
     }
+
+    persistData();
+}
+
+void GameManager::persistData() {
+    persistenceService.save(playerService);
+}
+
+void GameManager::loadPersistedData() {
+    playerService = persistenceService.loadPlayerService();
 }
 
 boost::optional<Player &>
@@ -125,12 +140,7 @@ void GameManager::processMessages(
         auto action = commandParser.actionFromPlayerCommand(
             *player, message.text, *this);
 
-        std::ostringstream retMessage;
-        // retMessage << "DEBUG: " << *action;
-
         enqueueAction(std::move(action));
-
-        enqueueMessage(message.conn, retMessage.str());
     }
 }
 

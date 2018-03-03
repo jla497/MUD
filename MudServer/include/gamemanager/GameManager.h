@@ -16,6 +16,7 @@
 #include "connectionmanager/ConnectionManager.h"
 #include "entities/CharacterEntity.h"
 #include "entities/Entity.h"
+#include "persistence/PersistenceService.h"
 
 namespace mudserver {
 namespace gamemanager {
@@ -43,6 +44,7 @@ class GameManager {
     bool done = false;
     CommandParser commandParser;
     connection::ConnectionManager &connectionManager;
+    persistence::PersistenceService & persistenceService;
 
     PlayerService playerService;
     std::queue<connection::gameAndUserInterface> outgoingMessages;
@@ -87,8 +89,10 @@ class GameManager {
      * the GameManager itself.
      * @param connMan the connection manager
      * @param gameState the game state
+     * @param persistenceService the persistence service for saving game
      */
-    GameManager(connection::ConnectionManager &connMan, GameState &gameState);
+    GameManager(connection::ConnectionManager &connMan, GameState &gameState,
+        persistence::PersistenceService &persistenceService);
 
     /**
      * The main game loop. Updates game state once per tick, processes messages
@@ -111,6 +115,8 @@ class GameManager {
      */
     void sendCharacterMessage(UniqueId characterId, std::string message);
     PlayerService &getPlayerService();
+    void persistData();
+    void loadPersistedData();
 };
 
 } // namespace gamemanager

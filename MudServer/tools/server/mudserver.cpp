@@ -30,9 +30,12 @@ int main(int argc, char *argv[]) {
             configData->serverPort};
         mudserver::gamemanager::GameState gameState{};
         gameState.initFromYaml(configData->ymlFilePath);
+        mudserver::persistence::PersistenceService persistenceService{
+            configData->configDir};
 
         mudserver::gamemanager::GameManager gameManager{connectionManager,
-                                                        gameState};
+                                                        gameState,
+                                                        persistenceService};
 
         std::cout
             << "---------------------MUD Server Console---------------------"

@@ -14,6 +14,7 @@
 #include "actions/MoveAction.h"
 #include "actions/NullAction.h"
 #include "actions/PrgmAction.h"
+#include "actions/SaveAction.h"
 #include "actions/SayAction.h"
 #include "commandparser/CommandParser.h"
 #include "resources/commands.h"
@@ -30,7 +31,8 @@ static std::unordered_map<std::string, ActKeyword> actionLookup =
     { // NOLINT
         {UNDEFINED, ActKeyword::undefined}, {SAY, ActKeyword::say},
         {LOOK, ActKeyword::look},           {ATTACK, ActKeyword::attack},
-        {MOVE, ActKeyword::move},           {PROGRAM, ActKeyword::program}};
+        {MOVE, ActKeyword::move},           {PROGRAM, ActKeyword::program},
+        {SAVE, ActKeyword::save}};
 
 using ActionGenerator = std::unique_ptr<Action> (*)(Player &,
                                                     std::vector<std::string> &,
@@ -48,7 +50,7 @@ const static std::vector<ActionGenerator> actionGenerators = {
     // NOLINT
     &generator<NullAction>, // undefined
     &generator<SayAction>,    &generator<LookAction>, &generator<MoveAction>,
-    &generator<AttackAction>, &generator<PrgmAction>,
+    &generator<AttackAction>, &generator<PrgmAction>, &generator<SaveAction>
 };
 
 std::unique_ptr<Action>

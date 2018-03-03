@@ -33,6 +33,7 @@ enum class ActKeyword {
     move,
     attack,
     program,
+    save,
 
     _N_ACTIONS_
 };

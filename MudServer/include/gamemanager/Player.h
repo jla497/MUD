@@ -4,6 +4,7 @@
 #include "Server.h"
 #include "entities/CharacterEntity.h"
 #include <string>
+#include <boost/serialization/access.hpp>
 
 namespace mudserver {
 namespace gamemanager {
@@ -18,6 +19,15 @@ using PasswordType = std::string;
  * and the PlayerCharacter, which is the actual fantasy being in the game world.
  */
 class Player {
+private:
+    friend class boost::serialization::access;
+
+    template<class Archive>
+    void serialize(Archive &ar, const unsigned int version) {
+        ar &id;
+        ar &username;
+        ar &password;
+    }
 
     PlayerId id = static_cast<PlayerId>(-1);
     UsernameType username;

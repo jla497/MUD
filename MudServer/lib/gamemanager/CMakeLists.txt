@@ -22,7 +22,12 @@ add_library(gamemanager
     GameState.cpp
     Player.cpp
     LutBuilder.cpp
-        PlayerService.cpp ../../include/gamemanager/PlayerService.h)
+    PlayerService.cpp ../../include/gamemanager/PlayerService.h)
+
+# This program requires boost
+find_package(Boost 1.58 COMPONENTS system filesystem serialization REQUIRED)
+include_directories(${Boost_INCLUDE_DIR})
+target_link_libraries(gamemanager ${Boost_LIBRARIES})
 
 target_link_libraries(gamemanager
     connectionmanager
@@ -32,6 +37,7 @@ target_link_libraries(gamemanager
     reset
     factory
     administrator
+    persistence
 )
 
 set_target_properties(gamemanager
