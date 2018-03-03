@@ -38,8 +38,9 @@ class CommandParserTest : public ::testing::Test {
         unsigned int typeId = 0;
 
         // TODO typeId for player characters
-        ch = CharacterEntity{armor,    damage, desc,     exp,       gold, hit, typeId,
-                             keywords, level,  longDesc, shortDesc, thac0};
+        ch = CharacterEntity{armor, damage,   desc,      exp,
+                             gold,  hit,      typeId,    keywords,
+                             level, longDesc, shortDesc, thac0};
     }
 
     CommandParser cp;

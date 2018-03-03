@@ -22,6 +22,7 @@ class ObjectEntity : public Entity {
     int m_weight{};
 
   public:
+    ObjectEntity() = default;
     ObjectEntity(std::vector<std::string> attributes, unsigned int cost,
                  std::vector<std::string> descExtra,
                  std::vector<std::string> keywordsExtra,
