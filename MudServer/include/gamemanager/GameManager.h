@@ -16,21 +16,14 @@
 #include "connectionmanager/ConnectionManager.h"
 #include "entities/CharacterEntity.h"
 #include "entities/Entity.h"
-#include "entities/PlayerCharacter.h"
 
 namespace mudserver {
 namespace gamemanager {
 
 using GameLoopTick = std::chrono::milliseconds;
-constexpr GameLoopTick DEFAULT_TICK_LENGTH_MS = GameLoopTick(1000);
+constexpr GameLoopTick DEFAULT_TICK_LENGTH_MS{1000};
 
 using mudserver::commandparser::CommandParser;
-
-/* Type definitions used in GameManager */
-using connection::gameAndUserMsgs;
-using connection::gameAndUserInterface;
-using std::unique_ptr;
-using std::vector;
 
 /**
  * The game manager is in charge of carrying out the main game loop. As a
@@ -43,10 +36,12 @@ class GameManager {
     constexpr static auto &PLEASE_LOGIN =
         u8"Please login/register using identify <username> <password>\n";
     constexpr static auto &LOGIN_SUCCESS = u8"Logged in successfully\n";
+    constexpr static auto &INCORRECT_IDENT =
+        u8"Incorrect username and/or password\n";
 
     GameState &gameState;
-    GameLoopTick tick;
-    bool done;
+    GameLoopTick tick = DEFAULT_TICK_LENGTH_MS;
+    bool done = false;
     CommandParser commandParser;
     connection::ConnectionManager &connectionManager;
 
@@ -59,7 +54,8 @@ class GameManager {
      * as required.
      * @param messages the messages
      */
-    void processMessages(gameAndUserMsgs &messages);
+    void
+    processMessages(std::vector<connection::gameAndUserInterface> &messages);
     /**
      * Given a connection (network layer concept), put a message on the queue
      * for that connection.
@@ -76,14 +72,14 @@ class GameManager {
      * Given an action, put it on the pending action queue
      * @param action the action to enqueue
      */
-    void enqueueAction(unique_ptr<Action> action);
+    void enqueueAction(std::unique_ptr<Action> action);
     /**
      * Process the pending action queue, calling execute() on each action.
      */
     void performQueuedActions();
 
     boost::optional<Player &>
-    getPlayerFromLogin(const gameAndUserInterface &message);
+    getPlayerFromLogin(const connection::gameAndUserInterface &message);
 
   public:
     /**
@@ -94,7 +90,6 @@ class GameManager {
      * @param gameState the game state
      */
     GameManager(connection::ConnectionManager &connMan, GameState &gameState);
-    GameManager(const GameManager &gm) = delete;
 
     /**
      * The main game loop. Updates game state once per tick, processes messages

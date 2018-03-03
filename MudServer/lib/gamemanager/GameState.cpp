@@ -1,4 +1,5 @@
 #include <iostream>
+#include <memory>
 
 #include "gamemanager/GameState.h"
 #include "logging.h"
@@ -6,7 +7,9 @@
 namespace mudserver {
 namespace gamemanager {
 
-using std::make_unique;
+std::size_t UniqueIdHash::operator()(UniqueId id) const {
+    return std::hash<unsigned int>()(id.getId());
+}
 
 void GameState::initFromYaml(std::string filename) {
     parseYamlFile(std::move(filename));
@@ -20,7 +23,7 @@ void GameState::parseYamlFile(std::string filename) {
 
 void GameState::initRoomLUT() {
     for (auto &area : areas) {
-        auto &rooms = area->getAllRooms();
+        auto &rooms = area.getAllRooms();
         LutBuilder lutBuilder;
         roomLookUp = lutBuilder.createLUT(rooms);
     }
@@ -35,59 +38,55 @@ void GameState::addCharacterRoomRelationToLUT(UniqueId characterId,
     characterRoomLookUp.left[characterId] = roomId;
 }
 
-void GameState::addRoomToLUT(RoomEntity *room) {
-    roomLookUp[room->getId()] = room;
+void GameState::addRoomToLUT(const RoomEntity &room) {
+    roomLookUp[room.getId()] = room;
 }
 
-void GameState::addCharacter(unique_ptr<PlayerCharacter> character) {
-    auto id = character->getEntityId();
+void GameState::addCharacter(CharacterEntity &character) {
+    auto id = character.getEntityId();
     characterLookUp[id] = std::move(character);
     // TODO: implement a configurable default spawn point
     // currently just takes the first room loaded
     auto roomLookupBegin = roomLookUp.begin();
     if (roomLookupBegin != roomLookUp.end()) {
-        addCharacterRoomRelationToLUT(id, roomLookupBegin->second->getId());
+        addCharacterRoomRelationToLUT(id, roomLookupBegin->second.getId());
     } else {
         auto logger = logging::getLogger("GameState::addCharacter");
         logger->error("No rooms found, character not added to room");
     }
 }
 
-void GameState::addAreaFromParser() {
-    areas.push_back(std::move(parser.getArea()));
-}
+void GameState::addAreaFromParser() { areas.push_back(parser.getArea()); }
 
 /**
  * Get Methods
  */
 RoomEntity *GameState::getRoomFromLUT(const roomId id) {
-    return roomLookUp.find(id)->second;
+    auto it = roomLookUp.find(id);
+    return it != roomLookUp.end() ? &it->second : nullptr;
 }
 
-PlayerCharacter *GameState::getCharacterFromLUT(UniqueId id) {
-    return characterLookUp.find(id)->second.get();
+CharacterEntity *GameState::getCharacterFromLUT(UniqueId id) {
+    auto it = characterLookUp.find(id);
+    return it != characterLookUp.end() ? &it->second : nullptr;
 }
 
-RoomEntity *GameState::getCharacterLocation(PlayerCharacter *character) {
-    auto id = characterRoomLookUp.left.find(character->getEntityId())->second;
-    return roomLookUp.find(id)->second;
+RoomEntity *GameState::getCharacterLocation(const CharacterEntity &character) {
+    auto it = characterRoomLookUp.left.find(character.getEntityId());
+    if (it == characterRoomLookUp.left.end()) {
+        return nullptr;
+    }
+    auto it2 = roomLookUp.find(it->second);
+    return it2 != roomLookUp.end() ? &it2->second : nullptr;
 }
 
-RoomEntity *GameState::getCharacterLocation(PlayerCharacter &character) {
-    auto roomid =
-        characterRoomLookUp.left.find(character.getEntityId())->second;
-
-    auto room = roomLookUp.find(roomid)->second;
-    // std::cout<<"room's id: "<<room->getId()<<std::endl;
-    return roomLookUp.find(roomid)->second;
-}
-
-vector<UniqueId> GameState::getCharactersInRoom(RoomEntity *room) {
+std::vector<UniqueId> GameState::getCharactersInRoom(RoomEntity *room) {
     if (room == nullptr) {
         // return an empty vector
         return {};
     }
-    vector<UniqueId> characters;
+    std::vector<UniqueId> characters;
+    characters.reserve(characterRoomLookUp.left.size());
     for (auto &p : characterRoomLookUp.left) {
         if (p.second == room->getId()) {
             characters.push_back(p.first);
@@ -96,9 +95,9 @@ vector<UniqueId> GameState::getCharactersInRoom(RoomEntity *room) {
     return characters;
 }
 
-AreaEntity *GameState::getAreaFromParser() { return parser.getArea().get(); }
+AreaEntity GameState::getAreaFromParser() { return parser.getArea(); }
 
-deque<unique_ptr<AreaEntity>> &GameState::getAreas() { return areas; }
+std::deque<AreaEntity> &GameState::getAreas() { return areas; }
 
 /**
  * Clear Methods

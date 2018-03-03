@@ -1,4 +1,5 @@
-#include <boost/format.hpp>
+
+#include <cassert>
 #include <boost/optional.hpp>
 #include <iomanip>
 #include <iostream>
@@ -7,8 +8,10 @@
 #include <thread>
 #include <vector>
 
+#include <boost/format.hpp>
+
 #include "connectionmanager/ConnectionManager.h"
-#include "entities/PlayerCharacter.h"
+#include "entities/CharacterEntity.h"
 #include "gamemanager/GameManager.h"
 #include "logging.h"
 
@@ -17,13 +20,12 @@ namespace gamemanager {
 
 using boost::format;
 using boost::str;
-using std::vector;
+
+using connection::gameAndUserInterface;
 
 GameManager::GameManager(connection::ConnectionManager &connMan,
                          GameState &gameState)
-    : connectionManager{connMan}, gameState{gameState},
-      commandParser(), tick{DEFAULT_TICK_LENGTH_MS}, done{false},
-      playerService(), outgoingMessages(), actions() {}
+    : gameState{gameState}, connectionManager{connMan} {}
 
 /**
  * Runs a standard game loop, which consists of the following steps:
@@ -36,11 +38,9 @@ void GameManager::mainLoop() {
     logger->info("Entered main game loop");
 
     using clock = std::chrono::high_resolution_clock;
-
     auto startTime = clock::now();
 
     while (!done) {
-        unique_ptr<gameAndUserMsgs> messagesForConnMan;
         if (connectionManager.update()) {
             // An error was encountered, stop
             done = true;
@@ -49,8 +49,13 @@ void GameManager::mainLoop() {
 
         auto messages = connectionManager.sendToGameManager();
 
-        processMessages(*messages);
+        processMessages(messages);
 
+        /*
+         * FIXME
+         * This eventually causes the tick to go out of sync.
+         * If tick = delta + n, n time units get lost every tick.
+         */
         auto delta = clock::now() - startTime;
         if (delta >= tick) {
             startTime = clock::now();
@@ -78,6 +83,8 @@ GameManager::getPlayerFromLogin(const gameAndUserInterface &message) {
                     playerService.addPlayer(uAndP.first, uAndP.second);
                 if (addPlayerResult == AddPlayerResult::playerAdded) {
                     player = playerService.identify(uAndP.first, uAndP.second);
+                } else if (addPlayerResult == AddPlayerResult::playerExists) {
+                    enqueueMessage(message.conn, INCORRECT_IDENT);
                 }
             }
             if (player) {
@@ -94,12 +101,14 @@ GameManager::getPlayerFromLogin(const gameAndUserInterface &message) {
     return player;
 }
 
-void GameManager::processMessages(gameAndUserMsgs &messages) {
+void GameManager::processMessages(
+    std::vector<connection::gameAndUserInterface> &messages) {
     static auto logger = logging::getLogger("GameManager::processMessages");
 
-    for (auto &message : messages) {
+    for (const auto &message : messages) {
 
-        auto player = getPlayerFromLogin(*message);
+        auto player = getPlayerFromLogin(message);
+        logger->debug(std::to_string(message.conn.id) + ": " + message.text);
 
         if (!player)
             continue;
@@ -113,23 +122,24 @@ void GameManager::processMessages(gameAndUserMsgs &messages) {
             auto newCharacter =
                 playerService.createPlayerCharacter(player->getId());
             gameState.addCharacter(
-                std::make_unique<PlayerCharacter>(std::move(newCharacter)));
+                newCharacter);
         }
+
         auto &playerCharacterId =
             *playerService.playerToCharacter(player->getId());
         auto &playerCharacter =
             *gameState.getCharacterFromLUT(playerCharacterId);
 
         // parse message into verb/object
-        std::unique_ptr<Action> action = commandParser.actionFromPlayerCommand(
-            playerCharacter, message->text, *this);
+        auto action = commandParser.actionFromPlayerCommand(
+            playerCharacter, message.text, *this);
 
-        std::stringstream retMessage;
+        std::ostringstream retMessage;
         // retMessage << "DEBUG: " << *action;
 
         enqueueAction(std::move(action));
 
-        enqueueMessage(message->conn, retMessage.str());
+        enqueueMessage(message.conn, retMessage.str());
     }
 }
 
@@ -138,20 +148,21 @@ void GameManager::enqueueMessage(networking::Connection conn, std::string msg) {
 }
 
 void GameManager::sendMessagesToPlayers() {
-    auto toSend = std::make_unique<gameAndUserMsgs>();
+    std::vector<connection::gameAndUserInterface> toSend;
+    toSend.reserve(outgoingMessages.size());
 
     while (!outgoingMessages.empty()) {
-        toSend->push_back(std::make_unique<connection::gameAndUserInterface>(
-            outgoingMessages.front()));
+        toSend.push_back(outgoingMessages.front());
         outgoingMessages.pop();
     }
-    connectionManager.receiveFromGameManager(std::move(toSend));
+    connectionManager.receiveFromGameManager(toSend);
     connectionManager.sendToServer();
 }
 
-void GameManager::enqueueAction(unique_ptr<Action> action) {
+void GameManager::enqueueAction(std::unique_ptr<Action> action) {
     actions.push(std::move(action));
 }
+
 void GameManager::performQueuedActions() {
     while (!actions.empty()) {
         actions.front()->execute();

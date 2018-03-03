@@ -38,7 +38,7 @@ struct ConnectionHash {
 };
 
 /**
- *  A Message containing text that can be sent to or was recieved from a given
+ *  A Message containing text that can be sent to or was received from a given
  *  Connection.
  */
 struct Message {

@@ -3,7 +3,7 @@
 
 #include "actions/Action.h"
 
-Action::Action(PlayerCharacter &characterPerformingAction,
+Action::Action(CharacterEntity &characterPerformingAction,
                std::vector<std::string> actionArguments,
                mudserver::gamemanager::GameManager &gameManager)
     : characterPerformingAction{characterPerformingAction},

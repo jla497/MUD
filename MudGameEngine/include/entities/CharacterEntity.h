@@ -9,16 +9,17 @@ enum class CombatStates { NOT_FIGHTING, FIGHTING };
 class CharacterEntity : public Entity {
   private:
     int m_armor;
-    std::string m_damage; // TODO: string for now
+    // std::string m_damage; // TODO: string for now
     std::vector<std::string> m_desc;
     unsigned int m_exp;
     int m_gold;
-    std::string m_hit; // TODO: string for now
+    // std::string m_hit; // TODO: string for now
+    unsigned int m_typeId; // npcs have types, what to do for players?
     std::vector<std::string> m_keywords;
-    unsigned int m_level;
+    unsigned int m_level{};
     std::vector<std::string> m_longDesc;
     std::string m_shortDesc;
-    int m_thac0;
+    int m_thac0{};
 
     CombatStates m_combatState;
 
@@ -31,14 +32,15 @@ class CharacterEntity : public Entity {
 
   public:
     CharacterEntity() = default;
-    CharacterEntity(int armor, std::string &damage,
-                    std::vector<std::string> &desc, unsigned int exp, int gold,
-                    std::string &hit, std::vector<std::string> &keywords,
-                    unsigned int level, std::vector<std::string> &longDesc,
-                    std::string &shortDesc, int thac0);
+    CharacterEntity(int armor, std::string damage,
+                    std::vector<std::string> desc, unsigned int exp, int gold,
+                    std::string hit, unsigned int typeId, std::vector<std::string> keywords,
+                    unsigned int level, std::vector<std::string> longDesc,
+                    std::string shortDesc, int thac0); // TODO make by reference
+
 
     // Getters
-    std::string getDamage() const;
+    Roll getDamage() const;
 
     std::vector<std::string> getDesc() const;
 
@@ -46,7 +48,9 @@ class CharacterEntity : public Entity {
 
     int getGold() const;
 
-    std::string getHit() const;
+    Roll getHit() const;
+
+    unsigned int getTypeId() const;
 
     std::vector<std::string> getKeywords() const;
 
@@ -68,7 +72,7 @@ class CharacterEntity : public Entity {
     // ASSUME: no limit to debt or max money
     void addGold(unsigned int amount);
     void subtractGold(unsigned int amount);
-    bool hasGold();
+    bool hasGold() const;
 
     // Experience is unsigned to assume no negative exp
     void incExp(unsigned int expPoints);

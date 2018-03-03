@@ -1,5 +1,5 @@
 #include "gamemanager/PlayerService.h"
-#include "entities/PlayerCharacter.h"
+#include "entities/CharacterEntity.h"
 #include "resources/PlayerCharacterDefaults.h"
 
 namespace pc = mudserver::resources::playercharacter;
@@ -19,6 +19,11 @@ boost::optional<Player &> PlayerService::identify(UsernameType username,
 
 AddPlayerResult PlayerService::addPlayer(UsernameType username,
                                          PasswordType password) {
+
+    if (playerIdByName.find(username) != playerIdByName.end()) {
+        return AddPlayerResult::playerExists;
+    }
+
     PlayerId id = getNextPlayerId();
     Player player{id, username, std::move(password)};
     playerIdByName[username] = id;
@@ -62,16 +67,17 @@ PlayerId PlayerService::characterToPlayer(UniqueId characterId) {
     return playerCharacterBimap.right.find(characterId)->second;
 }
 
-PlayerCharacter PlayerService::createPlayerCharacter(PlayerId playerId) {
+CharacterEntity PlayerService::createPlayerCharacter(PlayerId playerId) {
     auto testShortDesc =
         "TestPlayerName" + std::to_string(playerCharacterBimap.size());
 
-    PlayerCharacter character{pc::ARMOR,
+    CharacterEntity character{pc::ARMOR,
                               std::string{pc::DAMAGE},
                               std::vector<std::string>{},
                               pc::EXP,
                               pc::GOLD,
                               std::string{pc::HIT},
+                              pc::TYPEID,
                               std::vector<std::string>{},
                               pc::LEVEL,
                               std::vector<std::string>{},

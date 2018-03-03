@@ -2,7 +2,7 @@
 #define PLAYERSERVICE_H
 
 #include "Player.h"
-#include "entities/PlayerCharacter.h"
+#include "entities/CharacterEntity.h"
 #include <boost/bimap.hpp>
 #include <boost/optional.hpp>
 #include <unordered_map>
@@ -59,7 +59,7 @@ class PlayerService {
      * Create and add a new player character to the game state.
      * @param playerId the player's id
      */
-    PlayerCharacter createPlayerCharacter(PlayerId playerId);
+    CharacterEntity createPlayerCharacter(PlayerId playerId);
 };
 
 } // namespace gamemanager

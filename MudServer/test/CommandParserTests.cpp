@@ -6,7 +6,7 @@
 #include "MockConnectionManager.h"
 #include "MockGameManager.h"
 #include "commandparser/CommandParser.h"
-#include "entities/PlayerCharacter.h"
+#include "entities/CharacterEntity.h"
 #include "gamemanager/GameState.h"
 
 #include "actions/AttackAction.h"
@@ -22,12 +22,12 @@ class CommandParserTest : public ::testing::Test {
     CommandParserTest() : cp{}, cm{}, gs{}, gm{cm, gs} {
 
         int armor = 1;
-        std::string damage = "1";
+        std::string damage = "1d8+32";
         std::vector<std::string> desc{};
         desc.push_back("desc1");
         unsigned int exp = 1;
         int gold = 1;
-        std::string hit = "1";
+        std::string hit = "1d1+30000";
         std::vector<std::string> keywords{};
         keywords.push_back("keyword1");
         unsigned int level = 1;
@@ -35,8 +35,10 @@ class CommandParserTest : public ::testing::Test {
         longDesc.push_back("desc1");
         std::string shortDesc = "test";
         int thac0 = 1;
+        unsigned int typeId = 0;
 
-        ch = PlayerCharacter{armor,    damage, desc,     exp,       gold, hit,
+        // TODO typeId for player characters
+        ch = CharacterEntity{armor,    damage, desc,     exp,       gold, hit, typeId,
                              keywords, level,  longDesc, shortDesc, thac0};
     }
 
@@ -44,7 +46,7 @@ class CommandParserTest : public ::testing::Test {
     MockConnectionManager cm;
     GameState gs;
     MockGameManager gm;
-    PlayerCharacter ch;
+    CharacterEntity ch;
 };
 
 TEST_F(CommandParserTest, parsesSayAction) {
