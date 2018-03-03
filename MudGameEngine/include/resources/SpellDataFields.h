@@ -4,6 +4,10 @@
 #include <string>
 
 static const char *DEFENSE = "defense";
+static const char *OFFENSE = "offense";
+static const char *OTHER = "other";
+static const char *PERSONAL = "personal";
+static const char *OBJECT = "object";
 
 static const char *Effect = "Effect";
 static const char *MANA = "Mana";

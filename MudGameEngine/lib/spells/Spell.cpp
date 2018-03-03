@@ -132,13 +132,11 @@ void setDamage(std::string damage) {
 	this->damage = damage;
 }
 
-		//calculates the amount of damage or healing the spell will perform 
-		//Rolls a dice, the result may not always be the same!)
+
 int calculateSpellEffect(unsigned int characterLevel) {
-	
+
 }
 
-//returns true if character is above the minimum level to use the spell
 bool isCharacterValidLevel(unsigned int characterLevel) {
 	if (minlevel <= characterLevel) {
 		return true;
