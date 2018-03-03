@@ -4,7 +4,9 @@
 
 #include "YamlParser.h"
 #include "resources/DataFields.h"
-#include <deque>
+#include "Parser.h"
+
+namespace Parser {
 
 bool YamlParser::loadYamlFile(const std::string &path) {
     if (is_loaded) {
@@ -18,10 +20,6 @@ bool YamlParser::loadYamlFile(const std::string &path) {
 
     is_loaded = true;
     return true;
-}
-
-std::string YamlParser::parseString(YAML::Node node) {
-    return node.as<std::string>();
 }
 
 NonPlayerCharacter YamlParser::parseNPC(YAML::Node npcNode) const {
@@ -246,3 +244,5 @@ AreaEntity YamlParser::getArea() const {
     }
     return area;
 }
+
+} //namespace Parser
