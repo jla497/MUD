@@ -21,6 +21,7 @@ class PersistenceService {
     void save(PlayerService &ps, std::string fileName);
 
     PlayerService loadPlayerService();
+    PlayerService loadPlayerService(std::string fileName);
 };
 
 } // namespace persistence

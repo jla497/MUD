@@ -70,6 +70,27 @@ PlayerService PersistenceService::loadPlayerService() {
 
     return ps;
 }
+PlayerService PersistenceService::loadPlayerService(std::string fileName) {
+    auto logger = logging::getLogger("PersistenceService::loadPlayerService");
 
+    PlayerService ps{};
+
+    boost::system::error_code returnedError;
+    fs::path file{fileName};
+    auto fullPath = configDir / file;
+
+    boost::filesystem::exists(fullPath, returnedError);
+    if (!returnedError) {
+        std::ifstream ifs{(configDir / file).generic_string()};
+        try {
+            boost::archive::text_iarchive ia{ifs};
+            ia >> ps;
+        } catch (const boost::archive::archive_exception &e) {
+            logger->warning("Bad player save file");
+        }
+    }
+
+    return ps;
+}
 } // namespace persistence
 } // namespace mudserver
