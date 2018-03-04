@@ -9,19 +9,19 @@
 
 #include "GameState.h"
 #include "Player.h"
+#include "PlayerService.h"
 #include "UniqueId.h"
 #include "actions/Action.h"
 #include "commandparser/CommandParser.h"
 #include "connectionmanager/ConnectionManager.h"
 #include "entities/CharacterEntity.h"
 #include "entities/Entity.h"
+#include "persistence/PersistenceService.h"
 
 namespace mudserver {
 namespace gamemanager {
 
-using GameLoopTick = std::chrono::milliseconds;
-using PcBmType = boost::bimap<PlayerId, UniqueId>;
-constexpr GameLoopTick DEFAULT_TICK_LENGTH_MS{1000};
+constexpr std::chrono::milliseconds DEFAULT_TICK_LENGTH_MS{1000};
 
 using mudserver::commandparser::CommandParser;
 
@@ -33,15 +33,20 @@ using mudserver::commandparser::CommandParser;
  * actions. It fetches batches of incoming messages from the network.
  */
 class GameManager {
-  private:
+    constexpr static auto &PLEASE_LOGIN =
+        u8"Please login/register using identify <username> <password>\n";
+    constexpr static auto &LOGIN_SUCCESS = u8"Logged in successfully\n";
+    constexpr static auto &INCORRECT_IDENT =
+        u8"Incorrect username and/or password\n";
+
     GameState &gameState;
-    GameLoopTick tick = DEFAULT_TICK_LENGTH_MS;
+    std::chrono::milliseconds tick = DEFAULT_TICK_LENGTH_MS;
     bool done = false;
     CommandParser commandParser;
     connection::ConnectionManager &connectionManager;
+    persistence::PersistenceService &persistenceService;
 
-    std::unordered_map<PlayerId, Player> players;
-    PcBmType playerCharacterBimap;
+    PlayerService playerService;
     std::queue<connection::gameAndUserInterface> outgoingMessages;
     std::queue<std::unique_ptr<Action>> actionsA;
     std::queue<std::unique_ptr<Action>> actionsB;
@@ -77,40 +82,8 @@ class GameManager {
      */
     void performQueuedActions();
 
-    /**
-     * Given a player, return a pointer to the player's character.
-     * @param player the player
-     * @return the player's character (may be null)
-     */
-
-    CharacterEntity *playerToCharacter(const Player &player);
-
-    /**
-     * Given a character, return a reference to the character's player.
-     * @param character the character
-     * @return the character's player
-     */
-    Player &characterToPlayer(const CharacterEntity &character);
-
-    /**
-     * Given a character's id, return a reference to the character's player.
-     * @param characterId the character's id
-     * @return the character's player
-     */
-    Player &characterIdToPlayer(UniqueId characterId);
-
-    /**
-     * Given a player's id, return a pointer to the player's character.
-     * @param playerId the player's id
-     * @return the player's character (may be null)
-     */
-    CharacterEntity *playerIdToCharacter(PlayerId playerId);
-
-    /**
-     * Create and add a new player character to the game state.
-     * @param playerId the player's id
-     */
-    void addPlayerCharacter(PlayerId playerId);
+    boost::optional<Player &>
+    getPlayerFromLogin(const connection::gameAndUserInterface &message);
 
   public:
     /**
@@ -119,8 +92,10 @@ class GameManager {
      * the GameManager itself.
      * @param connMan the connection manager
      * @param gameState the game state
+     * @param persistenceService the persistence service for saving game
      */
-    GameManager(connection::ConnectionManager &connMan, GameState &gameState);
+    GameManager(connection::ConnectionManager &connMan, GameState &gameState,
+                persistence::PersistenceService &persistenceService);
 
     /**
      * The main game loop. Updates game state once per tick, processes messages
@@ -142,9 +117,11 @@ class GameManager {
      * @param message the message to send
      */
     void sendCharacterMessage(UniqueId characterId, std::string message);
+    PlayerService &getPlayerService();
+    void persistData();
+    void loadPersistedData();
 
     void swapQueuePtrs();
-
     void addActionToQueue(std::unique_ptr<Action> action);
 };
 

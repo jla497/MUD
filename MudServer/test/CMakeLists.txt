@@ -7,6 +7,7 @@ add_executable(mudtest
         GameStateTests.cpp
         ParserTests.cpp
         CommandParserTests.cpp
+        PlayerServiceTest.cpp
 )
 
 set_target_properties(mudtest

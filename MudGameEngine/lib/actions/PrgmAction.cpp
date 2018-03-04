@@ -40,44 +40,18 @@ void PrgmAction::execute_impl() {
     if (actionArguments.empty()) {
         logger->error("Not a valid Program command...");
         gameManager.sendCharacterMessage(
-            characterPerformingAction.getEntityId(),
+            characterPerformingAction->getEntityId(),
             "Not a valid Program command...");
         return;
     }
 
-    //    auto cmd = actionArguments[0];
-    //    to_lower(cmd);
-    //    auto actionTypeIter = prgmLookup.find(cmd);
-    //
-    //    auto actionType = (actionTypeIter == prgmLookup.end())
-    //                          ? PrgmKeyword::undefined
-    //                          : actionTypeIter->second;
-    //
-    //    // get first arg: Possible options: {npc, character, object ...}
-    //    switch (actionType) {
-    //    case PrgmKeyword::npc: {
-    //        prgmNpc();
-    //        break;
-    //    }
-    //    case PrgmKeyword::pc: {
-    //        createPc();
-    //        break;
-    //    }
-    //    case PrgmKeyword::object: {
-    //        prgmObject();
-    //        break;
-    //    }
-    //    default:
-    //        logger->debug("not a valid program command");
-    //    }
-    // switch statements
     prgmNpc();
 }
 
 void PrgmAction::prgmNpc() {
     static auto logger =
         mudserver::logging::getLogger("ProgramAction::execute");
-    auto characterID = characterPerformingAction.getEntityId();
+    auto characterID = characterPerformingAction->getEntityId();
     PrgmAction::PrgmParser parser{};
     try {
         auto map = parser.parseOptValPairs(actionArguments);

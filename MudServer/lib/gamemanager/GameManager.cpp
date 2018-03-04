@@ -1,4 +1,3 @@
-
 #include <cassert>
 #include <iomanip>
 #include <iostream>
@@ -7,12 +6,14 @@
 #include <thread>
 #include <vector>
 
+#include <boost/optional.hpp>
 #include <boost/format.hpp>
 
 #include "connectionmanager/ConnectionManager.h"
 #include "entities/CharacterEntity.h"
 #include "gamemanager/GameManager.h"
 #include "logging.h"
+#include "persistence/PersistenceService.h"
 #include "resources/PlayerCharacterDefaults.h"
 
 namespace mudserver {
@@ -23,9 +24,13 @@ namespace pc = mudserver::resources::playercharacter;
 using boost::format;
 using boost::str;
 
+using connection::gameAndUserInterface;
+
 GameManager::GameManager(connection::ConnectionManager &connMan,
-                         GameState &gameState)
-    : gameState{gameState}, connectionManager{connMan} {}
+                         GameState &gameState,
+                         persistence::PersistenceService &persistenceService)
+    : gameState{gameState}, connectionManager{connMan},
+      persistenceService{persistenceService} {}
 
 /**
  * Runs a standard game loop, which consists of the following steps:
@@ -37,6 +42,8 @@ void GameManager::mainLoop() {
     static auto logger = logging::getLogger("GameManager::mainLoop");
     logger->info("Entered main game loop");
 
+    loadPersistedData();
+
     using clock = std::chrono::high_resolution_clock;
     auto startTime = clock::now();
     currentAQueuePtr = &actionsA;
@@ -46,6 +53,8 @@ void GameManager::mainLoop() {
 
     gameState.doReset();
     while (!done) {
+        auto startTime = clock::now();
+
         if (connectionManager.update()) {
             // An error was encountered, stop
             done = true;
@@ -56,20 +65,58 @@ void GameManager::mainLoop() {
 
         processMessages(messages);
 
-        /*
-         * FIXME
-         * This eventually causes the tick to go out of sync.
-         * If tick = delta + n, n time units get lost every tick.
-         */
-        auto delta = clock::now() - startTime;
-        if (delta >= tick) {
-            startTime = clock::now();
-            performQueuedActions();
-            swapQueuePtrs();
-            // swap action QueuePtrs
-            sendMessagesToPlayers();
-        }
+        performQueuedActions();
+        swapQueuePtrs();
+        sendMessagesToPlayers();
+
+        auto delta = std::chrono::duration_cast<std::chrono::milliseconds>(
+            clock::now() - startTime);
+        std::this_thread::sleep_for(tick - delta);
     }
+
+    persistData();
+}
+
+void GameManager::persistData() { persistenceService.save(playerService); }
+
+void GameManager::loadPersistedData() {
+    playerService = persistenceService.loadPlayerService();
+}
+
+boost::optional<Player &>
+GameManager::getPlayerFromLogin(const gameAndUserInterface &message) {
+    static auto logger = logging::getLogger("GameManager::getPlayerFromLogin");
+
+    // look up player from ID
+    auto connectionId = message.conn.id;
+    logger->debug(std::to_string(connectionId) + ": " + message.text);
+
+    auto player = playerService.getPlayerByConnection(connectionId);
+    if (!player) {
+        auto uAndP = commandParser.identifiersFromIdentifyCommand(message.text);
+        if (!uAndP.first.empty()) {
+            player = playerService.identify(uAndP.first, uAndP.second);
+            if (!player) {
+                auto addPlayerResult =
+                    playerService.addPlayer(uAndP.first, uAndP.second);
+                if (addPlayerResult == AddPlayerResult::playerAdded) {
+                    player = playerService.identify(uAndP.first, uAndP.second);
+                } else if (addPlayerResult == AddPlayerResult::playerExists) {
+                    enqueueMessage(message.conn, INCORRECT_IDENT);
+                }
+            }
+            if (player) {
+                playerService.setPlayerConnection(player->getId(),
+                                                  message.conn.id);
+                enqueueMessage(message.conn, LOGIN_SUCCESS);
+                return player;
+            }
+        }
+
+        enqueueMessage(message.conn, PLEASE_LOGIN);
+        return boost::none;
+    }
+    return player;
 }
 
 void GameManager::processMessages(
@@ -78,42 +125,28 @@ void GameManager::processMessages(
 
     for (const auto &message : messages) {
 
-        // look up player from ID
-        auto playerId = message.conn.id;
-        logger->debug(std::to_string(playerId) + ": " + message.text);
+        auto player = getPlayerFromLogin(message);
+        logger->debug(std::to_string(message.conn.id) + ": " + message.text);
 
-        if (players.find(playerId) == players.end()) {
-            // We should add a login service that can deal with
-            //      - players not existing
-            //      - authenticating players
-            players[playerId] = {playerId, "player" + std::to_string(playerId),
-                                 ""};
-        }
-
-        // Guaranteed not to throw out_of_range - Player has been created
-        auto player = players.at(playerId);
+        if (!player)
+            continue;
 
         // look up player's character
         // pointer is used as player may not have character yet
-        auto character = playerToCharacter(player);
-        if (character == nullptr) {
+        auto characterId = playerService.playerToCharacter(player->getId());
+        if (!characterId) {
             // create a new character for the player and add it to the game
             // state
-            addPlayerCharacter(playerId);
+            auto newCharacter =
+                playerService.createPlayerCharacter(player->getId());
+            gameState.addCharacter(newCharacter);
         }
-        auto playerCharacter = playerToCharacter(player);
-        assert(playerCharacter != nullptr);
 
         // parse message into verb/object
-        auto action = commandParser.actionFromPlayerCommand(
-            *playerCharacter, message.text, *this);
-
-        std::ostringstream retMessage;
-        retMessage << "DEBUG: " << *action;
+        auto action =
+            commandParser.actionFromPlayerCommand(*player, message.text, *this);
 
         enqueueAction(std::move(action));
-
-        enqueueMessage(message.conn, retMessage.str());
     }
 }
 
@@ -156,47 +189,15 @@ GameState &GameManager::getState() { return gameState; }
 
 void GameManager::sendCharacterMessage(UniqueId characterId,
                                        std::string message) {
-    enqueueMessage({characterIdToPlayer(characterId).getId()},
-                   std::move(message));
-}
-
-// TODO: Factor out into a new class
-// Technical debt alert:
-// I believe the player-character mapping is complex enough to factor out into
-// a new class - possibly will be the LoginManager once we get that far
-
-CharacterEntity *GameManager::playerIdToCharacter(PlayerId playerId) {
-    auto entry = playerCharacterBimap.left.find(playerId);
-    if (entry != playerCharacterBimap.left.end()) {
-        auto characterId = entry->second;
-        return gameState.getCharacterFromLUT(characterId);
+    auto playerId = playerService.characterToPlayer(characterId);
+    auto player = playerService.getPlayerById(playerId);
+    if (player) {
+        auto conn = networking::Connection{player->getConnectionId()};
+        enqueueMessage(conn, std::move(message));
     }
-    return nullptr;
 }
 
-CharacterEntity *GameManager::playerToCharacter(const Player &player) {
-    return playerIdToCharacter(player.getId());
-}
-
-Player &GameManager::characterToPlayer(const CharacterEntity &character) {
-    return characterIdToPlayer(character.getEntityId());
-}
-
-Player &GameManager::characterIdToPlayer(UniqueId characterId) {
-    auto playerId = playerCharacterBimap.right.find(characterId)->second;
-    return players.at(playerId);
-}
-
-void GameManager::addPlayerCharacter(PlayerId playerId) {
-    auto testShortDesc =
-        "TestPlayerName" + std::to_string(playerCharacterBimap.size());
-
-    CharacterEntity pChar{};
-
-    playerCharacterBimap.insert(
-        PcBmType::value_type(playerId, pChar.getEntityId()));
-    gameState.addCharacter(pChar);
-}
+PlayerService &GameManager::getPlayerService() { return playerService; }
 
 } // namespace gamemanager
 } // namespace mudserver

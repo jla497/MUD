@@ -19,7 +19,7 @@ class LookAction : public Action {
   public:
     using Action::Action;
     void execute_impl() override;
-    LookAction *clone();
+    LookAction *clone() override;
 
   protected:
     std::string description() const override { return u8"Look action"; }

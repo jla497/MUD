@@ -11,12 +11,12 @@ void MoveAction::execute_impl() {
 
     std::string userinfo(
         "userid: " +
-        std::to_string(characterPerformingAction.getEntityId().getId()));
+        std::to_string(characterPerformingAction->getEntityId().getId()));
     logger->info(userinfo);
 
     auto &gameState = gameManager.getState();
     RoomEntity *room =
-        gameState.getCharacterLocation(characterPerformingAction);
+        gameState.getCharacterLocation(*characterPerformingAction);
 
     if (!room) {
         logger->error("Character not found in any room...");
@@ -28,7 +28,7 @@ void MoveAction::execute_impl() {
     if (actionArguments.empty()) {
         logger->error("Not a valid move command...");
         gameManager.sendCharacterMessage(
-            characterPerformingAction.getEntityId(),
+            characterPerformingAction->getEntityId(),
             "Not a valid move command...");
         return;
     }
@@ -66,13 +66,13 @@ void MoveAction::execute_impl() {
                                   std::to_string(nextRoom->getId()));
         logger->info(nextRoomIdStr);
         // move the playerCharacter from the current room to the next room
-        auto characterId = characterPerformingAction.getEntityId().getId();
+        auto characterId = characterPerformingAction->getEntityId().getId();
 
         room->removeEntity(characterId);
 
         nextRoom->addEntity(characterId);
 
-        auto mCharacterPtr = &characterPerformingAction;
+        auto mCharacterPtr = characterPerformingAction;
         gameState.addCharacterRoomRelationToLUT(mCharacterPtr->getEntityId(),
                                                 nextRoom->getId());
         logger->info("MoveAction complete...");

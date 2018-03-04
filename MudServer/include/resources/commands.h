@@ -32,6 +32,8 @@ extern const char *CTHAC0;
 extern const char *CHELP;
 extern const char *CREATE;
 extern const char *MODIFY;
+extern const char *IDENTIFY;
+extern const char *SAVE;
 extern const char *TIMED;
 
 } // namespace commands
