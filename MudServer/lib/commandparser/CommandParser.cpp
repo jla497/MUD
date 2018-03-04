@@ -13,7 +13,10 @@
 #include "actions/LookAction.h"
 #include "actions/MoveAction.h"
 #include "actions/NullAction.h"
+#include "actions/PrgmAction.h"
+#include "actions/SaveAction.h"
 #include "actions/SayAction.h"
+#include "actions/TimedAction.h"
 #include "commandparser/CommandParser.h"
 #include "resources/commands.h"
 
@@ -25,35 +28,35 @@ using boost::algorithm::to_lower_copy;
 
 using namespace resources::commands;
 
-static std::unordered_map<std::string, ActKeyword> actionLookup = { // NOLINT
-    {UNDEFINED, ActKeyword::undefined},
-    {SAY, ActKeyword::say},
-    {LOOK, ActKeyword::look},
-    {ATTACK, ActKeyword::attack},
-    {MOVE, ActKeyword::move}};
+static std::unordered_map<std::string, ActKeyword> actionLookup =
+    { // NOLINT
+        {UNDEFINED, ActKeyword::undefined}, {SAY, ActKeyword::say},
+        {LOOK, ActKeyword::look},           {ATTACK, ActKeyword::attack},
+        {MOVE, ActKeyword::move},           {PROGRAM, ActKeyword::program},
+        {TIMED, ActKeyword::timed},         {SAVE, ActKeyword::save}};
 
-using ActionGenerator = std::unique_ptr<Action> (*)(PlayerCharacter &,
+using ActionGenerator = std::unique_ptr<Action> (*)(Player &,
                                                     std::vector<std::string> &,
                                                     gamemanager::GameManager &);
 
 template <typename T,
           typename = std::enable_if<std::is_base_of<Action, T>::value>>
-std::unique_ptr<Action> generator(PlayerCharacter &pc,
+std::unique_ptr<Action> generator(Player &player,
                                   std::vector<std::string> &args,
                                   gamemanager::GameManager &manager) {
-    return std::make_unique<T>(pc, args, manager);
+    return std::make_unique<T>(player, args, manager);
 };
 
 const static std::vector<ActionGenerator> actionGenerators = {
     // NOLINT
     &generator<NullAction>, // undefined
-    &generator<SayAction>,  &generator<LookAction>,
-    &generator<MoveAction>, &generator<AttackAction>,
+    &generator<SayAction>,    &generator<LookAction>, &generator<MoveAction>,
+    &generator<AttackAction>, &generator<PrgmAction>, &generator<TimedAction>,
+    &generator<SaveAction>
 };
 
 std::unique_ptr<Action>
-CommandParser::actionFromPlayerCommand(PlayerCharacter &character,
-                                       StrView command,
+CommandParser::actionFromPlayerCommand(Player &player, StrView command,
                                        gamemanager::GameManager &gameManager) {
 
     Tokenizer tokens{command};
@@ -74,7 +77,20 @@ CommandParser::actionFromPlayerCommand(PlayerCharacter &character,
     if (index >= actionGenerators.size()) {
         return nullptr;
     }
-    return actionGenerators[index](character, remainderOfTokens, gameManager);
+
+    return actionGenerators[index](player, remainderOfTokens, gameManager);
+}
+
+std::pair<UsernameType, PasswordType>
+CommandParser::identifiersFromIdentifyCommand(StrView command) {
+    Tokenizer tokens{command};
+    auto tokenIterator = tokens.begin();
+
+    if (to_lower_copy(*tokenIterator++) != IDENTIFY) {
+        return std::make_pair("", "");
+    }
+
+    return std::make_pair(*tokenIterator++, *tokenIterator);
 }
 
 } // namespace commandparser

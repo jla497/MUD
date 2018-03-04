@@ -1,7 +1,9 @@
 SERVER:
   port: 4000
-  yml_file: ../build/MudGameEngine/lib/dataFiles/detailed_smurf.yml
-
-CLIENT:
+  yml_file: MudGameEngine/lib/dataFiles/detailed_smurf.yml
+  config_dir: config
   url: localhost
+CLIENT:
   port: 4000
+  yml_file: MudGameEngine/lib/dataFiles/detailed_smurf.yml
+  url: localhost

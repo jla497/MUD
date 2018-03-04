@@ -1,4 +1,5 @@
 
+#include <algorithm>
 #include <cassert>
 #include <deque>
 
@@ -22,7 +23,9 @@ bool YamlParser::loadYamlFile(const std::string &path) {
     return true;
 }
 
-NonPlayerCharacter YamlParser::parseNPC(YAML::Node npcNode) const {
+
+
+CharacterEntity YamlParser::parseNPC(YAML::Node npcNode) const {
     auto armor = npcNode[ARMOR].as<int>();
     auto damage = npcNode[DAMAGE].as<std::string>();
 
@@ -177,8 +180,8 @@ RoomEntity YamlParser::parseRoom(YAML::Node roomNode) const {
 
 ShopEntity YamlParser::parseShop(YAML::Node shopNode) const { return {}; }
 
-std::vector<NonPlayerCharacter> YamlParser::getAllNPCS() const {
-    std::vector<NonPlayerCharacter> npcs;
+std::vector<CharacterEntity> YamlParser::getAllNPCS() const {
+    std::vector<CharacterEntity> npcs;
     for (auto &document : data) {
         std::for_each(document[NPCS_ENT].begin(), document[NPCS_ENT].end(),
                       [&](YAML::Node node) { npcs.push_back(parseNPC(node)); });
@@ -245,4 +248,12 @@ AreaEntity YamlParser::getArea() const {
     return area;
 }
 
+
 } //namespace Parser
+
+mudserver::gamemanager::EntityFactory *YamlParser::makeFactory() {
+    mudserver::gamemanager::EntityFactory *factory =
+        new mudserver::gamemanager::EntityFactory(getAllNPCS(),
+                                                  getAllObjects());
+    return factory;
+}

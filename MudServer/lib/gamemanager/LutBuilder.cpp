@@ -12,5 +12,23 @@ LutBuilder::createLUT(std::deque<RoomEntity> &rooms) {
     }
     return map;
 }
+
+std::map<Id, CharacterEntity>
+LutBuilder::createNpcLUT(std::vector<CharacterEntity> &npcs) {
+    std::map<Id, CharacterEntity> map;
+    for (auto &npc : npcs) {
+        map[npc.getTypeId()] = npc;
+    }
+    return map;
+}
+
+std::map<Id, ObjectEntity>
+LutBuilder::createObjectLUT(std::vector<ObjectEntity> &objects) {
+    std::map<Id, ObjectEntity> map;
+    for (auto &obj : objects) {
+        map[obj.getObjectTypeId()] = obj;
+    }
+    return map;
+}
 } // namespace gamemanager
 } // namespace mudserver

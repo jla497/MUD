@@ -452,6 +452,9 @@ RESETS:
   id: 109
   limit: 1
   room: 129
+- action: give
+  comment: give each smurfberries
+  id: 100
 - action: equip
   id: 104
   slot: 3

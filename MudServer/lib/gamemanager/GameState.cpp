@@ -15,6 +15,8 @@ void GameState::initFromYaml(std::string filename) {
     parseYamlFile(std::move(filename));
     addAreaFromParser();
     initRoomLUT();
+    factory = std::unique_ptr<EntityFactory>(parser.makeFactory());
+    factory->init();
 }
 
 void GameState::parseYamlFile(std::string filename) {
@@ -42,7 +44,7 @@ void GameState::addRoomToLUT(const RoomEntity &room) {
     roomLookUp[room.getId()] = room;
 }
 
-void GameState::addCharacter(PlayerCharacter &character) {
+void GameState::addCharacter(CharacterEntity &character) {
     auto id = character.getEntityId();
     characterLookUp[id] = std::move(character);
     // TODO: implement a configurable default spawn point
@@ -56,6 +58,26 @@ void GameState::addCharacter(PlayerCharacter &character) {
     }
 }
 
+void GameState::addCharacter(CharacterEntity &character, Id roomID) {
+    auto id = character.getEntityId();
+    characterLookUp[id] = std::move(character);
+    // TODO: implement a configurable default spawn point
+    // currently just takes the first room loaded
+    auto roomIt = roomLookUp.find(roomID);
+    if (roomIt != roomLookUp.end()) {
+        addCharacterRoomRelationToLUT(id, roomIt->second.getId());
+    } else {
+        throw "couldn't add character to room";
+    }
+    //        auto characterItr = characterLookUp.find(id);
+    //        auto objects = characterItr->second.getObjects();
+    //
+    //            for(auto &obj : objects) {
+    //                std::cout<<characterItr->second.getShortDesc()<<" "<<
+    //                obj.second.getShortDesc()<<std::endl;
+    //            }
+}
+
 void GameState::addAreaFromParser() { areas.push_back(parser.getArea()); }
 
 /**
@@ -66,12 +88,12 @@ RoomEntity *GameState::getRoomFromLUT(const roomId id) {
     return it != roomLookUp.end() ? &it->second : nullptr;
 }
 
-PlayerCharacter *GameState::getCharacterFromLUT(UniqueId id) {
+CharacterEntity *GameState::getCharacterFromLUT(UniqueId id) {
     auto it = characterLookUp.find(id);
     return it != characterLookUp.end() ? &it->second : nullptr;
 }
 
-RoomEntity *GameState::getCharacterLocation(const PlayerCharacter &character) {
+RoomEntity *GameState::getCharacterLocation(const CharacterEntity &character) {
     auto it = characterRoomLookUp.left.find(character.getEntityId());
     if (it == characterRoomLookUp.left.end()) {
         return nullptr;
@@ -106,5 +128,12 @@ void GameState::clearCharacterRoomLUT() { characterRoomLookUp.clear(); }
 
 void GameState::clearAreas() { roomLookUp.clear(); }
 
+EntityFactory &GameState::getFactory() { return *factory; }
+
+void GameState::doReset() {
+    auto resets = parser.getAllResets();
+    ResetManager resetManager{resets};
+    resetManager.applyResets(this);
+}
 } // namespace gamemanager
 } // namespace mudserver

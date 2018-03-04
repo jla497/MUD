@@ -19,13 +19,14 @@
 namespace networking {
 
 using Port = unsigned short;
+using ConnectionId = uintptr_t;
 
 /**
  *  An identifier for a Client connected to a Server. The ID of a Connection is
  *  guaranteed to be unique across all actively connected Client instances.
  */
 struct Connection {
-    uintptr_t id;
+    ConnectionId id;
 
     bool operator==(Connection other) const { return id == other.id; }
 };
@@ -124,8 +125,8 @@ class Server {
     class ConnectionHandlerImpl final : public ConnectionHandler {
       public:
         ConnectionHandlerImpl(C onConnect, D onDisconnect)
-            : onConnect{std::move(onConnect)}, onDisconnect{
-                                                   std::move(onDisconnect)} {}
+            : onConnect{std::move(onConnect)},
+              onDisconnect{std::move(onDisconnect)} {}
         ~ConnectionHandlerImpl() override = default;
         void handleConnect(Connection c) override { onConnect(c); }
         void handleDisconnect(Connection c) override { onDisconnect(c); }

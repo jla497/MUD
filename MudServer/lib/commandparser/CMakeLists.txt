@@ -6,7 +6,7 @@ set_target_properties(commandparser
                       CXX_STANDARD 14
 )
 
-target_link_libraries(commandparser actions)
+target_link_libraries(commandparser actions resources)
 
 find_package(Boost 1.58 COMPONENTS system REQUIRED)
 include_directories(${Boost_INCLUDE_DIR})

@@ -7,20 +7,43 @@ namespace gamemanager {
 
 class GameStateTest : public testing::Test {
   public:
-    PlayerCharacter createCharacter() {
-        return {
-            1,            // armor
-            "1",          // damage
-            {"desc1"},    // desc
-            1,            // exp
-            1,            // gold
-            "1",          // hit
-            {"keyword1"}, // keywords
-            1,            // level
-            {"desc1"},    // longdesc
-            "shortdesc",  // shortdesc
-            1             // thac0
-        };
+    // <<<<<<< HEAD
+    CharacterEntity createCharacter() {
+        int armor = 1;
+        std::string damage = "1d8+32";
+        std::vector<std::string> desc{};
+        desc.push_back("desc1");
+        unsigned int exp = 1;
+        int gold = 1;
+        std::string hit = "1d1+30000";
+        std::vector<std::string> keywords{};
+        keywords.push_back("keyword1");
+        unsigned int level = 1;
+        std::vector<std::string> longDesc{};
+        longDesc.push_back("desc1");
+        std::string shortDesc = "test";
+        int thac0 = 1;
+        // TODO typeId for player characters
+        auto character =
+            CharacterEntity(armor, damage, desc, exp, gold, hit, 0, keywords,
+                            level, longDesc, shortDesc, thac0);
+        return character;
+        // =======
+        //     PlayerCharacter createCharacter() {
+        //         return {
+        //             1,            // armor
+        //             "1",          // damage
+        //             {"desc1"},    // desc
+        //             1,            // exp
+        //             1,            // gold
+        //             "1",          // hit
+        //             {"keyword1"}, // keywords
+        //             1,            // level
+        //             {"desc1"},    // longdesc
+        //             "shortdesc",  // shortdesc
+        //             1             // thac0
+        //         };
+        // >>>>>>> master
     }
 
   protected:
@@ -83,7 +106,7 @@ TEST_F(GameStateTest, GetCharacterFromString) {
     auto character = createCharacter();
     UniqueId id = character.getEntityId();
     state.addCharacter(character);
-    PlayerCharacter *returnedChar = state.getCharacterFromLUT(id);
+    CharacterEntity *returnedChar = state.getCharacterFromLUT(id);
     EXPECT_EQ(returnedChar->getEntityId(), id);
 }
 

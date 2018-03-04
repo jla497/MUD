@@ -18,7 +18,7 @@ class MudProtocol : public Protocol {
 
   public:
     MudProtocol();
-    MudProtocol(unsigned int maxBuf);
+    MudProtocol(const unsigned int maxBuf);
 
     void receive(std::string str);
 

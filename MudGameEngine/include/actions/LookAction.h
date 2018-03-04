@@ -12,9 +12,14 @@
  *  	Look with more than one argument would return an error?
  */
 class LookAction : public Action {
+
+    std::string getCharacterDescriptions(RoomEntity *characterCurrentRoom);
+    std::string getObjectDescriptions(RoomEntity *characterCurrentRoom);
+
   public:
     using Action::Action;
-    void execute() override;
+    void execute_impl() override;
+    LookAction *clone() override;
 
   protected:
     std::string description() const override { return u8"Look action"; }

@@ -5,8 +5,9 @@
 #include "actions/AttackAction.h"
 #include "gamemanager/GameManager.h"
 #include "logging.h"
+AttackAction *AttackAction::clone() { return new AttackAction(*this); }
 
-void AttackAction::execute() {
+void AttackAction::execute_impl() {
     static auto logger = mudserver::logging::getLogger("AttackAction::execute");
 
     // get gamestate
@@ -17,7 +18,7 @@ void AttackAction::execute() {
 
     //--get the room the player is in
     auto characterCurrentRoom =
-        gameState.getCharacterLocation(playerWhoIsAttacking);
+        gameState.getCharacterLocation(*playerWhoIsAttacking);
     if (!characterCurrentRoom) {
         logger->error(
             "Character is not in a room! Suspect incorrect world init");
@@ -31,7 +32,7 @@ void AttackAction::execute() {
     if (IDsOfPlayersInRoom.empty()) {
         return;
     }
-    auto attackingPlayersUniqueId = playerWhoIsAttacking.getEntityId();
+    auto attackingPlayersUniqueId = playerWhoIsAttacking->getEntityId();
     if (actionArguments.empty()) {
         // user did not pass an attack target
         gameManager.sendCharacterMessage(attackingPlayersUniqueId,
@@ -49,8 +50,8 @@ void AttackAction::execute() {
         if (!currentEntity)
             return;
         auto shortDescOfCurrentPlayer = currentEntity->getShortDesc();
-        if (boost::to_lower_copy(shortDescOfCurrentPlayer)
-                .compare(boost::to_lower_copy(nameOfAttackTarget)) == 0) {
+        if (boost::to_lower_copy(shortDescOfCurrentPlayer) ==
+            boost::to_lower_copy(nameOfAttackTarget)) {
             // TODO: change this to allow attacking any entity rather than just
             // players
             // TODO: implement proper use of combat states
@@ -59,13 +60,13 @@ void AttackAction::execute() {
             // send messages to characters fighting
             auto playerWhoIsBeingAttacking = currentEntity;
             gameManager.sendCharacterMessage(
-                playerWhoIsAttacking.getEntityId(),
+                playerWhoIsAttacking->getEntityId(),
                 "You attack " + playerWhoIsBeingAttacking->getShortDesc() +
-                    "and do 1 damage");
+                    " and do 1 damage");
 
             gameManager.sendCharacterMessage(
                 playerWhoIsBeingAttacking->getEntityId(),
-                "You are attacked by " + playerWhoIsAttacking.getShortDesc() +
+                "You are attacked by " + playerWhoIsAttacking->getShortDesc() +
                     "and take 1 damage");
             return;
         }

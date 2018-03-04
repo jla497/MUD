@@ -4,18 +4,19 @@
 std::vector<std::string> MoveAction::moveLookup = {"north", "south", "east",
                                                    "west"};
 
-void MoveAction::execute() {
+MoveAction *MoveAction::clone() { return new MoveAction(*this); }
+
+void MoveAction::execute_impl() {
     static auto logger = mudserver::logging::getLogger("Action::MoveAction");
 
-    logger->info("MoveAction...");
     std::string userinfo(
         "userid: " +
-        std::to_string(characterPerformingAction.getEntityId().getId()));
+        std::to_string(characterPerformingAction->getEntityId().getId()));
     logger->info(userinfo);
 
     auto &gameState = gameManager.getState();
     RoomEntity *room =
-        gameState.getCharacterLocation(characterPerformingAction);
+        gameState.getCharacterLocation(*characterPerformingAction);
 
     if (!room) {
         logger->error("Character not found in any room...");
@@ -27,7 +28,7 @@ void MoveAction::execute() {
     if (actionArguments.empty()) {
         logger->error("Not a valid move command...");
         gameManager.sendCharacterMessage(
-            characterPerformingAction.getEntityId(),
+            characterPerformingAction->getEntityId(),
             "Not a valid move command...");
         return;
     }
@@ -65,13 +66,13 @@ void MoveAction::execute() {
                                   std::to_string(nextRoom->getId()));
         logger->info(nextRoomIdStr);
         // move the playerCharacter from the current room to the next room
-        auto characterId = characterPerformingAction.getEntityId().getId();
+        auto characterId = characterPerformingAction->getEntityId().getId();
 
         room->removeEntity(characterId);
 
         nextRoom->addEntity(characterId);
 
-        auto mCharacterPtr = &characterPerformingAction;
+        auto mCharacterPtr = characterPerformingAction;
         gameState.addCharacterRoomRelationToLUT(mCharacterPtr->getEntityId(),
                                                 nextRoom->getId());
         logger->info("MoveAction complete...");

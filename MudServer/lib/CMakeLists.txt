@@ -1,3 +1,5 @@
 add_subdirectory(connectionmanager)
 add_subdirectory(gamemanager)
 add_subdirectory(commandparser)
+add_subdirectory(resources)
+add_subdirectory(persistence)

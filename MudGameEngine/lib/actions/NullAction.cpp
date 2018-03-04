@@ -3,4 +3,6 @@
 
 #include "actions/NullAction.h"
 
-void NullAction::execute() {}
+NullAction *NullAction::clone() { return new NullAction(*this); }
+
+void NullAction::execute_impl() {}
