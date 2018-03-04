@@ -48,7 +48,10 @@ class GameManager {
 
     PlayerService playerService;
     std::queue<connection::gameAndUserInterface> outgoingMessages;
-    std::queue<std::unique_ptr<Action>> actions;
+    std::queue<std::unique_ptr<Action>> actionsA;
+    std::queue<std::unique_ptr<Action>> actionsB;
+    std::queue<std::unique_ptr<Action>> *currentAQueuePtr;
+    std::queue<std::unique_ptr<Action>> *nextAQueuePtr;
 
     /**
      * Process a collection of messages from the server, taking various actions
@@ -117,6 +120,9 @@ class GameManager {
     PlayerService &getPlayerService();
     void persistData();
     void loadPersistedData();
+
+    void swapQueuePtrs();
+    void addActionToQueue(std::unique_ptr<Action> action);
 };
 
 } // namespace gamemanager

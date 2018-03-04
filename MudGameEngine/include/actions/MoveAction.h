@@ -18,6 +18,7 @@ class MoveAction : public Action {
   public:
     using Action::Action;
     void execute_impl() override;
+    MoveAction *clone() override;
 
   protected:
     std::string description() const override { return u8"Move action"; }

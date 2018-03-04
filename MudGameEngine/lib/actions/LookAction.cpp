@@ -12,6 +12,8 @@
 using boost::algorithm::join;
 // namespace actmess = mudserver::resources::actions;
 
+LookAction *LookAction::clone() { return new LookAction(*this); }
+
 void LookAction::execute_impl() {
     static auto logger = mudserver::logging::getLogger("LookAction::execute");
 

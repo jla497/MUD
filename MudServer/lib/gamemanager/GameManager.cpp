@@ -1,5 +1,3 @@
-
-#include <boost/optional.hpp>
 #include <cassert>
 #include <iomanip>
 #include <iostream>
@@ -8,16 +6,20 @@
 #include <thread>
 #include <vector>
 
+#include <boost/optional.hpp>
 #include <boost/format.hpp>
-#include <persistence/PersistenceService.h>
 
 #include "connectionmanager/ConnectionManager.h"
 #include "entities/CharacterEntity.h"
 #include "gamemanager/GameManager.h"
 #include "logging.h"
+#include "persistence/PersistenceService.h"
+#include "resources/PlayerCharacterDefaults.h"
 
 namespace mudserver {
 namespace gamemanager {
+
+namespace pc = mudserver::resources::playercharacter;
 
 using boost::format;
 using boost::str;
@@ -43,6 +45,12 @@ void GameManager::mainLoop() {
     loadPersistedData();
 
     using clock = std::chrono::high_resolution_clock;
+    auto startTime = clock::now();
+    currentAQueuePtr = &actionsA;
+    nextAQueuePtr = &actionsB;
+    // point currentActionQueuePtr to actionQueueA
+    // point nextActionQueuePtr to actionQueueB
+
     gameState.doReset();
     while (!done) {
         auto startTime = clock::now();
@@ -58,6 +66,7 @@ void GameManager::mainLoop() {
         processMessages(messages);
 
         performQueuedActions();
+        swapQueuePtrs();
         sendMessagesToPlayers();
 
         auto delta = std::chrono::duration_cast<std::chrono::milliseconds>(
@@ -158,16 +167,24 @@ void GameManager::sendMessagesToPlayers() {
 }
 
 void GameManager::enqueueAction(std::unique_ptr<Action> action) {
-    actions.push(std::move(action));
+    // currentActionQueuePtr->push(std::move(action));
+    nextAQueuePtr->push(std::move(action));
 }
 
 void GameManager::performQueuedActions() {
-    while (!actions.empty()) {
-        actions.front()->execute();
-        actions.pop();
+    while (!currentAQueuePtr->empty()) {
+        currentAQueuePtr->front()->execute();
+        currentAQueuePtr->pop();
     }
 }
 
+void GameManager::swapQueuePtrs() {
+    std::swap(currentAQueuePtr, nextAQueuePtr);
+}
+
+void GameManager::addActionToQueue(std::unique_ptr<Action> action) {
+    nextAQueuePtr->push(std::move(action));
+}
 GameState &GameManager::getState() { return gameState; }
 
 void GameManager::sendCharacterMessage(UniqueId characterId,

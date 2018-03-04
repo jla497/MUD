@@ -4,6 +4,7 @@ boost::optional<ConfigData> parseConfigFile(const std::string filePath) {
     std::vector<YAML::Node> config;
     try {
         config = YAML::LoadAllFromFile(filePath);
+
     } catch (const std::exception &e) {
         std::cout << "something is wrong with the config file path or the file "
                      "doesn't exist...";

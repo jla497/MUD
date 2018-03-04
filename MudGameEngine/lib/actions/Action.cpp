@@ -3,6 +3,7 @@
 
 #include "actions/Action.h"
 #include "logging.h"
+#include "gamemanager/GameManager.h"
 
 // FIXME: this should possibly work on the enum keyword rather than the
 // description string
@@ -34,6 +35,13 @@ void Action::execute() {
         }
     } else {
         execute_impl();
+    }
+
+    if (timeRemaining > 0) {
+        timeRemaining--;
+        auto newAction = clone();
+        auto ptr = std::unique_ptr<Action>(newAction);
+        gameManager.addActionToQueue(std::move(ptr));
     }
 }
 std::ostream &operator<<(std::ostream &os, const Action &action) {

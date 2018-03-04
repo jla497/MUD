@@ -34,6 +34,7 @@ extern const char *CREATE;
 extern const char *MODIFY;
 extern const char *IDENTIFY;
 extern const char *SAVE;
+extern const char *TIMED;
 
 } // namespace commands
 } // namespace resources

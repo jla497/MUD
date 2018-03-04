@@ -6,7 +6,8 @@ add_library(actions
 	NullAction.cpp
 	LookAction.cpp
 	PrgmAction.cpp
-	SaveAction.cpp)
+	SaveAction.cpp
+    TimedAction.cpp)
 
 set_target_properties(actions
 	PROPERTIES
