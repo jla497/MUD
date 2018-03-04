@@ -12,7 +12,6 @@ extern const char *SAY;
 extern const char *LOOK;
 extern const char *MOVE;
 extern const char *ATTACK;
-extern const char *SWAP;
 extern const char *PROGRAM;
 extern const char *NPC;
 extern const char *PC;
@@ -36,6 +35,7 @@ extern const char *MODIFY;
 extern const char *IDENTIFY;
 extern const char *SAVE;
 extern const char *TIMED;
+extern const char *SWAP;
 
 } // namespace commands
 } // namespace resources

@@ -199,19 +199,19 @@ void GameManager::sendCharacterMessage(UniqueId characterId,
 
 PlayerService &GameManager::getPlayerService() { return playerService; }
 
-void GameManager::swapCharacters(UniqueId initCharacterId, UniqueId targetCharacterId) {
-    auto initPlayer = characterIdToPlayer(initCharacterId);
-    auto targetPlayer = characterIdToPlayer(targetCharacterId);
-
-//    auto character1 = playerIdToCharacter(playerId1);
-//    auto character2 = playerIdToCharacter(playerId2);
-    playerCharacterBimap.insert(
-            PcBmType::value_type(initPlayer.getId(), targetCharacterId));
-    playerCharacterBimap.insert(
-            PcBmType::value_type(targetPlayer.getId(), initCharacterId));
-//    playerCharacterBimap.left[playerId1] = character2->getEntityId();
-//    playerCharacterBimap.left[playerId2] = character1->getEntityId();
-}
+//void GameManager::swapCharacters(UniqueId initCharacterId, UniqueId targetCharacterId) {
+//    auto initPlayer = characterIdToPlayer(initCharacterId);
+//    auto targetPlayer = characterIdToPlayer(targetCharacterId);
+//
+////    auto character1 = playerIdToCharacter(playerId1);
+////    auto character2 = playerIdToCharacter(playerId2);
+//    playerCharacterBimap.insert(
+//            PcBmType::value_type(initPlayer.getId(), targetCharacterId));
+//    playerCharacterBimap.insert(
+//            PcBmType::value_type(targetPlayer.getId(), initCharacterId));
+////    playerCharacterBimap.left[playerId1] = character2->getEntityId();
+////    playerCharacterBimap.left[playerId2] = character1->getEntityId();
+//}
 
 } // namespace gamemanager
 } // namespace mudserver

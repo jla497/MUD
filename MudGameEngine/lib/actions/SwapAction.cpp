@@ -6,6 +6,8 @@
 #include "gamemanager/GameManager.h"
 #include "logging.h"
 
+SwapAction *SwapAction::clone() { return new SwapAction(*this); }
+
 void SwapAction::execute_impl() {
     static auto logger = mudserver::logging::getLogger("SwapAction::execute");
 
@@ -15,7 +17,7 @@ void SwapAction::execute_impl() {
     auto swapInitiater = characterPerformingAction;
 
     //--get the room the player is in
-    auto characterCurrentRoom = gameState.getCharacterLocation(swapInitiater);
+    auto characterCurrentRoom = gameState.getCharacterLocation(*swapInitiater);
     if (!characterCurrentRoom) {
         logger->error(
                 "Character is not in a room! Suspect incorrect world init");
@@ -27,7 +29,7 @@ void SwapAction::execute_impl() {
     if (IDsOfPlayersInRoom.empty()) {
         return;
     }
-    auto attackingPlayersUniqueId = swapInitiater.getEntityId();
+    auto attackingPlayersUniqueId = swapInitiater->getEntityId();
     if (actionArguments.empty()) {
         gameManager.sendCharacterMessage(
                 attackingPlayersUniqueId,
@@ -46,15 +48,15 @@ void SwapAction::execute_impl() {
         if (boost::to_lower_copy(shortDescOfCurrentPlayer)
                     .compare(boost::to_lower_copy(nameOfSwapTarget)) == 0) {
             auto swapTarget = currentEntity;
-            gameManager.swapCharacters(
-                    swapInitiater.getEntityId(),
+            gameState.swapCharacters(
+                    swapInitiater->getEntityId(),
                     swapTarget->getEntityId());
             gameManager.sendCharacterMessage(
-                    swapInitiater.getEntityId(),
+                    swapInitiater->getEntityId(),
                     "You swapped with " + swapTarget->getShortDesc());
             gameManager.sendCharacterMessage(
                     swapTarget->getEntityId(),
-                    "You have been swapped with" + swapInitiater.getShortDesc());
+                    "You have been swapped with" + swapInitiater->getShortDesc());
             return;
         }
     }

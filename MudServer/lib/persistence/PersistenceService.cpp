@@ -4,6 +4,7 @@
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/filesystem.hpp>
+#include <fstream>
 
 namespace fs = boost::filesystem;
 
@@ -13,6 +14,23 @@ namespace persistence {
 
 PersistenceService::PersistenceService(std::string configDir)
     : configDir{configDir} {};
+
+void PersistenceService::save(PlayerService &ps, std::string fileName) {
+    boost::system::error_code returnedError;
+    fs::create_directories(configDir, returnedError);
+    if (!returnedError) {
+        fs::path file{fileName};
+        auto fullPath = configDir / file;
+
+        if (fs::exists(fullPath)) {
+            fs::remove(fullPath);
+        }
+
+        std::ofstream ofs{fullPath.generic_string()};
+        boost::archive::text_oarchive oa{ofs};
+        oa << ps;
+    }
+}
 
 void PersistenceService::save(PlayerService &ps) {
     boost::system::error_code returnedError;
@@ -30,6 +48,7 @@ void PersistenceService::save(PlayerService &ps) {
         oa << ps;
     }
 }
+
 PlayerService PersistenceService::loadPlayerService() {
     auto logger = logging::getLogger("PersistenceService::loadPlayerService");
 

@@ -18,6 +18,7 @@ class PersistenceService {
   public:
     explicit PersistenceService(std::string configDir);
     void save(PlayerService &ps);
+    void save(PlayerService &ps, std::string fileName);
 
     PlayerService loadPlayerService();
 };

@@ -68,6 +68,7 @@ class GameState {
     void clearCharacterRoomLUT();
     EntityFactory &getFactory();
     void doReset();
+    void swapCharacters(UniqueId casterId, UniqueId targetId);
 };
 
 } // namespace gamemanager
