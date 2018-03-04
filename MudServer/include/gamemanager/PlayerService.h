@@ -76,6 +76,8 @@ class PlayerService {
      */
     CharacterEntity createPlayerCharacter(PlayerId playerId);
     networking::ConnectionId getPlayerConnection(PlayerId playerId);
+
+    void updatePlayerCharacterMapping(PlayerId playerId, UniqueId characterId);
 };
 
 } // namespace gamemanager
