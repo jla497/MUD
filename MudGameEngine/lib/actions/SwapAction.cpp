@@ -6,7 +6,7 @@
 #include "gamemanager/GameManager.h"
 #include "logging.h"
 
-void SwapAction::execute() {
+void SwapAction::execute_impl() {
     static auto logger = mudserver::logging::getLogger("SwapAction::execute");
 
     auto &gameState = gameManager.getState();

@@ -8,23 +8,19 @@ add_library(entity Entity.cpp
 
 add_library(uniqueid UniqueId.cpp)
 
-add_library(reset Reset.cpp)
-
 set_target_properties(
 	uniqueid
 	entity
-	reset
 		PROPERTIES
 		LINKER_LANGUAGE CXX
 		CXX_STANDARD 14
 )
 
-target_link_libraries(entity uniqueid)
+target_link_libraries(entity uniqueid administrator)
 
 install(TARGETS 
 	uniqueid
-	entity 
-	reset
+	entity
 		ARCHIVE DESTINATION lib
 )
 

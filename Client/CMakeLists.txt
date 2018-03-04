@@ -1,5 +1,3 @@
-find_package(yaml-cpp)
-
 add_executable(chatclient
   chatclient.cpp
   ChatWindow.cpp
@@ -15,7 +13,7 @@ set_target_properties(chatclient
 find_package(Boost 1.58 COMPONENTS system REQUIRED)
 find_package(Curses REQUIRED)
 find_package(Threads REQUIRED)
-
+find_package(yaml-cpp)
 include_directories(
   ${Boost_INCLUDE_DIR}
   ${CURSES_INCLUDE_DIR}
@@ -26,9 +24,9 @@ target_link_libraries(chatclient
   ${Boost_LIBRARIES}
   ${CURSES_LIBRARIES}
   ${CMAKE_THREAD_LIBS_INIT}
+  configparser
   yaml-cpp
 )
-
 
 install(TARGETS chatclient
   RUNTIME DESTINATION bin

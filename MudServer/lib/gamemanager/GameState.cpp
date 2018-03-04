@@ -15,6 +15,8 @@ void GameState::initFromYaml(std::string filename) {
     parseYamlFile(std::move(filename));
     addAreaFromParser();
     initRoomLUT();
+    factory = std::unique_ptr<EntityFactory>(parser.makeFactory());
+    factory->init();
 }
 
 void GameState::parseYamlFile(std::string filename) {
@@ -54,6 +56,26 @@ void GameState::addCharacter(CharacterEntity &character) {
         auto logger = logging::getLogger("GameState::addCharacter");
         logger->error("No rooms found, character not added to room");
     }
+}
+
+void GameState::addCharacter(CharacterEntity &character, Id roomID) {
+    auto id = character.getEntityId();
+    characterLookUp[id] = std::move(character);
+    // TODO: implement a configurable default spawn point
+    // currently just takes the first room loaded
+    auto roomIt = roomLookUp.find(roomID);
+    if (roomIt != roomLookUp.end()) {
+        addCharacterRoomRelationToLUT(id, roomIt->second.getId());
+    } else {
+        throw "couldn't add character to room";
+    }
+    //        auto characterItr = characterLookUp.find(id);
+    //        auto objects = characterItr->second.getObjects();
+    //
+    //            for(auto &obj : objects) {
+    //                std::cout<<characterItr->second.getShortDesc()<<" "<<
+    //                obj.second.getShortDesc()<<std::endl;
+    //            }
 }
 
 void GameState::addAreaFromParser() { areas.push_back(parser.getArea()); }
@@ -106,5 +128,12 @@ void GameState::clearCharacterRoomLUT() { characterRoomLookUp.clear(); }
 
 void GameState::clearAreas() { roomLookUp.clear(); }
 
+EntityFactory &GameState::getFactory() { return *factory; }
+
+void GameState::doReset() {
+    auto resets = parser.getAllResets();
+    ResetManager resetManager{resets};
+    resetManager.applyResets(this);
+}
 } // namespace gamemanager
 } // namespace mudserver

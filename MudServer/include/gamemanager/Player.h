@@ -15,20 +15,21 @@ using PlayerId = uintptr_t;
  * and the PlayerCharacter, which is the actual fantasy being in the game world.
  */
 class Player {
+
     PlayerId id = static_cast<PlayerId>(-1);
     std::string username;
     std::string password;
     CharacterEntity *character = nullptr;
+    bool isAdmin = false;
 
   public:
-    Player() = default;
-
     /**
      * The player is constructed with ID, username, and password.
      * @param id the player's ID, currently matching the connection ID
      * @param username the player's username
      * @param password the player's password
      */
+    Player() = default;
     Player(PlayerId id, std::string username, std::string password);
 
     /**
@@ -36,6 +37,8 @@ class Player {
      * @return the player's id number
      */
     PlayerId getId() const;
+    bool hasAdminPrivilege();
+    void getAdminPrivilege();
 };
 
 } // namespace gamemanager
