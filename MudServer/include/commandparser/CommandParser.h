@@ -26,10 +26,10 @@ enum class ActKeyword {
     move,
     attack,
     timed,
+    program,
 
     _N_ACTIONS_
 };
-
 /**
  * Uses Factory pattern to create correct derived type of Action depending on
  * input.

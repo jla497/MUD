@@ -1,13 +1,19 @@
 #ifndef YAML_PARSER_H
 #define YAML_PARSER_H
 
-#include "Reset.h"
 #include "entities/AreaEntity.h"
 #include "entities/CharacterEntity.h"
 #include "entities/DoorEntity.h"
 #include "entities/ObjectEntity.h"
 #include "entities/RoomEntity.h"
 #include "entities/ShopEntity.h"
+#include "gamemanager/EntityFactory.h"
+#include "reset/Reset.h"
+#include <algorithm>
+#include <fstream>
+#include <iostream>
+#include <string>
+#include <vector>
 
 #include <yaml-cpp/yaml.h>
 
@@ -42,13 +48,13 @@ class YamlParser {
     // loads the YAML file into data (std::vector of YAML nodes)
     // each entity makes up one node in data (ex. "NPCs" make up one node)
     bool loadYamlFile(const std::string &path);
-
     std::vector<CharacterEntity> getAllNPCS() const;
     std::vector<ObjectEntity> getAllObjects() const;
     std::vector<Reset> getAllResets() const;
     void getAllHelps() const;
     std::vector<ShopEntity> getAllShops() const;
     AreaEntity getArea() const;
+    mudserver::gamemanager::EntityFactory *makeFactory();
 };
 
 #endif

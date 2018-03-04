@@ -13,6 +13,7 @@
 #include "actions/LookAction.h"
 #include "actions/MoveAction.h"
 #include "actions/NullAction.h"
+#include "actions/PrgmAction.h"
 #include "actions/SayAction.h"
 #include "actions/TimedAction.h"
 #include "commandparser/CommandParser.h"
@@ -26,10 +27,12 @@ using boost::algorithm::to_lower_copy;
 
 using namespace resources::commands;
 
-static std::unordered_map<std::string, ActKeyword> actionLookup = { // NOLINT
-    {UNDEFINED, ActKeyword::undefined}, {SAY, ActKeyword::say},
-    {LOOK, ActKeyword::look},           {ATTACK, ActKeyword::attack},
-    {MOVE, ActKeyword::move},           {"timed", ActKeyword::timed}};
+static std::unordered_map<std::string, ActKeyword> actionLookup =
+    { // NOLINT
+        {UNDEFINED, ActKeyword::undefined}, {SAY, ActKeyword::say},
+        {LOOK, ActKeyword::look},           {ATTACK, ActKeyword::attack},
+        {MOVE, ActKeyword::move},           {PROGRAM, ActKeyword::program},
+        {TIMED, ActKeyword::timed}};
 
 using ActionGenerator = std::unique_ptr<Action> (*)(CharacterEntity &,
                                                     std::vector<std::string> &,
@@ -47,7 +50,9 @@ const static std::vector<ActionGenerator> actionGenerators = {
     // NOLINT
     &generator<NullAction>, // undefined
     &generator<SayAction>,    &generator<LookAction>, &generator<MoveAction>,
-    &generator<AttackAction>, &generator<TimedAction>};
+    &generator<AttackAction>, &generator<TimedAction>, &generator<PrgmAction>
+};
+
 
 std::unique_ptr<Action>
 CommandParser::actionFromPlayerCommand(CharacterEntity &character,
@@ -72,6 +77,7 @@ CommandParser::actionFromPlayerCommand(CharacterEntity &character,
     if (index >= actionGenerators.size()) {
         return nullptr;
     }
+
     return actionGenerators[index](character, remainderOfTokens, gameManager);
 }
 

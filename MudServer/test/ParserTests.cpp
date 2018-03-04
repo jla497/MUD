@@ -1,8 +1,8 @@
-#include "Reset.h"
 #include "YamlParser.h"
 #include "entities/Entity.h"
 #include "entities/RoomEntity.h"
 #include "gamemanager/LutBuilder.h"
+#include "reset/Reset.h"
 #include <gtest/gtest.h>
 
 class ParserTests : public testing::Test {

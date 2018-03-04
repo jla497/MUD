@@ -10,7 +10,7 @@
 class NullAction : public Action {
   public:
     using Action::Action;
-    void execute_impl();
+    void execute_impl() override;
     NullAction *clone();
 
   protected:

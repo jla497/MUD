@@ -1,5 +1,13 @@
 find_package(yaml-cpp)
 add_library(configparser configparser.cpp)
+
+set_target_properties(configparser
+                      PROPERTIES
+                      LINKER_LANGUAGE CXX
+                      CXX_STANDARD 14
+                      PREFIX ""
+)
+
 target_link_libraries(configparser yaml-cpp)
 
 add_executable(mudserver

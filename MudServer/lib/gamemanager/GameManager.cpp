@@ -44,6 +44,7 @@ void GameManager::mainLoop() {
     // point currentActionQueuePtr to actionQueueA
     // point nextActionQueuePtr to actionQueueB
 
+    gameState.doReset();
     while (!done) {
         if (connectionManager.update()) {
             // An error was encountered, stop
@@ -170,7 +171,6 @@ CharacterEntity *GameManager::playerIdToCharacter(PlayerId playerId) {
         auto characterId = entry->second;
         return gameState.getCharacterFromLUT(characterId);
     }
-
     return nullptr;
 }
 
@@ -191,17 +191,11 @@ void GameManager::addPlayerCharacter(PlayerId playerId) {
     auto testShortDesc =
         "TestPlayerName" + std::to_string(playerCharacterBimap.size());
 
-    //    CharacterEntity pc(
-    //        pc::ARMOR, std::string{pc::DAMAGE}, std::vector<std::string>{},
-    //        pc::EXP,
-    //        pc::GOLD, std::string{pc::HIT}, pc::TYPEID,
-    //        std::vector<std::string>{}, pc::LEVEL,
-    //        std::vector<std::string>{}, testShortDesc, pc::THAC0);
+    CharacterEntity pChar{};
 
-    CharacterEntity pc{};
     playerCharacterBimap.insert(
-        PcBmType::value_type(playerId, pc.getEntityId()));
-    gameState.addCharacter(pc);
+        PcBmType::value_type(playerId, pChar.getEntityId()));
+    gameState.addCharacter(pChar);
 }
 
 } // namespace gamemanager

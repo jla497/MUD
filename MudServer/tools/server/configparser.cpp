@@ -16,6 +16,7 @@ boost::optional<ConfigData> parseConfigFile(const std::string filePath) {
     auto clientPort = config[0]["CLIENT"]["port"].as<std::string>();
     auto ymlFile = config[0]["SERVER"]["yml_file"].as<std::string>();
     auto url = config[0]["CLIENT"]["url"].as<std::string>();
+
     ConfigData serverData{Port{serverPort}, clientPort, ymlFile, url};
     return serverData;
 };

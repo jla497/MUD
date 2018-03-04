@@ -1,8 +1,11 @@
 #ifndef ROOM_ENTITY_H
 #define ROOM_ENTITY_H
 
+#include <map>
+
 #include "DoorEntity.h"
 #include "Entity.h"
+#include "ObjectEntity.h"
 
 struct ExtendedDesc {
     std::vector<std::string> desc;
@@ -13,6 +16,7 @@ class RoomEntity : public Entity {
   private:
     std::vector<std::string> m_desc;
     std::vector<DoorEntity> m_doors;
+    std::map<int, ObjectEntity> m_objects;
     std::string m_name;
     ExtendedDesc m_extDesc;
     unsigned int m_roomId = static_cast<unsigned int>(-1);
@@ -78,6 +82,9 @@ class RoomEntity : public Entity {
      * Given entity id
      */
     std::string removeEntity(unsigned int entityToRemove);
+    void equipObject(ObjectEntity &object);
+    ObjectEntity getObject(int id);
+    std::map<int, ObjectEntity> getObjects();
 };
 
 #endif

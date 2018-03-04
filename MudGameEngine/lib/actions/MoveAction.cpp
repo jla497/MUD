@@ -9,7 +9,6 @@ MoveAction *MoveAction::clone() { return new MoveAction(*this); }
 void MoveAction::execute_impl() {
     static auto logger = mudserver::logging::getLogger("Action::MoveAction");
 
-    logger->info("MoveAction...");
     std::string userinfo(
         "userid: " +
         std::to_string(characterPerformingAction.getEntityId().getId()));

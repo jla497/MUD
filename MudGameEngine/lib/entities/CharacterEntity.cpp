@@ -1,4 +1,5 @@
 #include <boost/algorithm/string.hpp>
+#include <entities/ObjectEntity.h>
 #include <string>
 #include <utility>
 #include <vector>
@@ -72,3 +73,19 @@ void CharacterEntity::incExp(unsigned int expPoints) {
     m_exp += expPoints;
     // calculateLevel();
 }
+
+void CharacterEntity::equipObject(ObjectEntity object) {
+    m_objects[object.getObjectTypeId()] = object;
+}
+ObjectEntity CharacterEntity::getObject(int id) {
+    auto objectItr = m_objects.find(id);
+    if (objectItr != m_objects.end()) {
+        auto object = objectItr->second;
+        m_objects.erase(objectItr);
+        return object;
+    } else {
+        throw "no such object found";
+    }
+}
+
+std::map<int, ObjectEntity> CharacterEntity::getObjects() { return m_objects; };

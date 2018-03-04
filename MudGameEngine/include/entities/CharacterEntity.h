@@ -1,8 +1,11 @@
 #ifndef CHARACTER_ENTITY_H
 #define CHARACTER_ENTITY_H
 
-#include "Entity.h"
+#include <map>
+
 #include "Roll.h"
+#include "entities/Entity.h"
+#include "entities/ObjectEntity.h"
 
 enum class CombatStates { NOT_FIGHTING, FIGHTING };
 
@@ -20,6 +23,7 @@ class CharacterEntity : public Entity {
     std::vector<std::string> m_longDesc;
     std::string m_shortDesc;
     int m_thac0{};
+    std::map<int, ObjectEntity> m_objects;
 
     CombatStates m_combatState;
 
@@ -76,6 +80,10 @@ class CharacterEntity : public Entity {
 
     // Experience is unsigned to assume no negative exp
     void incExp(unsigned int expPoints);
+
+    void equipObject(ObjectEntity object);
+    ObjectEntity getObject(int id);
+    std::map<int, ObjectEntity> getObjects();
 };
 
 #endif

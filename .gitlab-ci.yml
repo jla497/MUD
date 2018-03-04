@@ -28,7 +28,7 @@ mudserver-unit-test:
   script:
     - cd build
     - bin/mudtest
-
+   
 cleanup-build-folder:
   stage: cleanup
   script:

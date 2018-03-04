@@ -10,6 +10,7 @@ class GameManager;
 #include "entities/CharacterEntity.h"
 #include "entities/Entity.h"
 #include <string>
+#include <unordered_map>
 #include <vector>
 
 /**
@@ -20,6 +21,7 @@ class GameManager;
  */
 class Action {
     using Tick = int;
+    static std::unordered_map<std::string, bool> isAdminAction;
 
   public:
     Action(CharacterEntity &characterPerformingAction,
@@ -32,6 +34,7 @@ class Action {
      * the game manager, they can alter state and send messages in this method.
      */
     void execute();
+    virtual ~Action() = default;
     virtual Action *clone() = 0;
 
   private:
