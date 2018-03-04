@@ -35,6 +35,7 @@ enum class ActKeyword {
     timed,
     program,
     save,
+    charmod,
 
     _N_ACTIONS_
 };

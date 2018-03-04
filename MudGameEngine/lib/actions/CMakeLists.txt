@@ -1,5 +1,6 @@
 add_library(actions
 	Action.cpp
+	CharacterModAction.cpp
 	SayAction.cpp
 	MoveAction.cpp
 	AttackAction.cpp

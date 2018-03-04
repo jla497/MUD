@@ -1,5 +1,7 @@
-add_library(resources commands.cpp
-                      playercharacterdefaults.cpp)
+add_library(resources
+        commands.cpp
+        playercharacterdefaults.cpp
+        actions.cpp)
 
 set_target_properties(resources
         PROPERTIES

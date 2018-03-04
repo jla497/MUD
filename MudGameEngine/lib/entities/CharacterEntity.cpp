@@ -12,7 +12,7 @@ CharacterEntity::CharacterEntity(
     std::vector<std::string> keywords, unsigned int level,
     std::vector<std::string> longDesc, std::string shortDesc, int thac0)
     : Entity::Entity(), m_armor(armor), /*m_damage(std::move(damage)),*/
-      m_desc(std::move(desc)), m_typeId(typeId), m_exp(exp), m_gold(gold),
+      m_typeId(typeId), m_desc(std::move(desc)), m_exp(exp), m_gold(gold),
       /*m_hit(std::move(hit)),*/
       m_keywords(std::move(keywords)), m_level(level),
       m_longDesc(std::move(longDesc)), m_shortDesc(std::move(shortDesc)),
@@ -88,4 +88,8 @@ ObjectEntity CharacterEntity::getObject(int id) {
     }
 }
 
-std::map<int, ObjectEntity> CharacterEntity::getObjects() { return m_objects; };
+std::map<int, ObjectEntity> CharacterEntity::getObjects() { return m_objects; }
+
+void CharacterEntity::setShortDesc(std::string name) {
+    m_shortDesc = std::move(name);
+};

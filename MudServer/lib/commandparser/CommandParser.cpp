@@ -10,6 +10,7 @@
 #include <boost/tokenizer.hpp>
 
 #include "actions/AttackAction.h"
+#include "actions/CharacterModAction.h"
 #include "actions/LookAction.h"
 #include "actions/MoveAction.h"
 #include "actions/NullAction.h"
@@ -33,7 +34,8 @@ static std::unordered_map<std::string, ActKeyword> actionLookup =
         {UNDEFINED, ActKeyword::undefined}, {SAY, ActKeyword::say},
         {LOOK, ActKeyword::look},           {ATTACK, ActKeyword::attack},
         {MOVE, ActKeyword::move},           {PROGRAM, ActKeyword::program},
-        {TIMED, ActKeyword::timed},         {SAVE, ActKeyword::save}};
+        {TIMED, ActKeyword::timed},         {SAVE, ActKeyword::save},
+        {CHARMOD, ActKeyword::charmod}};
 
 using ActionGenerator = std::unique_ptr<Action> (*)(Player &,
                                                     std::vector<std::string> &,
@@ -52,7 +54,7 @@ const static std::vector<ActionGenerator> actionGenerators = {
     &generator<NullAction>, // undefined
     &generator<SayAction>,    &generator<LookAction>, &generator<MoveAction>,
     &generator<AttackAction>, &generator<PrgmAction>, &generator<TimedAction>,
-    &generator<SaveAction>
+    &generator<SaveAction>,   &generator<CharacterModAction>
 };
 
 std::unique_ptr<Action>

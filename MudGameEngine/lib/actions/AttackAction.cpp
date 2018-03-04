@@ -40,7 +40,7 @@ void AttackAction::execute_impl() {
         logger->info("No Target found");
         return;
     }
-    auto nameOfAttackTarget = actionArguments.at(0);
+    auto nameOfAttackTarget = boost::join(actionArguments, " ");
     logger->info("nameOfAttackTarget: " + nameOfAttackTarget);
 
     // TODO: make changes so that the player can attack any arbritrary entity.
@@ -67,7 +67,7 @@ void AttackAction::execute_impl() {
             gameManager.sendCharacterMessage(
                 playerWhoIsBeingAttacking->getEntityId(),
                 "You are attacked by " + playerWhoIsAttacking->getShortDesc() +
-                    "and take 1 damage");
+                    " and take 1 damage");
             return;
         }
     }

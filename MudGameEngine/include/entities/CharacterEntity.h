@@ -63,6 +63,7 @@ class CharacterEntity : public Entity {
     std::vector<std::string> getLongDesc() const;
 
     std::string getShortDesc() const;
+    void setShortDesc(std::string name);
 
     int getThac0() const;
 
