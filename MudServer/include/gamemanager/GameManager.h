@@ -43,7 +43,10 @@ class GameManager {
     std::unordered_map<PlayerId, Player> players;
     PcBmType playerCharacterBimap;
     std::queue<connection::gameAndUserInterface> outgoingMessages;
-    std::queue<std::unique_ptr<Action>> actions;
+    std::queue<std::unique_ptr<Action>> actionsA;
+    std::queue<std::unique_ptr<Action>> actionsB;
+    std::queue<std::unique_ptr<Action>> *currentAQueuePtr;
+    std::queue<std::unique_ptr<Action>> *nextAQueuePtr;
 
     /**
      * Process a collection of messages from the server, taking various actions
@@ -139,6 +142,10 @@ class GameManager {
      * @param message the message to send
      */
     void sendCharacterMessage(UniqueId characterId, std::string message);
+
+    void swapQueuePtrs();
+
+    void addActionToQueue(std::unique_ptr<Action> action);
 };
 
 } // namespace gamemanager

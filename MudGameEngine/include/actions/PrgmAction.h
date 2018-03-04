@@ -71,5 +71,6 @@ class PrgmAction : public Action {
 
   protected:
     std::string description() const override { return u8"Program action"; }
+    PrgmAction *clone();
 };
 #endif

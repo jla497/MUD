@@ -5,7 +5,9 @@ add_library(actions
 	AttackAction.cpp
 	NullAction.cpp
 	LookAction.cpp
-	PrgmAction.cpp)
+	LookAction.cpp
+	PrgmAction.cpp
+    TimedAction.cpp)
 
 set_target_properties(actions
 	PROPERTIES

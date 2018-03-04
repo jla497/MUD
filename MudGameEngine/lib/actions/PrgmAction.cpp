@@ -26,6 +26,8 @@ PrgmAction::PrgmParser::OptValMap PrgmAction::PrgmParser::optionLookup = {
     {CLEVEL, "--level <int>"},
     {CHELP, "e.g. --modify/--create <id> --armor <int>"}};
 
+PrgmAction *PrgmAction::clone() { return new PrgmAction(*this); }
+
 void PrgmAction::execute_impl() {
     static auto logger =
         mudserver::logging::getLogger("ProgramAction::execute");

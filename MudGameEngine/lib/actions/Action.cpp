@@ -3,6 +3,7 @@
 
 #include "actions/Action.h"
 #include "logging.h"
+#include "gamemanager/GameManager.h"
 
 std::unordered_map<std::string, bool> Action::isAdminAction = {
     {"Program action", true}};
@@ -25,6 +26,13 @@ void Action::execute() {
         execute_impl();
     } else {
         execute_impl();
+    }
+
+    if (timeRemaining > 0) {
+        timeRemaining--;
+        auto newAction = clone();
+        auto ptr = std::unique_ptr<Action>(newAction);
+        gameManager.addActionToQueue(std::move(ptr));
     }
 }
 std::ostream &operator<<(std::ostream &os, const Action &action) {

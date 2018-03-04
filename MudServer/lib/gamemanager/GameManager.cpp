@@ -39,6 +39,11 @@ void GameManager::mainLoop() {
 
     using clock = std::chrono::high_resolution_clock;
     auto startTime = clock::now();
+    currentAQueuePtr = &actionsA;
+    nextAQueuePtr = &actionsB;
+    // point currentActionQueuePtr to actionQueueA
+    // point nextActionQueuePtr to actionQueueB
+
     gameState.doReset();
     while (!done) {
         if (connectionManager.update()) {
@@ -60,6 +65,8 @@ void GameManager::mainLoop() {
         if (delta >= tick) {
             startTime = clock::now();
             performQueuedActions();
+            swapQueuePtrs();
+            // swap action QueuePtrs
             sendMessagesToPlayers();
         }
     }
@@ -127,16 +134,24 @@ void GameManager::sendMessagesToPlayers() {
 }
 
 void GameManager::enqueueAction(std::unique_ptr<Action> action) {
-    actions.push(std::move(action));
+    // currentActionQueuePtr->push(std::move(action));
+    nextAQueuePtr->push(std::move(action));
 }
 
 void GameManager::performQueuedActions() {
-    while (!actions.empty()) {
-        actions.front()->execute();
-        actions.pop();
+    while (!currentAQueuePtr->empty()) {
+        currentAQueuePtr->front()->execute();
+        currentAQueuePtr->pop();
     }
 }
 
+void GameManager::swapQueuePtrs() {
+    std::swap(currentAQueuePtr, nextAQueuePtr);
+}
+
+void GameManager::addActionToQueue(std::unique_ptr<Action> action) {
+    nextAQueuePtr->push(std::move(action));
+}
 GameState &GameManager::getState() { return gameState; }
 
 void GameManager::sendCharacterMessage(UniqueId characterId,
@@ -176,20 +191,8 @@ void GameManager::addPlayerCharacter(PlayerId playerId) {
     auto testShortDesc =
         "TestPlayerName" + std::to_string(playerCharacterBimap.size());
 
-    // throws this error: terminate called after throwing an instance of
-    // 'std::out_of_range'
-    //            what():  vector::_M_range_check: __n (which is 2) >=
-    //            this->size() (which is 2)
-    //            Aborted (core dumped)
-
-    //            CharacterEntity pc(
-    //                    pc::ARMOR, std::string{pc::DAMAGE},
-    //                    std::vector<std::string>{}, pc::EXP,
-    //                    pc::GOLD, std::string{pc::HIT}, pc::TYPEID,
-    //                    std::vector<std::string>{}, pc::LEVEL,
-    //                    std::vector<std::string>{}, testShortDesc, pc::THAC0);
-
     CharacterEntity pChar{};
+
     playerCharacterBimap.insert(
         PcBmType::value_type(playerId, pChar.getEntityId()));
     gameState.addCharacter(pChar);

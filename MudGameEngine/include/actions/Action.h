@@ -20,6 +20,7 @@ class GameManager;
  * actually affects.
  */
 class Action {
+    using Tick = int;
     static std::unordered_map<std::string, bool> isAdminAction;
 
   public:
@@ -34,16 +35,17 @@ class Action {
      */
     void execute();
     virtual ~Action() = default;
-
-    friend std::ostream &operator<<(std::ostream &os, const Action &action);
+    virtual Action *clone() = 0;
 
   private:
     virtual void execute_impl() = 0;
+    friend std::ostream &operator<<(std::ostream &os, const Action &action);
 
   protected:
     virtual std::string description() const = 0;
     CharacterEntity &characterPerformingAction;
     std::vector<std::string> actionArguments;
     mudserver::gamemanager::GameManager &gameManager;
+    Tick timeRemaining = -1;
 };
 #endif
