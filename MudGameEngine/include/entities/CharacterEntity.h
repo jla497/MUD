@@ -25,10 +25,11 @@ class CharacterEntity : public Entity {
     int m_thac0{};
     std::map<int, ObjectEntity> m_objects;
 
+    // Combat variables
     CombatStates m_combatState;
-
-    Roll m_damageRollData; // ???
-    Roll m_hitRollData;    // ???
+    Roll m_damageRollData; 
+    Roll m_hitRollData;    
+    int m_mana;
 
     // ASSUME: can only level up via experience
     // should calculate level every time exp changed
@@ -66,10 +67,13 @@ class CharacterEntity : public Entity {
 
     int getThac0() const;
 
+    int getMana() const;
+
     // Combat related
     CombatStates getCombatState() const;
     void engageCombatState();
     void endCombatState();
+    void setMana(int mana);
 
     // currently gold is signed but good to have
     // separate methods for adding and subtracting
