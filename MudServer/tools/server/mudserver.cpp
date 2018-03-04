@@ -28,10 +28,11 @@ int main(int argc, char *argv[]) {
         mudserver::logging::setLogLevel(mudserver::logging::LogLevel::debug);
         mudserver::connection::ConnectionManager connectionManager{
             configData->serverPort};
-        mudserver::gamemanager::GameState gameState{};
-        gameState.initFromYaml(configData->ymlFilePath);
         mudserver::persistence::PersistenceService persistenceService{
             configData->configDir};
+        mudserver::gamemanager::GameState gameState =
+            persistenceService.loadGameState();
+        gameState.initFromYaml(configData->ymlFilePath);
 
         mudserver::gamemanager::GameManager gameManager{
             connectionManager, gameState, persistenceService};

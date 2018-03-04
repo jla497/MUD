@@ -33,6 +33,9 @@ void Action::execute() {
         if (playerPerformingAction.hasAdminPrivilege()) {
             execute_impl();
         }
+        else {
+            logger->debug("Player does not have admin privileges!");
+        }
     } else {
         execute_impl();
     }

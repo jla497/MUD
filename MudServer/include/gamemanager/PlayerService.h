@@ -38,7 +38,7 @@ class PlayerService {
         ar &nextPlayerId;
         ar &players;
         ar &playerIdByName;
-        // ar &playerCharacterBimap;
+        ar &playerCharacterBimap;
     }
 
     PlayerId getNextPlayerId();

@@ -1,5 +1,6 @@
 #include <iostream>
 #include <memory>
+#include <boost/format.hpp>
 
 #include "gamemanager/GameState.h"
 #include "logging.h"
@@ -20,7 +21,7 @@ void GameState::initFromYaml(std::string filename) {
 }
 
 void GameState::parseYamlFile(std::string filename) {
-    parser.loadYamlFile(std::move(filename));
+    parser.loadYamlFile(filename);
 }
 
 void GameState::initRoomLUT() {
@@ -69,13 +70,7 @@ void GameState::addCharacter(CharacterEntity &character, Id roomID) {
     } else {
         throw "couldn't add character to room";
     }
-    //        auto characterItr = characterLookUp.find(id);
-    //        auto objects = characterItr->second.getObjects();
-    //
-    //            for(auto &obj : objects) {
-    //                std::cout<<characterItr->second.getShortDesc()<<" "<<
-    //                obj.second.getShortDesc()<<std::endl;
-    //            }
+
 }
 
 void GameState::addAreaFromParser() { areas.push_back(parser.getArea()); }

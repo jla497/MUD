@@ -77,7 +77,10 @@ void GameManager::mainLoop() {
     persistData();
 }
 
-void GameManager::persistData() { persistenceService.save(playerService); }
+void GameManager::persistData() {
+    persistenceService.save(playerService);
+    persistenceService.save(gameState);
+}
 
 void GameManager::loadPersistedData() {
     playerService = persistenceService.loadPlayerService();
