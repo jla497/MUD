@@ -40,6 +40,10 @@ void GameState::addCharacterRoomRelationToLUT(UniqueId characterId,
     characterRoomLookUp.left[characterId] = roomId;
 }
 
+void removeCharacterByUniqueId(UniqueId characterId) {
+    // TODO
+}
+
 void GameState::addRoomToLUT(const RoomEntity &room) {
     roomLookUp[room.getId()] = room;
 }
@@ -135,5 +139,14 @@ void GameState::doReset() {
     ResetManager resetManager{resets};
     resetManager.applyResets(this);
 }
+
+Spell *getSpellByName(std::string spellName) {
+    t = std::find_if(vecOfItems.begin(), vecOfItems.end(), [](Item const& obj){
+        return obj.getPrice() == 28;
+    } );
+}
+
+
+
 } // namespace gamemanager
 } // namespace mudserver

@@ -10,7 +10,6 @@
 #include <unordered_map>
 
 #include "UniqueId.h"
-#include "UniqueId.h"
 #include "YamlParser.h"
 #include "YamlParser.h"
 #include "entities/AreaEntity.h"
@@ -46,6 +45,7 @@ class GameState {
     YamlParser parser;
     AreaEntity area;
     std::unique_ptr<EntityFactory> factory;
+    std::deque<Spell> spells;
 
   public:
     void initFromYaml(std::string filename);
@@ -56,6 +56,7 @@ class GameState {
     void addCharacter(CharacterEntity &character);
     void addCharacterRoomRelationToLUT(UniqueId characterId,
                                        unsigned int roomId);
+    void removeCharacterByUniqueId(UniqueId characterId);
     void addRoomToLUT(const RoomEntity &room);
     AreaEntity getAreaFromParser();
     std::deque<AreaEntity> &getAreas();
@@ -68,6 +69,8 @@ class GameState {
     void clearCharacterRoomLUT();
     EntityFactory &getFactory();
     void doReset();
+
+    Spell *getSpellByName(std::string spellName);
 };
 
 } // namespace gamemanager
