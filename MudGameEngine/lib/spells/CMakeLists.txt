@@ -1,7 +1,7 @@
 add_library(spells
 	Spell.cpp)
 
-set_target_properties(actions
+set_target_properties(spells
 	PROPERTIES
 	LINKER_LANGUAGE CXX
 	CXX_STANDARD 14)

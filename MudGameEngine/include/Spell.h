@@ -18,9 +18,14 @@ class Spell {
 		std::string immchar:
 		std::string damage;
 
-		//this finds the substring that starts directly after the Nth quote character (') in the string
-		//Returns an empty string if quote number is invalid or if there is no characters in between the Nth and N+1 quote
+		//replaces string formatting specification symbols with character information to display to player
+		std::string formatUserDisplayStrings(std::string displayString, std::string casterName, std::string victimName, std::string victimGender);
+
+		//finds the substring in the third column of Effect that contains formula for heal/damage
 		std::string getEffectsFormula();
+
+		//helper function for getEffectsformula()
+		size_t findNthQuoteInEffects(size_t position, size_t nth);
 
 	public:
 		Spell() = default;
@@ -31,11 +36,11 @@ class Spell {
 		unsigned int getMinLevel();
 		std::string getName();
 		int getDuration();
-		std::string getHitChar();
-		std::string getHitRoom(std::string characterName);
-		std::string getHitVict();
-		std::string getMissRoom(std::string characterName);
-		std::string getMissChar();
+		std::string getHitChar(std::string casterName, std::string victimName, std::string victimGender);
+		std::string getHitRoom(std::string casterName, std::string victimName, std::string victimGender);
+		std::string getHitVict(std::string casterName, std::string victimName, std::string victimGender);
+		std::string getMissRoom(std::string casterName, std::string victimName, std::string victimGender);
+		std::string getMissChar(std::string casterName, std::string victimName, std::string victimGender);
 		std::string getDammsg();
 		std::string getWearoff();
 		std::string getImmchar();

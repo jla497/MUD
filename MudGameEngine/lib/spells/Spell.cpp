@@ -1,6 +1,7 @@
-
+#include <boost/algorithm/string.hpp>
+#include <boost/algorithm/string/replace.hpp>
 #include <string>
-#include <boost/algorithm/string/find.hpp>
+#include <vector>
 #include "Spell.h"
 
 Spell Spell::Spell() {
@@ -40,25 +41,29 @@ int Spell::getDuration() {
 	return duration;
 }
 
-std::string Spell::getHitChar() {
-	//use stringf to replace all $x's with character names
-	return hitchar;
+std::string Spell::getHitChar(std::string casterName, std::string victimName, std::string victimGender) {
+	std::string modifiedString = formatUserDisplayStrings(hitchar, casterName, victimName, victimGender);
+	return modifiedString;
 }
 
-std::string Spell::getHitRoom() {
-	return hitroom;
+std::string Spell::getHitRoom(std::string casterName, std::string victimName, std::string victimGender) {
+	std::string modifiedString = formatUserDisplayStrings(hitroom, casterName, victimName, victimGender);
+	return modifiedString;
 }
 		
-std::string Spell::getHitVict() {
-	return hitvict;
+std::string Spell::getHitVict(std::string casterName, std::string victimName, std::string victimGender) {
+	std::string modifiedString = formatUserDisplayStrings(hitvict, casterName, victimName, victimGender);
+	return modifiedString;
 }
 
-std::string Spell::getMissRoom() {
-	return missroom;
+std::string Spell::getMissRoom(std::string casterName, std::string victimName, std::string victimGender) {
+	std::string modifiedString = formatUserDisplayStrings(missroom, casterName, victimName, victimGender);
+	return modifiedString;
 }
 
-std::string Spell::getMissChar() {
-	return misschar;
+std::string Spell::getMissChar(std::string casterName, std::string victimName, std::string victimGender) {
+	std::string modifiedString = formatUserDisplayStrings(misschar, casterName, victimName, victimGender);
+	return modifiedString;
 }
 		
 std::string Spell::getDammsg() {
@@ -133,12 +138,41 @@ void Spell::setDamage(std::string damage) {
 	this->damage = damage;
 }
 
+std::string formatUserDisplayStrings(std::string displayString, std::string casterName, std::string victimName, std::string victimGender) {
+	std::string modifiedString = displayString;
+	if (casterName.length() > 0) {
+		boost::replace_all(modifiedString, "$n", casterName);
+	} else {
+		boost::replace_all(modifiedString, "$n", "someone");
+	}
+	if (victimName.length() > 0) {
+		boost::replace_all(modifiedString, "$N", victimName);
+	} else {
+		boost::replace_all(modifiedString, "$N", "someone");
+	}
+	//FIXME: should replace victim gender with enums
+	if (victimGender == "F") {
+		boost::replace_all(modifiedString, "$E", "she");
+		boost::replace_all(modifiedString, "$M", "her");
+		boost::replace_all(modifiedString, "$S", "her");
+	} else if (victimGender == "M") {
+		boost::replace_all(modifiedString, "$E", "he");
+		boost::replace_all(modifiedString, "$M", "him");
+		boost::replace_all(modifiedString, "$S", "his");
+	} else {
+		boost::replace_all(modifiedString, "$E", "it");
+		boost::replace_all(modifiedString, "$M", "it");
+		boost::replace_all(modifiedString, "$S", "its");
+	}
+	return modifiedString;
+}
+
 size_t Spell::findNthQuoteInEffects(size_t position, size_t nth) {
 	if (effect.length() <= position) {
 		return string::npos;
 	}
 	size_t found_position = effect.find("'", position);
-	if (1 == nth || string::npos == found_position) {
+	if (nth == 0 || nth == 1 || string::npos == found_position) {
 		return found_position;
 	} else {
 		return findNthQuoteInEffects(found_position + 1, nth - 1);
@@ -163,14 +197,31 @@ int Spell::calculateSpellEffect(unsigned int characterLevel) {
 		std::string formula = getEffectsFormula();
 		if (formula.length() > 0) {
 			//"parse" the formula to calculate
+			//suggestion: use exprtk mathematical expressions library to "parse" formula
 			return 0; //temporary
 		}
 	}
-	return 0; //temorary
+	return 0; //temporary
+}
+
+int Spell::calculateDamage(unsigned int characterLevel) {
+	if(isCharacterValidLevel(characterLevel)) {
+		//"parse" formula
+		return 0; //temporary
+	}
+	return 0;
 }
 
 bool Spell::isCharacterValidLevel(unsigned int characterLevel) {
 	if (minlevel <= characterLevel) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+bool isEnoughMana(int characterMana) {
+	if (this->mana <= characterMana) {
 		return true;
 	} else {
 		return false;
