@@ -78,7 +78,7 @@ void AttackAction::execute_impl() {
             //set attackers attackAbiliy to their normal attack
             playerWhoIsAttacking->getCombatComponent()->prepareToAttack();
             //calculate and apply attack effects
-            CombatSimulation::CombatSimulation::resolveCombatRound(*playerWhoIsAttacking, *playerWhoIsBeingAttacking,gameManager);
+            CombatSimulation::resolveCombatRound(*playerWhoIsAttacking, *playerWhoIsBeingAttacking,gameManager);
             return;
         }
     }

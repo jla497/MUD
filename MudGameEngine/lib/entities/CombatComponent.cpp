@@ -16,11 +16,11 @@ CombatComponent::CombatComponent(){
     this->m_hitRollData = {1,1,0};
 }
 
-void prepareToAttack(){
+void CombatComponent::prepareToAttack(){
 	//set nextCombatAbilityToBeUsed to the characters default attack(if their is no weapon use the default Damageroll)
 }
 
-void die(){
+void CombatComponent::die(){
 	//remove from play
 	//if the character is controlled by a player notify them
 
@@ -40,8 +40,8 @@ void CombatComponent::setDamageRoll(Roll damageRollData){
 void CombatComponent::setHitRoll(Roll hitRollData){
 	this->m_hitRollData = hitRollData;
 }
-CombatStates CombatComponent::getCombatState() const { 
-	return m_combatState; 
+CombatStates CombatComponent::getCombatState() const {
+	return m_combatState;
 }
 void CombatComponent::engageCombatState() {
     this->m_combatState = CombatStates::FIGHTING;
@@ -50,21 +50,16 @@ void CombatComponent::endCombatState() {
     this->m_combatState = CombatStates::NOT_FIGHTING;
 }
 Roll CombatComponent::getDamageRoll() const {
- 	return m_damageRollData; 
+ 	return m_damageRollData;
 }
 Roll CombatComponent::getHitRoll() const {
  	return m_hitRollData;
 }
 int CombatComponent::getThac0() const {
- 	return m_thac0; 
+ 	return m_thac0;
 }
 
-bool damage(int damageAmount){
+bool CombatComponent::damage(int damageAmount){
 	die();
+	return false; //FIXME you were missing a return. put the proper value here
 }
-
-
-
-
-
-

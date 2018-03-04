@@ -6,13 +6,10 @@
 #include "entities/CharacterEntity.h"
 
 namespace CombatSimulation {
-	
 	using mudserver::gamemanager::GameManager;
-	namespace CombatSimulation{
-		static void resolveCombatRound(CharacterEntity& playerWhoIsAttacking,
-			CharacterEntity&  playerWhoIsBeingAttacking,
-			GameManager& gameManager);
 
-	}
+	void resolveCombatRound(CharacterEntity& playerWhoIsAttacking,
+		CharacterEntity&  playerWhoIsBeingAttacking,
+		GameManager& gameManager);
 }
 #endif

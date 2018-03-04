@@ -79,4 +79,6 @@ ObjectEntity CharacterEntity::getObject(int id) {
 
 std::map<int, ObjectEntity> CharacterEntity::getObjects() { return m_objects; };
 
-
+CombatComponent *CharacterEntity::getCombatComponent() {
+    return &combatComponent;
+}
