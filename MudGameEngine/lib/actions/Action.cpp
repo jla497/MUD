@@ -52,3 +52,9 @@ std::ostream &operator<<(std::ostream &os, const Action &action) {
     os << "]" << std::endl;
     return os;
 }
+
+void setTimeRemaining(const Tick newTimeRemaining) {
+    timeRemaining = newTimeRemaining;
+}
+
+
