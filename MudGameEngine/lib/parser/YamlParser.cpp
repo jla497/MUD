@@ -1,10 +1,10 @@
 
+#include <algorithm>
 #include <cassert>
 #include <deque>
 
 #include "YamlParser.h"
 #include "resources/DataFields.h"
-#include <deque>
 
 bool YamlParser::loadYamlFile(const std::string &path) {
     if (is_loaded) {

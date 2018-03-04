@@ -28,3 +28,6 @@ add_subdirectory(MudGameEngine)
 add_subdirectory(MudServer)
 add_subdirectory(Client)
 add_subdirectory(Logging)
+
+configure_file(config.yaml config.yaml COPYONLY)
+

@@ -1,10 +1,10 @@
 #include <boost/algorithm/string.hpp>
-#include <entities/ObjectEntity.h>
 #include <string>
 #include <utility>
 #include <vector>
 
 #include "entities/CharacterEntity.h"
+#include "entities/ObjectEntity.h"
 
 CharacterEntity::CharacterEntity(
     int armor, std::string damage, std::vector<std::string> desc,
@@ -21,12 +21,12 @@ CharacterEntity::CharacterEntity(
     std::vector<std::string> tmpHit;
     boost::split(tmpHit, hit, boost::is_any_of("+d"));
     m_hitRollData = {std::stoi(tmpHit.at(0)), std::stoi(tmpHit.at(1)),
-                     std::stoi(tmpHit.at(2))};
+                     tmpHit.size() > 2 ? std::stoi(tmpHit.at(2)) : 0};
 
     std::vector<std::string> tmpDamage;
     boost::split(tmpDamage, damage, boost::is_any_of("+d"));
     m_damageRollData = {std::stoi(tmpDamage.at(0)), std::stoi(tmpDamage.at(1)),
-                        std::stoi(tmpDamage.at(2))};
+                        tmpDamage.size() > 2 ? std::stoi(tmpDamage.at(2)) : 0};
 }
 
 Roll CharacterEntity::getDamage() const { return m_damageRollData; }

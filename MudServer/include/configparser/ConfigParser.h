@@ -16,9 +16,10 @@ struct ConfigData {
     Port serverPort;
     std::string clientPort;
     std::string ymlFilePath;
+    std::string configDir;
     std::string url;
 };
 
-boost::optional<ConfigData> parseConfigFile(const std::string filePath);
+boost::optional<ConfigData> parseConfigFile(std::string filePath);
 
 #endif
