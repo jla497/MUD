@@ -48,7 +48,7 @@ class GameState {
     std::unique_ptr<EntityFactory> factory;
 
   public:
-    void initFromYaml(std::string filename);
+    void initFromYaml(std::vector<std::string> filenames);
     void parseYamlFile(std::string string);
     void initRoomLUT();
     void addAreaFromParser();

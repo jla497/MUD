@@ -15,7 +15,7 @@ using networking::Port;
 struct ConfigData {
     Port serverPort;
     std::string clientPort;
-    std::string ymlFilePath;
+    std::vector<std::string> areas;
     std::string configDir;
     std::string url;
 };
