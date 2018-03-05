@@ -140,7 +140,7 @@ void Spell::setDamage(std::string damage) {
 	this->damage = damage;
 }
 
-std::string formatUserDisplayStrings(std::string displayString, std::string casterName, std::string victimName, std::string victimGender) {
+std::string Spell::formatUserDisplayStrings(std::string displayString, std::string casterName, std::string victimName, std::string victimGender) {
 	std::string modifiedString = displayString;
 	if (casterName.length() > 0) {
 		boost::replace_all(modifiedString, "$n", casterName);
@@ -187,7 +187,7 @@ std::string Spell::getEffectsFormula() {
 	start = findNthQuoteInEffects(0, EFFECT_QUOTE_POSITION);
 	end = findNthQuoteInEffects(0, EFFECT_QUOTE_POSITION + 1);
 	if (start != std::string::npos && end != std::string::npos) {
-		return effect.substr(start + 1, end - start);
+		return effect.substr(start + 1, end - start - 1);
 	} else {
 		return "";
 	}

@@ -5,17 +5,11 @@
 
 namespace Parser {
 
-	std::string parseString(YAML::Node node) {
-    	return node.as<std::string>();
-	}
+	std::string parseString(YAML::Node node);
 
-	int parseInt(YAML::Node node) {
-		return node.as<int>();
-	}
+	int parseInt(YAML::Node node);
 
-	unsigned int parseUnsignedInt(YAML::Node node) {
-		return node.as<unsigned int>();
-	}
+	unsigned int parseUnsignedInt(YAML::Node node);
 }
 
 #endif

@@ -1,7 +1,8 @@
 find_package(yaml-cpp)
 add_library(parser 
 	YamlParser.cpp
-	SpellParser.cpp)
+	SpellParser.cpp
+	Parser.cpp)
 
 set_target_properties(parser
                       PROPERTIES
