@@ -7,7 +7,6 @@ using namespace mudserver::gamemanager;
 class PlayerServiceTests : public testing::Test {
   protected:
     PlayerService ps;
-
   public:
     PlayerServiceTests() = default;
     virtual void SetUp() { PlayerService ps{}; }
@@ -38,4 +37,17 @@ TEST_F(PlayerServiceTests, PlayerConnectionUpdate) {
 
     auto alsoJimbob = ps.identify("jimbob", "hunter2");
     ASSERT_EQ(alsoJimbob->getConnectionId(), 42);
+}
+
+TEST_F(PlayerServiceTests, WritePlayers)
+{
+	PersistenceService pss(".");
+	ps.addPlayer("jimbob", "hunter2");
+	pss.save(ps, "test.dat");
+}
+TEST_F(PlayerServiceTests, ReadPlayers)
+{
+	PersistenceService pss(".");
+	ps = pss.loadPlayerService("test.dat");
+	ASSERT_EQ(ps.identify("jimbob", "hunter2")->getUsername(), "jimbob");
 }
