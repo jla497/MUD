@@ -1,9 +1,9 @@
 
 #include "SpellParser.h"
-#include "resources/DataFields.h"
+#include "resources/SpellDataFields.h"
 #include "Parser.h"
 
-namespace Parser {
+using namespace Parser;
 
 bool SpellParser::loadYamlFile(const std::string &path) {
     if (is_loaded) {
@@ -20,7 +20,7 @@ bool SpellParser::loadYamlFile(const std::string &path) {
 }
 
 Spell SpellParser::parseSpell(YAML::Node node) const {
-	Spell spell();
+	Spell spell;
 	if (node[EFFECT]) {
 		spell.setEffect(parseString(node[EFFECT]));
 	}
@@ -68,37 +68,50 @@ Spell SpellParser::parseSpell(YAML::Node node) const {
 
 std::vector<Spell> SpellParser::getAllDefenseSpells() const {
 	std::vector<Spell> defenseSpells;
-	for (auto &node : data[DEFENSE]) {
-		defenseSpells.push_back(parseSpell(node));
+	for (auto &document : data) {
+		for (auto &node : document[DEFENSE]) {
+			defenseSpells.push_back(parseSpell(node));
+		}
 	}
+	return defenseSpells;
 }
 
 std::vector<Spell> SpellParser::getAllOffenseSpells() const {
 	std::vector<Spell> offenseSpells;
-	for (auto &node : data[OFFENSE]) {
-		offenseSpells.push_back(parseSpell(node));
+	for (auto &document : data) {
+		for (auto &node : document[OFFENSE]) {
+			offenseSpells.push_back(parseSpell(node));
+		}
 	}
+	return offenseSpells;
 }
 
 std::vector<Spell> SpellParser::getAllObjectSpells() const {
 	std::vector<Spell> objectSpells;
-	for (auto &node : data[OBJECT]) {
-		objectSpells.push_back(parseSpell(node));
+	for (auto &document : data) {
+		for (auto &node : document[OBJECT]) {
+			objectSpells.push_back(parseSpell(node));
+		}
 	}
+	return objectSpells;
 }
 
 std::vector<Spell> SpellParser::getAllOtherSpells() const {
 	std::vector<Spell> otherSpells;
-	for (auto &node : data[OTHER]) {
-		otherSpells.push_back(parseSpell(node));
+	for (auto &document : data) {
+		for (auto &node : document[OTHER]) {
+			otherSpells.push_back(parseSpell(node));
+		}
 	}
+	return otherSpells;
 }
 
 std::vector<Spell> SpellParser::getAllPersonalSpells() const {
 	std::vector<Spell> personalSpells;
-	for (auto &node : data[PERSONAL]) {
-		personalSpells.push_back(parseSpell(node));
+	for (auto &document : data) {
+		for (auto &node : document[PERSONAL]) {
+			personalSpells.push_back(parseSpell(node));
+		}
 	}
+	return personalSpells;
 }
-
-} //namespace Parser

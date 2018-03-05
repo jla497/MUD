@@ -7,7 +7,7 @@
 #include "resources/DataFields.h"
 #include "Parser.h"
 
-namespace Parser {
+using namespace Parser;
 
 bool YamlParser::loadYamlFile(const std::string &path) {
     if (is_loaded) {
@@ -248,8 +248,6 @@ AreaEntity YamlParser::getArea() const {
     return area;
 }
 
-
-} //namespace Parser
 
 mudserver::gamemanager::EntityFactory *YamlParser::makeFactory() {
     mudserver::gamemanager::EntityFactory *factory =

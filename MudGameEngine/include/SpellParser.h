@@ -1,9 +1,10 @@
-#ifndef SPELLS_PARSER_H
-#define SPELLS_PARSER_H
+#ifndef SPELL_PARSER_H
+#define SPELL_PARSER_H
 
 #include <yaml-cpp/yaml.h>
+#include "Spell.h"
 
-class SpellsParser {
+class SpellParser {
 
   private:
     std::vector<YAML::Node> data; // holds all data nodes
