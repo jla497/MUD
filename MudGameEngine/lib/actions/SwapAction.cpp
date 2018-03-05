@@ -10,7 +10,7 @@ SwapAction *SwapAction::clone() { return new SwapAction(*this); }
 
 void SwapAction::execute_impl() {
     static auto logger = mudserver::logging::getLogger("SwapAction::execute");
-    logger->debug("swap " + timeRemaining);
+    logger->debug("tick");
     if (timeRemaining > 0) {
         return;
     }
@@ -24,6 +24,8 @@ void SwapAction::execute_impl() {
                 "You have returned to your original body");
         return;
     }
+
+    // Timer hasn't been set yet, do initial swap
 
     auto &gameState = gameManager.getState();
     auto swapInitiater = characterPerformingAction;
@@ -39,10 +41,10 @@ void SwapAction::execute_impl() {
         return;
     }
 
-    auto attackingPlayerId = swapInitiater->getEntityId();
+    auto swappingPlayerId = swapInitiater->getEntityId();
     if (actionArguments.empty()) {
         gameManager.sendCharacterMessage(
-                attackingPlayerId,
+                swappingPlayerId,
                 "Swap with who?");
         logger->info("No Target found");
         return;
@@ -58,24 +60,22 @@ void SwapAction::execute_impl() {
         auto shortDescOfCurrentPlayer = currentEntity->getShortDesc();
         if (boost::to_lower_copy(shortDescOfCurrentPlayer) == boost::to_lower_copy(nameOfSwapTarget)) {
             auto swapTarget = currentEntity;
-            gameManager.swapCharacters(
-                    swapInitiater->getEntityId(),
-                    swapTarget->getEntityId());
-            timeRemaining = MAX_SWAP_TICKS;
             casterId = swapInitiater->getEntityId();
             targetId = swapTarget->getEntityId();
+            timeRemaining = MAX_SWAP_TICKS;
             gameManager.sendCharacterMessage(
-                    swapInitiater->getEntityId(),
+                    casterId,
                     "You swapped with " + swapTarget->getShortDesc());
             gameManager.sendCharacterMessage(
-                    swapTarget->getEntityId(),
+                    targetId,
                     "You have been swapped with" + swapInitiater->getShortDesc());
+            gameManager.swapCharacters(casterId, targetId);
             return;
         }
     }
 
     logger->info("No Target found");
     gameManager.sendCharacterMessage(
-            attackingPlayerId,
+            swappingPlayerId,
             "Swap failed: could not find " + nameOfSwapTarget);
 }
