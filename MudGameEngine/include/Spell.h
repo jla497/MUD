@@ -15,8 +15,10 @@ class Spell {
 		std::string misschar;
 		std::string dammsg;
 		std::string wearoff;
-		std::string immchar:
+		std::string immchar;
 		std::string damage;
+
+		static const int EFFECT_QUOTE_POSITION = 7; //the quote position that precedes the heal/damage formula in effect
 
 		//replaces string formatting specification symbols with character information to display to player
 		std::string formatUserDisplayStrings(std::string displayString, std::string casterName, std::string victimName, std::string victimGender);
@@ -28,7 +30,7 @@ class Spell {
 		size_t findNthQuoteInEffects(size_t position, size_t nth);
 
 	public:
-		Spell() = default;
+		Spell();
 
 		//getters
 		std::string getEffect();
@@ -74,6 +76,6 @@ class Spell {
 
 		//returns true if character has enough mana to perform spell
 		bool isEnoughMana(int characterMana);
-}
+};
 
 #endif

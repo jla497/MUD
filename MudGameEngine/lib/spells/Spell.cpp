@@ -4,7 +4,9 @@
 #include <vector>
 #include "Spell.h"
 
-Spell Spell::Spell() {
+
+
+Spell::Spell() {
 	effect = "";
 	mana = 0;
 	minlevel = 0;
@@ -34,7 +36,7 @@ unsigned int Spell::getMinLevel() {
 }
 
 std::string Spell::getName() {
-	return name
+	return name;
 }
 
 int Spell::getDuration() {
@@ -169,10 +171,10 @@ std::string formatUserDisplayStrings(std::string displayString, std::string cast
 
 size_t Spell::findNthQuoteInEffects(size_t position, size_t nth) {
 	if (effect.length() <= position) {
-		return string::npos;
+		return std::string::npos;
 	}
 	size_t found_position = effect.find("'", position);
-	if (nth == 0 || nth == 1 || string::npos == found_position) {
+	if (nth == 0 || nth == 1 || found_position == std::string::npos) {
 		return found_position;
 	} else {
 		return findNthQuoteInEffects(found_position + 1, nth - 1);
@@ -180,11 +182,11 @@ size_t Spell::findNthQuoteInEffects(size_t position, size_t nth) {
 }
 
 std::string Spell::getEffectsFormula() {
-	size_t start = string::npos;
-	size_t end = string::npos;
+	size_t start = std::string::npos;
+	size_t end = std::string::npos;
 	start = findNthQuoteInEffects(0, EFFECT_QUOTE_POSITION);
 	end = findNthQuoteInEffects(0, EFFECT_QUOTE_POSITION + 1);
-	if (start != string::npos && end != string::npos) {
+	if (start != std::string::npos && end != std::string::npos) {
 		return effect.substr(start + 1, end - start);
 	} else {
 		return "";
@@ -220,8 +222,8 @@ bool Spell::isCharacterValidLevel(unsigned int characterLevel) {
 	}
 }
 
-bool isEnoughMana(int characterMana) {
-	if (this->mana <= characterMana) {
+bool Spell::isEnoughMana(int characterMana) {
+	if (mana <= characterMana) {
 		return true;
 	} else {
 		return false;
