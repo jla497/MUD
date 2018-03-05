@@ -2,8 +2,8 @@
 #define ATTACKACTION_H
 
 #include "Action.h"
-#include "gamemanager/GameManager.h"
 #include "CombatSimulation.h"
+#include "gamemanager/GameManager.h"
 
 /**
  * The AttackAction class defines the behavior for when a character

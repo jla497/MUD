@@ -5,14 +5,14 @@
 // #include "entities/ObjectEntity.h"
 
 /**
-CharacterComponent defines the common interface for all components a Character holds
+CharacterComponent defines the common interface for all components a Character
+holds
 */
 class CharacterComponent {
   public:
-  	virtual void update(float deltaTime){
-  		//update character simulation(ai, etc)
-  	}
-
+    virtual void update(float deltaTime) {
+        // update character simulation(ai, etc)
+    }
 };
 
 #endif

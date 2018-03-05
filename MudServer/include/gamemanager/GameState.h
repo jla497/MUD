@@ -70,8 +70,6 @@ class GameState {
     void doReset();
 
     void killCharacter(const CharacterEntity &character);
-
-
 };
 
 } // namespace gamemanager

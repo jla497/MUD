@@ -4,31 +4,30 @@
 #include <vector>
 
 #include "entities/CharacterEntity.h"
-#include "entities/ObjectEntity.h"
 #include "entities/CombatComponent.h"
+#include "entities/ObjectEntity.h"
 
 CharacterEntity::CharacterEntity(
     int armor, std::string damage, std::vector<std::string> desc,
     unsigned int exp, int gold, std::string hit, unsigned int typeId,
     std::vector<std::string> keywords, unsigned int level,
     std::vector<std::string> longDesc, std::string shortDesc, int thac0)
-    : Entity::Entity(),
-      m_desc(std::move(desc)), m_typeId(typeId), m_exp(exp), m_gold(gold),
-      m_keywords(std::move(keywords)), m_level(level),
-      m_longDesc(std::move(longDesc)), m_shortDesc(std::move(shortDesc))
-       {
+    : Entity::Entity(), m_desc(std::move(desc)), m_typeId(typeId), m_exp(exp),
+      m_gold(gold), m_keywords(std::move(keywords)), m_level(level),
+      m_longDesc(std::move(longDesc)), m_shortDesc(std::move(shortDesc)) {
 
     std::vector<std::string> tmpHit;
     boost::split(tmpHit, hit, boost::is_any_of("+d"));
     Roll m_hitRollData = {std::stoi(tmpHit.at(0)), std::stoi(tmpHit.at(1)),
-                     tmpHit.size() > 2 ? std::stoi(tmpHit.at(2)) : 0};
+                          tmpHit.size() > 2 ? std::stoi(tmpHit.at(2)) : 0};
 
     std::vector<std::string> tmpDamage;
     boost::split(tmpDamage, damage, boost::is_any_of("+d"));
-    Roll m_damageRollData = {std::stoi(tmpDamage.at(0)), std::stoi(tmpDamage.at(1)),
-                        tmpDamage.size() > 2 ? std::stoi(tmpDamage.at(2)) : 0};
+    Roll m_damageRollData = {
+        std::stoi(tmpDamage.at(0)), std::stoi(tmpDamage.at(1)),
+        tmpDamage.size() > 2 ? std::stoi(tmpDamage.at(2)) : 0};
 
-    //init combat Component
+    // init combat Component
     this->combatComponent.setArmor(armor);
     this->combatComponent.setThac0(thac0);
     this->combatComponent.setDamageRoll(m_damageRollData);

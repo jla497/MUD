@@ -138,19 +138,13 @@ void GameState::doReset() {
     resetManager.applyResets(this);
 }
 
+void GameState::killCharacter(const CharacterEntity &character) {
+    // remove from play
+    // TODO: uncomment and integrate once branches have been merged
+    // removeCharacterByUniqueId(character.getEntityId());
 
-void GameState::killCharacter(const CharacterEntity &character){
-    //remove from play
-    //TODO: uncomment and integrate once branches have been merged
-    //removeCharacterByUniqueId(character.getEntityId());
-    
-    //if the character is controlled by a player notify them
-    
-
-
+    // if the character is controlled by a player notify them
 }
-
-
 
 } // namespace gamemanager
 } // namespace mudserver

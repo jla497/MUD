@@ -1,11 +1,11 @@
 #ifndef CHARACTER_ENTITY_H
 #define CHARACTER_ENTITY_H
 
-#include <map>
 #include "Roll.h"
+#include "entities/CombatComponent.h"
 #include "entities/Entity.h"
 #include "entities/ObjectEntity.h"
-#include "entities/CombatComponent.h"
+#include <map>
 // #include "gamemanager/GameManager.h"
 
 class CombatComponent;
@@ -44,7 +44,7 @@ class CharacterEntity : public Entity {
     unsigned int getLevel() const;
     std::vector<std::string> getLongDesc() const;
     std::string getShortDesc() const;
-    CombatComponent* getCombatComponent();
+    CombatComponent *getCombatComponent();
 
     // currently gold is signed but good to have
     // separate methods for adding and subtracting
@@ -61,5 +61,3 @@ class CharacterEntity : public Entity {
     std::map<int, ObjectEntity> getObjects();
 };
 #endif
-
-

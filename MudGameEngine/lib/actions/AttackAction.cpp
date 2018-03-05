@@ -2,11 +2,11 @@
 #include <string>
 #include <vector>
 
+#include "CombatSimulation.h"
 #include "actions/AttackAction.h"
+#include "entities/CharacterEntity.h"
 #include "gamemanager/GameManager.h"
 #include "logging.h"
-#include "CombatSimulation.h"
-#include "entities/CharacterEntity.h"
 
 AttackAction *AttackAction::clone() { return new AttackAction(*this); }
 
@@ -48,7 +48,6 @@ void AttackAction::execute_impl() {
     auto nameOfAttackTarget = actionArguments.at(0);
     logger->info("nameOfAttackTarget: " + nameOfAttackTarget);
 
-
     // see if the target is in the same room as the attacker
     for (auto characterID : IDsOfPlayersInRoom) {
         auto currentEntity = gameState.getCharacterFromLUT(characterID);
@@ -58,10 +57,10 @@ void AttackAction::execute_impl() {
         if (boost::to_lower_copy(shortDescOfCurrentPlayer) ==
             boost::to_lower_copy(nameOfAttackTarget)) {
 
-
             playerWhoIsAttacking->getCombatComponent()->prepareToAttack();
-            //calculate and apply attack effects
-            CombatSimulation::resolveCombatRound(*playerWhoIsAttacking, *currentEntity,gameManager);
+            // calculate and apply attack effects
+            CombatSimulation::resolveCombatRound(*playerWhoIsAttacking,
+                                                 *currentEntity, gameManager);
             return;
         }
     }
