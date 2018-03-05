@@ -1,8 +1,10 @@
 #include "gamemanager/PlayerService.h"
 #include "gamemanager/Player.h"
+#include "persistence/PersistenceService.h"
 #include <gtest/gtest.h>
 
 using namespace mudserver::gamemanager;
+using namespace mudserver::persistence;
 
 class PlayerServiceTests : public testing::Test {
   protected:
