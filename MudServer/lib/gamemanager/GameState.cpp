@@ -12,9 +12,11 @@ std::size_t UniqueIdHash::operator()(UniqueId id) const {
     return std::hash<unsigned int>()(id.getId());
 }
 
-void GameState::initFromYaml(std::string filename) {
-    parseYamlFile(std::move(filename));
-    addAreaFromParser();
+void GameState::initFromYaml(std::vector<std::string> filenames) {
+    for (auto filename : filenames) {
+        parseYamlFile(std::move(filename));
+        addAreaFromParser();
+    }
     initRoomLUT();
     factory = std::unique_ptr<EntityFactory>(parser.makeFactory());
     factory->init();

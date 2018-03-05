@@ -1,6 +1,7 @@
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/filesystem.hpp>
+#include <fstream>
 
 #include "persistence/PersistenceService.h"
 #include "logging.h"

@@ -32,8 +32,8 @@ enum class ActKeyword {
     look,
     move,
     attack,
-    timed,
     program,
+    timed,
     save,
     charmod,
 
