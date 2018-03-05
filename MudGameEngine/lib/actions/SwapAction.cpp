@@ -10,8 +10,18 @@ SwapAction *SwapAction::clone() { return new SwapAction(*this); }
 
 void SwapAction::execute_impl() {
     static auto logger = mudserver::logging::getLogger("SwapAction::execute");
-    if (timeRemaining > 0 && timeRemaining < MAX_SWAP_TICKS) {
-        logger->debug("swap " + timeRemaining);
+    logger->debug("swap " + timeRemaining);
+    if (timeRemaining > 0) {
+        return;
+    }
+    else if (timeRemaining == 0) {
+        gameManager.swapCharacters(casterId, targetId);
+        gameManager.sendCharacterMessage(
+                casterId,
+                "You have returned to your original body");
+        gameManager.sendCharacterMessage(
+                targetId,
+                "You have returned to your original body");
         return;
     }
 
@@ -46,30 +56,20 @@ void SwapAction::execute_impl() {
             return;
         }
         auto shortDescOfCurrentPlayer = currentEntity->getShortDesc();
-//        if (boost::to_lower_copy(shortDescOfCurrentPlayer)
-//                    .compare(boost::to_lower_copy(nameOfSwapTarget)) == 0) {
         if (boost::to_lower_copy(shortDescOfCurrentPlayer) == boost::to_lower_copy(nameOfSwapTarget)) {
             auto swapTarget = currentEntity;
             gameManager.swapCharacters(
                     swapInitiater->getEntityId(),
                     swapTarget->getEntityId());
-            if (timeRemaining == 0) {
-                timeRemaining = MAX_SWAP_TICKS;
-                gameManager.sendCharacterMessage(
-                        swapInitiater->getEntityId(),
-                        "You have returned to your original body " + swapInitiater->getShortDesc());
-                gameManager.sendCharacterMessage(
-                        swapTarget->getEntityId(),
-                        "You have returned to your original body " + swapTarget->getShortDesc());
-            }
-            else {
-                gameManager.sendCharacterMessage(
-                        swapTarget->getEntityId(),
-                        "You swapped with " + swapTarget->getShortDesc());
-                gameManager.sendCharacterMessage(
-                        swapInitiater->getEntityId(),
-                        "You have been swapped with" + swapInitiater->getShortDesc());
-            }
+            timeRemaining = MAX_SWAP_TICKS;
+            casterId = swapInitiater->getEntityId();
+            targetId = swapTarget->getEntityId();
+            gameManager.sendCharacterMessage(
+                    swapInitiater->getEntityId(),
+                    "You swapped with " + swapTarget->getShortDesc());
+            gameManager.sendCharacterMessage(
+                    swapTarget->getEntityId(),
+                    "You have been swapped with" + swapInitiater->getShortDesc());
             return;
         }
     }

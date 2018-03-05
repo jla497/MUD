@@ -77,6 +77,11 @@ class PlayerService {
     CharacterEntity createPlayerCharacter(PlayerId playerId);
     networking::ConnectionId getPlayerConnection(PlayerId playerId);
 
+    /**
+     * Updates the values in the playerCharacterBimap.
+     * @param playerId the player's id
+     * @param characterId the id the player is playing as
+     */
     void updatePlayerCharacterMapping(PlayerId playerId, UniqueId characterId);
 };
 

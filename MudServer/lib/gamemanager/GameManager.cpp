@@ -202,16 +202,9 @@ PlayerService &GameManager::getPlayerService() { return playerService; }
 void GameManager::swapCharacters(UniqueId casterCharacterId, UniqueId targetCharacterId) {
     auto casterPlayerId = playerService.characterToPlayer(casterCharacterId);
     auto targetPlayerId = playerService.characterToPlayer(targetCharacterId);
+//    gameState.swapCharacters(casterPlayerId, targetCharacterId);
     playerService.updatePlayerCharacterMapping(casterPlayerId, targetCharacterId);
     playerService.updatePlayerCharacterMapping(targetPlayerId, casterCharacterId);
-//    auto character1 = playerIdToCharacter(playerId1);
-//    auto character2 = playerIdToCharacter(playerId2);
-//    playerCharacterBimap.insert(
-//            PcBmType::value_type(casterCharacterId.getId(), targetCharacterId));
-//    playerCharacterBimap.insert(
-//            PcBmType::value_type(targetPlayer.getId(), casterCharacterId));
-//    playerCharacterBimap.left[playerId1] = character2->getEntityId();
-//    playerCharacterBimap.left[playerId2] = character1->getEntityId();
 }
 
 } // namespace gamemanager

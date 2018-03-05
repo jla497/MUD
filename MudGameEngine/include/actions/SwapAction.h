@@ -17,5 +17,8 @@ public:
 protected:
     std::string description() const override { return u8"Swap action"; }
     const int MAX_SWAP_TICKS = 10;
+    UniqueId casterId;
+    UniqueId targetId;
+
 };
 #endif
