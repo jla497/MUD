@@ -1,8 +1,8 @@
 #ifndef UNIQUE_ID_H
 #define UNIQUE_ID_H
 
-#include <iostream>
 #include <boost/serialization/access.hpp>
+#include <iostream>
 
 /* Generates unique Ids for the use of game entities, to be
    used at time of construction */

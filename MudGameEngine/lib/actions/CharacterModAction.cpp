@@ -1,15 +1,17 @@
+#include <boost/format.hpp>
 #include <string>
 #include <vector>
-#include <boost/format.hpp>
 
 #include "actions/CharacterModAction.h"
-#include "resources/commands.h"
 #include "resources/ActionMessages.h"
+#include "resources/commands.h"
 
 namespace com = mudserver::resources::commands;
 namespace mes = mudserver::resources::actions;
 
-CharacterModAction *CharacterModAction::clone() { return new CharacterModAction(*this); }
+CharacterModAction *CharacterModAction::clone() {
+    return new CharacterModAction(*this);
+}
 
 void CharacterModAction::execute_impl() {
     auto characterId = gameManager.getPlayerService().playerToCharacter(
@@ -40,6 +42,5 @@ void CharacterModAction::execute_impl() {
 void CharacterModAction::showCharacterName(const CharacterEntity &character) {
     gameManager.sendCharacterMessage(
         character.getEntityId(),
-        (boost::format(mes::YOURNAME) % character.getShortDesc())
-            .str());
+        (boost::format(mes::YOURNAME) % character.getShortDesc()).str());
 }

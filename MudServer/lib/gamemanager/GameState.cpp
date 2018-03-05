@@ -1,6 +1,6 @@
+#include <boost/format.hpp>
 #include <iostream>
 #include <memory>
-#include <boost/format.hpp>
 
 #include "gamemanager/GameState.h"
 #include "logging.h"
@@ -72,7 +72,6 @@ void GameState::addCharacter(CharacterEntity &character, Id roomID) {
     } else {
         throw "couldn't add character to room";
     }
-
 }
 
 void GameState::addAreaFromParser() { areas.push_back(parser.getArea()); }

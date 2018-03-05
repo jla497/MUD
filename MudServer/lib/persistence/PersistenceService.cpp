@@ -3,8 +3,8 @@
 #include <boost/filesystem.hpp>
 #include <fstream>
 
-#include "persistence/PersistenceService.h"
 #include "logging.h"
+#include "persistence/PersistenceService.h"
 
 namespace fs = boost::filesystem;
 
@@ -57,7 +57,6 @@ PlayerService PersistenceService::loadPlayerService() {
         }
     }
 
-
     return ps;
 }
 
@@ -99,7 +98,6 @@ GameState PersistenceService::loadGameState() {
             logger->warning("Bad gamestate save file");
         }
     }
-
 
     return gs;
 }

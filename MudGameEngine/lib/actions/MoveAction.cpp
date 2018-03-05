@@ -1,6 +1,6 @@
-#include <actions/LookAction.h>
 #include "actions/MoveAction.h"
 #include "logging.h"
+#include <actions/LookAction.h>
 
 std::vector<std::string> MoveAction::moveLookup = {"north", "south", "east",
                                                    "west"};

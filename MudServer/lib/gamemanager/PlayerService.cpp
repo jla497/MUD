@@ -26,8 +26,8 @@ AddPlayerResult PlayerService::addPlayer(UsernameType username,
 
     PlayerId id = getNextPlayerId();
     Player player{id, username, std::move(password)};
-    //if (!players.size()) {
-        player.getAdminPrivilege();
+    // if (!players.size()) {
+    player.getAdminPrivilege();
     //}
     playerIdByName[username] = id;
     players.emplace(std::make_pair(id, player));

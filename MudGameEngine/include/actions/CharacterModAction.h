@@ -13,7 +13,9 @@ class CharacterModAction : public Action {
     void execute_impl() override;
 
   protected:
-    std::string description() const override { return u8"Character mod action"; }
+    std::string description() const override {
+        return u8"Character mod action";
+    }
     CharacterModAction *clone() override;
     void showCharacterName(const CharacterEntity &character);
 };

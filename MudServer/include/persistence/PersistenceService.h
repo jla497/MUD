@@ -4,8 +4,8 @@
 #include <boost/filesystem.hpp>
 #include <string>
 
-#include "gamemanager/PlayerService.h"
 #include "gamemanager/GameState.h"
+#include "gamemanager/PlayerService.h"
 
 namespace mudserver {
 namespace persistence {

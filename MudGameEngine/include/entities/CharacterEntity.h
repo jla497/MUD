@@ -1,9 +1,9 @@
 #ifndef CHARACTER_ENTITY_H
 #define CHARACTER_ENTITY_H
 
-#include <map>
 #include <boost/serialization/access.hpp>
 #include <boost/serialization/vector.hpp>
+#include <map>
 
 #include "Roll.h"
 #include "entities/Entity.h"
@@ -17,17 +17,17 @@ class CharacterEntity : public Entity {
 
     template <class Archive>
     void serialize(Archive &ar, const unsigned int version) {
-        ar & m_entityId;
-        ar & m_armor;
-        ar & m_desc;
-        ar & m_exp;
-        ar & m_gold;
-        ar & m_typeId;
-        ar & m_keywords;
-        ar & m_level;
-        ar & m_longDesc;
-        ar & m_shortDesc;
-        ar & m_thac0;
+        ar &m_entityId;
+        ar &m_armor;
+        ar &m_desc;
+        ar &m_exp;
+        ar &m_gold;
+        ar &m_typeId;
+        ar &m_keywords;
+        ar &m_level;
+        ar &m_longDesc;
+        ar &m_shortDesc;
+        ar &m_thac0;
     }
 
     int m_armor;
