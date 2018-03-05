@@ -45,10 +45,9 @@ class GameState {
     YamlParser parser;
     AreaEntity area;
     std::unique_ptr<EntityFactory> factory;
-    std::deque<Spell> spells;
 
   public:
-    void initFromYaml(std::string filename);
+    void initFromYaml(std::vector<std::string> filenames);
     void parseYamlFile(std::string string);
     void initRoomLUT();
     void addAreaFromParser();
