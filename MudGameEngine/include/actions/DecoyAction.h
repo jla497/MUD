@@ -14,13 +14,13 @@
  * 		Decoys last a certain number of ticks/time? TODO
  *  	A spell costs X amount of mana
  */
-class LookAction : public Action {
+class DecoyAction : public Action {
 
 
   public:
     using Action::Action;
     void execute_impl();
-    LookAction *clone() override;
+    DecoyAction *clone() override;
 
   private:
   	UniqueId ourDecoy; // bind the decoy made by this Action
