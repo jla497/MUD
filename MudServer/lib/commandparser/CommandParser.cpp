@@ -87,13 +87,8 @@ CommandParser::actionFromPlayerCommand(Player &player, StrView command,
                                 ? ActKeyword::undefined
                                 : actionTypeIter->second;
 
-    /*auto index =
-        static_cast<std::vector<ActionGenerator>::size_type>(actionType);
-    if (index >= actionGenerators.size()) {
-        return nullptr;
-    }*/
-
-    return actionGenerators.at(actionType)(player, remainderOfTokens, gameManager);
+    return actionGenerators.at(actionType)(player, remainderOfTokens,
+                                           gameManager);
 }
 
 std::pair<UsernameType, PasswordType>
