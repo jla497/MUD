@@ -39,3 +39,11 @@ TEST_F(PlayerServiceTests, PlayerConnectionUpdate) {
     auto alsoJimbob = ps.identify("jimbob", "hunter2");
     ASSERT_EQ(alsoJimbob->getConnectionId(), 42);
 }
+
+TEST_F(PlayerServiceTests, CreatePlayerCharacter) {
+    ps.addPlayer("jimbob", "hunter2");
+    auto player = ps.identify("jimbob", "hunter2");
+    auto playerId = player->getId();
+    ps.createPlayerCharacter(playerId);
+    ASSERT_TRUE(ps.playerToCharacter(playerId));
+}

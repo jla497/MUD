@@ -4,6 +4,8 @@ SERVER:
   - MudGameEngine/lib/dataFiles/detailed_smurf.yml
   - MudGameEngine/lib/dataFiles/detailed_midgaard.yml
   - MudGameEngine/lib/dataFiles/detailed_mgoose.yml
+  spells:
+  - MudGameEngine/lib/dataFiles/spells.yml
   config_dir: config
   url: localhost
 CLIENT:

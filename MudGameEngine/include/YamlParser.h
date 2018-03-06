@@ -29,8 +29,6 @@ class YamlParser {
     std::vector<YAML::Node> data; // holds all data nodes
     bool is_loaded = false;
 
-    static std::string parseString(YAML::Node node);
-
     // calls constructors of each object and adds data to each respective object
     CharacterEntity parseNPC(YAML::Node npcNode) const;
     ObjectEntity parseObject(YAML::Node objectNode) const;
