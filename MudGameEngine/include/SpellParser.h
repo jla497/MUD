@@ -1,8 +1,8 @@
 #ifndef SPELL_PARSER_H
 #define SPELL_PARSER_H
 
-#include <yaml-cpp/yaml.h>
 #include "Spell.h"
+#include <yaml-cpp/yaml.h>
 
 class SpellParser {
 

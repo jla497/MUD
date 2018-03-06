@@ -5,4 +5,3 @@
 #include "actions/AttackAction.h"
 #include "gamemanager/GameManager.h"
 #include "logging.h"
-

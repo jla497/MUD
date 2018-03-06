@@ -11,7 +11,8 @@ std::size_t UniqueIdHash::operator()(UniqueId id) const {
     return std::hash<unsigned int>()(id.getId());
 }
 
-void GameState::initFromYaml(std::vector<std::string> areaFilenames, std::string spellFilename) {
+void GameState::initFromYaml(std::vector<std::string> areaFilenames,
+                             std::string spellFilename) {
     for (auto areaFilename : areaFilenames) {
         parseAreaYamlFile(std::move(areaFilename));
         addAreaFromParser();
@@ -88,9 +89,7 @@ void GameState::addCharacter(CharacterEntity &character, Id roomID) {
 
 void GameState::addAreaFromParser() { areas.push_back(areaParser.getArea()); }
 
-void GameState::addSpellsFromParser() {
-    spells = spellParser.getAllSpells();
-}
+void GameState::addSpellsFromParser() { spells = spellParser.getAllSpells(); }
 /**
  * Get Methods
  */
@@ -132,9 +131,7 @@ AreaEntity GameState::getAreaFromParser() { return areaParser.getArea(); }
 
 std::deque<AreaEntity> &GameState::getAreas() { return areas; }
 
-std::vector<Spell> &GameState::getSpells() {
-    return spells;
-}
+std::vector<Spell> &GameState::getSpells() { return spells; }
 
 /**
  * Clear Methods

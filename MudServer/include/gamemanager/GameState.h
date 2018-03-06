@@ -7,13 +7,13 @@
 #include <boost/foreach.hpp>
 #include <deque>
 #include <memory>
-#include <vector>
 #include <unordered_map>
+#include <vector>
 
+#include "Spell.h"
+#include "SpellParser.h"
 #include "UniqueId.h"
 #include "YamlParser.h"
-#include "SpellParser.h"
-#include "Spell.h"
 #include "entities/AreaEntity.h"
 #include "entities/CharacterEntity.h"
 #include "entities/DoorEntity.h"
@@ -51,7 +51,8 @@ class GameState {
     SpellParser spellParser;
 
   public:
-    void initFromYaml(std::vector<std::string> areaFilenames, std::string spellFilename);
+    void initFromYaml(std::vector<std::string> areaFilenames,
+                      std::string spellFilename);
 
     void parseAreaYamlFile(std::string string);
     void initRoomLUT();

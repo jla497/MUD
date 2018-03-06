@@ -3,9 +3,9 @@
 #include <cassert>
 #include <deque>
 
+#include "Parser.h"
 #include "YamlParser.h"
 #include "resources/DataFields.h"
-#include "Parser.h"
 
 using namespace Parser;
 
@@ -22,8 +22,6 @@ bool YamlParser::loadYamlFile(const std::string &path) {
     is_loaded = true;
     return true;
 }
-
-
 
 CharacterEntity YamlParser::parseNPC(YAML::Node npcNode) const {
     auto armor = npcNode[ARMOR].as<int>();
@@ -247,7 +245,6 @@ AreaEntity YamlParser::getArea() const {
     }
     return area;
 }
-
 
 mudserver::gamemanager::EntityFactory *YamlParser::makeFactory() {
     mudserver::gamemanager::EntityFactory *factory =

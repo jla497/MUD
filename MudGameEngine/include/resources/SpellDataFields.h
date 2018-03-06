@@ -25,5 +25,4 @@ static const char *MISSROOM = "Missroom";
 static const char *MISSCHAR = "Misschar";
 static const char *MISSVICT = "Missvict";
 
-
 #endif

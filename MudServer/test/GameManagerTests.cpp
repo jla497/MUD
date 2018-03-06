@@ -12,7 +12,8 @@ class GameManagerTests : public testing::Test {
 
         incoming.push_back(m1);
 
-        state.parseAreaYamlFile("MudGameEngine/lib/dataFiles/detailed_smurf.yml");
+        state.parseAreaYamlFile(
+            "MudGameEngine/lib/dataFiles/detailed_smurf.yml");
         state.initRoomLUT();
     }
 

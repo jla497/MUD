@@ -19,7 +19,7 @@ boost::optional<ConfigData> parseConfigFile(const std::string filePath) {
     auto configDir = config[0]["SERVER"]["config_dir"].as<std::string>();
     auto url = config[0]["CLIENT"]["url"].as<std::string>();
 
-    ConfigData serverData{Port{serverPort}, clientPort, areas, spells, configDir,
-                          url};
+    ConfigData serverData{Port{serverPort}, clientPort, areas,
+                          spells,           configDir,  url};
     return serverData;
 };
