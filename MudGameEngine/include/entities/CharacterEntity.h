@@ -9,7 +9,6 @@
 #include "entities/Entity.h"
 #include "entities/ObjectEntity.h"
 #include <map>
-// #include "gamemanager/GameManager.h"
 
 class CombatComponent;
 class CharacterEntity : public Entity {

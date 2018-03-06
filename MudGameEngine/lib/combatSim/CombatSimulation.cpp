@@ -1,5 +1,7 @@
 #include "CombatSimulation.h"
 
+//TODO: add logging
+
 int CombatSimulation::calcRoll(Roll roll) {
     int rollValue = 0;
     for (int i = 0; i < roll.numOfDie; ++i) {
@@ -14,7 +16,7 @@ int CombatSimulation::calcRoundDamage(Roll damageRoll, Roll hitRoll) {
     int attackvalue = calcRoll(damageRoll);
     int hitValue = calcRoll(hitRoll);
 
-    // ignore hit for now
+    // ignore hitRoll for now
     int netDamage = attackvalue;
     return netDamage;
 }
@@ -39,7 +41,7 @@ void CombatSimulation::resolveCombatRound(
     attackedCharactersCombatComponent->engageCombatState();
 
     // TODO: use CombatAbilities rather than just raw roll values
-    // A CombatAbility should encapsulate the damage dealth along site any
+    // A CombatAbility should encapsulate the damage dealt along side any
     // effects it might apply (ex a fireball might apply a burning effect on the
     // target)
     int damageAmount =
@@ -73,8 +75,11 @@ void CombatSimulation::resolveCombatRound(
             "You were killed by " + characterWhoIsAttacking.getShortDesc());
 
         // calculate rewards and give them to the attacker
+        //TODO: have a formula/function for calculating rewards
         int goldToGive = characterWhoIsBeingAttacked.getGold();
         int expToGive = characterWhoIsBeingAttacked.getExp();
+        characterWhoIsBeingAttacked.subtractGold(goldToGive);
+
         characterWhoIsAttacking.addGold(goldToGive);
         characterWhoIsAttacking.incExp(expToGive);
 
