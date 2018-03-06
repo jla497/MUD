@@ -1,10 +1,10 @@
-
 #include <iostream>
 #include <memory>
 #include <sstream>
 #include <type_traits>
 #include <utility>
 #include <vector>
+#include <unordered_map>
 
 #include <boost/algorithm/string.hpp>
 #include <boost/tokenizer.hpp>
@@ -56,19 +56,20 @@ std::unique_ptr<Action> generator(Player &player,
     return std::make_unique<T>(player, args, manager);
 };
 
-const static std::unordered_map<ActKeyword, ActionGenerator> actionGenerators = {
-    // NOLINT
-    {ActKeyword::undefined, &generator<NullAction>},
-    {ActKeyword::say, &generator<SayAction>},
-    {ActKeyword::look, &generator<LookAction>},
-    {ActKeyword::attack, &generator<AttackAction>},
-    {ActKeyword::move, &generator<MoveAction>},
-    {ActKeyword::program, &generator<PrgmAction>},
-    {ActKeyword::timed, &generator<TimedAction>},
-    {ActKeyword::save, &generator<SaveAction>},
-    {ActKeyword::charmod, &generator<CharacterModAction>},
-    {ActKeyword::halt, &generator<HaltAction>},
-    {ActKeyword::swap, &generator<SwapAction>}};
+const static std::unordered_map<ActKeyword, ActionGenerator> actionGenerators =
+    {
+        // NOLINT
+        {ActKeyword::undefined, &generator<NullAction>},
+        {ActKeyword::say, &generator<SayAction>},
+        {ActKeyword::look, &generator<LookAction>},
+        {ActKeyword::attack, &generator<AttackAction>},
+        {ActKeyword::move, &generator<MoveAction>},
+        {ActKeyword::program, &generator<PrgmAction>},
+        {ActKeyword::timed, &generator<TimedAction>},
+        {ActKeyword::save, &generator<SaveAction>},
+        {ActKeyword::charmod, &generator<CharacterModAction>},
+        {ActKeyword::halt, &generator<HaltAction>},
+        {ActKeyword::swap, &generator<SwapAction>}};
 
 std::unique_ptr<Action>
 CommandParser::actionFromPlayerCommand(Player &player, StrView command,
