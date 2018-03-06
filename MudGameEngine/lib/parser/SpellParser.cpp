@@ -1,9 +1,9 @@
 
 #include "SpellParser.h"
-#include "Parser.h"
+#include "parser.h"
 #include "resources/SpellDataFields.h"
 
-using namespace Parser;
+using namespace parser;
 
 bool SpellParser::loadYamlFile(const std::string &path) {
     if (is_loaded) {

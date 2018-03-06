@@ -3,13 +3,13 @@
 
 #include <yaml-cpp/yaml.h>
 
-namespace Parser {
+namespace parser {
 
 std::string parseString(YAML::Node node);
 
 int parseInt(YAML::Node node);
 
 unsigned int parseUnsignedInt(YAML::Node node);
-} // namespace Parser
+} // namespace parser
 
 #endif

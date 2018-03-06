@@ -32,7 +32,7 @@ class GameStateTest : public testing::Test {
   protected:
     virtual void SetUp() {
         state.initFromYaml({"MudGameEngine/lib/dataFiles/detailed_smurf.yml"},
-                           "MudGameEngine/lib/dataFiles/spells.yml");
+                           {"MudGameEngine/lib/dataFiles/spells.yml"});
     }
 
     virtual void TearDown() {
