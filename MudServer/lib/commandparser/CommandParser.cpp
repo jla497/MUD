@@ -11,6 +11,7 @@
 
 #include "actions/AttackAction.h"
 #include "actions/CharacterModAction.h"
+#include "actions/HaltAction.h"
 #include "actions/LookAction.h"
 #include "actions/MoveAction.h"
 #include "actions/NullAction.h"
@@ -34,7 +35,7 @@ static std::unordered_map<std::string, ActKeyword> actionLookup = { // NOLINT
     {LOOK, ActKeyword::look},           {ATTACK, ActKeyword::attack},
     {MOVE, ActKeyword::move},           {PROGRAM, ActKeyword::program},
     {TIMED, ActKeyword::timed},         {SAVE, ActKeyword::save},
-    {CHARMOD, ActKeyword::charmod}};
+    {CHARMOD, ActKeyword::charmod},     {HALT, ActKeyword::halt}};
 
 using ActionGenerator = std::unique_ptr<Action> (*)(Player &,
                                                     std::vector<std::string> &,
@@ -54,7 +55,8 @@ const static std::vector<ActionGenerator> actionGenerators = {
     &generator<SayAction>,  &generator<LookAction>,
     &generator<MoveAction>, &generator<AttackAction>,
     &generator<PrgmAction>, &generator<TimedAction>,
-    &generator<SaveAction>, &generator<CharacterModAction>};
+    &generator<SaveAction>, &generator<CharacterModAction>,
+    &generator<HaltAction>};
 
 std::unique_ptr<Action>
 CommandParser::actionFromPlayerCommand(Player &player, StrView command,

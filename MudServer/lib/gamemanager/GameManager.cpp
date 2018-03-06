@@ -203,5 +203,11 @@ void GameManager::sendCharacterMessage(UniqueId characterId,
 
 PlayerService &GameManager::getPlayerService() { return playerService; }
 
+void GameManager::haltServer() {
+    logging::getLogger("GameManager::haltServer()")
+        ->info("Shutting down server...");
+    done = true;
+}
+
 } // namespace gamemanager
 } // namespace mudserver

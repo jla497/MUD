@@ -77,6 +77,8 @@ class GameState {
     void clearCharacterRoomLUT();
     EntityFactory &getFactory();
     void doReset();
+
+    void killCharacter(const CharacterEntity &character);
 };
 
 } // namespace gamemanager

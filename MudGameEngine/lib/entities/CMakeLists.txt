@@ -4,7 +4,8 @@ add_library(entity Entity.cpp
 		 CharacterEntity.cpp		 
 		 ObjectEntity.cpp
 		 AreaEntity.cpp
-		 ShopEntity.cpp)
+		 ShopEntity.cpp
+		 CombatComponent.cpp)
 
 add_library(uniqueid UniqueId.cpp)
 

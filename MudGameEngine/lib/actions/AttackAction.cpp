@@ -2,12 +2,16 @@
 #include <string>
 #include <vector>
 
+#include "CombatSimulation.h"
 #include "actions/AttackAction.h"
+#include "entities/CharacterEntity.h"
 #include "gamemanager/GameManager.h"
 #include "logging.h"
 
 AttackAction *AttackAction::clone() { return new AttackAction(*this); }
 
+class CombatComponent;
+class CharacterEntity;
 void AttackAction::execute_impl() {
     static auto logger = mudserver::logging::getLogger("AttackAction::execute");
 
@@ -27,7 +31,7 @@ void AttackAction::execute_impl() {
         return;
     }
 
-    //--get list of entities in the room
+    //--get ids of characters in the attackers room
     auto IDsOfPlayersInRoom =
         gameState.getCharactersInRoom(characterCurrentRoom);
     if (IDsOfPlayersInRoom.empty()) {
@@ -44,8 +48,7 @@ void AttackAction::execute_impl() {
     auto nameOfAttackTarget = boost::join(actionArguments, " ");
     logger->info("nameOfAttackTarget: " + nameOfAttackTarget);
 
-    // TODO: make changes so that the player can attack any arbritrary entity.
-    // see if my target is in the same room
+    // see if the target is in the same room as the attacker
     for (auto characterID : IDsOfPlayersInRoom) {
         auto currentEntity = gameState.getCharacterFromLUT(characterID);
         if (!currentEntity)
@@ -53,22 +56,11 @@ void AttackAction::execute_impl() {
         auto shortDescOfCurrentPlayer = currentEntity->getShortDesc();
         if (boost::to_lower_copy(shortDescOfCurrentPlayer) ==
             boost::to_lower_copy(nameOfAttackTarget)) {
-            // TODO: change this to allow attacking any entity rather than just
-            // players
-            // TODO: implement proper use of combat states
-            // TODO: implement proper combat(in a seperate class)
 
-            // send messages to characters fighting
-            auto playerWhoIsBeingAttacking = currentEntity;
-            gameManager.sendCharacterMessage(
-                playerWhoIsAttacking->getEntityId(),
-                "You attack " + playerWhoIsBeingAttacking->getShortDesc() +
-                    " and do 1 damage");
-
-            gameManager.sendCharacterMessage(
-                playerWhoIsBeingAttacking->getEntityId(),
-                "You are attacked by " + playerWhoIsAttacking->getShortDesc() +
-                    " and take 1 damage");
+            playerWhoIsAttacking->getCombatComponent()->prepareToAttack();
+            // calculate and apply attack effects
+            CombatSimulation::resolveCombatRound(*playerWhoIsAttacking,
+                                                 *currentEntity, gameManager);
             return;
         }
     }
