@@ -137,7 +137,7 @@ std::vector<Spell> &GameState::getSpells() { return spells; }
  */
 void GameState::removeCharacterByUniqueId(UniqueId characterId) {
     // TODO remove chara from these throw
-    // characterRoomLookUp try characterRoomLookUp.left[characterId].erase()
+    characterRoomLookUp.left.erase(characterId);
     characterLookUp.erase(characterId);
 }
 void GameState::clearCharacterRoomLUT() { characterRoomLookUp.clear(); }
