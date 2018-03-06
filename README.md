@@ -26,8 +26,16 @@ Client:
 <config_file_path> = "config.yaml"
 
 ## Actions Supported
+- identify <username> <password> (logs player in, creates new player if username doesn't already exist)
 - say 
 - move 
 - attack (attack player by indicating shortDesc)
 - look (at the room)
+- swap <character> (swap's the player's character with <character>)
+- save (saves the state of the game to disk)
+- halt (halt's the game server and saves to disk)
+- program --help (gives help!)
+- program --<npcId> --gold <number> (adds gold to npc)
+- program --<npcId> --experience <number> (adds exp to npc)
+
 
