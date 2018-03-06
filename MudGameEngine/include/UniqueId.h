@@ -1,6 +1,7 @@
 #ifndef UNIQUE_ID_H
 #define UNIQUE_ID_H
 
+#include <boost/serialization/access.hpp>
 #include <iostream>
 
 /* Generates unique Ids for the use of game entities, to be
@@ -9,6 +10,14 @@ class UniqueId {
   private:
     static unsigned int nextUniqueId;
     unsigned int id = nextUniqueId++;
+
+    friend class boost::serialization::access;
+
+    template <class Archive>
+    void serialize(Archive &ar, const unsigned int version) {
+        ar &id;
+        ar &nextUniqueId;
+    }
 
   public:
     UniqueId() : id(nextUniqueId++) {}

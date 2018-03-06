@@ -76,7 +76,11 @@ ObjectEntity CharacterEntity::getObject(int id) {
     }
 }
 
-std::map<int, ObjectEntity> CharacterEntity::getObjects() { return m_objects; };
+std::map<int, ObjectEntity> CharacterEntity::getObjects() { return m_objects; }
+
+void CharacterEntity::setShortDesc(std::string name) {
+    m_shortDesc = std::move(name);
+};
 
 CombatComponent *CharacterEntity::getCombatComponent() {
     return &combatComponent;

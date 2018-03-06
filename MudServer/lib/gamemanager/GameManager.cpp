@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <cassert>
 #include <iomanip>
 #include <iostream>
@@ -77,7 +78,10 @@ void GameManager::mainLoop() {
     persistData();
 }
 
-void GameManager::persistData() { persistenceService.save(playerService); }
+void GameManager::persistData() {
+    persistenceService.save(playerService);
+    persistenceService.save(gameState);
+}
 
 void GameManager::loadPersistedData() {
     playerService = persistenceService.loadPlayerService();
@@ -199,6 +203,12 @@ void GameManager::sendCharacterMessage(UniqueId characterId,
 }
 
 PlayerService &GameManager::getPlayerService() { return playerService; }
+
+void GameManager::haltServer() {
+    logging::getLogger("GameManager::haltServer()")
+        ->info("Shutting down server...");
+    done = true;
+}
 
 } // namespace gamemanager
 } // namespace mudserver

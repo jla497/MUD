@@ -8,7 +8,7 @@
 // FIXME: this should possibly work on the enum keyword rather than the
 // description string
 std::unordered_map<std::string, bool> Action::isAdminAction = {
-    {"Program action", true}, {"Save action", true}};
+    {"Program action", true}, {"Save action", true}, {"Halt action", true}};
 
 Action::Action(Player &playerPerformingAction,
                std::vector<std::string> actionArguments,
@@ -32,6 +32,8 @@ void Action::execute() {
     if (Action::isAdminAction[description()]) {
         if (playerPerformingAction.hasAdminPrivilege()) {
             execute_impl();
+        } else {
+            logger->debug("Player does not have admin privileges!");
         }
     } else {
         execute_impl();

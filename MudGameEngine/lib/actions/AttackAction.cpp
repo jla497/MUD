@@ -45,7 +45,7 @@ void AttackAction::execute_impl() {
         logger->info("No Target found");
         return;
     }
-    auto nameOfAttackTarget = actionArguments.at(0);
+    auto nameOfAttackTarget = boost::join(actionArguments, " ");
     logger->info("nameOfAttackTarget: " + nameOfAttackTarget);
 
     // see if the target is in the same room as the attacker

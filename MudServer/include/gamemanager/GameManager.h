@@ -102,6 +102,7 @@ class GameManager {
      * constantly.
      */
     void mainLoop();
+    void haltServer();
 
     /**
      * Gets a reference to the game state.

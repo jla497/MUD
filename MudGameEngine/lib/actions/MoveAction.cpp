@@ -1,5 +1,6 @@
 #include "actions/MoveAction.h"
 #include "logging.h"
+#include <actions/LookAction.h>
 
 std::vector<std::string> MoveAction::moveLookup = {"north", "south", "east",
                                                    "west"};
@@ -58,7 +59,7 @@ void MoveAction::execute_impl() {
         auto nextRoom = gameState.getRoomFromLUT(nextRoomId);
         // Room with nextRoomId does not exist
         if (!nextRoom) {
-            logger->error("nextRoom is null...");
+            logger->warning("nextRoom is null...");
             return;
         }
 
@@ -76,11 +77,9 @@ void MoveAction::execute_impl() {
         gameState.addCharacterRoomRelationToLUT(mCharacterPtr->getEntityId(),
                                                 nextRoom->getId());
 
-        // TODO:the player automatically looks at the new room
-        // TODO:move look action meat into a helper method that all actions can
-        // access  gameState.getDescriptionOfRoomPlayerIsIn();
+        LookAction{playerPerformingAction, {}, gameManager}.execute();
 
-        logger->info("MoveAction complete...");
+        logger->debug("MoveAction complete...");
         return;
     }
 }

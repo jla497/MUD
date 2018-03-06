@@ -41,7 +41,7 @@ void CombatSimulation::resolveCombatRound(
     // TODO: use CombatAbilities rather than just raw roll values
     // A CombatAbility should encapsulate the damage dealth along site any
     // effects it might apply (ex a fireball might apply a burning effect on the
-    //target)
+    // target)
     int damageAmount =
         calcRoundDamage(attackingCharactersCombatComponent->getDamageRoll(),
                         (attackedCharactersCombatComponent->getHitRoll()));
