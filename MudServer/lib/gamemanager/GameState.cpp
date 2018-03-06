@@ -11,9 +11,11 @@ std::size_t UniqueIdHash::operator()(UniqueId id) const {
     return std::hash<unsigned int>()(id.getId());
 }
 
-void GameState::initFromYaml(std::string filename) {
-    parseYamlFile(std::move(filename));
-    addAreaFromParser();
+void GameState::initFromYaml(std::vector<std::string> filenames) {
+    for (auto filename : filenames) {
+        parseYamlFile(std::move(filename));
+        addAreaFromParser();
+    }
     initRoomLUT();
     factory = std::unique_ptr<EntityFactory>(parser.makeFactory());
     factory->init();
@@ -142,5 +144,14 @@ void GameState::doReset() {
     ResetManager resetManager{resets};
     resetManager.applyResets(this);
 }
+
+void GameState::killCharacter(const CharacterEntity &character) {
+    // remove from play
+    // TODO: uncomment and integrate once branches have been merged
+    // removeCharacterByUniqueId(character.getEntityId());
+
+    // if the character is controlled by a player notify them
+}
+
 } // namespace gamemanager
 } // namespace mudserver

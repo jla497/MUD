@@ -8,7 +8,6 @@ MudProtocol::MudProtocol() : maxBufSize(512) {}
 MudProtocol::MudProtocol(const unsigned int max_buf) : maxBufSize(max_buf) {}
 
 void MudProtocol::receive(std::string str) {
-    // pass only alphanumeric characters, backspace nad cr
 
     for (auto &c : str) {
         if (inBuffer.length() < maxBufSize) {
@@ -19,6 +18,8 @@ void MudProtocol::receive(std::string str) {
             throw std::runtime_error("buffer overflow");
         }
     }
+
+    inBuffer.append("\n");
 }
 
 std::string MudProtocol::send() {
@@ -26,7 +27,7 @@ std::string MudProtocol::send() {
         return {};
 
     constexpr auto prefixes = "";
-    constexpr auto suffixes = "\n";
+    constexpr auto suffixes = "";
 
     std::ostringstream oss;
     oss << prefixes << inBuffer << suffixes;

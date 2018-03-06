@@ -33,8 +33,8 @@ enum class ActKeyword {
     move,
     attack,
     swap,
-    timed,
     program,
+    timed,
     save,
 
     _N_ACTIONS_

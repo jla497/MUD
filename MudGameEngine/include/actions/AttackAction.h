@@ -2,11 +2,12 @@
 #define ATTACKACTION_H
 
 #include "Action.h"
+#include "CombatSimulation.h"
 #include "gamemanager/GameManager.h"
 
 /**
- * The AttackAction class defines the behavior for when a player character
- * attacks a creature or other character.
+ * The AttackAction class defines the behavior for when a character
+ * attacks an other character.
  */
 class AttackAction : public Action {
   public:

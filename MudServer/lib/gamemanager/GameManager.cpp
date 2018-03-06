@@ -45,7 +45,7 @@ void GameManager::mainLoop() {
     loadPersistedData();
 
     using clock = std::chrono::high_resolution_clock;
-    auto startTime = clock::now();
+
     currentAQueuePtr = &actionsA;
     nextAQueuePtr = &actionsB;
     // point currentActionQueuePtr to actionQueueA
@@ -124,6 +124,7 @@ void GameManager::processMessages(
     static auto logger = logging::getLogger("GameManager::processMessages");
 
     for (const auto &message : messages) {
+        enqueueMessage(message.conn, message.text);
 
         auto player = getPlayerFromLogin(message);
         logger->debug(std::to_string(message.conn.id) + ": " + message.text);
