@@ -52,7 +52,7 @@ TEST_F(ConnectionManTest, TestProtocolInConnectionContainer) {
     ASSERT_NO_THROW(container->receiveFromServer(str));
 
     auto cmpStr = container->sendToGameManager();
-    EXPECT_EQ("", cmpStr);
+    EXPECT_EQ("\n", cmpStr);
     // std::cout<<container->getOutBuffer()<<std::endl;
 }
 
