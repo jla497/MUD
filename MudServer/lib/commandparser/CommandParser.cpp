@@ -5,6 +5,7 @@
 #include <utility>
 #include <vector>
 #include <unordered_map>
+#include <map>
 
 #include <boost/algorithm/string.hpp>
 #include <boost/tokenizer.hpp>
@@ -56,8 +57,10 @@ std::unique_ptr<Action> generator(Player &player,
     return std::make_unique<T>(player, args, manager);
 };
 
-const static std::unordered_map<ActKeyword, ActionGenerator> actionGenerators =
-    {
+//FIXME: this should be an unordered_map, but some people don't have a std::hash
+//specialization for enums in their old gcc/glibc
+const static std::map<ActKeyword, ActionGenerator>
+    actionGenerators = {
         // NOLINT
         {ActKeyword::undefined, &generator<NullAction>},
         {ActKeyword::say, &generator<SayAction>},
