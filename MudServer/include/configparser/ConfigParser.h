@@ -16,7 +16,7 @@ struct ConfigData {
     Port serverPort;
     std::string clientPort;
     std::vector<std::string> areas;
-    std::string spells;
+    std::vector<std::string> spells;
     std::string configDir;
     std::string url;
 };

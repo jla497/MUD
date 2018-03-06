@@ -12,14 +12,18 @@ std::size_t UniqueIdHash::operator()(UniqueId id) const {
 }
 
 void GameState::initFromYaml(std::vector<std::string> areaFilenames,
-                             std::string spellFilename) {
+                             std::vector<std::string> spellFilenames) {
     for (auto areaFilename : areaFilenames) {
         parseAreaYamlFile(std::move(areaFilename));
         addAreaFromParser();
     }
-    parseSpellYamlFile(std::move(spellFilename));
-    addSpellsFromParser();
     initRoomLUT();
+
+    for (auto spellFilename : spellFilenames) {
+        parseSpellYamlFile(std::move(spellFilename));
+        addSpellsFromParser();
+    }
+
     factory = std::unique_ptr<EntityFactory>(areaParser.makeFactory());
     factory->init();
 }

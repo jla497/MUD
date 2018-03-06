@@ -52,7 +52,7 @@ class GameState {
 
   public:
     void initFromYaml(std::vector<std::string> areaFilenames,
-                      std::string spellFilename);
+                      std::vector<std::string> spellFilenames);
 
     void parseAreaYamlFile(std::string string);
     void initRoomLUT();

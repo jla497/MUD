@@ -15,7 +15,7 @@ boost::optional<ConfigData> parseConfigFile(const std::string filePath) {
     auto serverPort = config[0]["SERVER"]["port"].as<short unsigned int>();
     auto clientPort = config[0]["CLIENT"]["port"].as<std::string>();
     auto areas = config[0]["SERVER"]["areas"].as<std::vector<std::string>>();
-    auto spells = config[0]["SERVER"]["spells"].as<std::string>();
+    auto spells = config[0]["SERVER"]["spells"].as<std::vector<std::string>>();
     auto configDir = config[0]["SERVER"]["config_dir"].as<std::string>();
     auto url = config[0]["CLIENT"]["url"].as<std::string>();
 
