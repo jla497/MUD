@@ -1,16 +1,17 @@
 #include "gamemanager/PlayerService.h"
 #include "gamemanager/Player.h"
+#include "persistence/PersistenceService.h"
 #include <gtest/gtest.h>
 
 using namespace mudserver::gamemanager;
+using namespace mudserver::persistence;
 
 class PlayerServiceTests : public testing::Test {
   protected:
     PlayerService ps;
-
   public:
     PlayerServiceTests() = default;
-    virtual void SetUp() { PlayerService ps{}; }
+    virtual void SetUp() { ps = PlayerService{}; }
 };
 
 TEST_F(PlayerServiceTests, AddNewPlayer) {
@@ -39,6 +40,16 @@ TEST_F(PlayerServiceTests, PlayerConnectionUpdate) {
     auto alsoJimbob = ps.identify("jimbob", "hunter2");
     ASSERT_EQ(alsoJimbob->getConnectionId(), 42);
 }
+
+TEST_F(PlayerServiceTests, WriteReadPlayers)
+{
+	PersistenceService pss("config");
+	ps.addPlayer("jimbob", "hunter2");
+	pss.save(ps, "test.dat");
+	ps = pss.loadPlayerService("test.dat");
+	ASSERT_EQ(ps.identify("jimbob", "hunter2")->getUsername(), "jimbob");
+}
+
 
 TEST_F(PlayerServiceTests, CreatePlayerCharacter) {
     ps.addPlayer("jimbob", "hunter2");

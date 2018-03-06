@@ -57,8 +57,8 @@ void AttackAction::execute_impl() {
         if (boost::to_lower_copy(shortDescOfCurrentPlayer) ==
             boost::to_lower_copy(nameOfAttackTarget)) {
 
-            playerWhoIsAttacking->getCombatComponent()->prepareToAttack();
             // calculate and apply attack effects
+            playerWhoIsAttacking->getCombatComponent()->prepareToAttack();
             CombatSimulation::resolveCombatRound(*playerWhoIsAttacking,
                                                  *currentEntity, gameManager);
             return;
