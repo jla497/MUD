@@ -55,7 +55,6 @@ class GameState {
     void addCharacter(CharacterEntity &character);
     void addCharacterRoomRelationToLUT(UniqueId characterId,
                                        unsigned int roomId);
-    void removeCharacterByUniqueId(UniqueId characterId);
     void addRoomToLUT(const RoomEntity &room);
     AreaEntity getAreaFromParser();
     std::deque<AreaEntity> &getAreas();
@@ -65,11 +64,12 @@ class GameState {
     RoomEntity *getCharacterLocation(const CharacterEntity &character);
     RoomEntity *getRoomFromLUT(const roomId);
     void clearAreas();
+    void removeCharacterByUniqueId(UniqueId characterId);
     void clearCharacterRoomLUT();
     EntityFactory &getFactory();
     void doReset();
 
-    Spell *getSpellByName(std::string spellName);
+    // Spell *getSpellByName(const std::string spellName);
 };
 
 } // namespace gamemanager

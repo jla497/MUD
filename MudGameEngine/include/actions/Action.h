@@ -41,7 +41,6 @@ class Action {
     void execute();
     virtual ~Action() = default;
     virtual Action *clone() = 0;
-    void setTimeRemaining(const Tick newTimeRemaining);
 
   private:
     virtual void execute_impl() = 0;

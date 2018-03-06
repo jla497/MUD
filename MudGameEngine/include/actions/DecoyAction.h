@@ -3,7 +3,7 @@
 
 #include "Action.h"
 #include "gamemanager/GameManager.h"
-#include "resources/UniqueId.h"
+// #include "resources/UniqueId.h"
 #include <queue> 
 
 /**
@@ -23,7 +23,7 @@ class DecoyAction : public Action {
     DecoyAction *clone() override;
 
   private:
-  	UniqueId ourDecoy; // bind the decoy made by this Action
+  	UniqueId ourDecoyId; // bind the decoy made by this Action
 
   protected:
     std::string description() const override { return u8"Decoy action"; }

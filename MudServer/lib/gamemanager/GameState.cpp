@@ -42,9 +42,6 @@ void GameState::addCharacterRoomRelationToLUT(UniqueId characterId,
     characterRoomLookUp.left[characterId] = roomId;
 }
 
-void removeCharacterByUniqueId(UniqueId characterId) {
-    // TODO
-}
 
 void GameState::addRoomToLUT(const RoomEntity &room) {
     roomLookUp[room.getId()] = room;
@@ -130,6 +127,11 @@ std::deque<AreaEntity> &GameState::getAreas() { return areas; }
 /**
  * Clear Methods
  */
+void GameState::removeCharacterByUniqueId(UniqueId characterId) {
+    // TODO remove chara from these throw
+    // characterRoomLookUp try characterRoomLookUp.left[characterId].erase()
+    characterLookUp.erase(characterId);
+}
 void GameState::clearCharacterRoomLUT() { characterRoomLookUp.clear(); }
 
 void GameState::clearAreas() { roomLookUp.clear(); }
@@ -142,11 +144,11 @@ void GameState::doReset() {
     resetManager.applyResets(this);
 }
 
-Spell *getSpellByName(std::string spellName) {
-    t = std::find_if(vecOfItems.begin(), vecOfItems.end(), [](Item const& obj){
-        return obj.getPrice() == 28;
-    } );
-}
+// Spell *getSpellByName(const std::string spellName) {
+//     auto foundSpell = std::find_if(spells.begin(), spells.end(), [](const Spell& tmp){
+//         return tmp.getName() == spellName;
+//     } );
+// }
 
 
 
