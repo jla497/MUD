@@ -29,13 +29,16 @@ using boost::algorithm::to_lower_copy;
 
 using namespace resources::commands;
 
-static std::unordered_map<std::string, ActKeyword> actionLookup =
-    { // NOLINT
-        {UNDEFINED, ActKeyword::undefined}, {SAY, ActKeyword::say},
-        {LOOK, ActKeyword::look},           {ATTACK, ActKeyword::attack},
-        {MOVE, ActKeyword::move},           {PROGRAM, ActKeyword::program},
-        {TIMED, ActKeyword::timed},         {SAVE, ActKeyword::save},
-        {SWAP, ActKeyword::swap}};
+static std::unordered_map<std::string, ActKeyword> actionLookup = { // NOLINT
+    {UNDEFINED, ActKeyword::undefined},
+    {SAY, ActKeyword::say},
+    {LOOK, ActKeyword::look},
+    {ATTACK, ActKeyword::attack},
+    {MOVE, ActKeyword::move},
+    {PROGRAM, ActKeyword::program},
+    {TIMED, ActKeyword::timed},
+    {SAVE, ActKeyword::save},
+    {SWAP, ActKeyword::swap}};
 
 using ActionGenerator = std::unique_ptr<Action> (*)(Player &,
                                                     std::vector<std::string> &,
@@ -53,9 +56,8 @@ const static std::vector<ActionGenerator> actionGenerators = {
     // NOLINT
     &generator<NullAction>, // undefined
     &generator<SayAction>,    &generator<LookAction>, &generator<MoveAction>,
-    &generator<AttackAction>, &generator<SwapAction>, &generator<PrgmAction>, &generator<TimedAction>,
-    &generator<SaveAction>
-};
+    &generator<AttackAction>, &generator<SwapAction>, &generator<PrgmAction>,
+    &generator<TimedAction>,  &generator<SaveAction>};
 
 std::unique_ptr<Action>
 CommandParser::actionFromPlayerCommand(Player &player, StrView command,

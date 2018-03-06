@@ -9,16 +9,15 @@
  * attacks a creature or other character.
  */
 class SwapAction : public Action {
-public:
+  public:
     using Action::Action;
     void execute_impl() override;
     SwapAction *clone() override;
 
-protected:
+  protected:
     std::string description() const override { return u8"Swap action"; }
     const int MAX_SWAP_TICKS = 20;
     UniqueId casterId;
     UniqueId targetId;
-
 };
 #endif

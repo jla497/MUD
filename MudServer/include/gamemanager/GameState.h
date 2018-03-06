@@ -69,15 +69,7 @@ class GameState {
     EntityFactory &getFactory();
     void doReset();
 
-    /**
-     * Swaps two the ID of two characters in characterLookUp map
-     * @param casterId UniqueId of character
-     * @param targetId UniqueId of character
-     */
-    void swapCharacters(UniqueId casterId, UniqueId targetId);
-
     void killCharacter(const CharacterEntity &character);
-
 };
 
 } // namespace gamemanager

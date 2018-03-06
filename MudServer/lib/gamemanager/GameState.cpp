@@ -119,13 +119,6 @@ std::vector<UniqueId> GameState::getCharactersInRoom(RoomEntity *room) {
     return characters;
 }
 
-void GameState::swapCharacters(UniqueId casterId, UniqueId targetId) {
-    auto casterCharacter = characterLookUp[casterId];
-    auto targetCharacter = characterLookUp[targetId];
-    characterLookUp[casterId] = std::move(targetCharacter);
-    characterLookUp[targetId] = std::move(casterCharacter);
-}
-
 AreaEntity GameState::getAreaFromParser() { return parser.getArea(); }
 
 std::deque<AreaEntity> &GameState::getAreas() { return areas; }

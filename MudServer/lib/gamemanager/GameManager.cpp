@@ -200,13 +200,15 @@ void GameManager::sendCharacterMessage(UniqueId characterId,
 
 PlayerService &GameManager::getPlayerService() { return playerService; }
 
-void GameManager::swapCharacters(UniqueId casterCharacterId, UniqueId targetCharacterId) {
+void GameManager::swapCharacters(UniqueId casterCharacterId,
+                                 UniqueId targetCharacterId) {
     auto casterPlayerId = playerService.characterToPlayer(casterCharacterId);
     auto targetPlayerId = playerService.characterToPlayer(targetCharacterId);
-    playerService.updatePlayerCharacterMapping(casterPlayerId, targetCharacterId);
-    playerService.updatePlayerCharacterMapping(targetPlayerId, casterCharacterId);
-    gameState.swapCharacters(casterCharacterId, targetCharacterId);
-
+    playerService.updatePlayerCharacterMapping(casterPlayerId,
+                                               targetCharacterId);
+    playerService.updatePlayerCharacterMapping(targetPlayerId,
+                                               casterCharacterId);
+    // gameState.swapCharacters(casterCharacterId, targetCharacterId);
 }
 
 } // namespace gamemanager

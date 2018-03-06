@@ -116,7 +116,10 @@ boost::optional<Player &> PlayerService::getPlayerById(PlayerId playerId) {
     return boost::none;
 }
 
-void PlayerService::updatePlayerCharacterMapping(PlayerId playerId, UniqueId characterId) {
-    playerCharacterBimap.left.erase(playerId);
-    playerCharacterBimap.insert(PcBmType::value_type(playerId, characterId));
+void PlayerService::updatePlayerCharacterMapping(PlayerId playerId,
+                                                 UniqueId characterId) {
+    auto it = playerCharacterBimap.left.find(playerId);
+    if (it != playerCharacterBimap.left.end()) {
+        playerCharacterBimap.left.replace_data(it, characterId);
+    }
 }

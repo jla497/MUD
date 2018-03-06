@@ -26,12 +26,15 @@ void Action::execute() {
     characterPerformingAction =
         gameManager.getState().getCharacterFromLUT(*characterId);
 
-    logger->debug("Checking if " + description() + " is AdminAction...");
     // check if action is admin action and if character has an administrator
     // role
     if (Action::isAdminAction[description()]) {
         if (playerPerformingAction.hasAdminPrivilege()) {
             execute_impl();
+        } else {
+            logger->warning("Player " + playerPerformingAction.getUsername() +
+                            " is not an admin, but tried to perform " +
+                            this->description());
         }
     } else {
         execute_impl();
