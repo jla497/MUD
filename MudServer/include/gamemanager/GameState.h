@@ -83,10 +83,12 @@ class GameState {
     RoomEntity *getCharacterLocation(const CharacterEntity &character);
     RoomEntity *getRoomFromLUT(const roomId);
     void clearAreas();
+    void removeCharacterByUniqueId(UniqueId characterId);
     void clearCharacterRoomLUT();
     EntityFactory &getFactory();
     void doReset();
 
+    Spell *getSpellByName(const std::string spellName);
     void killCharacter(const CharacterEntity &character);
 };
 

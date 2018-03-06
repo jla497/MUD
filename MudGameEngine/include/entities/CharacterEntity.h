@@ -39,6 +39,7 @@ class CharacterEntity : public Entity {
     std::vector<std::string> m_longDesc;
     std::string m_shortDesc;
     std::map<int, ObjectEntity> m_objects;
+
     CombatComponent combatComponent;
 
     // ASSUME: can only level up via experience
@@ -62,19 +63,24 @@ class CharacterEntity : public Entity {
     unsigned int getLevel() const;
     std::vector<std::string> getLongDesc() const;
     std::string getShortDesc() const;
-    CombatComponent *getCombatComponent();
+    int getMana() const;
+    
+    // Setters
     void setShortDesc(std::string name);
+    void setMana(int mana);
 
-    // currently gold is signed but good to have
-    // separate methods for adding and subtracting
-    // ASSUME: no limit to debt or max money
+    // Combat
+    CombatComponent *getCombatComponent();
+
+    // Money 
     void addGold(unsigned int amount);
     void subtractGold(unsigned int amount);
     bool hasGold() const;
 
-    // Experience is unsigned to assume no negative exp
+    // Experience
     void incExp(unsigned int expPoints);
 
+    // Objects
     void equipObject(ObjectEntity object);
     ObjectEntity getObject(int id);
     std::map<int, ObjectEntity> getObjects();

@@ -54,6 +54,7 @@ void GameState::addCharacterRoomRelationToLUT(UniqueId characterId,
     characterRoomLookUp.left[characterId] = roomId;
 }
 
+
 void GameState::addRoomToLUT(const RoomEntity &room) {
     roomLookUp[room.getId()] = room;
 }
@@ -134,6 +135,11 @@ std::vector<Spell> &GameState::getSpells() { return spells; }
 /**
  * Clear Methods
  */
+void GameState::removeCharacterByUniqueId(UniqueId characterId) {
+    // TODO remove chara from these throw
+    characterRoomLookUp.left.erase(characterId);
+    characterLookUp.erase(characterId);
+}
 void GameState::clearCharacterRoomLUT() { characterRoomLookUp.clear(); }
 
 void GameState::clearAreas() { roomLookUp.clear(); }
@@ -146,10 +152,16 @@ void GameState::doReset() {
     resetManager.applyResets(this);
 }
 
+Spell *GameState::getSpellByName(const std::string spellName) {
+    auto foundSpell = std::find_if(spells.begin(), spells.end(), [spellName](Spell& tmp){
+        return tmp.getName() == spellName;
+    } );
+}
+
 void GameState::killCharacter(const CharacterEntity &character) {
     // remove from play
     // TODO: uncomment and integrate once branches have been merged
-    // removeCharacterByUniqueId(character.getEntityId());
+    removeCharacterByUniqueId(character.getEntityId());
 
     // if the character is controlled by a player notify them
 }
