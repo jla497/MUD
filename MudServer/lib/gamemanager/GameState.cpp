@@ -1,3 +1,4 @@
+#include <boost/format.hpp>
 #include <iostream>
 #include <memory>
 
@@ -29,7 +30,7 @@ void GameState::initFromYaml(std::vector<std::string> areaFilenames,
 }
 
 void GameState::parseAreaYamlFile(std::string filename) {
-    areaParser.loadYamlFile(std::move(filename));
+    areaParser.loadYamlFile(filename);
 }
 
 void GameState::initRoomLUT() {
@@ -82,13 +83,6 @@ void GameState::addCharacter(CharacterEntity &character, Id roomID) {
     } else {
         throw "couldn't add character to room";
     }
-    //        auto characterItr = characterLookUp.find(id);
-    //        auto objects = characterItr->second.getObjects();
-    //
-    //            for(auto &obj : objects) {
-    //                std::cout<<characterItr->second.getShortDesc()<<" "<<
-    //                obj.second.getShortDesc()<<std::endl;
-    //            }
 }
 
 void GameState::addAreaFromParser() { areas.push_back(areaParser.getArea()); }
@@ -151,5 +145,14 @@ void GameState::doReset() {
     ResetManager resetManager{resets};
     resetManager.applyResets(this);
 }
+
+void GameState::killCharacter(const CharacterEntity &character) {
+    // remove from play
+    // TODO: uncomment and integrate once branches have been merged
+    // removeCharacterByUniqueId(character.getEntityId());
+
+    // if the character is controlled by a player notify them
+}
+
 } // namespace gamemanager
 } // namespace mudserver

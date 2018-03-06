@@ -27,6 +27,7 @@ class Player {
         ar &id;
         ar &username;
         ar &password;
+        ar &isAdmin;
     }
 
     PlayerId id = static_cast<PlayerId>(-1);

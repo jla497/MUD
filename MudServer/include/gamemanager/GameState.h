@@ -4,7 +4,8 @@
 #include <boost/bimap.hpp>
 #include <boost/bimap/list_of.hpp>
 #include <boost/bimap/set_of.hpp>
-#include <boost/foreach.hpp>
+#include <boost/serialization/access.hpp>
+#include <boost/serialization/unordered_map.hpp>
 #include <deque>
 #include <memory>
 #include <unordered_map>
@@ -50,6 +51,14 @@ class GameState {
     std::vector<Spell> spells;
     SpellParser spellParser;
 
+    friend class boost::serialization::access;
+
+    template <class Archive>
+    void serialize(Archive &ar, const unsigned int version) {
+        ar &characterLookUp;
+        ar &characterRoomLookUp;
+    }
+
   public:
     void initFromYaml(std::vector<std::string> areaFilenames,
                       std::vector<std::string> spellFilenames);
@@ -77,6 +86,8 @@ class GameState {
     void clearCharacterRoomLUT();
     EntityFactory &getFactory();
     void doReset();
+
+    void killCharacter(const CharacterEntity &character);
 };
 
 } // namespace gamemanager

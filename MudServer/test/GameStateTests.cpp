@@ -106,5 +106,19 @@ TEST_F(GameStateTest, TestUpdatePlayerRoom) {
     EXPECT_EQ(charIDs.size(), 1);
 }
 
+// TEST_F(GameStateTest, TestSwapCharacters) {
+//    auto sourceCharacter = createCharacter();
+//    UniqueId sourceId = sourceCharacter.getEntityId();
+//    state.addCharacter(sourceCharacter);
+//    auto targetCharacter = createCharacter();
+//    UniqueId targetId = targetCharacter.getEntityId();
+//    state.addCharacter(targetCharacter);
+//    EXPECT_EQ(state.getCharacterFromLUT(sourceId)->getEntityId(), sourceId);
+//    EXPECT_EQ(state.getCharacterFromLUT(targetId)->getEntityId(), targetId);
+//    state.swapCharacters(sourceId, targetId);
+//    EXPECT_EQ(state.getCharacterFromLUT(sourceId)->getEntityId(), targetId);
+//    EXPECT_EQ(state.getCharacterFromLUT(targetId)->getEntityId(), sourceId);
+//}
+
 } // namespace gamemanager
 } // namespace mudserver
