@@ -11,18 +11,20 @@ std::size_t UniqueIdHash::operator()(UniqueId id) const {
     return std::hash<unsigned int>()(id.getId());
 }
 
-void GameState::initFromYaml(std::vector<std::string> filenames) {
-    for (auto filename : filenames) {
-        parseYamlFile(std::move(filename));
+void GameState::initFromYaml(std::vector<std::string> areaFilenames, std::string spellFilename) {
+    for (auto areaFilename : areaFilenames) {
+        parseAreaYamlFile(std::move(areaFilename));
         addAreaFromParser();
     }
+    parseSpellYamlFile(std::move(spellFilename));
+    addSpellsFromParser();
     initRoomLUT();
-    factory = std::unique_ptr<EntityFactory>(parser.makeFactory());
+    factory = std::unique_ptr<EntityFactory>(areaParser.makeFactory());
     factory->init();
 }
 
-void GameState::parseYamlFile(std::string filename) {
-    parser.loadYamlFile(std::move(filename));
+void GameState::parseAreaYamlFile(std::string filename) {
+    areaParser.loadYamlFile(std::move(filename));
 }
 
 void GameState::initRoomLUT() {
@@ -31,6 +33,10 @@ void GameState::initRoomLUT() {
         LutBuilder lutBuilder;
         roomLookUp = lutBuilder.createLUT(rooms);
     }
+}
+
+void GameState::parseSpellYamlFile(std::string filename) {
+    spellParser.loadYamlFile(std::move(filename));
 }
 
 /**
@@ -80,8 +86,11 @@ void GameState::addCharacter(CharacterEntity &character, Id roomID) {
     //            }
 }
 
-void GameState::addAreaFromParser() { areas.push_back(parser.getArea()); }
+void GameState::addAreaFromParser() { areas.push_back(areaParser.getArea()); }
 
+void GameState::addSpellsFromParser() {
+    spells = spellParser.getAllSpells();
+}
 /**
  * Get Methods
  */
@@ -119,9 +128,13 @@ std::vector<UniqueId> GameState::getCharactersInRoom(RoomEntity *room) {
     return characters;
 }
 
-AreaEntity GameState::getAreaFromParser() { return parser.getArea(); }
+AreaEntity GameState::getAreaFromParser() { return areaParser.getArea(); }
 
 std::deque<AreaEntity> &GameState::getAreas() { return areas; }
+
+std::vector<Spell> &GameState::getSpells() {
+    return spells;
+}
 
 /**
  * Clear Methods
@@ -133,7 +146,7 @@ void GameState::clearAreas() { roomLookUp.clear(); }
 EntityFactory &GameState::getFactory() { return *factory; }
 
 void GameState::doReset() {
-    auto resets = parser.getAllResets();
+    auto resets = areaParser.getAllResets();
     ResetManager resetManager{resets};
     resetManager.applyResets(this);
 }

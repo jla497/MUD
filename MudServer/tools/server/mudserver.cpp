@@ -29,7 +29,7 @@ int main(int argc, char *argv[]) {
         mudserver::connection::ConnectionManager connectionManager{
             configData->serverPort};
         mudserver::gamemanager::GameState gameState{};
-        gameState.initFromYaml(configData->areas);
+        gameState.initFromYaml(configData->areas, configData->spells);
         mudserver::persistence::PersistenceService persistenceService{
             configData->configDir};
 
