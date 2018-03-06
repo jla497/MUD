@@ -210,5 +210,16 @@ void GameManager::haltServer() {
     done = true;
 }
 
+void GameManager::swapCharacters(UniqueId casterCharacterId,
+                                 UniqueId targetCharacterId) {
+    auto casterPlayerId = playerService.characterToPlayer(casterCharacterId);
+    auto targetPlayerId = playerService.characterToPlayer(targetCharacterId);
+    playerService.updatePlayerCharacterMapping(casterPlayerId,
+                                               targetCharacterId);
+    playerService.updatePlayerCharacterMapping(targetPlayerId,
+                                               casterCharacterId);
+    // gameState.swapCharacters(casterCharacterId, targetCharacterId);
+}
+
 } // namespace gamemanager
 } // namespace mudserver

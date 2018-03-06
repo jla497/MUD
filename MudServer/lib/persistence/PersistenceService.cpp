@@ -36,6 +36,7 @@ void PersistenceService::save(PlayerService &ps) {
         logger->info("Saved player service");
     }
 }
+
 PlayerService PersistenceService::loadPlayerService() {
     auto logger = logging::getLogger("PersistenceService::loadPlayerService");
 

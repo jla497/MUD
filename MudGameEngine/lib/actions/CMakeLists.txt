@@ -6,6 +6,7 @@ add_library(actions
 	AttackAction.cpp
 	NullAction.cpp
 	LookAction.cpp
+	SwapAction.cpp
 	PrgmAction.cpp
 	SaveAction.cpp
     TimedAction.cpp
