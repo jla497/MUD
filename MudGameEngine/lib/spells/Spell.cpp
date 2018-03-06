@@ -17,6 +17,7 @@ Spell::Spell() {
 	hitvict = "";
 	missroom = "";
 	misschar = "";
+	missvict = "";
 	dammsg = "";
 	wearoff = "";
 	immchar = "";
@@ -67,6 +68,12 @@ std::string Spell::getMissChar(std::string casterName, std::string victimName, s
 	std::string modifiedString = formatUserDisplayStrings(misschar, casterName, victimName, victimGender);
 	return modifiedString;
 }
+
+std::string Spell::getMissVict(std::string casterName, std::string victimName, std::string victimGender) {
+	std::string modifiedString = formatUserDisplayStrings(missvict, casterName, victimName, victimGender);
+	return modifiedString;
+}
+
 		
 std::string Spell::getDammsg() {
 	return dammsg;
@@ -82,6 +89,10 @@ std::string Spell::getImmchar() {
 		
 std::string Spell::getDamage() {
 	return damage;
+}
+
+Spell::SpellType Spell::getType() {
+	return type;
 }
 
 void Spell::setEffect(std::string effect) {
@@ -124,6 +135,10 @@ void Spell::setMissChar(std::string misschar) {
 	this->misschar = misschar;
 }
 
+void Spell::setMissVict(std::string missvict) {
+	this->missvict = missvict;
+}
+
 void Spell::setDammsg(std::string dammsg) {
 	this->dammsg = dammsg;
 }
@@ -138,6 +153,10 @@ void Spell::setImmchar(std::string immchar) {
 
 void Spell::setDamage(std::string damage) {
 	this->damage = damage;
+}
+
+void Spell::setType(Spell::SpellType type) {
+	this->type = type;
 }
 
 std::string Spell::formatUserDisplayStrings(std::string displayString, std::string casterName, std::string victimName, std::string victimGender) {

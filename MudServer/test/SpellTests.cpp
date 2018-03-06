@@ -17,12 +17,8 @@ class SpellTests : public testing::Test {
     SpellParser parser;
 };
 
-TEST_F(SpellTests, TestGetAllDefenseSpells) { 
-    auto defSpells = parser.getAllDefenseSpells(); 
-}
-
-TEST_F(SpellTests, TestGetAllOffenseSpells) {
-    auto offenseSpells = parser.getAllOffenseSpells();
+TEST_F(SpellTests, TestGetAllSpells) { 
+    auto spells = parser.getAllSpells(); 
 }
 
 TEST_F(SpellTests, TestGetHitCharVictimName) {

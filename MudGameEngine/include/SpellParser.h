@@ -10,18 +10,14 @@ class SpellParser {
     std::vector<YAML::Node> data; // holds all data nodes
     bool is_loaded = false;
 
-    Spell parseSpell(YAML::Node node) const;
+    Spell parseSpell(YAML::Node node, Spell::SpellType type) const;
 
   public:
     // loads the YAML file into data (std::vector of YAML nodes)
     // each entity makes up one node in data (ex. "NPCs" make up one node)
     bool loadYamlFile(const std::string &path);
 
-    std::vector<Spell> getAllDefenseSpells() const;
-    std::vector<Spell> getAllOffenseSpells() const;
-    std::vector<Spell> getAllObjectSpells() const;
-    std::vector<Spell> getAllOtherSpells() const;
-    std::vector<Spell> getAllPersonalSpells() const;
+    std::vector<Spell> getAllSpells() const;
 };
 
 #endif
