@@ -18,12 +18,12 @@ const std::string PersistenceService::GAMESTATE_FILE = "gamestate.dat";
 PersistenceService::PersistenceService(std::string configDir)
     : configDir{configDir} {};
 
-void PersistenceService::save(PlayerService &ps) {
+void PersistenceService::save(PlayerService &ps, std::string fileName) {
     auto logger = logging::getLogger("PersistenceService::save()");
     boost::system::error_code returnedError;
     fs::create_directories(configDir, returnedError);
     if (!returnedError) {
-        fs::path file{PLAYERS_FILE};
+        fs::path file{fileName};
         auto fullPath = configDir / file;
 
         if (fs::exists(fullPath)) {
@@ -37,28 +37,8 @@ void PersistenceService::save(PlayerService &ps) {
     }
 }
 
-PlayerService PersistenceService::loadPlayerService() {
-    auto logger = logging::getLogger("PersistenceService::loadPlayerService");
-
-    PlayerService ps{};
-
-    boost::system::error_code returnedError;
-    fs::path file{PLAYERS_FILE};
-    auto fullPath = configDir / file;
-
-    boost::filesystem::exists(fullPath, returnedError);
-    if (!returnedError) {
-        std::ifstream ifs{(configDir / file).generic_string()};
-        try {
-            boost::archive::text_iarchive ia{ifs};
-            ia >> ps;
-            logger->info("Loaded player service");
-        } catch (const boost::archive::archive_exception &e) {
-            logger->warning("Bad player save file");
-        }
-    }
-
-    return ps;
+void PersistenceService::save(PlayerService &ps) {
+    save(ps, PLAYERS_FILE);
 }
 
 void PersistenceService::save(GameState &gs) {
@@ -79,6 +59,35 @@ void PersistenceService::save(GameState &gs) {
         logger->info("Saved game state");
     }
 }
+
+PlayerService PersistenceService::loadPlayerService(std::string fileName) {
+    auto logger = logging::getLogger("PersistenceService::loadPlayerService");
+
+    PlayerService ps{};
+
+    boost::system::error_code returnedError;
+    fs::path file{fileName};
+    auto fullPath = configDir / file;
+
+    boost::filesystem::exists(fullPath, returnedError);
+    if (!returnedError) {
+        std::ifstream ifs{(configDir / file).generic_string()};
+        try {
+            boost::archive::text_iarchive ia{ifs};
+            ia >> ps;
+            logger->info("Loaded player service");
+        } catch (const boost::archive::archive_exception &e) {
+            logger->warning("Bad player save file");
+        }
+    }
+
+    return ps;
+}
+
+PlayerService PersistenceService::loadPlayerService() {
+    return loadPlayerService(PLAYERS_FILE);
+}
+
 GameState PersistenceService::loadGameState() {
     auto logger = logging::getLogger("PersistenceService::loadGameState");
 

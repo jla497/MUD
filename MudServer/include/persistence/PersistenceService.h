@@ -23,9 +23,11 @@ class PersistenceService {
   public:
     explicit PersistenceService(std::string configDir);
     void save(PlayerService &ps);
+    void save(PlayerService &ps, std::string fileName);
     void save(GameState &gs);
 
     PlayerService loadPlayerService();
+    PlayerService loadPlayerService(std::string fileName);
     GameState loadGameState();
 };
 
