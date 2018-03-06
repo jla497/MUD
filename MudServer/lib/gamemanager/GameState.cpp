@@ -1,3 +1,4 @@
+#include <boost/format.hpp>
 #include <iostream>
 #include <memory>
 
@@ -11,16 +12,18 @@ std::size_t UniqueIdHash::operator()(UniqueId id) const {
     return std::hash<unsigned int>()(id.getId());
 }
 
-void GameState::initFromYaml(std::string filename) {
-    parseYamlFile(std::move(filename));
-    addAreaFromParser();
+void GameState::initFromYaml(std::vector<std::string> filenames) {
+    for (auto filename : filenames) {
+        parseYamlFile(std::move(filename));
+        addAreaFromParser();
+    }
     initRoomLUT();
     factory = std::unique_ptr<EntityFactory>(parser.makeFactory());
     factory->init();
 }
 
 void GameState::parseYamlFile(std::string filename) {
-    parser.loadYamlFile(std::move(filename));
+    parser.loadYamlFile(filename);
 }
 
 void GameState::initRoomLUT() {
@@ -69,13 +72,6 @@ void GameState::addCharacter(CharacterEntity &character, Id roomID) {
     } else {
         throw "couldn't add character to room";
     }
-    //        auto characterItr = characterLookUp.find(id);
-    //        auto objects = characterItr->second.getObjects();
-    //
-    //            for(auto &obj : objects) {
-    //                std::cout<<characterItr->second.getShortDesc()<<" "<<
-    //                obj.second.getShortDesc()<<std::endl;
-    //            }
 }
 
 void GameState::addAreaFromParser() { areas.push_back(parser.getArea()); }
@@ -135,5 +131,14 @@ void GameState::doReset() {
     ResetManager resetManager{resets};
     resetManager.applyResets(this);
 }
+
+void GameState::killCharacter(const CharacterEntity &character) {
+    // remove from play
+    // TODO: uncomment and integrate once branches have been merged
+    // removeCharacterByUniqueId(character.getEntityId());
+
+    // if the character is controlled by a player notify them
+}
+
 } // namespace gamemanager
 } // namespace mudserver

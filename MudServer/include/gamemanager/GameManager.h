@@ -102,6 +102,7 @@ class GameManager {
      * constantly.
      */
     void mainLoop();
+    void haltServer();
 
     /**
      * Gets a reference to the game state.
@@ -116,6 +117,14 @@ class GameManager {
      * @param characterId the id of the character
      * @param message the message to send
      */
+
+    /**
+     * Swap two player's characters
+     * @param playerId1 the player's id
+     * @param playerId2 the player's id
+     */
+    void swapCharacters(UniqueId initCharacterId, UniqueId targetCharacterId);
+
     void sendCharacterMessage(UniqueId characterId, std::string message);
     PlayerService &getPlayerService();
     void persistData();

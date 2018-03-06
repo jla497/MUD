@@ -4,7 +4,8 @@
 #include <boost/bimap.hpp>
 #include <boost/bimap/list_of.hpp>
 #include <boost/bimap/set_of.hpp>
-#include <boost/foreach.hpp>
+#include <boost/serialization/access.hpp>
+#include <boost/serialization/unordered_map.hpp>
 #include <deque>
 #include <memory>
 #include <unordered_map>
@@ -47,8 +48,16 @@ class GameState {
     AreaEntity area;
     std::unique_ptr<EntityFactory> factory;
 
+    friend class boost::serialization::access;
+
+    template <class Archive>
+    void serialize(Archive &ar, const unsigned int version) {
+        ar &characterLookUp;
+        ar &characterRoomLookUp;
+    }
+
   public:
-    void initFromYaml(std::string filename);
+    void initFromYaml(std::vector<std::string> filenames);
     void parseYamlFile(std::string string);
     void initRoomLUT();
     void addAreaFromParser();
@@ -68,6 +77,8 @@ class GameState {
     void clearCharacterRoomLUT();
     EntityFactory &getFactory();
     void doReset();
+
+    void killCharacter(const CharacterEntity &character);
 };
 
 } // namespace gamemanager

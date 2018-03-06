@@ -28,27 +28,11 @@ class GameStateTest : public testing::Test {
             CharacterEntity(armor, damage, desc, exp, gold, hit, 0, keywords,
                             level, longDesc, shortDesc, thac0);
         return character;
-        // =======
-        //     PlayerCharacter createCharacter() {
-        //         return {
-        //             1,            // armor
-        //             "1",          // damage
-        //             {"desc1"},    // desc
-        //             1,            // exp
-        //             1,            // gold
-        //             "1",          // hit
-        //             {"keyword1"}, // keywords
-        //             1,            // level
-        //             {"desc1"},    // longdesc
-        //             "shortdesc",  // shortdesc
-        //             1             // thac0
-        //         };
-        // >>>>>>> master
     }
 
   protected:
     virtual void SetUp() {
-        state.initFromYaml("MudGameEngine/lib/dataFiles/detailed_smurf.yml");
+        state.initFromYaml({"MudGameEngine/lib/dataFiles/detailed_smurf.yml"});
     }
 
     virtual void TearDown() {
@@ -121,6 +105,20 @@ TEST_F(GameStateTest, TestUpdatePlayerRoom) {
     charIDs = state.getCharactersInRoom(room);
     EXPECT_EQ(charIDs.size(), 1);
 }
+
+//TEST_F(GameStateTest, TestSwapCharacters) {
+//    auto sourceCharacter = createCharacter();
+//    UniqueId sourceId = sourceCharacter.getEntityId();
+//    state.addCharacter(sourceCharacter);
+//    auto targetCharacter = createCharacter();
+//    UniqueId targetId = targetCharacter.getEntityId();
+//    state.addCharacter(targetCharacter);
+//    EXPECT_EQ(state.getCharacterFromLUT(sourceId)->getEntityId(), sourceId);
+//    EXPECT_EQ(state.getCharacterFromLUT(targetId)->getEntityId(), targetId);
+//    state.swapCharacters(sourceId, targetId);
+//    EXPECT_EQ(state.getCharacterFromLUT(sourceId)->getEntityId(), targetId);
+//    EXPECT_EQ(state.getCharacterFromLUT(targetId)->getEntityId(), sourceId);
+//}
 
 } // namespace gamemanager
 } // namespace mudserver

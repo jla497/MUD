@@ -32,9 +32,12 @@ enum class ActKeyword {
     look,
     move,
     attack,
-    timed,
+    swap,
     program,
+    timed,
     save,
+    charmod,
+    halt,
 
     _N_ACTIONS_
 };
