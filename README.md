@@ -18,16 +18,24 @@ git submodule init && git submodule update
 ## Usage
 
 Server:
-- ./mudserver <config_file_path>
+- ./mudserver < config_file_path >
 
 Client:
-- ./chatclient <config_file_path>
+- ./chatclient < config_file_path >
 
-<config_file_path> = "config.yaml"
+< config_file_path > = "config.yaml"
 
 ## Actions Supported
+- identify < username > < password > (logs player in, creates new player if username doesn't already exist)
 - say 
 - move 
 - attack (attack player by indicating shortDesc)
 - look (at the room)
+- swap < character > (swap's the player's character with < character >)
+- save (saves the state of the game to disk)
+- halt (halt's the game server and saves to disk)
+- program --help (gives help!)
+- program --< npc id > --gold < number > (adds gold to npc)
+- program --< npc id > --experience < number > (adds exp to npc)
+
 
