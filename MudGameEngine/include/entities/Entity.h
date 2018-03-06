@@ -12,7 +12,7 @@
 /*Entity Interface for making other types of entities like:
   players, rooms, objects*/
 class Entity {
-  private:
+  protected:
     // Unique id that every created entity has
     UniqueId m_entityId{};
 

@@ -35,6 +35,8 @@ extern const char *MODIFY;
 extern const char *IDENTIFY;
 extern const char *SAVE;
 extern const char *TIMED;
+extern const char *CHARMOD;
+extern const char *HALT;
 extern const char *SWAP;
 
 } // namespace commands

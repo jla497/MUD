@@ -1,6 +1,9 @@
 #ifndef CHARACTER_ENTITY_H
 #define CHARACTER_ENTITY_H
 
+#include <boost/serialization/access.hpp>
+#include <boost/serialization/vector.hpp>
+
 #include "Roll.h"
 #include "entities/CombatComponent.h"
 #include "entities/Entity.h"
@@ -12,6 +15,22 @@ class CombatComponent;
 class CharacterEntity : public Entity {
   private:
     bool isPlayerCharacter = false;
+
+    friend class boost::serialization::access;
+    template <class Archive>
+    void serialize(Archive &ar, const unsigned int version) {
+        ar &m_entityId;
+        ar &m_desc;
+        ar &m_exp;
+        ar &m_gold;
+        ar &m_typeId;
+        ar &m_keywords;
+        ar &m_level;
+        ar &m_longDesc;
+        ar &m_shortDesc;
+        ar &combatComponent;
+    }
+
     std::vector<std::string> m_desc;
     unsigned int m_exp;
     int m_gold;
@@ -45,6 +64,7 @@ class CharacterEntity : public Entity {
     std::vector<std::string> getLongDesc() const;
     std::string getShortDesc() const;
     CombatComponent *getCombatComponent();
+    void setShortDesc(std::string name);
 
     // currently gold is signed but good to have
     // separate methods for adding and subtracting

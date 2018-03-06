@@ -35,7 +35,9 @@ const char *MODIFY = u8"modify";
 const char *IDENTIFY = u8"identify";
 const char *SAVE = u8"save";
 const char *TIMED = u8"timed";
+const char *CHARMOD = u8"character";
+const char *HALT = u8"halt";
 const char *SWAP = u8"swap";
-}
+} // namespace commands
 }
 }

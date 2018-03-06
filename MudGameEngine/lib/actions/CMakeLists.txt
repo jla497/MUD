@@ -1,5 +1,6 @@
 add_library(actions
 	Action.cpp
+	CharacterModAction.cpp
 	SayAction.cpp
 	MoveAction.cpp
 	AttackAction.cpp
@@ -8,7 +9,8 @@ add_library(actions
 	SwapAction.cpp
 	PrgmAction.cpp
 	SaveAction.cpp
-    TimedAction.cpp)
+    TimedAction.cpp
+	HaltAction.cpp)
 
 set_target_properties(actions
 	PROPERTIES

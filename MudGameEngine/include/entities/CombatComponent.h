@@ -1,5 +1,8 @@
 #ifndef COMBAT_COMPONENT_H
 #define COMBAT_COMPONENT_H
+
+#include <boost/serialization/access.hpp>
+
 #include "Roll.h"
 #include "entities/CharacterComponent.h"
 
@@ -7,6 +10,19 @@ enum class CombatStates { NOT_FIGHTING, FIGHTING };
 
 class CombatComponent : public CharacterComponent {
   private:
+    friend class boost::serialization::access;
+    template <class Archive>
+    void serialize(Archive &ar, const unsigned int version) {
+        ar &m_maxHealth;
+        ar &m_maxHealth;
+        ar &m_currentHealth;
+        ar &m_armor;
+        ar &m_thac0;
+        ar &m_combatState;
+        ar &m_damageRollData;
+        ar &m_hitRollData;
+    }
+
     int m_maxHealth;
     int m_currentHealth;
     int m_armor;

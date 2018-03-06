@@ -8,7 +8,7 @@
 // FIXME: this should possibly work on the enum keyword rather than the
 // description string
 std::unordered_map<std::string, bool> Action::isAdminAction = {
-    {"Program action", true}, {"Save action", true}};
+    {"Program action", true}, {"Save action", true}, {"Halt action", true}};
 
 Action::Action(Player &playerPerformingAction,
                std::vector<std::string> actionArguments,
