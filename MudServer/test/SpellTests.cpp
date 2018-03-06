@@ -18,6 +18,11 @@ class SpellTests : public testing::Test {
     SpellParser parser;
 };
 
+TEST_F(SpellTests, TestLoadYamlFile) {
+    SpellParser spellParser;
+    parser.loadYamlFile("MudGameEngine/lib/dataFiles/spells.yml");
+}
+
 TEST_F(SpellTests, TestGetAllSpells) { auto spells = parser.getAllSpells(); }
 
 TEST_F(SpellTests, TestGetHitCharVictimName) {
