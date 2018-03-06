@@ -1,19 +1,17 @@
 #include <boost/algorithm/string.hpp>
-#include <string>
-#include <vector>
-
 #include "actions/SwapAction.h"
-#include "gamemanager/GameManager.h"
-#include "logging.h"
 
 SwapAction *SwapAction::clone() { return new SwapAction(*this); }
 
 void SwapAction::execute_impl() {
     static auto logger = mudserver::logging::getLogger("SwapAction::execute");
-    logger->debug("tick");
+
+    // Swap in progress, wait until time is up
     if (timeRemaining > 0) {
         return;
     }
+
+    // Swap is done, revert swap made
     else if (timeRemaining == 0) {
         gameManager.swapCharacters(casterId, targetId);
         gameManager.sendCharacterMessage(
@@ -25,8 +23,7 @@ void SwapAction::execute_impl() {
         return;
     }
 
-    // Timer hasn't been set yet, do initial swap
-
+    // Timer hasn't been set yet, start the initial swap
     auto &gameState = gameManager.getState();
     auto swapInitiater = characterPerformingAction;
     auto characterCurrentRoom = gameState.getCharacterLocation(*swapInitiater);
@@ -34,24 +31,20 @@ void SwapAction::execute_impl() {
         logger->error("Character is not in a room! Suspect incorrect world init");
         return;
     }
-
     auto IDsOfPlayersInRoom = gameState.getCharactersInRoom(characterCurrentRoom);
     if (IDsOfPlayersInRoom.empty()) {
-        logger->info("Empty room");
+        logger->debug("Empty room");
         return;
     }
-
     auto swappingPlayerId = swapInitiater->getEntityId();
     if (actionArguments.empty()) {
         gameManager.sendCharacterMessage(
                 swappingPlayerId,
-                "Swap with who?");
-        logger->info("No Target found");
+                "Specify swap target?");
+        logger->debug("No Target found");
         return;
     }
-
     auto nameOfSwapTarget = actionArguments.at(0);
-    logger->info("nameOfSwapTarget: " + nameOfSwapTarget);
     for (auto characterID : IDsOfPlayersInRoom) {
         auto currentEntity = gameState.getCharacterFromLUT(characterID);
         if (!currentEntity) {
@@ -74,7 +67,7 @@ void SwapAction::execute_impl() {
         }
     }
 
-    logger->info("No Target found");
+    logger->debug("No Target found");
     gameManager.sendCharacterMessage(
             swappingPlayerId,
             "Swap failed: could not find " + nameOfSwapTarget);
