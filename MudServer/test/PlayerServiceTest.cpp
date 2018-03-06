@@ -41,15 +41,11 @@ TEST_F(PlayerServiceTests, PlayerConnectionUpdate) {
     ASSERT_EQ(alsoJimbob->getConnectionId(), 42);
 }
 
-TEST_F(PlayerServiceTests, WritePlayers)
+TEST_F(PlayerServiceTests, WriteReadPlayers)
 {
 	PersistenceService pss(".");
 	ps.addPlayer("jimbob", "hunter2");
 	pss.save(ps, "test.dat");
-}
-TEST_F(PlayerServiceTests, ReadPlayers)
-{
-	PersistenceService pss(".");
 	ps = pss.loadPlayerService("test.dat");
 	ASSERT_EQ(ps.identify("jimbob", "hunter2")->getUsername(), "jimbob");
 }
