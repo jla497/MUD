@@ -1,10 +1,11 @@
-
 #include <iostream>
 #include <memory>
 #include <sstream>
 #include <type_traits>
 #include <utility>
 #include <vector>
+#include <unordered_map>
+#include <map>
 
 #include <boost/algorithm/string.hpp>
 #include <boost/tokenizer.hpp>
@@ -56,14 +57,22 @@ std::unique_ptr<Action> generator(Player &player,
     return std::make_unique<T>(player, args, manager);
 };
 
-const static std::vector<ActionGenerator> actionGenerators = {
-    // NOLINT
-    &generator<NullAction>, // undefined
-    &generator<SayAction>,  &generator<LookAction>,
-    &generator<MoveAction>, &generator<AttackAction>,
-    &generator<PrgmAction>, &generator<TimedAction>,
-    &generator<SaveAction>, &generator<CharacterModAction>,
-    &generator<HaltAction>, &generator<SwapAction>};
+//FIXME: this should be an unordered_map, but some people don't have a std::hash
+//specialization for enums in their old gcc/glibc
+const static std::map<ActKeyword, ActionGenerator>
+    actionGenerators = {
+        // NOLINT
+        {ActKeyword::undefined, &generator<NullAction>},
+        {ActKeyword::say, &generator<SayAction>},
+        {ActKeyword::look, &generator<LookAction>},
+        {ActKeyword::attack, &generator<AttackAction>},
+        {ActKeyword::move, &generator<MoveAction>},
+        {ActKeyword::program, &generator<PrgmAction>},
+        {ActKeyword::timed, &generator<TimedAction>},
+        {ActKeyword::save, &generator<SaveAction>},
+        {ActKeyword::charmod, &generator<CharacterModAction>},
+        {ActKeyword::halt, &generator<HaltAction>},
+        {ActKeyword::swap, &generator<SwapAction>}};
 
 std::unique_ptr<Action>
 CommandParser::actionFromPlayerCommand(Player &player, StrView command,
@@ -82,13 +91,8 @@ CommandParser::actionFromPlayerCommand(Player &player, StrView command,
                                 ? ActKeyword::undefined
                                 : actionTypeIter->second;
 
-    auto index =
-        static_cast<std::vector<ActionGenerator>::size_type>(actionType);
-    if (index >= actionGenerators.size()) {
-        return nullptr;
-    }
-
-    return actionGenerators[index](player, remainderOfTokens, gameManager);
+    return actionGenerators.at(actionType)(player, remainderOfTokens,
+                                           gameManager);
 }
 
 std::pair<UsernameType, PasswordType>
