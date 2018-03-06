@@ -9,10 +9,11 @@
 #include <deque>
 #include <memory>
 #include <unordered_map>
+#include <vector>
 
+#include "Spell.h"
+#include "SpellParser.h"
 #include "UniqueId.h"
-#include "UniqueId.h"
-#include "YamlParser.h"
 #include "YamlParser.h"
 #include "entities/AreaEntity.h"
 #include "entities/CharacterEntity.h"
@@ -44,9 +45,11 @@ class GameState {
     std::unordered_map<roomId, RoomEntity> roomLookUp;
     std::unordered_map<UniqueId, CharacterEntity, UniqueIdHash> characterLookUp;
     std::deque<AreaEntity> areas;
-    YamlParser parser;
+    YamlParser areaParser;
     AreaEntity area;
     std::unique_ptr<EntityFactory> factory;
+    std::vector<Spell> spells;
+    SpellParser spellParser;
 
     friend class boost::serialization::access;
 
@@ -57,10 +60,15 @@ class GameState {
     }
 
   public:
-    void initFromYaml(std::vector<std::string> filenames);
-    void parseYamlFile(std::string string);
+    void initFromYaml(std::vector<std::string> areaFilenames,
+                      std::vector<std::string> spellFilenames);
+
+    void parseAreaYamlFile(std::string string);
     void initRoomLUT();
     void addAreaFromParser();
+
+    void parseSpellYamlFile(std::string filename);
+    void addSpellsFromParser();
 
     void addCharacter(CharacterEntity &character);
     void addCharacterRoomRelationToLUT(UniqueId characterId,
@@ -68,6 +76,7 @@ class GameState {
     void addRoomToLUT(const RoomEntity &room);
     AreaEntity getAreaFromParser();
     std::deque<AreaEntity> &getAreas();
+    std::vector<Spell> &getSpells();
     std::vector<UniqueId> getCharactersInRoom(RoomEntity *room);
     CharacterEntity *getCharacterFromLUT(UniqueId id);
     void addCharacter(CharacterEntity &character, Id roomID);

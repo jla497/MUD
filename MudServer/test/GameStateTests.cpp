@@ -7,7 +7,6 @@ namespace gamemanager {
 
 class GameStateTest : public testing::Test {
   public:
-    // <<<<<<< HEAD
     CharacterEntity createCharacter() {
         int armor = 1;
         std::string damage = "1d8+32";
@@ -32,7 +31,8 @@ class GameStateTest : public testing::Test {
 
   protected:
     virtual void SetUp() {
-        state.initFromYaml({"MudGameEngine/lib/dataFiles/detailed_smurf.yml"});
+        state.initFromYaml({"MudGameEngine/lib/dataFiles/detailed_smurf.yml"},
+                           {"MudGameEngine/lib/dataFiles/spells.yml"});
     }
 
     virtual void TearDown() {
@@ -106,7 +106,7 @@ TEST_F(GameStateTest, TestUpdatePlayerRoom) {
     EXPECT_EQ(charIDs.size(), 1);
 }
 
-//TEST_F(GameStateTest, TestSwapCharacters) {
+// TEST_F(GameStateTest, TestSwapCharacters) {
 //    auto sourceCharacter = createCharacter();
 //    UniqueId sourceId = sourceCharacter.getEntityId();
 //    state.addCharacter(sourceCharacter);

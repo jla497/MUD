@@ -3,8 +3,11 @@
 #include <cassert>
 #include <deque>
 
+#include "parser.h"
 #include "YamlParser.h"
 #include "resources/DataFields.h"
+
+using namespace parser;
 
 bool YamlParser::loadYamlFile(const std::string &path) {
     if (is_loaded) {
@@ -18,10 +21,6 @@ bool YamlParser::loadYamlFile(const std::string &path) {
 
     is_loaded = true;
     return true;
-}
-
-std::string YamlParser::parseString(YAML::Node node) {
-    return node.as<std::string>();
 }
 
 CharacterEntity YamlParser::parseNPC(YAML::Node npcNode) const {

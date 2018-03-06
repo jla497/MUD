@@ -34,7 +34,7 @@ int main(int argc, char *argv[]) {
             configData->configDir};
         mudserver::gamemanager::GameState gameState =
             persistenceService.loadGameState();
-        gameState.initFromYaml(configData->areas);
+        gameState.initFromYaml(configData->areas, configData->spells);
 
         mudserver::gamemanager::GameManager gameManager{
             connectionManager, gameState, persistenceService};
