@@ -35,7 +35,7 @@ Client:
 - save (saves the state of the game to disk)
 - halt (halt's the game server and saves to disk)
 - program --help (gives help!)
-- program --< npc id > --gold < number > (adds gold to npc)
-- program --< npc id > --experience < number > (adds exp to npc)
+- program --modify < npc id > --gold < number > (adds gold to npc)
+- program --modify < npc id > --experience < number > (adds exp to npc)
 
 
