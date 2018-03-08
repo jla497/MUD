@@ -1,28 +1,27 @@
+
 #ifndef SPELL_DATA_FIELDS_H
 #define SPELL_DATA_FIELDS_H
 
-#include <string>
+constexpr const char *DEFENSE = "defense";
+constexpr const char *OFFENSE = "offense";
+constexpr const char *OTHER = "other";
+constexpr const char *PERSONAL = "personal";
+constexpr const char *OBJECT = "object";
 
-static const char *DEFENSE = "defense";
-static const char *OFFENSE = "offense";
-static const char *OTHER = "other";
-static const char *PERSONAL = "personal";
-static const char *OBJECT = "object";
-
-static const char *EFFECT = "Effect";
-static const char *MANA = "Mana";
-static const char *MINLEVEL = "Minlevel";
-static const char *NAME = "Name";
-static const char *DURATION = "Duration";
-static const char *HITCHAR = "Hitchar";
-static const char *HITROOM = "Hitroom";
-static const char *HITVICT = "Hitvict";
-static const char *WEAROFF = "Wearoff";
-static const char *DAMMSG = "Dammsg";
-static const char *IMMCHAR = "Immchar";
-static const char *DAMAGE = "Damage";
-static const char *MISSROOM = "Missroom";
-static const char *MISSCHAR = "Misschar";
-static const char *MISSVICT = "Missvict";
+constexpr const char *EFFECT = "Effect";
+constexpr const char *MANA = "Mana";
+constexpr const char *MINLEVEL = "Minlevel";
+constexpr const char *NAME = "Name";
+constexpr const char *DURATION = "Duration";
+constexpr const char *HITCHAR = "Hitchar";
+constexpr const char *HITROOM = "Hitroom";
+constexpr const char *HITVICT = "Hitvict";
+constexpr const char *WEAROFF = "Wearoff";
+constexpr const char *DAMMSG = "Dammsg";
+constexpr const char *IMMCHAR = "Immchar";
+constexpr const char *DAMAGE = "Damage";
+constexpr const char *MISSROOM = "Missroom";
+constexpr const char *MISSCHAR = "Misschar";
+constexpr const char *MISSVICT = "Missvict";
 
 #endif
