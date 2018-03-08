@@ -33,7 +33,7 @@ class CombatComponent : public CharacterComponent {
     Roll m_damageRollData;
     // the Roll used to calculate damage mitigated(my assumption, double check)
     Roll m_hitRollData;
-    //TODO: CombatAbilities class
+    // TODO: CombatAbilities class
     // CombatAbility combatAbility = nullptr;
 
   public:
@@ -55,7 +55,7 @@ class CombatComponent : public CharacterComponent {
     void engageCombatState();
     void endCombatState();
 
-    //TODO: redesigned/implement
+    // TODO: redesigned/implement
     void prepareToAttack();
     // void prepareToUseCombatAbility(CombatAbility& combatAbility);
 

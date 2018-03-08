@@ -1,6 +1,6 @@
 #include "CombatSimulation.h"
 
-//TODO: add logging
+// TODO: add logging
 
 int CombatSimulation::calcRoll(Roll roll) {
     int rollValue = 0;
@@ -77,7 +77,7 @@ void CombatSimulation::resolveCombatRound(
             "You were killed by " + characterWhoIsAttacking.getShortDesc());
 
         // calculate rewards and give them to the attacker
-        //TODO: have a formula/function for calculating rewards
+        // TODO: have a formula/function for calculating rewards
         int goldToGive = characterWhoIsBeingAttacked.getGold();
         int expToGive = characterWhoIsBeingAttacked.getExp();
         characterWhoIsBeingAttacked.subtractGold(goldToGive);

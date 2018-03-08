@@ -7,8 +7,8 @@
 
 #include "Client.h"
 
-#include <utility>
 #include "TransferMessage.h"
+#include <utility>
 
 using namespace networking;
 
@@ -48,11 +48,12 @@ void Client::disconnect() {
 }
 
 void Client::connect(boost::asio::ip::tcp::resolver::iterator endpoint) {
-    boost::asio::async_connect(socket, std::move(endpoint), [this](auto errorCode, auto) {
-        if (!errorCode) {
-            this->readMessage();
-        }
-    });
+    boost::asio::async_connect(socket, std::move(endpoint),
+                               [this](auto errorCode, auto) {
+                                   if (!errorCode) {
+                                       this->readMessage();
+                                   }
+                               });
 }
 
 void Client::readMessage() {

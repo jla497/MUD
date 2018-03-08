@@ -54,7 +54,6 @@ void GameState::addCharacterRoomRelationToLUT(UniqueId characterId,
     characterRoomLookUp.left[characterId] = roomId;
 }
 
-
 void GameState::addRoomToLUT(const RoomEntity &room) {
     roomLookUp[room.getId()] = room;
 }
@@ -153,9 +152,10 @@ void GameState::doReset() {
 }
 
 Spell *GameState::getSpellByName(const std::string spellName) {
-    auto foundSpell = std::find_if(spells.begin(), spells.end(), [spellName](Spell& tmp){
-        return tmp.getName() == spellName;
-    });
+    auto foundSpell =
+        std::find_if(spells.begin(), spells.end(), [spellName](Spell &tmp) {
+            return tmp.getName() == spellName;
+        });
     return foundSpell != spells.end() ? &*foundSpell : nullptr;
 }
 

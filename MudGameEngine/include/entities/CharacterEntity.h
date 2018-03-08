@@ -46,6 +46,7 @@ class CharacterEntity : public Entity {
     // ASSUME: can only level up via experience
     // should calculate level every time exp changed
     void calculateLevel();
+
   public:
     CharacterEntity() = default;
     CharacterEntity(int armor, std::string damage,
@@ -65,7 +66,7 @@ class CharacterEntity : public Entity {
     std::vector<std::string> getLongDesc() const;
     std::string getShortDesc() const;
     int getMana() const;
-    
+
     // Setters
     void setShortDesc(std::string name);
     void setMana(int mana);
@@ -73,7 +74,7 @@ class CharacterEntity : public Entity {
     // Combat
     CombatComponent *getCombatComponent();
 
-    // Money 
+    // Money
     void addGold(unsigned int amount);
     void subtractGold(unsigned int amount);
     bool hasGold() const;

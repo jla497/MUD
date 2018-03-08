@@ -13,7 +13,7 @@ CharacterEntity::CharacterEntity(
     std::vector<std::string> keywords, unsigned int level,
     std::vector<std::string> longDesc, std::string shortDesc, int thac0)
     : Entity::Entity(), m_desc(std::move(desc)), m_exp(exp), m_gold(gold),
-	  m_typeId(typeId), m_keywords(std::move(keywords)), m_level(level),
+      m_typeId(typeId), m_keywords(std::move(keywords)), m_level(level),
       m_longDesc(std::move(longDesc)), m_shortDesc(std::move(shortDesc)) {
 
     std::vector<std::string> tmpHit;

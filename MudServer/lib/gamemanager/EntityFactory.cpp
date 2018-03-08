@@ -39,5 +39,5 @@ void EntityFactory::modifyCharacter(CharacterEntity *entity, attributeMap map) {
     std::cout << "entity gold: " << entity->getGold()
               << " entity exp: " << entity->getExp() << std::endl;
 }
-}
-}
+} // namespace gamemanager
+} // namespace mudserver

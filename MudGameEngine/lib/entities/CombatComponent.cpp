@@ -4,7 +4,7 @@
 CombatComponent::CombatComponent(int armor, int thac0, Roll m_damageRollData,
                                  Roll m_hitRollData) {
     this->m_combatState = CombatStates::NOT_FIGHTING;
-    //TODO: get health value from yaml
+    // TODO: get health value from yaml
     this->m_maxHealth = 10;
     this->m_currentHealth = 10;
     this->m_armor = armor;
@@ -49,9 +49,9 @@ Roll CombatComponent::getHitRoll() const { return m_hitRollData; }
 int CombatComponent::getThac0() const { return m_thac0; }
 
 bool CombatComponent::damage(int damageAmount) {
-	if(damageAmount < 0){
-		this->heal(damageAmount*-1);
-	}
+    if (damageAmount < 0) {
+        this->heal(damageAmount * -1);
+    }
     this->m_currentHealth -= damageAmount;
     if (this->m_currentHealth <= 0) {
         this->m_currentHealth = 0;
@@ -62,9 +62,9 @@ bool CombatComponent::damage(int damageAmount) {
 }
 
 void CombatComponent::heal(int healAmount) {
-	if(healAmount < 0){
-		this->damage(healAmount*-1);
-	}
+    if (healAmount < 0) {
+        this->damage(healAmount * -1);
+    }
     m_currentHealth += healAmount;
     if (m_currentHealth > m_maxHealth) {
         m_currentHealth = m_maxHealth;

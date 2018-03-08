@@ -5,8 +5,8 @@ namespace mudserver {
 namespace gamemanager {
 void Administrator::accessGameManager(
     mudserver::gamemanager::GameManager &manager) {
-	(void)manager;
+    (void)manager;
     // TODO might need to access GameManager methods
 }
-}
-}
+} // namespace gamemanager
+} // namespace mudserver

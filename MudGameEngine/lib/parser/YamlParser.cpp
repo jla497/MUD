@@ -3,8 +3,8 @@
 #include <cassert>
 #include <deque>
 
-#include "parser.h"
 #include "YamlParser.h"
+#include "parser.h"
 #include "resources/DataFields.h"
 
 using namespace parser;
@@ -110,9 +110,7 @@ Reset YamlParser::parseReset(YAML::Node resetNode) const {
     return {id, action, comment, state, slot, limit, roomID};
 }
 
-void YamlParser::parseHelp(YAML::Node helpNode) const {
-    (void)helpNode;
-}
+void YamlParser::parseHelp(YAML::Node helpNode) const { (void)helpNode; }
 
 DoorEntity YamlParser::parseDoor(YAML::Node doorNode) const {
     std::vector<std::string> desc;

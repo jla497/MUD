@@ -5,7 +5,7 @@ namespace mudserver {
 namespace gamemanager {
 class GameManager;
 class Player;
-}
+} // namespace gamemanager
 } // namespace mudserver
 
 #include "entities/CharacterEntity.h"
