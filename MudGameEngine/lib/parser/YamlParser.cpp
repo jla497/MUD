@@ -110,7 +110,9 @@ Reset YamlParser::parseReset(YAML::Node resetNode) const {
     return {id, action, comment, state, slot, limit, roomID};
 }
 
-void YamlParser::parseHelp(YAML::Node helpNode) const {}
+void YamlParser::parseHelp(YAML::Node helpNode) const {
+    (void)helpNode;
+}
 
 DoorEntity YamlParser::parseDoor(YAML::Node doorNode) const {
     std::vector<std::string> desc;
@@ -176,7 +178,10 @@ RoomEntity YamlParser::parseRoom(YAML::Node roomNode) const {
     return {desc, doors, descExt, keywordsExt, name, roomId};
 }
 
-ShopEntity YamlParser::parseShop(YAML::Node shopNode) const { return {}; }
+ShopEntity YamlParser::parseShop(YAML::Node shopNode) const {
+    (void)shopNode;
+    return {};
+}
 
 std::vector<CharacterEntity> YamlParser::getAllNPCS() const {
     std::vector<CharacterEntity> npcs;

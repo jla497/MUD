@@ -5,7 +5,7 @@ namespace gamemanager {
 using namespace mudserver::resources::commands;
 
 EntityFactory::EntityFactory(NpcVector npcs, ObjectVector objects)
-    : objects(objects), npcs(npcs) {}
+    : npcs(std::move(npcs)), objects(std::move(objects)) {}
 
 void EntityFactory::init() {
     LutBuilder lutBuilder;
@@ -25,15 +25,15 @@ void EntityFactory::modifyCharacter(CharacterEntity *entity, attributeMap map) {
     if (map.find(CGOLD) != map.end()) {
         auto gold = stoi(map.find(CGOLD)->second);
         if (gold < 0)
-            entity->subtractGold((gold * -1));
+            entity->subtractGold(static_cast<unsigned int>(std::abs(gold)));
         else
             entity->addGold((unsigned int)gold);
     }
     if (map.find(CEXP) != map.end()) {
-        auto newExp = stoi(map.find(CEXP)->second);
+        auto newExp = static_cast<unsigned int>(stoi(map.find(CEXP)->second));
         auto curExp = entity->getExp();
         if (curExp < newExp) {
-            entity->incExp((unsigned int)(newExp - curExp));
+            entity->incExp(newExp - curExp);
         }
     }
     std::cout << "entity gold: " << entity->getGold()

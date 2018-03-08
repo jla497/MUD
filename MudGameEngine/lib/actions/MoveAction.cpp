@@ -60,7 +60,7 @@ void MoveAction::execute_impl() {
         auto nextRoomId = room->getDestRoomIdOf(*direction);
 
         // not a valid direction
-        if (nextRoomId == -1) {
+        if (nextRoomId == RoomEntity::NO_ROOM_ID) {
             return;
         }
 

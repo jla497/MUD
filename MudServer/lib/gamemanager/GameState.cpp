@@ -155,7 +155,8 @@ void GameState::doReset() {
 Spell *GameState::getSpellByName(const std::string spellName) {
     auto foundSpell = std::find_if(spells.begin(), spells.end(), [spellName](Spell& tmp){
         return tmp.getName() == spellName;
-    } );
+    });
+    return foundSpell != spells.end() ? &*foundSpell : nullptr;
 }
 
 void GameState::killCharacter(const CharacterEntity &character) {

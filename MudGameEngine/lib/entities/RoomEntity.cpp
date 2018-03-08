@@ -44,6 +44,7 @@ std::vector<std::string> RoomEntity::getDirs() const {
 }
 
 std::string RoomEntity::addEntity(unsigned int entityToAdd) {
+    (void)entityToAdd;
     // TODO error checking?
     return {};
 }
@@ -52,7 +53,10 @@ std::vector<unsigned int> RoomEntity::getEntitiesInRoom() const {
     return m_idEntitiesInRoom;
 }
 
-std::string RoomEntity::removeEntity(unsigned int entityToRemove) { return {}; }
+std::string RoomEntity::removeEntity(unsigned int entityToRemove) {
+    (void)entityToRemove;
+    return {};
+}
 
 void RoomEntity::equipObject(ObjectEntity &object) {
     m_objects[object.getObjectTypeId()] = object;

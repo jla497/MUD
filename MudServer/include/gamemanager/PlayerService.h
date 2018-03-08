@@ -35,6 +35,7 @@ class PlayerService {
 
     template <class Archive>
     void serialize(Archive &ar, const unsigned int version) {
+        (void)version;
         ar &nextPlayerId;
         ar &players;
         ar &playerIdByName;

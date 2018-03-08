@@ -17,6 +17,8 @@ int CombatSimulation::calcRoundDamage(Roll damageRoll, Roll hitRoll) {
     int hitValue = calcRoll(hitRoll);
 
     // ignore hitRoll for now
+    (void)hitValue;
+
     int netDamage = attackvalue;
     return netDamage;
 }

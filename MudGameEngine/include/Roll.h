@@ -9,6 +9,8 @@ struct Roll {
     friend class boost::serialization::access;
     template <class Archive>
     void serialize(Archive &ar, const unsigned int version) {
+        (void)version;
+        (void)version;
         ar &numOfDie;
         ar &sizeOfDie;
         ar &rollModifier;
