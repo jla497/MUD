@@ -9,6 +9,7 @@ add_executable(mudtest
         CommandParserTests.cpp
         PlayerServiceTest.cpp
         SpellTests.cpp
+		i18ntests.cpp
 )
 
 set_target_properties(mudtest
@@ -23,6 +24,7 @@ target_link_libraries(mudtest entity)
 target_link_libraries(mudtest parser)
 target_link_libraries(mudtest reset)
 target_link_libraries(mudtest spells)
+target_link_libraries(mudtest i18n)
 
 target_link_libraries(mudtest commandparser)
 add_test(ConnectionManagerTests mudtest)
@@ -31,5 +33,6 @@ add_test(GameStateTests mudtest)
 add_test(ParserTests mudtest)
 add_test(CommandParserTests mudtest)
 add_test(SpellTests mudtest)
+add_test(i18ntests mudtest)
 
 include_directories(include)

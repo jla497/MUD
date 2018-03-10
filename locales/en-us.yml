@@ -1,0 +1,13 @@
+
+strings:
+  ACTION_UNDEFINED: undefined
+  ACTION_SAY: say
+  ACTION_LOOK: look
+  ACTION_ATTACK: action
+  ACTION_MOVE: move
+  ACTION_PROGRAM: program
+  ACTION_TIMED: timed
+  ACTION_SAVE: save
+  ACTION_CHARMOD: charmod
+  ACTION_HALT: halt
+  ACTION_SWAP: swap

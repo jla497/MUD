@@ -20,9 +20,3 @@ set(CMAKE_TEMP_LIBRARY_PATH "${PROJECT_BINARY_DIR}/lib")
 
 add_subdirectory(lib)
 add_subdirectory(tools)
-
-# link yaml-cpp library
-
-add_library(yaml-cpp STATIC IMPORTED lib/resources/playercharacterdefaults.cpp include/reset/ResetManager.h)
-
-add_dependencies(yaml-cpp project_yamlcpp)
