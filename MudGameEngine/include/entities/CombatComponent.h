@@ -2,6 +2,7 @@
 #define COMBAT_COMPONENT_H
 
 #include <boost/serialization/access.hpp>
+#include <string>
 
 #include "Roll.h"
 #include "entities/CharacterComponent.h"
@@ -48,6 +49,7 @@ class CombatComponent : public CharacterComponent {
     int getThac0() const;
     Roll getDamageRoll() const;
     Roll getHitRoll() const;
+    std::string getHealthDescription() const;
 
     // view and change combat state methods
     CombatStates getCombatState() const;
@@ -58,7 +60,7 @@ class CombatComponent : public CharacterComponent {
     void prepareToAttack();
     // void prepareToUseCombatAbility(CombatAbility& combatAbility);
 
-    /*Damage the Character and return true if it was killed */
+    /*Damage the Character and return true if the character was killed */
     bool damage(int damageAmount);
     void heal(int healAmount);
 };
