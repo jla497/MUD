@@ -11,6 +11,7 @@
 #include "connectionmanager/ConnectionManager.h"
 #include "gamemanager/GameManager.h"
 #include "logging.h"
+#include "i18n/i18n.h"
 
 using networking::Port;
 
@@ -20,6 +21,8 @@ int main(int argc, char *argv[]) {
                argv[0]);
         return 1;
     }
+
+    i18n::init();
 
     auto configData = parseConfigFile(argv[1]);
 

@@ -37,12 +37,13 @@ enum class LangKey : int {
 
 	_TESTING_SMURF_,
 	_N_LANGS_,
-	_DEFAULT_LANG_ = EN_US
+	_DEFAULT_LANG_ = EN_US,
+	_USE_APPROPRIATE_ //use whichever one is deemed to be appropriate
 };
 
 namespace i18n {
 constexpr const char *DEFAULT_STRING = "<MISSING_STRING>";
 
 void init();
-std::string get(LangKey lang, StrKey str);
+std::string get(StrKey str, LangKey lang = LangKey::_USE_APPROPRIATE_);
 }

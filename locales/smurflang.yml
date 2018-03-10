@@ -5,7 +5,7 @@ strings:
   ACTION_UNDEFINED: smurfundefined
   ACTION_SAY: smurfsay
   ACTION_LOOK: smurflook
-  ACTION_ATTACK: smurfaction
+  ACTION_ATTACK: smurfattack
   ACTION_MOVE: smurfmove
   ACTION_PROGRAM: smurfprogram
   ACTION_TIMED: smurftimed

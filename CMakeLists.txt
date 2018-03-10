@@ -13,7 +13,7 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/lib")
 # -fsanitize=undefined has been removed because yaml-cpp is garbage
 set (CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -fno-omit-frame-pointer \
     -fsanitize=address -fno-sanitize=vptr \
-    -fsanitize-address-use-after-scope")
+    -fsanitize-address-use-after-scope -fno-limit-debug-info")
 set (CMAKE_LINKER_FLAGS_DEBUG "${CMAKE_STATIC_LINKER_FLAGS_DEBUG} -fno-omit-frame-pointer -fsanitize=address")
 
 add_subdirectory(googletest/googlemock)

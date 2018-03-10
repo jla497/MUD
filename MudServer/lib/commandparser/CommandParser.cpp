@@ -23,6 +23,7 @@
 #include "actions/TimedAction.h"
 #include "commandparser/CommandParser.h"
 #include "resources/commands.h"
+#include "i18n/i18n.h"
 
 namespace mudserver {
 namespace commandparser {
@@ -32,18 +33,25 @@ using boost::algorithm::to_lower_copy;
 
 using namespace resources::commands;
 
-static std::unordered_map<std::string, ActKeyword> actionLookup = { // NOLINT
-    {UNDEFINED, ActKeyword::undefined},
-    {SAY, ActKeyword::say},
-    {LOOK, ActKeyword::look},
-    {ATTACK, ActKeyword::attack},
-    {MOVE, ActKeyword::move},
-    {PROGRAM, ActKeyword::program},
-    {TIMED, ActKeyword::timed},
-    {SAVE, ActKeyword::save},
-    {CHARMOD, ActKeyword::charmod},
-    {HALT, ActKeyword::halt},
-    {SWAP, ActKeyword::swap}};
+static auto actionLookup = ([]() -> std::unordered_map<std::string, ActKeyword> { // NOLINT
+	i18n::init();
+    std::unordered_map<std::string, ActKeyword> ret = {
+        {i18n::get(StrKey::ACTION_UNDEFINED), ActKeyword::undefined},
+        {i18n::get(StrKey::ACTION_SAY), ActKeyword::say},
+        {i18n::get(StrKey::ACTION_LOOK), ActKeyword::look},
+        {i18n::get(StrKey::ACTION_ATTACK), ActKeyword::attack},
+        {i18n::get(StrKey::ACTION_MOVE), ActKeyword::move},
+        {i18n::get(StrKey::ACTION_PROGRAM), ActKeyword::program},
+        {i18n::get(StrKey::ACTION_TIMED), ActKeyword::timed},
+        {i18n::get(StrKey::ACTION_SAVE), ActKeyword::save},
+        {i18n::get(StrKey::ACTION_CHARMOD), ActKeyword::charmod},
+        {i18n::get(StrKey::ACTION_HALT), ActKeyword::halt},
+        {i18n::get(StrKey::ACTION_SWAP), ActKeyword::swap}};
+    for (const auto &pair : ret) {
+        printf("");
+    }
+    return ret;
+})();
 
 using ActionGenerator = std::unique_ptr<Action> (*)(Player &,
                                                     std::vector<std::string> &,
@@ -60,8 +68,8 @@ std::unique_ptr<Action> generator(Player &player,
 //FIXME: this should be an unordered_map, but some people don't have a std::hash
 //specialization for enums in their old gcc/glibc
 const static std::map<ActKeyword, ActionGenerator>
-    actionGenerators = {
-        // NOLINT
+    actionGenerators = { // NOLINT
+		// NOLINT
         {ActKeyword::undefined, &generator<NullAction>},
         {ActKeyword::say, &generator<SayAction>},
         {ActKeyword::look, &generator<LookAction>},

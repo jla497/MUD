@@ -1,4 +1,5 @@
 
+#include <cassert>
 #include <stdexcept>
 #include <sstream>
 #include <string>
@@ -53,13 +54,25 @@ static StrKeyMap loadFromFile(const std::string &file) {
 	return map;
 }
 
+static LangKey APPROPRIATE_LANG = LangKey::_DEFAULT_LANG_;
+
 void i18n::init() {
 	const static std::vector<std::pair<LangKey, std::string>> langFileMap = {
 		{LangKey::EN_US, "locales/en-us.yml"},
 		{LangKey::_TESTING_SMURF_, "locales/smurflang.yml"}
 	};
-	for (const auto &pair : langFileMap) {
-		langMap.emplace(pair.first, loadFromFile(pair.second));
+	/*
+	 * Allow init to be called multiple times, but only allow it to happen once.
+	 * Multiple things want access to i18n, so multiple things depend on init
+	 * being called. If they can call it themselves, there's no worry.
+	 */
+	static bool done = false;
+	if (!done) {
+		done = true;
+		for (const auto &pair : langFileMap) {
+			langMap.emplace(pair.first, loadFromFile(pair.second));
+		}
+		//TODO modify APPROPRIATE_LANG
 	}
 }
 
@@ -67,7 +80,11 @@ std::string to_string(StrKey key) {
 	return std::to_string(static_cast<int>(key));
 }
 
-std::string i18n::get(LangKey lang, StrKey str) {
+std::string i18n::get(StrKey str, LangKey lang) {
+	if (lang == LangKey::_USE_APPROPRIATE_) {
+		lang = APPROPRIATE_LANG;
+		assert(lang != LangKey::_USE_APPROPRIATE_);
+	}
 	const auto lit = langMap.find(lang);
 	if (lit != langMap.end()) {
 		const auto &strMap = lit->second;
@@ -83,5 +100,5 @@ std::string i18n::get(LangKey lang, StrKey str) {
 		return DEFAULT_STRING;
 	}
 	logger->warning("Missing string " + to_string(str) + " for lang " + to_string(lang) + "\n");
-	return get(LangKey::_DEFAULT_LANG_, str);
+	return get(str, LangKey::_DEFAULT_LANG_);
 }
