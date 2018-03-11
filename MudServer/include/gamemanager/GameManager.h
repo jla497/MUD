@@ -82,7 +82,10 @@ class GameManager {
      */
     void performQueuedActions();
 
-    Player *getPlayerFromLogin(const connection::gameAndUserInterface &message);
+    Player *getActivePlayer(const connection::gameAndUserInterface &message);
+
+    Player *playerFromLogin(const connection::gameAndUserInterface &message,
+                            Player *player);
 
   public:
     /**
