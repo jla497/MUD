@@ -12,11 +12,11 @@ int CombatSimulation::calcRoll(Roll roll) {
     return rollValue;
 }
 
-int calcMaxPossibleRoll(Roll roll) {
+int CombatSimulation::calcMaxPossibleRoll(Roll roll) {
     return roll.numOfDie * roll.sizeOfDie + roll.rollModifier;
 }
 
-int CombatSimulation::calcRoundDamage(Roll damageRoll, int armor) {
+int CombatSimulation::calcRoundDamage(Roll damageRoll, Roll hitRoll) {
     int attackvalue = calcRoll(damageRoll);
     int hitValue = calcRoll(hitRoll);
 
@@ -53,7 +53,7 @@ void CombatSimulation::resolveCombatRound(
     // target)
     int damageAmount =
         calcRoundDamage(attackingCharactersCombatComponent->getDamageRoll(),
-                        (attackedCharactersCombatComponent->getArmor()));
+                        (attackedCharactersCombatComponent->getHitRoll()));
 
     // deal damage
     bool enemyWasKilled =
