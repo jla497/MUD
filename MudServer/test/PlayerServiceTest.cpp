@@ -11,7 +11,7 @@ class PlayerServiceTests : public testing::Test {
     PlayerService ps;
   public:
     PlayerServiceTests() = default;
-    virtual void SetUp() { PlayerService ps{}; }
+    virtual void SetUp() { ps = PlayerService{}; }
 };
 
 TEST_F(PlayerServiceTests, AddNewPlayer) {
@@ -43,9 +43,18 @@ TEST_F(PlayerServiceTests, PlayerConnectionUpdate) {
 
 TEST_F(PlayerServiceTests, WriteReadPlayers)
 {
-	PersistenceService pss(".");
+	PersistenceService pss("config");
 	ps.addPlayer("jimbob", "hunter2");
 	pss.save(ps, "test.dat");
 	ps = pss.loadPlayerService("test.dat");
 	ASSERT_EQ(ps.identify("jimbob", "hunter2")->getUsername(), "jimbob");
+}
+
+
+TEST_F(PlayerServiceTests, CreatePlayerCharacter) {
+    ps.addPlayer("jimbob", "hunter2");
+    auto player = ps.identify("jimbob", "hunter2");
+    auto playerId = player->getId();
+    ps.createPlayerCharacter(playerId);
+    ASSERT_TRUE(ps.playerToCharacter(playerId));
 }

@@ -1,3 +1,4 @@
+#include <boost/format.hpp>
 #include <iostream>
 #include <memory>
 
@@ -11,16 +12,25 @@ std::size_t UniqueIdHash::operator()(UniqueId id) const {
     return std::hash<unsigned int>()(id.getId());
 }
 
-void GameState::initFromYaml(std::string filename) {
-    parseYamlFile(std::move(filename));
-    addAreaFromParser();
+void GameState::initFromYaml(std::vector<std::string> areaFilenames,
+                             std::vector<std::string> spellFilenames) {
+    for (auto areaFilename : areaFilenames) {
+        parseAreaYamlFile(std::move(areaFilename));
+        addAreaFromParser();
+    }
     initRoomLUT();
-    factory = std::unique_ptr<EntityFactory>(parser.makeFactory());
+
+    for (auto spellFilename : spellFilenames) {
+        parseSpellYamlFile(std::move(spellFilename));
+        addSpellsFromParser();
+    }
+
+    factory = std::unique_ptr<EntityFactory>(areaParser.makeFactory());
     factory->init();
 }
 
-void GameState::parseYamlFile(std::string filename) {
-    parser.loadYamlFile(std::move(filename));
+void GameState::parseAreaYamlFile(std::string filename) {
+    areaParser.loadYamlFile(filename);
 }
 
 void GameState::initRoomLUT() {
@@ -31,6 +41,10 @@ void GameState::initRoomLUT() {
     }
 }
 
+void GameState::parseSpellYamlFile(std::string filename) {
+    spellParser.loadYamlFile(std::move(filename));
+}
+
 /**
  * Add Methods
  */
@@ -39,6 +53,7 @@ void GameState::addCharacterRoomRelationToLUT(UniqueId characterId,
                                               unsigned int roomId) {
     characterRoomLookUp.left[characterId] = roomId;
 }
+
 
 void GameState::addRoomToLUT(const RoomEntity &room) {
     roomLookUp[room.getId()] = room;
@@ -69,17 +84,11 @@ void GameState::addCharacter(CharacterEntity &character, Id roomID) {
     } else {
         throw "couldn't add character to room";
     }
-    //        auto characterItr = characterLookUp.find(id);
-    //        auto objects = characterItr->second.getObjects();
-    //
-    //            for(auto &obj : objects) {
-    //                std::cout<<characterItr->second.getShortDesc()<<" "<<
-    //                obj.second.getShortDesc()<<std::endl;
-    //            }
 }
 
-void GameState::addAreaFromParser() { areas.push_back(parser.getArea()); }
+void GameState::addAreaFromParser() { areas.push_back(areaParser.getArea()); }
 
+void GameState::addSpellsFromParser() { spells = spellParser.getAllSpells(); }
 /**
  * Get Methods
  */
@@ -117,13 +126,20 @@ std::vector<UniqueId> GameState::getCharactersInRoom(RoomEntity *room) {
     return characters;
 }
 
-AreaEntity GameState::getAreaFromParser() { return parser.getArea(); }
+AreaEntity GameState::getAreaFromParser() { return areaParser.getArea(); }
 
 std::deque<AreaEntity> &GameState::getAreas() { return areas; }
+
+std::vector<Spell> &GameState::getSpells() { return spells; }
 
 /**
  * Clear Methods
  */
+void GameState::removeCharacterByUniqueId(UniqueId characterId) {
+    // TODO remove chara from these throw
+    characterRoomLookUp.left.erase(characterId);
+    characterLookUp.erase(characterId);
+}
 void GameState::clearCharacterRoomLUT() { characterRoomLookUp.clear(); }
 
 void GameState::clearAreas() { roomLookUp.clear(); }
@@ -131,9 +147,24 @@ void GameState::clearAreas() { roomLookUp.clear(); }
 EntityFactory &GameState::getFactory() { return *factory; }
 
 void GameState::doReset() {
-    auto resets = parser.getAllResets();
+    auto resets = areaParser.getAllResets();
     ResetManager resetManager{resets};
     resetManager.applyResets(this);
 }
+
+Spell *GameState::getSpellByName(const std::string spellName) {
+    auto foundSpell = std::find_if(spells.begin(), spells.end(), [spellName](Spell& tmp){
+        return tmp.getName() == spellName;
+    } );
+}
+
+void GameState::killCharacter(const CharacterEntity &character) {
+    // remove from play
+    // TODO: uncomment and integrate once branches have been merged
+    removeCharacterByUniqueId(character.getEntityId());
+
+    // if the character is controlled by a player notify them
+}
+
 } // namespace gamemanager
 } // namespace mudserver

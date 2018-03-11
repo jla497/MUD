@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <cassert>
 #include <iomanip>
 #include <iostream>
@@ -45,7 +46,7 @@ void GameManager::mainLoop() {
     loadPersistedData();
 
     using clock = std::chrono::high_resolution_clock;
-    auto startTime = clock::now();
+
     currentAQueuePtr = &actionsA;
     nextAQueuePtr = &actionsB;
     // point currentActionQueuePtr to actionQueueA
@@ -77,7 +78,10 @@ void GameManager::mainLoop() {
     persistData();
 }
 
-void GameManager::persistData() { persistenceService.save(playerService); }
+void GameManager::persistData() {
+    persistenceService.save(playerService);
+    persistenceService.save(gameState);
+}
 
 void GameManager::loadPersistedData() {
     playerService = persistenceService.loadPlayerService();
@@ -124,6 +128,7 @@ void GameManager::processMessages(
     static auto logger = logging::getLogger("GameManager::processMessages");
 
     for (const auto &message : messages) {
+        enqueueMessage(message.conn, message.text);
 
         auto player = getPlayerFromLogin(message);
         logger->debug(std::to_string(message.conn.id) + ": " + message.text);
@@ -198,6 +203,23 @@ void GameManager::sendCharacterMessage(UniqueId characterId,
 }
 
 PlayerService &GameManager::getPlayerService() { return playerService; }
+
+void GameManager::haltServer() {
+    logging::getLogger("GameManager::haltServer()")
+        ->info("Shutting down server...");
+    done = true;
+}
+
+void GameManager::swapCharacters(UniqueId casterCharacterId,
+                                 UniqueId targetCharacterId) {
+    auto casterPlayerId = playerService.characterToPlayer(casterCharacterId);
+    auto targetPlayerId = playerService.characterToPlayer(targetCharacterId);
+    playerService.updatePlayerCharacterMapping(casterPlayerId,
+                                               targetCharacterId);
+    playerService.updatePlayerCharacterMapping(targetPlayerId,
+                                               casterCharacterId);
+    // gameState.swapCharacters(casterCharacterId, targetCharacterId);
+}
 
 } // namespace gamemanager
 } // namespace mudserver

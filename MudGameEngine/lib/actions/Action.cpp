@@ -8,7 +8,7 @@
 // FIXME: this should possibly work on the enum keyword rather than the
 // description string
 std::unordered_map<std::string, bool> Action::isAdminAction = {
-    {"Program action", true}, {"Save action", true}};
+    {"Program action", true}, {"Save action", true}, {"Halt action", true}};
 
 Action::Action(Player &playerPerformingAction,
                std::vector<std::string> actionArguments,
@@ -26,12 +26,15 @@ void Action::execute() {
     characterPerformingAction =
         gameManager.getState().getCharacterFromLUT(*characterId);
 
-    logger->debug("Checking if " + description() + " is AdminAction...");
     // check if action is admin action and if character has an administrator
     // role
     if (Action::isAdminAction[description()]) {
         if (playerPerformingAction.hasAdminPrivilege()) {
             execute_impl();
+        } else {
+            logger->warning("Player " + playerPerformingAction.getUsername() +
+                            " is not an admin, but tried to perform " +
+                            this->description());
         }
     } else {
         execute_impl();
@@ -52,3 +55,5 @@ std::ostream &operator<<(std::ostream &os, const Action &action) {
     os << "]" << std::endl;
     return os;
 }
+
+

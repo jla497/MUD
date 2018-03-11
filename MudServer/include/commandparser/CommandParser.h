@@ -30,14 +30,18 @@ enum class ActKeyword {
     undefined = 0,
     say,
     look,
-    move,
     attack,
-    timed,
+    move,
     program,
+    timed,
     save,
+    charmod,
+    halt,
+    swap,
 
     _N_ACTIONS_
 };
+
 /**
  * Uses Factory pattern to create correct derived type of Action depending on
  * input.

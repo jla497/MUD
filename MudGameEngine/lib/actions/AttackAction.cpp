@@ -2,79 +2,81 @@
 #include <string>
 #include <vector>
 
+#include "CombatSimulation.h"
 #include "actions/AttackAction.h"
+#include "entities/CharacterEntity.h"
 #include "gamemanager/GameManager.h"
 #include "logging.h"
+
 AttackAction *AttackAction::clone() { return new AttackAction(*this); }
 
+class CombatComponent;
+class CharacterEntity;
 void AttackAction::execute_impl() {
     static auto logger = mudserver::logging::getLogger("AttackAction::execute");
 
     // get gamestate
     auto &gameState = gameManager.getState();
 
-    // get player who is attacking
-    auto playerWhoIsAttacking = characterPerformingAction;
+    // get character who is attacking
+    auto characterWhoIsAttacking = characterPerformingAction;
 
-    //--get the room the player is in
+    //--get the room the character is in
     auto characterCurrentRoom =
-        gameState.getCharacterLocation(*playerWhoIsAttacking);
+        gameState.getCharacterLocation(*characterWhoIsAttacking);
     if (!characterCurrentRoom) {
         logger->error(
             "Character is not in a room! Suspect incorrect world init");
-        // return early, as we are in a bad state - the player is not in a room!
+        // return early, as we are in a bad state - the character is not in a room!
         return;
     }
 
-    //--get list of entities in the room
-    auto IDsOfPlayersInRoom =
+    //--get ids of characters in the attackers room
+    auto IDsOfCharactersInRoom =
         gameState.getCharactersInRoom(characterCurrentRoom);
-    if (IDsOfPlayersInRoom.empty()) {
+    if (IDsOfCharactersInRoom.empty()) {
         return;
     }
-    auto attackingPlayersUniqueId = playerWhoIsAttacking->getEntityId();
+    auto attackingCharactersUniqueId = characterWhoIsAttacking->getEntityId();
     if (actionArguments.empty()) {
         // user did not pass an attack target
-        gameManager.sendCharacterMessage(attackingPlayersUniqueId,
+        gameManager.sendCharacterMessage(attackingCharactersUniqueId,
                                          "Attack what?");
         logger->info("No Target found");
         return;
     }
-    auto nameOfAttackTarget = actionArguments.at(0);
+    auto nameOfAttackTarget = boost::join(actionArguments, " ");
     logger->info("nameOfAttackTarget: " + nameOfAttackTarget);
 
-    // TODO: make changes so that the player can attack any arbritrary entity.
-    // see if my target is in the same room
-    for (auto characterID : IDsOfPlayersInRoom) {
+    // see if the target is in the same room as the attacker
+    for (auto characterID : IDsOfCharactersInRoom) {
         auto currentEntity = gameState.getCharacterFromLUT(characterID);
         if (!currentEntity)
             return;
-        auto shortDescOfCurrentPlayer = currentEntity->getShortDesc();
-        if (boost::to_lower_copy(shortDescOfCurrentPlayer) ==
+        auto shortDescOfCurrentCharacter = currentEntity->getShortDesc();
+        if (boost::to_lower_copy(shortDescOfCurrentCharacter) ==
             boost::to_lower_copy(nameOfAttackTarget)) {
-            // TODO: change this to allow attacking any entity rather than just
-            // players
-            // TODO: implement proper use of combat states
-            // TODO: implement proper combat(in a seperate class)
 
-            // send messages to characters fighting
-            auto playerWhoIsBeingAttacking = currentEntity;
-            gameManager.sendCharacterMessage(
-                playerWhoIsAttacking->getEntityId(),
-                "You attack " + playerWhoIsBeingAttacking->getShortDesc() +
-                    " and do 1 damage");
+            // calculate and apply attack effects
+            characterWhoIsAttacking->getCombatComponent()->prepareToAttack();
+            CombatSimulation::resolveCombatRound(*characterWhoIsAttacking,
+                                                 *currentEntity, gameManager);
 
-            gameManager.sendCharacterMessage(
-                playerWhoIsBeingAttacking->getEntityId(),
-                "You are attacked by " + playerWhoIsAttacking->getShortDesc() +
-                    "and take 1 damage");
+                //log hp of target
+                logger->info(nameOfAttackTarget + ": " + 
+                    currentEntity->getCombatComponent()->getHealthDescription());
+                //display the targets hp to the attacker 
+                gameManager.sendCharacterMessage(attackingCharactersUniqueId,
+                    nameOfAttackTarget + ": " + 
+                    currentEntity->getCombatComponent()->getHealthDescription());
+                
             return;
         }
     }
 
-    // if we didnt find the target we tell the player
+    // if we didnt find the target tell the attacker
     logger->info("No Target found");
-    gameManager.sendCharacterMessage(attackingPlayersUniqueId,
+    gameManager.sendCharacterMessage(attackingCharactersUniqueId    ,
                                      "Attack failed: could not find " +
                                          nameOfAttackTarget);
 }

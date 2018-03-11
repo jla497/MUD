@@ -26,9 +26,9 @@ AddPlayerResult PlayerService::addPlayer(UsernameType username,
 
     PlayerId id = getNextPlayerId();
     Player player{id, username, std::move(password)};
-    if (!players.size()) {
-        player.getAdminPrivilege();
-    }
+    // if (!players.size()) {
+    player.getAdminPrivilege();
+    //}
     playerIdByName[username] = id;
     players.emplace(std::make_pair(id, player));
 
@@ -114,4 +114,12 @@ boost::optional<Player &> PlayerService::getPlayerById(PlayerId playerId) {
         return playerPair->second;
     }
     return boost::none;
+}
+
+void PlayerService::updatePlayerCharacterMapping(PlayerId playerId,
+                                                 UniqueId characterId) {
+    auto it = playerCharacterBimap.left.find(playerId);
+    if (it != playerCharacterBimap.left.end()) {
+        playerCharacterBimap.left.replace_data(it, characterId);
+    }
 }

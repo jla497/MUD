@@ -12,7 +12,8 @@ class GameManagerTests : public testing::Test {
 
         incoming.push_back(m1);
 
-        state.parseYamlFile("MudGameEngine/lib/dataFiles/detailed_smurf.yml");
+        state.parseAreaYamlFile(
+            "MudGameEngine/lib/dataFiles/detailed_smurf.yml");
         state.initRoomLUT();
     }
 
@@ -35,7 +36,7 @@ TEST_F(GameManagerTests, StartGameManager) {
 
     mudserver::persistence::PersistenceService ps{""};
 
-    state.parseYamlFile("MudGameEngine/lib/dataFiles/detailed_smurf.yml");
+    state.parseAreaYamlFile("MudGameEngine/lib/dataFiles/detailed_smurf.yml");
     state.initRoomLUT();
     m_manager.rxFromServer(incoming);
     mudserver::gamemanager::GameManager gameManager{m_manager, state, ps};

@@ -6,7 +6,7 @@ namespace gamemanager {
 
 Player::Player(PlayerId id, std::string username, std::string password)
     : id{id}, username{std::move(username)}, password{std::move(password)},
-      character{nullptr}, connectionId{0} {}
+      connectionId{0}, character{nullptr} {}
 
 PlayerId Player::getId() const { return id; }
 UsernameType Player::getUsername() const { return username; }

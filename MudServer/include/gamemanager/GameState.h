@@ -4,14 +4,16 @@
 #include <boost/bimap.hpp>
 #include <boost/bimap/list_of.hpp>
 #include <boost/bimap/set_of.hpp>
-#include <boost/foreach.hpp>
+#include <boost/serialization/access.hpp>
+#include <boost/serialization/unordered_map.hpp>
 #include <deque>
 #include <memory>
 #include <unordered_map>
+#include <vector>
 
+#include "Spell.h"
+#include "SpellParser.h"
 #include "UniqueId.h"
-#include "UniqueId.h"
-#include "YamlParser.h"
 #include "YamlParser.h"
 #include "entities/AreaEntity.h"
 #include "entities/CharacterEntity.h"
@@ -43,15 +45,30 @@ class GameState {
     std::unordered_map<roomId, RoomEntity> roomLookUp;
     std::unordered_map<UniqueId, CharacterEntity, UniqueIdHash> characterLookUp;
     std::deque<AreaEntity> areas;
-    YamlParser parser;
+    YamlParser areaParser;
     AreaEntity area;
     std::unique_ptr<EntityFactory> factory;
+    std::vector<Spell> spells;
+    SpellParser spellParser;
+
+    friend class boost::serialization::access;
+
+    template <class Archive>
+    void serialize(Archive &ar, const unsigned int version) {
+        ar &characterLookUp;
+        ar &characterRoomLookUp;
+    }
 
   public:
-    void initFromYaml(std::string filename);
-    void parseYamlFile(std::string string);
+    void initFromYaml(std::vector<std::string> areaFilenames,
+                      std::vector<std::string> spellFilenames);
+
+    void parseAreaYamlFile(std::string string);
     void initRoomLUT();
     void addAreaFromParser();
+
+    void parseSpellYamlFile(std::string filename);
+    void addSpellsFromParser();
 
     void addCharacter(CharacterEntity &character);
     void addCharacterRoomRelationToLUT(UniqueId characterId,
@@ -59,15 +76,20 @@ class GameState {
     void addRoomToLUT(const RoomEntity &room);
     AreaEntity getAreaFromParser();
     std::deque<AreaEntity> &getAreas();
+    std::vector<Spell> &getSpells();
     std::vector<UniqueId> getCharactersInRoom(RoomEntity *room);
     CharacterEntity *getCharacterFromLUT(UniqueId id);
     void addCharacter(CharacterEntity &character, Id roomID);
     RoomEntity *getCharacterLocation(const CharacterEntity &character);
     RoomEntity *getRoomFromLUT(const roomId);
     void clearAreas();
+    void removeCharacterByUniqueId(UniqueId characterId);
     void clearCharacterRoomLUT();
     EntityFactory &getFactory();
     void doReset();
+
+    Spell *getSpellByName(const std::string spellName);
+    void killCharacter(const CharacterEntity &character);
 };
 
 } // namespace gamemanager
