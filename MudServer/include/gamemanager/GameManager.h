@@ -82,7 +82,7 @@ class GameManager {
      */
     void performQueuedActions();
 
-    boost::optional<Player &>
+    Player *
     getPlayerFromLogin(const connection::gameAndUserInterface &message);
 
   public:

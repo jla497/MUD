@@ -87,7 +87,7 @@ void GameManager::loadPersistedData() {
     playerService = persistenceService.loadPlayerService();
 }
 
-boost::optional<Player &>
+Player *
 GameManager::getPlayerFromLogin(const gameAndUserInterface &message) {
     static auto logger = logging::getLogger("GameManager::getPlayerFromLogin");
 
@@ -118,7 +118,7 @@ GameManager::getPlayerFromLogin(const gameAndUserInterface &message) {
         }
 
         enqueueMessage(message.conn, PLEASE_LOGIN);
-        return boost::none;
+        return nullptr;
     }
     return player;
 }
