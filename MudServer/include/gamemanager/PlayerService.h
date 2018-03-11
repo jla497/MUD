@@ -51,8 +51,7 @@ class PlayerService {
     networking::ConnectionId setPlayerConnection(PlayerId playerId);
     void setPlayerConnection(PlayerId playerId,
                              networking::ConnectionId connectionId);
-    Player *identify(UsernameType username,
-                                       PasswordType password);
+    Player *identify(UsernameType username, PasswordType password);
     AddPlayerResult addPlayer(UsernameType username, PasswordType password);
 
     /**

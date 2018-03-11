@@ -27,7 +27,8 @@ void AttackAction::execute_impl() {
     if (!characterCurrentRoom) {
         logger->error(
             "Character is not in a room! Suspect incorrect world init");
-        // return early, as we are in a bad state - the character is not in a room!
+        // return early, as we are in a bad state - the character is not in a
+        // room!
         return;
     }
 
@@ -62,21 +63,24 @@ void AttackAction::execute_impl() {
             CombatSimulation::resolveCombatRound(*characterWhoIsAttacking,
                                                  *currentEntity, gameManager);
 
-                //log hp of target
-                logger->info(nameOfAttackTarget + ": " + 
-                    currentEntity->getCombatComponent()->getHealthDescription());
-                //display the targets hp to the attacker 
-                gameManager.sendCharacterMessage(attackingCharactersUniqueId,
-                    nameOfAttackTarget + ": " + 
-                    currentEntity->getCombatComponent()->getHealthDescription());
-                
+            // log hp of target
+            logger->info(
+                nameOfAttackTarget + ": " +
+                currentEntity->getCombatComponent()->getHealthDescription());
+            // display the targets hp to the attacker
+            gameManager.sendCharacterMessage(
+                attackingCharactersUniqueId,
+                nameOfAttackTarget + ": " +
+                    currentEntity->getCombatComponent()
+                        ->getHealthDescription());
+
             return;
         }
     }
 
     // if we didnt find the target tell the attacker
     logger->info("No Target found");
-    gameManager.sendCharacterMessage(attackingCharactersUniqueId    ,
+    gameManager.sendCharacterMessage(attackingCharactersUniqueId,
                                      "Attack failed: could not find " +
                                          nameOfAttackTarget);
 }

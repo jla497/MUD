@@ -12,9 +12,10 @@ MoveAction *MoveAction::clone() { return new MoveAction(*this); }
 void MoveAction::execute_impl() {
     static auto logger = mudserver::logging::getLogger("Action::MoveAction");
 
-    //TODO: players in combat cannot move between rooms while they are in combat
-    //unless they use some sort of flee spell)
-    // if(characterPerformingAction->getCombatComponent()->getCombatState() == CombatStates::FIGHTING){
+    // TODO: players in combat cannot move between rooms while they are in
+    // combat  unless they use some sort of flee spell)
+    // if(characterPerformingAction->getCombatComponent()->getCombatState() ==
+    // CombatStates::FIGHTING){
     //     gameManager.sendCharacterMessage(
     //         characterPerformingAction->getEntityId(),
     //         "You cannot leave the room, you are in Combat!");

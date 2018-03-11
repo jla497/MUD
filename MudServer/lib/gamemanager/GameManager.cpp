@@ -7,8 +7,8 @@
 #include <thread>
 #include <vector>
 
-#include <boost/optional.hpp>
 #include <boost/format.hpp>
+#include <boost/optional.hpp>
 
 #include "connectionmanager/ConnectionManager.h"
 #include "entities/CharacterEntity.h"
@@ -87,8 +87,7 @@ void GameManager::loadPersistedData() {
     playerService = persistenceService.loadPlayerService();
 }
 
-Player *
-GameManager::getPlayerFromLogin(const gameAndUserInterface &message) {
+Player *GameManager::getPlayerFromLogin(const gameAndUserInterface &message) {
     static auto logger = logging::getLogger("GameManager::getPlayerFromLogin");
 
     // look up player from ID

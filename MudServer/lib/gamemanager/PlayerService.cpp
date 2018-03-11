@@ -5,8 +5,7 @@
 namespace pc = mudserver::resources::playercharacter;
 using namespace mudserver::gamemanager;
 
-Player *PlayerService::identify(UsernameType username,
-                                                  PasswordType password) {
+Player *PlayerService::identify(UsernameType username, PasswordType password) {
     auto id = getPlayerIdByName(username);
     auto player = players.find(id);
 
@@ -107,7 +106,7 @@ networking::ConnectionId PlayerService::getPlayerConnection(PlayerId playerId) {
     return 0;
 }
 
-Player * PlayerService::getPlayerById(PlayerId playerId) {
+Player *PlayerService::getPlayerById(PlayerId playerId) {
     auto playerPair = players.find(playerId);
     if (playerPair != players.end()) {
         return &playerPair->second;
