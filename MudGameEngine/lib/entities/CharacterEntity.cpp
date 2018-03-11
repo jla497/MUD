@@ -26,7 +26,7 @@ CharacterEntity::CharacterEntity(
     Roll m_damageRollData = {
         std::stoi(tmpDamage.at(0)), std::stoi(tmpDamage.at(1)),
         tmpDamage.size() > 2 ? std::stoi(tmpDamage.at(2)) : 0};
-        
+
     // init combat Component
     this->combatComponent.setArmor(armor);
     this->combatComponent.setThac0(thac0);

@@ -39,5 +39,5 @@ const char *CHARMOD = u8"character";
 const char *HALT = u8"halt";
 const char *SWAP = u8"swap";
 } // namespace commands
-}
-}
+} // namespace resources
+} // namespace mudserver

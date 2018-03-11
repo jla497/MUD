@@ -3,8 +3,8 @@
 #include <cassert>
 #include <deque>
 
-#include "parser.h"
 #include "YamlParser.h"
+#include "parser.h"
 #include "resources/DataFields.h"
 
 using namespace parser;

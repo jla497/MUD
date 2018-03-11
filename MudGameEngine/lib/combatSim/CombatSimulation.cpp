@@ -1,6 +1,6 @@
 #include "CombatSimulation.h"
 
-//TODO: add logging
+// TODO: add logging
 
 int CombatSimulation::calcRoll(Roll roll) {
     int rollValue = 0;
@@ -12,13 +12,13 @@ int CombatSimulation::calcRoll(Roll roll) {
     return rollValue;
 }
 
-int calcMaxPossibleRoll(Roll roll){
-	return roll.numOfDie * roll.sizeOfDie + roll.rollModifier;
+int calcMaxPossibleRoll(Roll roll) {
+    return roll.numOfDie * roll.sizeOfDie + roll.rollModifier;
 }
 
 int CombatSimulation::calcRoundDamage(Roll damageRoll, int armor) {
     int attackvalue = calcRoll(damageRoll);
-    //ignore armor for now
+    // ignore armor for now
     int netDamage = attackvalue;
     return netDamage;
 }
@@ -51,7 +51,8 @@ void CombatSimulation::resolveCombatRound(
                         (attackedCharactersCombatComponent->getArmor()));
 
     // deal damage
-    bool enemyWasKilled = attackedCharactersCombatComponent->damage(damageAmount);
+    bool enemyWasKilled =
+        attackedCharactersCombatComponent->damage(damageAmount);
 
     // send messages to characters fighting
     gameManager.sendCharacterMessage(
@@ -77,7 +78,7 @@ void CombatSimulation::resolveCombatRound(
             "You were killed by " + characterWhoIsAttacking.getShortDesc());
 
         // calculate rewards and give them to the attacker
-        //TODO: have a formula/function for calculating rewards
+        // TODO: have a formula/function for calculating rewards
         int goldToGive = characterWhoIsBeingAttacked.getGold();
         int expToGive = characterWhoIsBeingAttacked.getExp();
         characterWhoIsBeingAttacked.subtractGold(goldToGive);
