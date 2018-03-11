@@ -23,6 +23,6 @@ add_subdirectory(tools)
 
 # link yaml-cpp library
 
-add_library(yaml-cpp STATIC IMPORTED lib/resources/playercharacterdefaults.cpp include/reset/ResetManager.h)
+add_library(yaml-cpp STATIC IMPORTED include/reset/ResetManager.h)
 
 add_dependencies(yaml-cpp project_yamlcpp)

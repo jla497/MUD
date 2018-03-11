@@ -1,43 +1,42 @@
+
 #ifndef ADVENTURE2018_COMMANDS_H
 #define ADVENTURE2018_COMMANDS_H
-
-#include <string>
 
 namespace mudserver {
 namespace resources {
 namespace commands {
 
-extern const char *UNDEFINED;
-extern const char *SAY;
-extern const char *LOOK;
-extern const char *MOVE;
-extern const char *ATTACK;
-extern const char *PROGRAM;
-extern const char *NPC;
-extern const char *PC;
-extern const char *OBJECT;
-extern const char *CNAME;
-extern const char *CARMOR;
-extern const char *CDAMAGE;
-extern const char *CDESCRIPTIOn;
-extern const char *CEXP;
-extern const char *CGOLD;
-extern const char *CHIT;
-extern const char *CID;
-extern const char *CKEYWORDS;
-extern const char *CLEVEL;
-extern const char *CLONGDESC;
-extern const char *CSHORTDESC;
-extern const char *CTHAC0;
-extern const char *CHELP;
-extern const char *CREATE;
-extern const char *MODIFY;
-extern const char *IDENTIFY;
-extern const char *SAVE;
-extern const char *TIMED;
-extern const char *CHARMOD;
-extern const char *HALT;
-extern const char *SWAP;
+constexpr const char *UNDEFINED = u8"undefined";
+constexpr const char *SAY = u8"say";
+constexpr const char *LOOK = u8"look";
+constexpr const char *MOVE = u8"move";
+constexpr const char *ATTACK = u8"attack";
+constexpr const char *PROGRAM = u8"program";
+constexpr const char *NPC = u8"npc";
+constexpr const char *PC = u8"pc";
+constexpr const char *OBJECT = u8"object";
+constexpr const char *CNAME = u8"name";
+constexpr const char *CARMOR = u8"armor";
+constexpr const char *CDAMAGE = u8"damage";
+constexpr const char *CDESCRIPTION = u8"description";
+constexpr const char *CEXP = u8"exp";
+constexpr const char *CGOLD = u8"gold";
+constexpr const char *CHIT = u8"hit";
+constexpr const char *CID = u8"id";
+constexpr const char *CKEYWORDS = u8"keywords";
+constexpr const char *CLEVEL = u8"level";
+constexpr const char *CLONGDESC = u8"longdesc";
+constexpr const char *CSHORTDESC = u8"shortdesc";
+constexpr const char *CTHAC0 = u8"thac0";
+constexpr const char *CHELP = u8"help";
+constexpr const char *CREATE = u8"create";
+constexpr const char *MODIFY = u8"modify";
+constexpr const char *IDENTIFY = u8"identify";
+constexpr const char *SAVE = u8"save";
+constexpr const char *TIMED = u8"timed";
+constexpr const char *CHARMOD = u8"character";
+constexpr const char *HALT = u8"halt";
+constexpr const char *SWAP = u8"swap";
 
 } // namespace commands
 } // namespace resources
