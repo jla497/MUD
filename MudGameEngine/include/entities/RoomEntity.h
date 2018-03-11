@@ -19,7 +19,7 @@ class RoomEntity : public Entity {
     std::map<int, ObjectEntity> m_objects;
     std::string m_name;
     ExtendedDesc m_extDesc;
-    unsigned int m_roomId = static_cast<unsigned int>(-1);
+    unsigned int m_roomId = NO_ROOM_ID;
 
     /*
      * ASSUME ids are unique for ALL entities, entities include npc, obj, equip,
@@ -29,6 +29,8 @@ class RoomEntity : public Entity {
     std::vector<unsigned int> m_idEntitiesInRoom;
 
   public:
+    constexpr static auto NO_ROOM_ID = static_cast<unsigned int>(-1);
+
     RoomEntity() = default;
 
     RoomEntity(const std::vector<std::string> &desc,

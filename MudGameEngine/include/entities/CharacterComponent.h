@@ -11,6 +11,7 @@ holds
 class CharacterComponent {
   public:
     virtual void update(float deltaTime) {
+        (void)deltaTime;
         // update character simulation(ai, etc)
     }
 };

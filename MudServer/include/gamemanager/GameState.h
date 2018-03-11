@@ -55,6 +55,7 @@ class GameState {
 
     template <class Archive>
     void serialize(Archive &ar, const unsigned int version) {
+        (void)version;
         ar &characterLookUp;
         ar &characterRoomLookUp;
     }

@@ -13,7 +13,7 @@ CombatComponent::CombatComponent(int armor, int thac0, Roll m_damageRollData,
     this->m_currentHealth = this->m_maxHealth;
 }
 CombatComponent::CombatComponent() {
-    // TODO: use defaul values from config
+    // TODO: use default values from config
     this->m_combatState = CombatStates::NOT_FIGHTING;
     this->m_armor = 0;
     this->m_thac0 = 0;
