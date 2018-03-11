@@ -23,14 +23,15 @@ TEST_F(PlayerServiceTests, AddNewPlayer) {
     ASSERT_EQ(ps.addPlayer("jimbob", "hunter3"), AddPlayerResult::playerExists);
 
     playerResult = ps.identify("jimbob", "hunter2");
-    ASSERT_TRUE(playerResult);
+    ASSERT_TRUE(playerResult != nullptr);
     ASSERT_EQ(playerResult->getUsername(), "jimbob");
 }
 
 TEST_F(PlayerServiceTests, PasswordCheck) {
     ps.addPlayer("jimbob", "hunter2");
     ASSERT_FALSE(ps.identify("jimbob", "1337"));
-    ASSERT_EQ(ps.identify("jimbob", "hunter2")->getUsername(), "jimbob");
+    auto jimbob = ps.identify("jimbob", "hunter2");
+    ASSERT_EQ(jimbob->getUsername(), "jimbob");
 }
 
 TEST_F(PlayerServiceTests, PlayerConnectionUpdate) {

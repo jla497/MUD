@@ -11,8 +11,9 @@ void resolveCombatRound(CharacterEntity &playerWhoIsAttacking,
                         CharacterEntity &playerWhoIsBeingAttacking,
                         GameManager &gameManager);
 
-int calcRoundDamage(Roll damageRoll, Roll hitRoll);
+int calcRoundDamage(Roll damageRoll, int armor);
 int calcRoll(Roll roll);
+int calcMaxPossibleRoll(Roll roll);
 
 } // namespace CombatSimulation
 #endif
