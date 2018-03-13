@@ -91,7 +91,6 @@ class GameState {
 
     Spell *getSpellByName(const std::string spellName);
     void killCharacter(const CharacterEntity &character);
-    void NpcsUpdate();
 };
 
 } // namespace gamemanager

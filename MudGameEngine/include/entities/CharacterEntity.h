@@ -8,15 +8,12 @@
 #include "entities/CombatComponent.h"
 #include "entities/Entity.h"
 #include "entities/ObjectEntity.h"
-#include "controllers/CharacterController.h"
 #include <map>
 
 class CombatComponent;
 class CharacterEntity : public Entity {
   private:
     bool isPlayerCharacter = false;
-    CharacterController *mController = nullptr;
-
     friend class boost::serialization::access;
     template <class Archive>
     void serialize(Archive &ar, const unsigned int version) {
@@ -89,9 +86,6 @@ class CharacterEntity : public Entity {
     ObjectEntity getObject(int id);
     std::map<int, ObjectEntity> getObjects();
 
-    //controller
-    void setController(CharacterController *controller);
-    CharacterController* getController();
     void set_isPlayerCharacter();
     bool get_isPlayerCharacter();
 };

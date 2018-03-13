@@ -87,12 +87,6 @@ CombatComponent *CharacterEntity::getCombatComponent() {
 }
 
 
-void CharacterEntity::setController(CharacterController *controller) {
-    mController = controller;
-}
-CharacterController* CharacterEntity::getController() {
-    return mController;
-}
 void CharacterEntity::set_isPlayerCharacter() {
     isPlayerCharacter = true;
 }

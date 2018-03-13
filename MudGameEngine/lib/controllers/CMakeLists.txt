@@ -1,6 +1,7 @@
 add_library(controllers
         CharacterController.cpp
-        AiController.cpp)
+        AiController.cpp
+        PlayerController.cpp)
 
 set_target_properties(controllers
         PROPERTIES

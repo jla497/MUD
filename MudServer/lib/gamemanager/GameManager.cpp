@@ -16,6 +16,7 @@
 #include "logging.h"
 #include "persistence/PersistenceService.h"
 #include "resources/PlayerCharacterDefaults.h"
+#include "controllers/CharacterController.h"
 
 namespace mudserver {
 namespace gamemanager {
@@ -42,7 +43,6 @@ GameManager::GameManager(connection::ConnectionManager &connMan,
 void GameManager::mainLoop() {
     static auto logger = logging::getLogger("GameManager::mainLoop");
     logger->info("Entered main game loop");
-
     loadPersistedData();
 
     using clock = std::chrono::high_resolution_clock;
@@ -53,6 +53,7 @@ void GameManager::mainLoop() {
     nextAQueuePtr = &actionsB;
 
     gameState.doReset();
+    // queue of characterControllers
 
     while (!done) {
         auto startTime = clock::now();
@@ -66,7 +67,7 @@ void GameManager::mainLoop() {
         auto messages = connectionManager.sendToGameManager();
 
         processMessages(messages);
-
+        fetchCntrlCmds();
         performQueuedActions();
         swapQueuePtrs();
         sendMessagesToPlayers();
@@ -148,14 +149,21 @@ void GameManager::processMessages(
             gameState.addCharacter(newCharacter);
         }
 
-        // parse message into verb/object
-        auto action =
-            commandParser.actionFromPlayerCommand(*player, message.text, *this);
+        auto charController = playerService.playerToController(player->getId());
 
-        enqueueAction(std::move(action));
+        if(!charController) {
+            charController = playerService.createController(player->getId());
+            characterId = playerService.playerToCharacter(player->getId());
+            auto pCharacter = gameState.getCharacterFromLUT(*characterId);
+            charController->init(gameState, pCharacter, player);
+        }
+
+        charController->setCmdString(message.text);
+        controllerQueue.push(charController);
+        logger->debug("pushed charController to queue: "+charController->getCmdString());
+
     }
 
-    gameState.NpcsUpdate();
 }
 
 void GameManager::enqueueMessage(networking::Connection conn, std::string msg) {
@@ -224,5 +232,17 @@ void GameManager::swapCharacters(UniqueId casterCharacterId,
     // gameState.swapCharacters(casterCharacterId, targetCharacterId);
 }
 
+void GameManager::fetchCntrlCmds() {
+    while (!controllerQueue.empty()) {
+        controllerQueue.front()->update();
+        auto player =  controllerQueue.front()->getPlayer();
+        auto msg = controllerQueue.front()->getCmdString();
+        auto action =
+                commandParser.actionFromPlayerCommand(*player, msg, *this);
+        enqueueAction(std::move(action));
+        controllerQueue.pop();
+    }
+
+}
 } // namespace gamemanager
 } // namespace mudserver

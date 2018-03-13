@@ -11,6 +11,8 @@
 #include <boost/serialization/access.hpp>
 #include <boost/serialization/unordered_map.hpp>
 
+#include "controllers/PlayerController.h"
+
 namespace mudserver {
 namespace gamemanager {
 
@@ -27,6 +29,7 @@ class PlayerService {
   private:
     PlayerId nextPlayerId;
     std::unordered_map<PlayerId, Player> players;
+    std::unordered_map<PlayerId, std::unique_ptr<CharacterController>> controllers;
     std::unordered_map<UsernameType, PlayerId> playerIdByName;
     std::unordered_map<networking::ConnectionId, PlayerId> playerIdByConnection;
     PcBmType playerCharacterBimap;
@@ -82,6 +85,11 @@ class PlayerService {
      * @param characterId the id the player is playing as
      */
     void updatePlayerCharacterMapping(PlayerId playerId, UniqueId characterId);
+
+    CharacterController* playerToController(PlayerId playerId);
+
+    CharacterController* createController(PlayerId playerId);
+
 };
 
 } // namespace gamemanager
