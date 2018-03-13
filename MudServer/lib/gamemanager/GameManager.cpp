@@ -47,12 +47,13 @@ void GameManager::mainLoop() {
 
     using clock = std::chrono::high_resolution_clock;
 
-    currentAQueuePtr = &actionsA;
-    nextAQueuePtr = &actionsB;
     // point currentActionQueuePtr to actionQueueA
     // point nextActionQueuePtr to actionQueueB
+    currentAQueuePtr = &actionsA;
+    nextAQueuePtr = &actionsB;
 
     gameState.doReset();
+
     while (!done) {
         auto startTime = clock::now();
 
@@ -143,6 +144,7 @@ void GameManager::processMessages(
             // state
             auto newCharacter =
                 playerService.createPlayerCharacter(player->getId());
+            newCharacter.set_isPlayerCharacter();
             gameState.addCharacter(newCharacter);
         }
 
@@ -152,6 +154,8 @@ void GameManager::processMessages(
 
         enqueueAction(std::move(action));
     }
+
+    gameState.NpcsUpdate();
 }
 
 void GameManager::enqueueMessage(networking::Connection conn, std::string msg) {

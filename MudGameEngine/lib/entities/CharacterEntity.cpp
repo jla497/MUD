@@ -85,3 +85,17 @@ void CharacterEntity::setShortDesc(std::string name) {
 CombatComponent *CharacterEntity::getCombatComponent() {
     return &combatComponent;
 }
+
+
+void CharacterEntity::setController(CharacterController *controller) {
+    mController = controller;
+}
+CharacterController* CharacterEntity::getController() {
+    return mController;
+}
+void CharacterEntity::set_isPlayerCharacter() {
+    isPlayerCharacter = true;
+}
+bool CharacterEntity::get_isPlayerCharacter() {
+    return isPlayerCharacter;
+}

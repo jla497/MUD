@@ -4,7 +4,8 @@
 
 #include "gamemanager/GameState.h"
 #include "logging.h"
-
+#include "controllers/CharacterController.h"
+#include "controllers/AiController.h"
 namespace mudserver {
 namespace gamemanager {
 
@@ -60,6 +61,9 @@ void GameState::addRoomToLUT(const RoomEntity &room) {
 
 void GameState::addCharacter(CharacterEntity &character) {
     auto id = character.getEntityId();
+    auto controller = new AiController();
+    controller->init(*this, character);
+    character.setController(controller);
     characterLookUp[id] = std::move(character);
     // TODO: implement a configurable default spawn point
     // currently just takes the first room loaded
@@ -74,6 +78,9 @@ void GameState::addCharacter(CharacterEntity &character) {
 
 void GameState::addCharacter(CharacterEntity &character, Id roomID) {
     auto id = character.getEntityId();
+    auto controller = new AiController();
+    controller->init(*this, character);
+    character.setController(controller);
     characterLookUp[id] = std::move(character);
     // TODO: implement a configurable default spawn point
     // currently just takes the first room loaded
@@ -165,6 +172,17 @@ void GameState::killCharacter(const CharacterEntity &character) {
     removeCharacterByUniqueId(character.getEntityId());
 
     // if the character is controlled by a player notify them
+}
+
+void GameState::NpcsUpdate() {
+    for(auto& itr: characterLookUp) {
+        auto &character = itr.second;
+
+        if(!character.get_isPlayerCharacter()) {
+            assert(character.getController() != nullptr);
+            character.getController()->update();
+        }
+    }
 }
 
 } // namespace gamemanager
