@@ -1,6 +1,6 @@
 add_library(states
         IState.cpp
-        WaitState.cpp)
+        WaitState.cpp InteractState.cpp)
 
 set_target_properties(states
         PROPERTIES

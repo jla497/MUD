@@ -2,10 +2,10 @@
 #include <iostream>
 #include <memory>
 
+#include "controllers/AiController.h"
+#include "controllers/CharacterController.h"
 #include "gamemanager/GameState.h"
 #include "logging.h"
-#include "controllers/CharacterController.h"
-#include "controllers/AiController.h"
 namespace mudserver {
 namespace gamemanager {
 
@@ -168,6 +168,13 @@ void GameState::killCharacter(const CharacterEntity &character) {
     // if the character is controlled by a player notify them
 }
 
+std::vector<CharacterEntity*> GameState::getAllNpcs() {
+    std::vector<CharacterEntity*> npcs;
+    for(auto &pair: characterLookUp) {
+        npcs.push_back(&pair.second);
+    }
+    return npcs;
+}
 
 } // namespace gamemanager
 } // namespace mudserver

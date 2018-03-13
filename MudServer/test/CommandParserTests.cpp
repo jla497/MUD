@@ -19,8 +19,9 @@ using mudserver::gamemanager::GameState;
 
 class CommandParserTest : public ::testing::Test {
   public:
-    CommandParserTest() : cp{}, cm{}, gs{}, gm{cm, gs} {
+    CommandParserTest() : cp{}, cm{}, gs{}, gm{cm, gs}, en{} {
         pl = Player{42, "jimbob", "hunter2"};
+        en = CharacterEntity{};
     }
 
     CommandParser cp;
@@ -28,38 +29,40 @@ class CommandParserTest : public ::testing::Test {
     GameState gs;
     MockGameManager gm;
     Player pl;
+    CharacterEntity en;
 };
 
 TEST_F(CommandParserTest, parsesSayAction) {
-    auto action = cp.actionFromPlayerCommand(pl, "say stuff", gm);
+
+    auto action = cp.actionFromPlayerCommand(pl, "say stuff", gm, &en);
     auto realType = dynamic_cast<SayAction *>(action.get());
     EXPECT_TRUE(realType);
 };
 
 TEST_F(CommandParserTest, parsesAttackAction) {
-    auto action = cp.actionFromPlayerCommand(pl, "attack frog", gm);
+    auto action = cp.actionFromPlayerCommand(pl, "attack frog", gm, &en);
     auto realType = dynamic_cast<AttackAction *>(action.get());
     EXPECT_TRUE(realType);
 };
 
 TEST_F(CommandParserTest, parsesMoveAction) {
-    auto action = cp.actionFromPlayerCommand(pl, "move north", gm);
+    auto action = cp.actionFromPlayerCommand(pl, "move north", gm, &en);
     auto realType = dynamic_cast<MoveAction *>(action.get());
     EXPECT_TRUE(realType);
 };
 
 TEST_F(CommandParserTest, defaultsToNullAction) {
-    auto action = cp.actionFromPlayerCommand(pl, "blarghidibah foo", gm);
+    auto action = cp.actionFromPlayerCommand(pl, "blarghidibah foo", gm, &en);
     auto realType = dynamic_cast<NullAction *>(action.get());
     EXPECT_TRUE(realType);
 };
 
 TEST_F(CommandParserTest, caseInsensitive) {
-    auto action1 = cp.actionFromPlayerCommand(pl, "sAy bla", gm);
+    auto action1 = cp.actionFromPlayerCommand(pl, "sAy bla", gm, &en);
     auto realType1 = dynamic_cast<SayAction *>(action1.get());
     EXPECT_TRUE(realType1);
 
-    auto action2 = cp.actionFromPlayerCommand(pl, "SAY bla", gm);
+    auto action2 = cp.actionFromPlayerCommand(pl, "SAY bla", gm, &en);
     auto realType2 = dynamic_cast<SayAction *>(action2.get());
     EXPECT_TRUE(realType2);
 };

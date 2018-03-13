@@ -12,19 +12,22 @@ std::unordered_map<std::string, bool> Action::isAdminAction = {
 
 Action::Action(Player &playerPerformingAction,
                std::vector<std::string> actionArguments,
-               mudserver::gamemanager::GameManager &gameManager)
+               mudserver::gamemanager::GameManager &gameManager, CharacterEntity *charEntity)
     : playerPerformingAction{playerPerformingAction},
-      actionArguments{std::move(actionArguments)}, gameManager{gameManager} {}
+      actionArguments{std::move(actionArguments)}, gameManager{gameManager},
+characterPerformingAction(charEntity){}
 
 void Action::execute() {
     // check if this is an admin action
     static auto logger = mudserver::logging::getLogger("Action::Action");
 
-    auto &playerService = gameManager.getPlayerService();
-    auto characterId =
-        playerService.playerToCharacter(playerPerformingAction.getId());
-    characterPerformingAction =
-        gameManager.getState().getCharacterFromLUT(*characterId);
+//    auto &playerService = gameManager.getPlayerService();
+//    auto characterId =
+//        playerService.playerToCharacter(playerPerformingAction.getId());
+//    if(characterId){
+//        characterPerformingAction =
+//                gameManager.getState().getCharacterFromLUT(*characterId);
+//    }
 
     // check if action is admin action and if character has an administrator
     // role

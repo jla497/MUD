@@ -31,7 +31,8 @@ class Action {
   public:
     Action(Player &playerPerformingAction,
            std::vector<std::string> actionArguments,
-           mudserver::gamemanager::GameManager &gameManager);
+           mudserver::gamemanager::GameManager &gameManager,
+           CharacterEntity *charEntity);
 
     /**
      * Actions are designed to be placed in a queue. When the queue is

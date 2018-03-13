@@ -4,5 +4,6 @@
 
 #include "states/IState.h"
 
-IState::IState(GameState &state, CharacterEntity &entity, CharacterController &controller):
-        state(state), entity(entity), controller(controller) {}
+IState::IState(GameState *state, CharacterEntity *entity,
+               CharacterController *controller)
+        : state(state), entity(entity), controller(controller) {}

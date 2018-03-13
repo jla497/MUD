@@ -4,17 +4,20 @@
 
 #include "states/WaitState.h"
 
-
 void WaitState::update() {
-    auto room = state.getCharacterLocation(entity);
-    auto chIds = state.getCharactersInRoom(room);
-    for(auto id: chIds) {
-        auto character = state.getCharacterFromLUT(id);
-        if(character->get_isPlayerCharacter()) {
-//            stateMachine.change("interact");
-            std::cout<<"player's character entered the room. Switching to interactState..."<<std::endl;
+    auto room = state->getCharacterLocation(*entity);
+    auto chIds = state->getCharactersInRoom(room);
+    for (auto id : chIds) {
+        auto character = state->getCharacterFromLUT(id);
+        if (character->get_isPlayerCharacter()) {
+            //            stateMachine.change("interact");
+            std::cout << "player's character entered the room. Switching to "
+                    "interactState..."
+                      << std::endl;
+            controller->setCmdString("say hi human");
+            controller->change("interact");
         }
     }
 }
-void WaitState::enter() {};
-void WaitState::exit() {};
+void WaitState::enter(){};
+void WaitState::exit(){};

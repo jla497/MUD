@@ -52,7 +52,7 @@ class GameManager {
     std::queue<std::unique_ptr<Action>> actionsB;
     std::queue<std::unique_ptr<Action>> *currentAQueuePtr;
     std::queue<std::unique_ptr<Action>> *nextAQueuePtr;
-    std::queue<CharacterController*> controllerQueue;
+    std::vector<CharacterController *> controllerQueue;
 
     /**
      * Process a collection of messages from the server, taking various actions

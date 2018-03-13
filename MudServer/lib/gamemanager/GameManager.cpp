@@ -11,12 +11,13 @@
 #include <boost/optional.hpp>
 
 #include "connectionmanager/ConnectionManager.h"
+#include "controllers/CharacterController.h"
 #include "entities/CharacterEntity.h"
 #include "gamemanager/GameManager.h"
 #include "logging.h"
 #include "persistence/PersistenceService.h"
 #include "resources/PlayerCharacterDefaults.h"
-#include "controllers/CharacterController.h"
+#include "controllers/AiController.h"
 
 namespace mudserver {
 namespace gamemanager {
@@ -53,6 +54,17 @@ void GameManager::mainLoop() {
     nextAQueuePtr = &actionsB;
 
     gameState.doReset();
+        //get chars from each room, make ai controller for each npc and insert into controller
+        //queue. Note if Player field is a nullptr, this should be taken as a npc controller
+        auto npcs = gameState.getAllNpcs();
+        assert(!npcs.empty());
+        for(auto npc : npcs) {
+            auto controller = new AiController();
+            controller->init(&gameState, npc, nullptr);
+
+            controllerQueue.push_back(controller);
+        }
+        logger->debug("done creating npc controllers");
     // queue of characterControllers
 
     while (!done) {
@@ -151,19 +163,17 @@ void GameManager::processMessages(
 
         auto charController = playerService.playerToController(player->getId());
 
-        if(!charController) {
+        if (!charController) {
             charController = playerService.createController(player->getId());
             characterId = playerService.playerToCharacter(player->getId());
             auto pCharacter = gameState.getCharacterFromLUT(*characterId);
-            charController->init(gameState, pCharacter, player);
+            auto gameStatePtr = &gameState;
+            charController->init(gameStatePtr, pCharacter, player);
         }
 
         charController->setCmdString(message.text);
-        controllerQueue.push(charController);
-        logger->debug("pushed charController to queue: "+charController->getCmdString());
-
+        controllerQueue.push_back(charController);
     }
-
 }
 
 void GameManager::enqueueMessage(networking::Connection conn, std::string msg) {
@@ -218,6 +228,7 @@ PlayerService &GameManager::getPlayerService() { return playerService; }
 void GameManager::haltServer() {
     logging::getLogger("GameManager::haltServer()")
         ->info("Shutting down server...");
+
     done = true;
 }
 
@@ -233,16 +244,17 @@ void GameManager::swapCharacters(UniqueId casterCharacterId,
 }
 
 void GameManager::fetchCntrlCmds() {
-    while (!controllerQueue.empty()) {
-        controllerQueue.front()->update();
-        auto player =  controllerQueue.front()->getPlayer();
-        auto msg = controllerQueue.front()->getCmdString();
-        auto action =
-                commandParser.actionFromPlayerCommand(*player, msg, *this);
-        enqueueAction(std::move(action));
-        controllerQueue.pop();
+    for(auto &controller : controllerQueue){
+        controller->update();
+        auto msg = controller->getCmdString();
+        if(!msg.empty()) {
+            auto player = controller->getPlayer();
+            auto character = controller->getCharacter();
+            auto action =
+                    commandParser.actionFromPlayerCommand(*player, msg, *this, character);
+            enqueueAction(std::move(action));
+        }
     }
-
 }
 } // namespace gamemanager
 } // namespace mudserver

@@ -63,7 +63,7 @@ class CommandParser {
      */
     std::unique_ptr<Action>
     actionFromPlayerCommand(Player &player, StrView command,
-                            gamemanager::GameManager &gameManager);
+                            gamemanager::GameManager &gameManager, CharacterEntity *entity);
     std::pair<UsernameType, PasswordType>
     identifiersFromIdentifyCommand(StrView command);
 };

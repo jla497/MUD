@@ -7,4 +7,3 @@
 void AiController::update() {
     current->update();
 }
-

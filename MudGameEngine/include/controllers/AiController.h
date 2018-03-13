@@ -11,10 +11,9 @@
 
 class AiController : public CharacterController {
 
-
-public:
+  public:
     using CharacterController::CharacterController;
     void update() override;
 };
 
-#endif //ADVENTURE2018_AICONTROLLER_H
+#endif // ADVENTURE2018_AICONTROLLER_H

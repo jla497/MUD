@@ -32,29 +32,31 @@ using boost::algorithm::to_lower_copy;
 
 using namespace resources::commands;
 
-static std::unordered_map<std::string, ActKeyword> actionLookup = { // NOLINT
-    {UNDEFINED, ActKeyword::undefined},
-    {SAY, ActKeyword::say},
-    {LOOK, ActKeyword::look},
-    {ATTACK, ActKeyword::attack},
-    {MOVE, ActKeyword::move},
-    {PROGRAM, ActKeyword::program},
-    {TIMED, ActKeyword::timed},
-    {SAVE, ActKeyword::save},
-    {CHARMOD, ActKeyword::charmod},
-    {HALT, ActKeyword::halt},
-    {SWAP, ActKeyword::swap}};
+static std::unordered_map<std::string, ActKeyword> actionLookup =
+    { // NOLINT
+        {UNDEFINED, ActKeyword::undefined},
+        {SAY, ActKeyword::say},
+        {LOOK, ActKeyword::look},
+        {ATTACK, ActKeyword::attack},
+        {MOVE, ActKeyword::move},
+        {PROGRAM, ActKeyword::program},
+        {TIMED, ActKeyword::timed},
+        {SAVE, ActKeyword::save},
+        {CHARMOD, ActKeyword::charmod},
+        {HALT, ActKeyword::halt},
+        {SWAP, ActKeyword::swap}};
 
 using ActionGenerator = std::unique_ptr<Action> (*)(Player &,
                                                     std::vector<std::string> &,
-                                                    gamemanager::GameManager &);
+                                                    gamemanager::GameManager &,
+                                                    CharacterEntity *);
 
 template <typename T,
           typename = std::enable_if<std::is_base_of<Action, T>::value>>
 std::unique_ptr<Action> generator(Player &player,
                                   std::vector<std::string> &args,
-                                  gamemanager::GameManager &manager) {
-    return std::make_unique<T>(player, args, manager);
+                                  gamemanager::GameManager &manager, CharacterEntity *entity) {
+    return std::make_unique<T>(player, args, manager, entity);
 };
 
 // FIXME: this should be an unordered_map, but some people don't have a
@@ -75,7 +77,7 @@ const static std::map<ActKeyword, ActionGenerator> actionGenerators = {
 
 std::unique_ptr<Action>
 CommandParser::actionFromPlayerCommand(Player &player, StrView command,
-                                       gamemanager::GameManager &gameManager) {
+                                       gamemanager::GameManager &gameManager, CharacterEntity *entity) {
 
     Tokenizer tokens{command};
     auto tokenIterator = tokens.begin();
@@ -91,7 +93,7 @@ CommandParser::actionFromPlayerCommand(Player &player, StrView command,
                                 : actionTypeIter->second;
 
     return actionGenerators.at(actionType)(player, remainderOfTokens,
-                                           gameManager);
+                                           gameManager, entity);
 }
 
 std::pair<UsernameType, PasswordType>

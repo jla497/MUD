@@ -9,10 +9,10 @@
 
 class WaitState : public IState {
 
-public:
+  public:
     using IState::IState;
     void update() override;
     void enter() override;
     void exit() override;
 };
-#endif //ADVENTURE2018_WAITSTATE_H
+#endif // ADVENTURE2018_WAITSTATE_H
