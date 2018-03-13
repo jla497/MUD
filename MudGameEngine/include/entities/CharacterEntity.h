@@ -32,9 +32,9 @@ class CharacterEntity : public Entity {
     }
 
     std::vector<std::string> m_desc;
-    unsigned int m_exp;
-    int m_gold;
-    unsigned int m_typeId; // npcs have types, what to do for players?
+    unsigned int m_exp{};
+    int m_gold{};
+    unsigned int m_typeId{}; // npcs have types, what to do for players?
     std::vector<std::string> m_keywords;
     unsigned int m_level{};
     std::vector<std::string> m_longDesc;
@@ -59,7 +59,7 @@ class CharacterEntity : public Entity {
     // Getters
     std::vector<std::string> getDesc() const;
     unsigned int getExp() const;
-    int getGold() const;
+    int getGold() const;    virtual ~Action() = default;
     unsigned int getTypeId() const;
     std::vector<std::string> getKeywords() const;
     unsigned int getLevel() const;
@@ -83,7 +83,7 @@ class CharacterEntity : public Entity {
     void incExp(unsigned int expPoints);
 
     // Objects
-    void equipObject(ObjectEntity object);
+    void equipObject(const ObjectEntity &object);
     ObjectEntity getObject(int id);
     std::map<int, ObjectEntity> getObjects();
 };

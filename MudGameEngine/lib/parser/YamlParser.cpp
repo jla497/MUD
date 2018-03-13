@@ -217,7 +217,7 @@ std::vector<ShopEntity> YamlParser::getAllShops() const {
     for (auto &document : data) {
         if (document[SHOPS_ENT]) {
             for (auto &node : document[SHOPS_ENT]) {
-                shops.push_back(parseShop(node));
+                shops.push_back(parseShop(node.second));
             }
         }
     }
@@ -230,7 +230,7 @@ std::deque<RoomEntity> YamlParser::getAllRooms() const {
     // iterate through all rooms in data and add them to list/vector of rooms
     for (auto &document : data) {
         for (auto &node : document[ROOMS_ENT]) {
-            rooms.push_back(parseRoom(node));
+            rooms.push_back(parseRoom(node.second));
         }
     }
     return rooms;
@@ -239,6 +239,28 @@ std::deque<RoomEntity> YamlParser::getAllRooms() const {
 AreaEntity YamlParser::getArea() const {
     // FIXME this function is horribly broken and doesn't do what you want it to
     // do
+    //warning: 'rooms' used after it was moved [bugprone-use-after-move]
+    //FIXME
+    //FIXME
+    //FIXME
+    //FIXME
+    //FIXME
+    //FIXME
+    //FIXME
+    //FIXME
+    //FIXME
+    //FIXME
+    //FIXME
+    //FIXME
+    //FIXME
+    //FIXME
+    //FIXME
+    //FIXME
+    //FIXME
+    //FIXME
+    //FIXME
+    //FIXME
+    //i have no idea what you intended this to do, so i can't fix it myself
 
     AreaEntity area;
     auto rooms = getAllRooms();

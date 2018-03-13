@@ -15,6 +15,7 @@ class TimedAction : public Action {
     using Action::Action;
     void execute_impl() override;
     TimedAction *clone() override;
+	std::unique_ptr<Action> clone() const override;
 
   protected:
     std::string description() const override { return u8"Timed action"; }

@@ -21,7 +21,7 @@ class GameState;
 } // namespace mudserver
 
 struct findNpc {
-    findNpc(int id) : id(id) {}
+    explicit findNpc(int id) : id(id) {}
     bool operator()(const std::unique_ptr<NonPlayerCharacter> &ptr) {
         return static_cast<int>(ptr->getNpcTypeId()) == id;
     }
@@ -45,7 +45,7 @@ class Reset {
 
   public:
     Reset() = default;
-    Reset(int id, std::string action, std::string comment, std::string state,
+    Reset(int id, const std::string &action, const std::string &comment, const std::string &state,
           int slot, int limit, int roomID);
 
     void execute(mudserver::gamemanager::GameState &state);
@@ -67,9 +67,9 @@ class Reset {
     std::string action;
     std::string comment;
     std::string state;
-    int slot;
-    int limit;
-    int roomID;
+    int slot{};
+    int limit{};
+    int roomID{};
 
     void resetNpc(mudserver::gamemanager::GameState &state);
 };

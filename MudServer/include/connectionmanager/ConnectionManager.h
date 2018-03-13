@@ -21,7 +21,7 @@ struct gameAndUserInterface {
 
 /*functor used in searches*/
 struct findGameAndUserInterface {
-    findGameAndUserInterface(networking::Connection conn) : conn(conn) {}
+    explicit findGameAndUserInterface(networking::Connection conn) : conn(conn) {}
 
     bool operator()(const gameAndUserInterface &conn) const {
         return this->conn.id == conn.conn.id;
@@ -32,9 +32,9 @@ struct findGameAndUserInterface {
 };
 
 struct findContainer {
-    findContainer(networking::Connection conn) : conn(conn) {}
+    explicit findContainer(networking::Connection conn) : conn(conn) {}
 
-    bool operator()(const ConnectionContainer conn) const {
+    bool operator()(const ConnectionContainer &conn) const {
         return this->conn.id == conn.getConnection().id;
     }
 
@@ -59,7 +59,7 @@ class ConnectionManager {
     networking::Server server;
 
   public:
-    ConnectionManager(networking::Port port);
+    explicit ConnectionManager(networking::Port port);
     // pass signals to server to drop connections
     void dropConnections();
 

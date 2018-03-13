@@ -1,4 +1,6 @@
+
 #include <exception>
+#include <memory>
 #include <regex>
 
 #include "actions/PrgmAction.h"
@@ -26,7 +28,9 @@ PrgmAction::PrgmParser::OptValMap PrgmAction::PrgmParser::optionLookup = {
     {CLEVEL, "--level <int>"},
     {CHELP, "e.g. --modify/--create <id> --armor <int>"}};
 
-PrgmAction *PrgmAction::clone() { return new PrgmAction(*this); }
+std::unique_ptr<Action> PrgmAction::clone() const {
+    return std::make_unique<PrgmAction>(*this);
+}
 
 void PrgmAction::execute_impl() {
     static auto logger =
@@ -88,7 +92,7 @@ void PrgmAction::prgmObject() {
 }
 
 PrgmAction::PrgmParser::OptValMap PrgmAction::PrgmParser::parseOptValPairs(
-    std::vector<std::string> actionArguments) {
+    const std::vector<std::string> &actionArguments) {
 
     std::unordered_map<std::string, std::string> optionMap{};
     std::regex regExOptions("([a-z]+)");
@@ -121,7 +125,7 @@ PrgmAction::PrgmParser::OptValMap PrgmAction::PrgmParser::parseOptValPairs(
     return optionMap;
 };
 
-std::string PrgmAction::PrgmParser::getArgument(std::string arg) {
+std::string PrgmAction::PrgmParser::getArgument(const std::string &arg) {
     auto itr = optionValuePairs.find(arg);
     if (itr == optionValuePairs.end()) {
         throw "invalid arg";

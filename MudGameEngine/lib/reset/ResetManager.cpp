@@ -1,10 +1,13 @@
 //
 // Created by jla497 on 01/03/18.
 //
+
+#include <cassert>
+
 #include "reset/ResetManager.h"
 #include "gamemanager/GameState.h"
 
-ResetManager::ResetManager(std::vector<Reset> resets) : resets(resets) {}
+ResetManager::ResetManager(const std::vector<Reset> &resets) : resets(resets) {}
 
 void ResetManager::applyResets(mudserver::gamemanager::GameState *state) {
     auto factory = state->getFactory();
@@ -64,7 +67,7 @@ ResetManager::populateNpcs(int limit, int npcTypeId,
     return entities;
 }
 
-void ResetManager::equipNpcs(ObjectEntity object,
+void ResetManager::equipNpcs(const ObjectEntity &object,
                              std::vector<CharacterEntity> &entities) {
     for (auto &npc : entities) {
         npc.equipObject(object);
@@ -77,7 +80,8 @@ void ResetManager::addNpcsToRooms(std::vector<CharacterEntity> &entities,
     for (auto &npc : entities) {
         try {
             state->addCharacter(npc, roomId);
-        } catch (std::exception e) {
+        } catch (const std::range_error &e) {
+            //TODO log it
         }
     }
 }

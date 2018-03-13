@@ -22,14 +22,14 @@ class ResetManager {
     std::vector<CharacterEntity>
     populateNpcs(int limit, int npcTypeId,
                  mudserver::gamemanager::GameState *state);
-    void equipNpcs(ObjectEntity object, std::vector<CharacterEntity> &entities);
+    void equipNpcs(const ObjectEntity &object, std::vector<CharacterEntity> &entities);
     void addNpcsToRooms(std::vector<CharacterEntity> &entities, int roomId,
                         mudserver::gamemanager::GameState *state);
     int getNumOfNpcsInRoom(int roomId, int npcTypeId,
                            mudserver::gamemanager::GameState *state);
 
   public:
-    ResetManager(std::vector<Reset> resets);
+    explicit ResetManager(const std::vector<Reset> &resets);
     void applyResets(mudserver::gamemanager::GameState *state);
 };
 #endif // ADVENTURE2018_RESETMANAGER_H

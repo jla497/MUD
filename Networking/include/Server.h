@@ -26,7 +26,7 @@ using ConnectionId = uintptr_t;
  *  guaranteed to be unique across all actively connected Client instances.
  */
 struct Connection {
-    ConnectionId id;
+    ConnectionId id{};
 
     bool operator==(Connection other) const { return id == other.id; }
 };
@@ -127,7 +127,6 @@ class Server {
         ConnectionHandlerImpl(C onConnect, D onDisconnect)
             : onConnect{std::move(onConnect)}, onDisconnect{
                                                    std::move(onDisconnect)} {}
-        ~ConnectionHandlerImpl() override = default;
         void handleConnect(Connection c) override { onConnect(c); }
         void handleDisconnect(Connection c) override { onDisconnect(c); }
 

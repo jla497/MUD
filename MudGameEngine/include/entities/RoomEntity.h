@@ -85,7 +85,7 @@ class RoomEntity : public Entity {
      */
     std::string removeEntity(unsigned int entityToRemove);
     void equipObject(ObjectEntity &object);
-    ObjectEntity getObject(int id);
+    ObjectEntity *getObject(int id);
     std::map<int, ObjectEntity> getObjects();
 };
 

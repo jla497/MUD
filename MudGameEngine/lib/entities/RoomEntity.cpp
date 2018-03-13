@@ -61,7 +61,9 @@ std::string RoomEntity::removeEntity(unsigned int entityToRemove) {
 void RoomEntity::equipObject(ObjectEntity &object) {
     m_objects[object.getObjectTypeId()] = object;
 }
-ObjectEntity RoomEntity::getObject(int id) {
+ObjectEntity *RoomEntity::getObject(int id) {
+    //FIXME
+    !
     auto objectItr = m_objects.find(id);
     if (objectItr != m_objects.end()) {
         auto object = objectItr->second;

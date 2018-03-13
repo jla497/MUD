@@ -1,5 +1,12 @@
+
+#include <memory>
+
 #include "actions/DecoyAction.h"
 #include "logging.h"
+
+std::unique_ptr<Action> DecoyAction::clone() const {
+    return std::make_unique<DecoyAction>(*this);
+}
 
 void DecoyAction::execute_impl() {
     static auto logger = mudserver::logging::getLogger("Action::DecoyAction");
