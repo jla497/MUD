@@ -14,6 +14,7 @@ class CombatComponent : public CharacterComponent {
     friend class boost::serialization::access;
     template <class Archive>
     void serialize(Archive &ar, const unsigned int version) {
+        (void)version;
         ar &m_maxHealth;
         ar &m_maxHealth;
         ar &m_currentHealth;
@@ -33,7 +34,7 @@ class CombatComponent : public CharacterComponent {
     Roll m_damageRollData;
     // the Roll used to calculate damage mitigated(my assumption, double check)
     Roll m_hitRollData;
-    //TODO: CombatAbilities class
+    // TODO: CombatAbilities class
     // CombatAbility combatAbility = nullptr;
 
   public:
@@ -56,7 +57,7 @@ class CombatComponent : public CharacterComponent {
     void engageCombatState();
     void endCombatState();
 
-    //TODO: redesigned/implement
+    // TODO: redesigned/implement
     void prepareToAttack();
     // void prepareToUseCombatAbility(CombatAbility& combatAbility);
 

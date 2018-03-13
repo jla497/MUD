@@ -35,6 +35,7 @@ class PlayerService {
 
     template <class Archive>
     void serialize(Archive &ar, const unsigned int version) {
+        (void)version;
         ar &nextPlayerId;
         ar &players;
         ar &playerIdByName;
@@ -45,15 +46,13 @@ class PlayerService {
 
   public:
     PlayerService();
-    boost::optional<Player &> getPlayerById(PlayerId playerId);
+    Player *getPlayerById(PlayerId playerId);
     PlayerId getPlayerIdByName(const UsernameType &username);
-    boost::optional<Player &>
-    getPlayerByConnection(networking::ConnectionId connectionId);
+    Player *getPlayerByConnection(networking::ConnectionId connectionId);
     networking::ConnectionId setPlayerConnection(PlayerId playerId);
     void setPlayerConnection(PlayerId playerId,
                              networking::ConnectionId connectionId);
-    boost::optional<Player &> identify(UsernameType username,
-                                       PasswordType password);
+    Player *identify(UsernameType username, PasswordType password);
     AddPlayerResult addPlayer(UsernameType username, PasswordType password);
 
     /**

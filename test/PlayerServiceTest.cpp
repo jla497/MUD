@@ -9,6 +9,7 @@ using namespace mudserver::persistence;
 class PlayerServiceTests : public testing::Test {
   protected:
     PlayerService ps;
+
   public:
     PlayerServiceTests() = default;
     virtual void SetUp() { ps = PlayerService{}; }
@@ -23,14 +24,15 @@ class PlayerServiceTests : public testing::Test {
     ASSERT_EQ(ps.addPlayer("jimbob", "hunter3"), AddPlayerResult::playerExists);
 
     playerResult = ps.identify("jimbob", "hunter2");
-    ASSERT_TRUE(playerResult);
+    ASSERT_TRUE(playerResult != nullptr);
     ASSERT_EQ(playerResult->getUsername(), "jimbob");
 }
 
 TEST_F(PlayerServiceTests, PasswordCheck) {
     ps.addPlayer("jimbob", "hunter2");
     ASSERT_FALSE(ps.identify("jimbob", "1337"));
-    ASSERT_EQ(ps.identify("jimbob", "hunter2")->getUsername(), "jimbob");
+    auto jimbob = ps.identify("jimbob", "hunter2");
+    ASSERT_EQ(jimbob->getUsername(), "jimbob");
 }
 
 TEST_F(PlayerServiceTests, PlayerConnectionUpdate) {
@@ -42,15 +44,13 @@ TEST_F(PlayerServiceTests, PlayerConnectionUpdate) {
     ASSERT_EQ(alsoJimbob->getConnectionId(), 42);
 }
 
-TEST_F(PlayerServiceTests, WriteReadPlayers)
-{
-	PersistenceService pss("config");
-	ps.addPlayer("jimbob", "hunter2");
-	pss.save(ps, "test.dat");
-	ps = pss.loadPlayerService("test.dat");
-	ASSERT_EQ(ps.identify("jimbob", "hunter2")->getUsername(), "jimbob");
+TEST_F(PlayerServiceTests, WriteReadPlayers) {
+    PersistenceService pss("config");
+    ps.addPlayer("jimbob", "hunter2");
+    pss.save(ps, "test.dat");
+    ps = pss.loadPlayerService("test.dat");
+    ASSERT_EQ(ps.identify("jimbob", "hunter2")->getUsername(), "jimbob");
 }
-
 
 TEST_F(PlayerServiceTests, CreatePlayerCharacter) {
     ps.addPlayer("jimbob", "hunter2");

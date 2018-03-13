@@ -5,16 +5,14 @@
 namespace pc = mudserver::resources::playercharacter;
 using namespace mudserver::gamemanager;
 
-boost::optional<Player &> PlayerService::identify(UsernameType username,
-                                                  PasswordType password) {
+Player *PlayerService::identify(UsernameType username, PasswordType password) {
     auto id = getPlayerIdByName(username);
     auto player = players.find(id);
 
-    if (player != players.end() && player->second.passwordEquals(password)) {
-        return player->second;
-    } else {
-        return boost::none;
+    if (player == players.end() || !player->second.passwordEquals(password)) {
+        return nullptr;
     }
+    return &player->second;
 }
 
 AddPlayerResult PlayerService::addPlayer(UsernameType username,
@@ -47,13 +45,13 @@ PlayerId PlayerService::getPlayerIdByName(const UsernameType &username) {
 }
 PlayerService::PlayerService() : nextPlayerId{1} {}
 
-boost::optional<Player &>
+Player *
 PlayerService::getPlayerByConnection(networking::ConnectionId connectionId) {
     auto idPair = playerIdByConnection.find(connectionId);
     if (idPair != playerIdByConnection.end()) {
-        return players.at(idPair->second);
+        return &players.at(idPair->second);
     } else {
-        return boost::none;
+        return nullptr;
     }
 }
 
@@ -108,12 +106,12 @@ networking::ConnectionId PlayerService::getPlayerConnection(PlayerId playerId) {
     return 0;
 }
 
-boost::optional<Player &> PlayerService::getPlayerById(PlayerId playerId) {
+Player *PlayerService::getPlayerById(PlayerId playerId) {
     auto playerPair = players.find(playerId);
     if (playerPair != players.end()) {
-        return playerPair->second;
+        return &playerPair->second;
     }
-    return boost::none;
+    return nullptr;
 }
 
 void PlayerService::updatePlayerCharacterMapping(PlayerId playerId,

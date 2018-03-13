@@ -10,8 +10,8 @@
 namespace mudserver {
 namespace persistence {
 
-using mudserver::gamemanager::PlayerService;
 using mudserver::gamemanager::GameState;
+using mudserver::gamemanager::PlayerService;
 
 class PersistenceService {
   private:

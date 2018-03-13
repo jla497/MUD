@@ -42,6 +42,6 @@ class EntityFactory {
     void modifyCharacter(CharacterEntity *entity, attributeMap map);
 };
 } // namespace gamemanager
-}
+} // namespace mudserver
 
 #endif

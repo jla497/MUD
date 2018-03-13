@@ -37,9 +37,7 @@ void PersistenceService::save(PlayerService &ps, std::string fileName) {
     }
 }
 
-void PersistenceService::save(PlayerService &ps) {
-    save(ps, PLAYERS_FILE);
-}
+void PersistenceService::save(PlayerService &ps) { save(ps, PLAYERS_FILE); }
 
 void PersistenceService::save(GameState &gs) {
     auto logger = logging::getLogger("PersistenceService::save()");

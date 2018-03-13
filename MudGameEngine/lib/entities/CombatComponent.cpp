@@ -13,7 +13,7 @@ CombatComponent::CombatComponent(int armor, int thac0, Roll m_damageRollData,
     this->m_currentHealth = this->m_maxHealth;
 }
 CombatComponent::CombatComponent() {
-	//TODO: use defaul values from config
+    // TODO: use default values from config
     this->m_combatState = CombatStates::NOT_FIGHTING;
     this->m_armor = 0;
     this->m_thac0 = 0;
@@ -37,9 +37,9 @@ void CombatComponent::setDamageRoll(Roll damageRollData) {
 }
 void CombatComponent::setHitRoll(Roll hitRollData) {
     this->m_hitRollData = hitRollData;
-    //recalculate health
+    // recalculate health
     this->m_maxHealth = CombatSimulation::calcRoll(m_hitRollData);
-    this->m_currentHealth = this->m_maxHealth;    
+    this->m_currentHealth = this->m_maxHealth;
 }
 CombatStates CombatComponent::getCombatState() const { return m_combatState; }
 void CombatComponent::engageCombatState() {
@@ -53,11 +53,10 @@ Roll CombatComponent::getHitRoll() const { return m_hitRollData; }
 int CombatComponent::getArmor() const { return m_armor; }
 int CombatComponent::getThac0() const { return m_thac0; }
 
-
 bool CombatComponent::damage(int damageAmount) {
-	if(damageAmount < 0){
-		heal(damageAmount*-1);
-	}
+    if (damageAmount < 0) {
+        heal(damageAmount * -1);
+    }
     m_currentHealth -= damageAmount;
     if (m_currentHealth <= 0) {
         m_currentHealth = 0;
@@ -68,15 +67,16 @@ bool CombatComponent::damage(int damageAmount) {
 }
 
 void CombatComponent::heal(int healAmount) {
-	if(healAmount < 0){
-		damage(healAmount*-1);
-	}
+    if (healAmount < 0) {
+        damage(healAmount * -1);
+    }
     m_currentHealth += healAmount;
     if (m_currentHealth > m_maxHealth) {
         m_currentHealth = m_maxHealth;
     }
 }
 
-std::string CombatComponent::getHealthDescription() const{
-	return std::to_string(m_currentHealth) + "/" + std::to_string(m_maxHealth) + "hp";
+std::string CombatComponent::getHealthDescription() const {
+    return std::to_string(m_currentHealth) + "/" + std::to_string(m_maxHealth) +
+           "hp";
 }

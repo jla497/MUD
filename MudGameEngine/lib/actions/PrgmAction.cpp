@@ -3,9 +3,9 @@
 
 #include "actions/PrgmAction.h"
 
-using boost::algorithm::to_lower;
-using boost::algorithm::join;
 using boost::algorithm::erase_all;
+using boost::algorithm::join;
+using boost::algorithm::to_lower;
 
 using namespace mudserver::resources::commands;
 using namespace mudserver::resources::playercharacter;

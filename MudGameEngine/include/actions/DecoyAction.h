@@ -4,7 +4,7 @@
 #include "Action.h"
 #include "gamemanager/GameManager.h"
 // #include "resources/UniqueId.h"
-#include <queue> 
+#include <queue>
 
 /**
  * The DecoyAction class defines the behavior for when an player casts
@@ -16,14 +16,13 @@
  */
 class DecoyAction : public Action {
 
-
   public:
     using Action::Action;
-    void execute_impl();
+    void execute_impl() override;
     DecoyAction *clone() override;
 
   private:
-  	UniqueId ourDecoyId; // bind the decoy made by this Action
+    UniqueId ourDecoyId; // bind the decoy made by this Action
 
   protected:
     std::string description() const override { return u8"Decoy action"; }
