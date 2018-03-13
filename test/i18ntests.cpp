@@ -12,6 +12,7 @@ TEST(I18nTest, EnglishWorks) {
 }
 
 TEST(I18nTest, SmurflangWorks) {
+	printf("");
 	ASSERT_STREQ(i18n::get(StrKey::ACTION_PROGRAM, LangKey::_TESTING_SMURF_).c_str(), "smurfprogram");
 }
 

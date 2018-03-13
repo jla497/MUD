@@ -47,9 +47,6 @@ static auto actionLookup = ([]() -> std::unordered_map<std::string, ActKeyword> 
         {i18n::get(StrKey::ACTION_CHARMOD), ActKeyword::charmod},
         {i18n::get(StrKey::ACTION_HALT), ActKeyword::halt},
         {i18n::get(StrKey::ACTION_SWAP), ActKeyword::swap}};
-    for (const auto &pair : ret) {
-        printf("");
-    }
     return ret;
 })();
 

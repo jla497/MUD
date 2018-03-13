@@ -37,8 +37,9 @@ enum class LangKey : int {
 
 	_TESTING_SMURF_,
 	_N_LANGS_,
-	_DEFAULT_LANG_ = EN_US,
-	_USE_APPROPRIATE_ //use whichever one is deemed to be appropriate
+	_USE_APPROPRIATE_, //use whichever one is deemed to be appropriate
+	//assigned keys must go last
+	_DEFAULT_LANG_ = EN_US
 };
 
 namespace i18n {
