@@ -16,30 +16,30 @@
  */
 
 enum class StrKey : int {
-	//put a space between groups
-	ACTION_UNDEFINED,
-	ACTION_SAY,
-	ACTION_LOOK,
-	ACTION_ATTACK,
-	ACTION_MOVE,
-	ACTION_PROGRAM,
-	ACTION_TIMED,
-	ACTION_SAVE,
-	ACTION_CHARMOD,
-	ACTION_HALT,
-	ACTION_SWAP,
+    // put a space between groups
+    ACTION_UNDEFINED,
+    ACTION_SAY,
+    ACTION_LOOK,
+    ACTION_ATTACK,
+    ACTION_MOVE,
+    ACTION_PROGRAM,
+    ACTION_TIMED,
+    ACTION_SAVE,
+    ACTION_CHARMOD,
+    ACTION_HALT,
+    ACTION_SWAP,
 
-	_N_STRINGS_
+    _N_STRINGS_
 };
 
 enum class LangKey : int {
-	EN_US,
+    EN_US,
 
-	_TESTING_SMURF_,
-	_N_LANGS_,
-	_USE_APPROPRIATE_, //use whichever one is deemed to be appropriate
-	//assigned keys must go last
-	_DEFAULT_LANG_ = EN_US
+    _TESTING_SMURF_,
+    _N_LANGS_,
+    _USE_APPROPRIATE_, // use whichever one is deemed to be appropriate
+    // assigned keys must go last
+    _DEFAULT_LANG_ = EN_US
 };
 
 namespace i18n {
@@ -47,4 +47,4 @@ constexpr const char *DEFAULT_STRING = "<MISSING_STRING>";
 
 void init();
 std::string get(StrKey str, LangKey lang = LangKey::_USE_APPROPRIATE_);
-}
+} // namespace i18n

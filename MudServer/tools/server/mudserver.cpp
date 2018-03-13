@@ -10,8 +10,8 @@
 #include "configparser/ConfigParser.h"
 #include "connectionmanager/ConnectionManager.h"
 #include "gamemanager/GameManager.h"
-#include "logging.h"
 #include "i18n/i18n.h"
+#include "logging.h"
 
 using networking::Port;
 
