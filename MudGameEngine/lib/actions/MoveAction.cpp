@@ -66,18 +66,17 @@ void MoveAction::execute_impl() {
             return;
         }
 
-        logger->info("got nextRoomId...");
         // get nextroom
         auto nextRoom = gameState.getRoomFromLUT(nextRoomId);
         // Room with nextRoomId does not exist
         if (!nextRoom) {
-            logger->warning("nextRoom is null...");
+            logger->error("nextRoom is null...");
             return;
         }
 
         std::string nextRoomIdStr("next room id: " +
                                   std::to_string(nextRoom->getId()));
-        logger->info(nextRoomIdStr);
+        logger->debug(nextRoomIdStr);
         // move the playerCharacter from the current room to the next room
         auto characterId = characterPerformingAction->getEntityId().getId();
 

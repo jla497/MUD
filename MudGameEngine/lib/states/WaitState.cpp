@@ -11,10 +11,7 @@ void WaitState::update() {
         auto character = state->getCharacterFromLUT(id);
         if (character->get_isPlayerCharacter()) {
             //            stateMachine.change("interact");
-            std::cout << "player's character entered the room. Switching to "
-                    "interactState..."
-                      << std::endl;
-            controller->setCmdString("say hi human");
+            controller->setCmdString("say hello");
             controller->change("interact");
         }
     }

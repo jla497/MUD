@@ -28,6 +28,7 @@ class CharacterController {
     Player *player;
     CharacterEntity *entity;
     std::string cmdString;
+    std::string argument;
 
   public:
     void init(GameState *state, CharacterEntity *entity, Player *plyer);
@@ -41,5 +42,7 @@ class CharacterController {
     CharacterEntity *getCharacter();
     void setCmdString(std::string cmd);
     std::string getCmdString();
+    void setArgument(std::string arg);
+    std::string getArgument();
 };
 #endif // ADVENTURE2018_CHARACTERCONTROLLER_H

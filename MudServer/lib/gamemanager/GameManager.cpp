@@ -220,7 +220,16 @@ void GameManager::sendCharacterMessage(UniqueId characterId,
     if (player) {
         auto conn = networking::Connection{player->getConnectionId()};
         enqueueMessage(conn, std::move(message));
+    }else{
+        //no player then try finding characterController
+        for(auto &controller : controllerQueue) {
+            auto character = controller->getCharacter();
+            if (character->getEntityId() == characterId) {
+                controller->setArgument(message);
+            }
+        }
     }
+
 }
 
 PlayerService &GameManager::getPlayerService() { return playerService; }

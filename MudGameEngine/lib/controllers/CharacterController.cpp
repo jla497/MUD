@@ -42,9 +42,22 @@ Player *CharacterController::getPlayer() { return player; }
 void CharacterController::setCharacter(CharacterEntity *ent) { entity = ent; }
 CharacterEntity *CharacterController::getCharacter() { return entity; }
 
-void CharacterController::setCmdString(std::string cmd) { cmdString = cmd; }
+void CharacterController::setCmdString(std::string cmd) {
+    cmdString = cmd;
+}
+
 std::string CharacterController::getCmdString() {
     auto res = cmdString;
     cmdString.clear();
+    return res;
+}
+
+void CharacterController::setArgument(std::string arg) {
+    argument = arg;
+}
+
+std::string CharacterController::getArgument() {
+    auto res = argument;
+    argument.clear();
     return res;
 }
