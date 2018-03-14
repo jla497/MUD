@@ -11,7 +11,8 @@ add_library(actions
 	PrgmAction.cpp
 	SaveAction.cpp
     TimedAction.cpp
-	HaltAction.cpp)
+	HaltAction.cpp
+	TakeAction.cpp)
 
 set_target_properties(actions
 	PROPERTIES
