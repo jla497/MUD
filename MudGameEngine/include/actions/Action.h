@@ -35,7 +35,7 @@ class Action {
            mudserver::gamemanager::GameManager &gameManager);
 
     Action(const Action&) = default;
-    Acton &operator=(const Action&) = default;
+    Action &operator=(const Action&) = default;
     Action(Action&&) = default;
     Action &operator=(Action&&) = default;
     virtual ~Action() = default;

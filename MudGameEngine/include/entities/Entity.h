@@ -21,7 +21,7 @@ class Entity {
     Entity(const Entity&) = default;
     Entity &operator=(const Entity&) = default;
     Entity(Entity&&) = default;
-    Entity &operator=(A&&) = default;
+    Entity &operator=(Entity&&) = default;
     virtual ~Entity() = default;
 
     UniqueId getEntityId() const;

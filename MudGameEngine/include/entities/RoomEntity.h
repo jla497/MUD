@@ -1,7 +1,10 @@
+
 #ifndef ROOM_ENTITY_H
 #define ROOM_ENTITY_H
 
 #include <map>
+
+#include <boost/optional.hpp>
 
 #include "DoorEntity.h"
 #include "Entity.h"
@@ -85,7 +88,7 @@ class RoomEntity : public Entity {
      */
     std::string removeEntity(unsigned int entityToRemove);
     void equipObject(ObjectEntity &object);
-    ObjectEntity *getObject(int id);
+    boost::optional<ObjectEntity> takeObject(int id);
     std::map<int, ObjectEntity> getObjects();
 };
 

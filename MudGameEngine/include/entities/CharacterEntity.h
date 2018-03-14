@@ -59,7 +59,7 @@ class CharacterEntity : public Entity {
     // Getters
     std::vector<std::string> getDesc() const;
     unsigned int getExp() const;
-    int getGold() const;    virtual ~Action() = default;
+    int getGold() const;
     unsigned int getTypeId() const;
     std::vector<std::string> getKeywords() const;
     unsigned int getLevel() const;

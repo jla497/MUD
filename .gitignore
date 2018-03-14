@@ -7,3 +7,4 @@ cmake-build-*/
 build/
 compile_commands.json
 warnings.txt
+config/test.dat
