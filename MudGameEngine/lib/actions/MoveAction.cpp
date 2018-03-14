@@ -88,7 +88,7 @@ void MoveAction::execute_impl() {
         gameState.addCharacterRoomRelationToLUT(mCharacterPtr->getEntityId(),
                                                 nextRoom->getId());
 
-        LookAction{playerPerformingAction, {}, gameManager, characterPerformingAction}.execute();
+        LookAction{controller, {}, gameManager}.execute();
 
         logger->debug("MoveAction complete...");
         return;

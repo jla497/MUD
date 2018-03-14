@@ -4,18 +4,19 @@
 #include "actions/Action.h"
 #include "gamemanager/GameManager.h"
 #include "logging.h"
+#include "controllers/CharacterController.h"
 
 // FIXME: this should possibly work on the enum keyword rather than the
 // description string
 std::unordered_map<std::string, bool> Action::isAdminAction = {
     {"Program action", true}, {"Save action", true}, {"Halt action", true}};
 
-Action::Action(Player &playerPerformingAction,
+Action::Action(CharacterController &controller,
                std::vector<std::string> actionArguments,
-               mudserver::gamemanager::GameManager &gameManager, CharacterEntity *charEntity)
-    : playerPerformingAction{playerPerformingAction},
+               mudserver::gamemanager::GameManager &gameManager)
+    : controller(controller), playerPerformingAction{*(controller.getPlayer())},
       actionArguments{std::move(actionArguments)}, gameManager{gameManager},
-characterPerformingAction(charEntity){}
+characterPerformingAction(controller.getCharacter()){}
 
 void Action::execute() {
     // check if this is an admin action

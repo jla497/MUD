@@ -24,6 +24,14 @@ void InteractState::update() {
     std::vector<std::string> tokens;
     //get sender's name
     boost::split(tokens, argString, boost::is_any_of(" "));
+    auto recipient = tokens[1];
+    auto mCharacterName = mCharacter->getShortDesc();
+    boost::algorithm::to_lower(mCharacterName);
+    //message not for this NPC
+    if( recipient != mCharacterName) {
+        return;
+    }
+
     auto senderName = tokens[0];
     boost::erase_all(senderName, ":");
 

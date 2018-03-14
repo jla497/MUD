@@ -6,7 +6,7 @@
 std::unordered_map<std::string, std::string> Dialogue::dialogueMap = {
         {"hey hello", "say hello"},
         {"who where from", "say I am %me" },
-        {"give stuff give things", "say you can't have my stuff"},
+        {"give stuff give things", "say you cant have my stuff"},
         {"idiot, stupid, dumb", "say kick your self"}
 };
 

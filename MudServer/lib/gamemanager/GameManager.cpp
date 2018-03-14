@@ -215,21 +215,18 @@ GameState &GameManager::getState() { return gameState; }
 
 void GameManager::sendCharacterMessage(UniqueId characterId,
                                        std::string message) {
-    auto playerId = playerService.characterToPlayer(characterId);
-    auto player = playerService.getPlayerById(playerId);
-    if (player) {
-        auto conn = networking::Connection{player->getConnectionId()};
-        enqueueMessage(conn, std::move(message));
-    }else{
-        //no player then try finding characterController
-        for(auto &controller : controllerQueue) {
-            auto character = controller->getCharacter();
-            if (character->getEntityId() == characterId) {
-                controller->setArgument(message);
+    for(auto &controller : controllerQueue) {
+        auto character = controller->getCharacter();
+        if (character->getEntityId() == characterId) {
+            controller->setArgument(message);
+
+            auto player = controller->getPlayer();
+            if(player) {
+                auto conn = networking::Connection{player->getConnectionId()};
+                enqueueMessage(conn, std::move(message));
             }
         }
     }
-
 }
 
 PlayerService &GameManager::getPlayerService() { return playerService; }
@@ -257,10 +254,8 @@ void GameManager::fetchCntrlCmds() {
         controller->update();
         auto msg = controller->getCmdString();
         if(!msg.empty()) {
-            auto player = controller->getPlayer();
-            auto character = controller->getCharacter();
             auto action =
-                    commandParser.actionFromPlayerCommand(*player, msg, *this, character);
+                    commandParser.actionFromPlayerCommand(*controller, msg, *this);
             enqueueAction(std::move(action));
         }
     }
