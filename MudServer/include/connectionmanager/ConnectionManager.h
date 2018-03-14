@@ -21,7 +21,8 @@ struct gameAndUserInterface {
 
 /*functor used in searches*/
 struct findGameAndUserInterface {
-    explicit findGameAndUserInterface(networking::Connection conn) : conn(conn) {}
+    explicit findGameAndUserInterface(networking::Connection conn)
+        : conn(conn) {}
 
     bool operator()(const gameAndUserInterface &conn) const {
         return this->conn.id == conn.conn.id;

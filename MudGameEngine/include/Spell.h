@@ -23,17 +23,23 @@ class Spell {
     unsigned int getMinLevel();
     std::string getName();
     int getDuration();
-    std::string getHitChar(const std::string &casterName, const std::string &victimName,
+    std::string getHitChar(const std::string &casterName,
+                           const std::string &victimName,
                            const std::string &victimGender);
-    std::string getHitRoom(const std::string &casterName, const std::string &victimName,
+    std::string getHitRoom(const std::string &casterName,
+                           const std::string &victimName,
                            const std::string &victimGender);
-    std::string getHitVict(const std::string &casterName, const std::string &victimName,
+    std::string getHitVict(const std::string &casterName,
+                           const std::string &victimName,
                            const std::string &victimGender);
-    std::string getMissRoom(const std::string &casterName, const std::string &victimName,
+    std::string getMissRoom(const std::string &casterName,
+                            const std::string &victimName,
                             const std::string &victimGender);
-    std::string getMissChar(const std::string &casterName, const std::string &victimName,
+    std::string getMissChar(const std::string &casterName,
+                            const std::string &victimName,
                             const std::string &victimGender);
-    std::string getMissVict(const std::string &casterName, const std::string &victimName,
+    std::string getMissVict(const std::string &casterName,
+                            const std::string &victimName,
                             const std::string &victimGender);
     std::string getDammsg();
     std::string getWearoff();

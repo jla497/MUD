@@ -34,10 +34,10 @@ class Action {
            std::vector<std::string> actionArguments,
            mudserver::gamemanager::GameManager &gameManager);
 
-    Action(const Action&) = default;
-    Action &operator=(const Action&) = default;
-    Action(Action&&) = default;
-    Action &operator=(Action&&) = default;
+    Action(const Action &) = default;
+    Action &operator=(const Action &) = default;
+    Action(Action &&) = default;
+    Action &operator=(Action &&) = default;
     virtual ~Action() = default;
 
     /**

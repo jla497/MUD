@@ -45,8 +45,8 @@ class Reset {
 
   public:
     Reset() = default;
-    Reset(int id, const std::string &action, const std::string &comment, const std::string &state,
-          int slot, int limit, int roomID);
+    Reset(int id, const std::string &action, const std::string &comment,
+          const std::string &state, int slot, int limit, int roomID);
 
     void execute(mudserver::gamemanager::GameState &state);
 

@@ -68,12 +68,12 @@ void RoomEntity::equipObject(ObjectEntity &object) {
 
 boost::optional<ObjectEntity> RoomEntity::takeObject(int id) {
     auto it = m_objects.find(id);
-	if (it == m_objects.end()) {
-		return {};
-	}
-	boost::optional<ObjectEntity> object{std::move(it->second)};
-	m_objects.erase(it);
-	return object;
+    if (it == m_objects.end()) {
+        return {};
+    }
+    boost::optional<ObjectEntity> object{std::move(it->second)};
+    m_objects.erase(it);
+    return object;
 }
 
 std::map<int, ObjectEntity> RoomEntity::getObjects() { return m_objects; };

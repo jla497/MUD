@@ -10,5 +10,5 @@
 #include "logging.h"
 
 std::unique_ptr<Action> SpellAction::clone() const {
-	return std::make_unique<SpellAction>(*this);
+    return std::make_unique<SpellAction>(*this);
 }

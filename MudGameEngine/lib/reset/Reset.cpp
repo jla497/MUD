@@ -12,8 +12,8 @@ std::unordered_map<std::string, Reset::ResetKeyword> Reset::resetLookUp = {
     {"equip", Reset::ResetKeyword::equip},
     {"give", Reset::ResetKeyword::give}};
 
-Reset::Reset(int id, const std::string &action, const std::string &comment, const std::string &state,
-             int slot, int limit, int roomID)
+Reset::Reset(int id, const std::string &action, const std::string &comment,
+             const std::string &state, int slot, int limit, int roomID)
     : id{id}, action{action}, comment{comment}, state{state}, slot{slot},
       limit{limit}, roomID{roomID} {}
 

@@ -4,8 +4,8 @@
 
 #include <cassert>
 
-#include "reset/ResetManager.h"
 #include "gamemanager/GameState.h"
+#include "reset/ResetManager.h"
 
 ResetManager::ResetManager(const std::vector<Reset> &resets) : resets(resets) {}
 
@@ -81,7 +81,7 @@ void ResetManager::addNpcsToRooms(std::vector<CharacterEntity> &entities,
         try {
             state->addCharacter(npc, roomId);
         } catch (const std::range_error &e) {
-            //TODO log it
+            // TODO log it
         }
     }
 }

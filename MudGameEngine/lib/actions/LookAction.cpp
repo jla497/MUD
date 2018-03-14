@@ -88,7 +88,9 @@ LookAction::getCharacterDescriptions(RoomEntity *characterCurrentRoom) {
         for (auto &obj : objects) {
             objDesc += obj.second.getShortDesc() + "\n";
         }
-        characterDescs.push_back(boost::str(boost::format{"%d: %s\n\t%s's objects: %s\n"} % chId % desc % desc % objDesc));
+        characterDescs.push_back(
+            boost::str(boost::format{"%d: %s\n\t%s's objects: %s\n"} % chId %
+                       desc % desc % objDesc));
     }
     std::string chDescs = join(characterDescs, " ");
     return chDescs;
