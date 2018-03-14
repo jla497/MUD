@@ -1,4 +1,3 @@
-
 #include <cassert>
 #include <sstream>
 #include <stdexcept>
@@ -68,10 +67,6 @@ void i18n::init() {
         }
         // TODO modify APPROPRIATE_LANG based on current locale
     }
-}
-
-std::string to_string(StrKey key) {
-    return std::to_string(static_cast<int>(key));
 }
 
 std::string i18n::get(StrKey str, LangKey lang) {
