@@ -76,21 +76,21 @@ std::vector<Spell> SpellParser::getAllSpells() const {
     for (auto &document : data) {
         for (auto &node : document[DEFENSE]) {
             spells.push_back(
-                parseSpell(node.second, Spell::SpellType::defense));
+                parseSpell(node, Spell::SpellType::defense));
         }
         for (auto &node : document[OFFENSE]) {
             spells.push_back(
-                parseSpell(node.second, Spell::SpellType::offense));
+                parseSpell(node, Spell::SpellType::offense));
         }
         for (auto &node : document[OBJECT]) {
-            spells.push_back(parseSpell(node.second, Spell::SpellType::object));
+            spells.push_back(parseSpell(node, Spell::SpellType::object));
         }
         for (auto &node : document[OTHER]) {
-            spells.push_back(parseSpell(node.second, Spell::SpellType::other));
+            spells.push_back(parseSpell(node, Spell::SpellType::other));
         }
         for (auto &node : document[PERSONAL]) {
             spells.push_back(
-                parseSpell(node.second, Spell::SpellType::personal));
+                parseSpell(node, Spell::SpellType::personal));
         }
     }
     return spells;

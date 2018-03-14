@@ -217,7 +217,7 @@ std::vector<ShopEntity> YamlParser::getAllShops() const {
     for (auto &document : data) {
         if (document[SHOPS_ENT]) {
             for (auto &node : document[SHOPS_ENT]) {
-                shops.push_back(parseShop(node.second));
+                shops.push_back(parseShop(node));
             }
         }
     }
@@ -230,7 +230,7 @@ std::deque<RoomEntity> YamlParser::getAllRooms() const {
     // iterate through all rooms in data and add them to list/vector of rooms
     for (auto &document : data) {
         for (auto &node : document[ROOMS_ENT]) {
-            rooms.push_back(parseRoom(node.second));
+            rooms.push_back(parseRoom(node));
         }
     }
     return rooms;
