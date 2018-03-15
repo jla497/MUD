@@ -1,5 +1,6 @@
 #include <boost/algorithm/string/join.hpp>
 #include <boost/format.hpp>
+#include <memory>
 #include <numeric>
 #include <sstream>
 #include <string>
@@ -12,7 +13,9 @@
 using boost::algorithm::join;
 // namespace actmess = mudserver::resources::actions;
 
-LookAction *LookAction::clone() { return new LookAction(*this); }
+std::unique_ptr<Action> LookAction::clone() const {
+    return std::make_unique<LookAction>(*this);
+}
 
 void LookAction::execute_impl() {
     static auto logger = mudserver::logging::getLogger("LookAction::execute");
@@ -85,8 +88,9 @@ LookAction::getCharacterDescriptions(RoomEntity *characterCurrentRoom) {
         for (auto &obj : objects) {
             objDesc += obj.second.getShortDesc() + "\n";
         }
-        characterDescs.push_back(chId + ": " + desc + "\n\t" + desc +
-                                 "'s objects: " + objDesc + "\n");
+        characterDescs.push_back(
+            boost::str(boost::format{"%d: %s\n\t%s's objects: %s\n"} % chId %
+                       desc % desc % objDesc));
     }
     std::string chDescs = join(characterDescs, " ");
     return chDescs;

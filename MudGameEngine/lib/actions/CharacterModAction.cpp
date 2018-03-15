@@ -9,8 +9,8 @@
 namespace com = mudserver::resources::commands;
 namespace mes = mudserver::resources::actions;
 
-CharacterModAction *CharacterModAction::clone() {
-    return new CharacterModAction(*this);
+std::unique_ptr<Action> CharacterModAction::clone() const {
+    return std::make_unique<CharacterModAction>(*this);
 }
 
 void CharacterModAction::execute_impl() {

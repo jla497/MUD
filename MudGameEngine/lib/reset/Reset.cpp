@@ -12,8 +12,8 @@ std::unordered_map<std::string, Reset::ResetKeyword> Reset::resetLookUp = {
     {"equip", Reset::ResetKeyword::equip},
     {"give", Reset::ResetKeyword::give}};
 
-Reset::Reset(int id, std::string action, std::string comment, std::string state,
-             int slot, int limit, int roomID)
+Reset::Reset(int id, const std::string &action, const std::string &comment,
+             const std::string &state, int slot, int limit, int roomID)
     : id{id}, action{action}, comment{comment}, state{state}, slot{slot},
       limit{limit}, roomID{roomID} {}
 
@@ -30,8 +30,8 @@ void Reset::resetNpc(mudserver::gamemanager::GameState &state) {
     auto npc = factory.buildNpc(id);
     try {
         state.addCharacter(npc, roomID);
-    } catch (std::exception e) {
-        logger->debug(e.what());
+    } catch (const std::range_error &e) {
+        logger->error(std::string{"resetNPC failed: "} + e.what());
     }
 }
 

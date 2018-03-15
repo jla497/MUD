@@ -2,8 +2,9 @@
 // Created by jla497 on 01/03/18.
 //
 
-#include "actions/TimedAction.h"
+#include <memory>
 
+#include "actions/TimedAction.h"
 #include "logging.h"
 
 // namespace actmess = mudserver::resources::actions;
@@ -16,4 +17,6 @@ void TimedAction::execute_impl() {
     logger->debug("kick yourself");
 }
 
-TimedAction *TimedAction::clone() { return new TimedAction(*this); }
+std::unique_ptr<Action> TimedAction::clone() const {
+    return std::make_unique<TimedAction>(*this);
+}

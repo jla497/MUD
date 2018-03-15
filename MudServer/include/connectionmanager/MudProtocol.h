@@ -11,20 +11,20 @@
 namespace mudserver {
 namespace connection {
 
-class MudProtocol : public Protocol {
+class MudProtocol final : public Protocol {
     std::string inBuffer;
     std::string broadcastBuffer;
-    unsigned int maxBufSize;
+    unsigned int maxBufSize{};
 
   public:
     MudProtocol();
-    MudProtocol(const unsigned int maxBuf);
+    explicit MudProtocol(const unsigned int maxBuf);
 
-    void receive(std::string str);
+    void receive(std::string str) override;
 
-    std::string send();
+    std::string send() override;
 
-    std::string broadcast(std::string);
+    std::string broadcast(std::string) override;
 };
 } // namespace connection
 } // namespace mudserver

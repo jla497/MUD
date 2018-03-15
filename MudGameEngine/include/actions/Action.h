@@ -12,6 +12,7 @@ class Player;
 #include "entities/Entity.h"
 #include "gamemanager/GameManager.h"
 #include "gamemanager/Player.h"
+#include <memory>
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -33,14 +34,19 @@ class Action {
            std::vector<std::string> actionArguments,
            mudserver::gamemanager::GameManager &gameManager);
 
+    Action(const Action &) = default;
+    Action &operator=(const Action &) = default;
+    Action(Action &&) = default;
+    Action &operator=(Action &&) = default;
+    virtual ~Action() = default;
+
     /**
      * Actions are designed to be placed in a queue. When the queue is
      * processed, execute() is called on the actions. As they have reference to
      * the game manager, they can alter state and send messages in this method.
      */
     void execute();
-    virtual ~Action() = default;
-    virtual Action *clone() = 0;
+    virtual std::unique_ptr<Action> clone() const = 0;
 
   private:
     virtual void execute_impl() = 0;
@@ -48,7 +54,7 @@ class Action {
 
   protected:
     virtual std::string description() const = 0;
-    CharacterEntity *characterPerformingAction;
+    CharacterEntity *characterPerformingAction = nullptr;
     Player &playerPerformingAction;
     std::vector<std::string> actionArguments;
     mudserver::gamemanager::GameManager &gameManager;
