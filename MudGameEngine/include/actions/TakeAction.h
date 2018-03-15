@@ -13,6 +13,9 @@ class TakeAction : public Action {
   	using Action::Action;
   	void execute_impl() override;
 
+  protected:
+  	std::string description() const override { return u8"Take action"; }
+  	TakeAction *clone() override; // need to change this...
 };
 
 #endif // TAKEACTION_H

@@ -38,6 +38,7 @@ enum class ActKeyword {
     charmod,
     halt,
     swap,
+    take,
 
     _N_ACTIONS_
 };

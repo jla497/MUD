@@ -21,6 +21,7 @@
 #include "actions/SayAction.h"
 #include "actions/SwapAction.h"
 #include "actions/TimedAction.h"
+#include "actions/TakeAction.h"
 #include "commandparser/CommandParser.h"
 #include "resources/commands.h"
 
@@ -43,7 +44,8 @@ static std::unordered_map<std::string, ActKeyword> actionLookup = { // NOLINT
     {SAVE, ActKeyword::save},
     {CHARMOD, ActKeyword::charmod},
     {HALT, ActKeyword::halt},
-    {SWAP, ActKeyword::swap}};
+    {SWAP, ActKeyword::swap},
+    {TAKE, ActKeyword::take}};
 
 using ActionGenerator = std::unique_ptr<Action> (*)(Player &,
                                                     std::vector<std::string> &,
@@ -71,7 +73,8 @@ const static std::map<ActKeyword, ActionGenerator> actionGenerators = {
     {ActKeyword::save, &generator<SaveAction>},
     {ActKeyword::charmod, &generator<CharacterModAction>},
     {ActKeyword::halt, &generator<HaltAction>},
-    {ActKeyword::swap, &generator<SwapAction>}};
+    {ActKeyword::swap, &generator<SwapAction>},
+    {ActKeyword::take, &generator<TakeAction>}};
 
 std::unique_ptr<Action>
 CommandParser::actionFromPlayerCommand(Player &player, StrView command,
