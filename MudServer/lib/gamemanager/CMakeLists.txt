@@ -22,7 +22,9 @@ add_library(gamemanager
     GameState.cpp
     Player.cpp
     LutBuilder.cpp
-    PlayerService.cpp ../../include/gamemanager/PlayerService.h)
+    PlayerService.cpp ../../include/gamemanager/PlayerService.h
+    sha256.c)
+
 
 # This program requires boost
 find_package(Boost 1.58 COMPONENTS system filesystem serialization REQUIRED)
