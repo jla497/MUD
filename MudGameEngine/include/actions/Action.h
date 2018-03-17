@@ -40,9 +40,9 @@ class Action {
      */
     void execute();
     virtual ~Action() = default;
-    virtual Action *clone() = 0;
-    // virtual std::unique_ptr<Action> clone() = 0;
-    
+    // virtual Action *clone() = 0;
+    virtual std::unique_ptr<Action> clone() = 0;
+
 
   private:
     virtual void execute_impl() = 0;
