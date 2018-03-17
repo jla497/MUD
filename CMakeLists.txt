@@ -30,5 +30,6 @@ add_subdirectory(MudServer)
 add_subdirectory(Client)
 add_subdirectory(Logging)
 add_subdirectory(test)
+add_subdirectory(locales)
 
 configure_file(config.yaml config.yaml COPYONLY)
