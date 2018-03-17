@@ -5,3 +5,6 @@ build*/
 cmake-build-*/
 *.swp
 build/
+compile_commands.json
+warnings.txt
+config/test.dat

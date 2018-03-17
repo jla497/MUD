@@ -19,7 +19,8 @@ bool SpellParser::loadYamlFile(const std::string &path) {
     return true;
 }
 
-Spell SpellParser::parseSpell(YAML::Node node, Spell::SpellType type) const {
+Spell SpellParser::parseSpell(const YAML::Node &node,
+                              Spell::SpellType type) const {
     Spell spell;
     if (node[EFFECT]) {
         spell.setEffect(parseString(node[EFFECT]));
@@ -74,10 +75,12 @@ std::vector<Spell> SpellParser::getAllSpells() const {
     std::vector<Spell> spells;
     for (auto &document : data) {
         for (auto &node : document[DEFENSE]) {
-            spells.push_back(parseSpell(node, Spell::SpellType::defense));
+            spells.push_back(
+                parseSpell(node, Spell::SpellType::defense));
         }
         for (auto &node : document[OFFENSE]) {
-            spells.push_back(parseSpell(node, Spell::SpellType::offense));
+            spells.push_back(
+                parseSpell(node, Spell::SpellType::offense));
         }
         for (auto &node : document[OBJECT]) {
             spells.push_back(parseSpell(node, Spell::SpellType::object));
@@ -86,7 +89,8 @@ std::vector<Spell> SpellParser::getAllSpells() const {
             spells.push_back(parseSpell(node, Spell::SpellType::other));
         }
         for (auto &node : document[PERSONAL]) {
-            spells.push_back(parseSpell(node, Spell::SpellType::personal));
+            spells.push_back(
+                parseSpell(node, Spell::SpellType::personal));
         }
     }
     return spells;

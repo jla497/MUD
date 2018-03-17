@@ -1,4 +1,6 @@
+
 #include <boost/algorithm/string.hpp>
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -8,7 +10,9 @@
 #include "gamemanager/GameManager.h"
 #include "logging.h"
 
-AttackAction *AttackAction::clone() { return new AttackAction(*this); }
+std::unique_ptr<Action> AttackAction::clone() const {
+    return std::make_unique<AttackAction>(*this);
+}
 
 class CombatComponent;
 class CharacterEntity;

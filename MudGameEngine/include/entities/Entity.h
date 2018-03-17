@@ -17,12 +17,14 @@ class Entity {
     UniqueId m_entityId{};
 
   public:
-    UniqueId getEntityId() const;
-
-    // default destructor does nothing
-    // if you make a virtual destructor, does compiler
-    // remove your default destructors?
+    Entity() = default;
+    Entity(const Entity &) = default;
+    Entity &operator=(const Entity &) = default;
+    Entity(Entity &&) = default;
+    Entity &operator=(Entity &&) = default;
     virtual ~Entity() = default;
+
+    UniqueId getEntityId() const;
 };
 
 #endif

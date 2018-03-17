@@ -16,7 +16,7 @@ class CharacterModAction : public Action {
     std::string description() const override {
         return u8"Character mod action";
     }
-    CharacterModAction *clone() override;
+    std::unique_ptr<Action> clone() const override;
     void showCharacterName(const CharacterEntity &character);
 };
 #endif // CHARACTERMODACTION_H
