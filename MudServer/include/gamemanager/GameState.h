@@ -44,6 +44,7 @@ class GameState {
     bimap<set_of<UniqueId>, list_of<roomId>> characterRoomLookUp;
     std::unordered_map<roomId, RoomEntity> roomLookUp;
     std::unordered_map<UniqueId, CharacterEntity, UniqueIdHash> characterLookUp;
+    std::map<spellName, Spell> spellLookUp;
     std::deque<AreaEntity> areas;
     YamlParser areaParser;
     AreaEntity area;
@@ -68,6 +69,7 @@ class GameState {
     void initRoomLUT();
     void addAreaFromParser();
 
+    void initSpellLUT();
     void parseSpellYamlFile(std::string filename);
     void addSpellsFromParser();
 
@@ -89,7 +91,7 @@ class GameState {
     EntityFactory &getFactory();
     void doReset();
 
-    Spell *getSpellByName(const std::string spellName);
+    Spell *getSpellByName(const spellName name);
     void killCharacter(const CharacterEntity &character);
 };
 

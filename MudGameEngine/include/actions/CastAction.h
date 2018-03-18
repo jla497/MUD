@@ -1,11 +1,11 @@
-#ifndef SPELLACTION_H
-#define SPELLACTION_H
+#ifndef CASTACTION_H
+#define CASTACTION_H
 
 #include "Action.h"
 #include "Spell.h"
 #include "gamemanager/GameManager.h"
 
-class SpellAction : public Action {
+class CastAction : public Action {
 
   public:
     using Action::Action;
@@ -14,7 +14,7 @@ class SpellAction : public Action {
 private:
   void executeModSpell(Spell spell);
   protected:
-    std::string description() const override { return u8"Spell action"; }
+    std::string description() const override { return u8"Cast action"; }
 }
 
 #endif

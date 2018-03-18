@@ -5,6 +5,7 @@
 #include <deque>
 #include <memory>
 #include <unordered_map>
+#include <string>
 
 #include "Player.h"
 #include "UniqueId.h"
@@ -15,11 +16,14 @@
 #include "entities/ObjectEntity.h"
 #include "entities/RoomEntity.h"
 #include "entities/ShopEntity.h"
+#include "Spell.h"
 namespace mudserver {
 namespace gamemanager {
 
 using roomId = unsigned int;
 using Id = unsigned int;
+using spellName = std::string;
+
 class LutBuilder {
   public:
     std::map<Id, CharacterEntity>
@@ -28,6 +32,8 @@ class LutBuilder {
     createObjectLUT(std::vector<ObjectEntity> &mVector);
     std::unordered_map<roomId, RoomEntity>
     createLUT(std::deque<RoomEntity> &mVector);
+    std::map<spellName, Spell> 
+    createSpellLUT(std::vector<Spell> &mVector);
 };
 
 } // namespace gamemanager

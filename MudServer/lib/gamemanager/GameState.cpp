@@ -24,6 +24,7 @@ void GameState::initFromYaml(std::vector<std::string> areaFilenames,
         parseSpellYamlFile(std::move(spellFilename));
         addSpellsFromParser();
     }
+    initSpellLUT();
 
     factory = std::unique_ptr<EntityFactory>(areaParser.makeFactory());
     factory->init();
@@ -39,6 +40,13 @@ void GameState::initRoomLUT() {
         LutBuilder lutBuilder;
         roomLookUp = lutBuilder.createLUT(rooms);
     }
+}
+
+void GameState::initSpellLUT() {
+    parseSpellYamlFile();
+    addSpellsFromParser();
+    LutBuilder lutBuilder;
+    spellLookUp = lutBuilder.createSpellLUT(spells);
 }
 
 void GameState::parseSpellYamlFile(std::string filename) {
@@ -151,12 +159,9 @@ void GameState::doReset() {
     resetManager.applyResets(this);
 }
 
-Spell *GameState::getSpellByName(const std::string spellName) {
-    auto foundSpell =
-        std::find_if(spells.begin(), spells.end(), [spellName](Spell &tmp) {
-            return tmp.getName() == spellName;
-        });
-    return foundSpell != spells.end() ? &*foundSpell : nullptr;
+Spell *GameState::getSpellByName(const spellName name) {
+    auto foundSpell = spellLookUp.find(name);
+    return foundSpell != spellLookUp.end() ? &foundSpell->second : nullptr;
 }
 
 void GameState::killCharacter(const CharacterEntity &character) {

@@ -30,5 +30,25 @@ LutBuilder::createObjectLUT(std::vector<ObjectEntity> &objects) {
     }
     return map;
 }
+
+std::map<spellName, Spell>
+LutBuilder::createSpellLUT(std::vector<Spell> &spells) {
+    std::map<spellName, Spells> map;
+    Spell swapSpell;
+    swapSpell.setName("body swap");
+    swapSpell.setType(swap);
+    map[swapSpell.getName()] = swapSpell;
+
+    Spell decoySpell;
+    decoySpell.setName("decoy");
+    decoySpell.setType(decoy);
+    map[decoySpell.getName()] = decoySpell;
+    
+    for (auto &spell : spells) {
+        map[spell.getName()] = spell;
+    }
+    return map;
+}
+
 } // namespace gamemanager
 } // namespace mudserver
