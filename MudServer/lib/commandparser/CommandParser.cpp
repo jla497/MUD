@@ -63,6 +63,24 @@ std::unique_ptr<Action> generator(Player &player,
     return std::make_unique<T>(player, args, manager);
 };
 
+template<typename T, typename = std::enable_if<std::is_enum<T>::value>>
+bool operator>=(T a, T b) {
+    using U = typename std::underlying_type<T>::type;
+    return static_cast<U>(a) >= static_cast<U>(b);
+}
+
+AliasReturnCode registerCommandalias(ActKeyword keyword, const std::string &alias) {
+    if (keyword >= ActKeyword::_N_ACTIONS_) {
+        return AliasReturnCode::INVALID_KEYWORD;
+    }
+    auto it = actionLookup.find(alias);
+    if (it != actionLookup.end()) {
+        return AliasReturnCode::ALIAS_EXISTS;
+    }
+	actionLookup.emplace(alias, keyword);
+    return AliasReturnCode::SUCCESS;
+}
+
 // FIXME: this should be an unordered_map, but some people don't have a
 // std::hash  specialization for enums in their old gcc/glibc
 const static std::map<ActKeyword, ActionGenerator> actionGenerators =
