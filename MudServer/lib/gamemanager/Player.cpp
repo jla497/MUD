@@ -5,9 +5,9 @@ extern "C" {
 }
 namespace mudserver {
 namespace gamemanager {
-
+std::string sha256str(std::string str);
 Player::Player(PlayerId id, std::string username, std::string password)
-    : id{id}, username{std::move(username)}, password{std::move(password)},
+    : id{id}, username{std::move(username)}, password{sha256str(password)},
       connectionId{0}, character{nullptr} {}
 
 PlayerId Player::getId() const { return id; }
