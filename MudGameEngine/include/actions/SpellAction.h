@@ -1,5 +1,5 @@
-#ifndef CASTACTION_H
-#define CASTACTION_H
+#ifndef SPELLACTION_H
+#define SPELLACTION_H
 
 #include "Action.h"
 #include "Spell.h"
@@ -12,8 +12,7 @@ class CastAction : public Action {
     void execute_impl() override;
 
 private:
-  void executeDefenseSpell(Spell spell);
-  void executeOffenseSpell(Spell spell);
+  void executeModSpell(Spell spell);
   protected:
     std::string description() const override { return u8"Cast action"; }
 }

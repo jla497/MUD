@@ -15,6 +15,15 @@ class Spell {
         other
     };
 
+    struct DisplayMessages {
+		std::string hitchar = "";
+    	std::string hitroom = "";
+    	std::string hitvict = "";
+    	std::string missroom = "";
+    	std::string misscharm = "";
+    	std::string missvict = "";
+	};
+
     Spell();
 
     // getters
@@ -23,18 +32,11 @@ class Spell {
     unsigned int getMinLevel();
     std::string getName();
     int getDuration();
-    std::string getHitChar(std::string casterName, std::string victimName,
+
+    //returns the display messages with correctly formatted strings
+    DisplayMessages getDisplayMessages(std::string casterName, std::string victimName,
                            std::string victimGender);
-    std::string getHitRoom(std::string casterName, std::string victimName,
-                           std::string victimGender);
-    std::string getHitVict(std::string casterName, std::string victimName,
-                           std::string victimGender);
-    std::string getMissRoom(std::string casterName, std::string victimName,
-                            std::string victimGender);
-    std::string getMissChar(std::string casterName, std::string victimName,
-                            std::string victimGender);
-    std::string getMissVict(std::string casterName, std::string victimName,
-                            std::string victimGender);
+
     std::string getDammsg();
     std::string getWearoff();
     std::string getImmchar();
@@ -47,12 +49,7 @@ class Spell {
     void setMinLevel(unsigned int minlevel);
     void setName(std::string name);
     void setDuration(int duration);
-    void setHitChar(std::string hitchar);
-    void setHitRoom(std::string hitroom);
-    void setHitVict(std::string hitvict);
-    void setMissRoom(std::string missroom);
-    void setMissChar(std::string misschar);
-    void setMissVict(std::string missvict);
+    void setDisplayMessages(DisplayMessages messages);
     void setDammsg(std::string dammsg);
     void setWearoff(std::string wearoff);
     void setImmchar(std::string immchar);
@@ -78,17 +75,12 @@ class Spell {
     unsigned int minlevel;
     std::string name;
     int duration;
-    std::string hitchar;
-    std::string hitroom;
-    std::string hitvict;
-    std::string missroom;
-    std::string misschar;
-    std::string missvict;
     std::string dammsg;
     std::string wearoff;
     std::string immchar;
     std::string damage;
     Spell::SpellType type;
+    DisplayMessages messages;
 
     static const int EFFECT_QUOTE_POSITION =
         7; // the quote position that precedes the heal/damage formula in effect

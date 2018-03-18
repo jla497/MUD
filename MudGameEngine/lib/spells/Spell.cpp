@@ -11,12 +11,6 @@ Spell::Spell() {
     name = "";
     duration = -1; // need to signify that if there's no duration, spell will
                    // last (FIXME in future)
-    hitchar = "";
-    hitroom = "";
-    hitvict = "";
-    missroom = "";
-    misschar = "";
-    missvict = "";
     dammsg = "";
     wearoff = "";
     immchar = "";
@@ -33,46 +27,16 @@ std::string Spell::getName() { return name; }
 
 int Spell::getDuration() { return duration; }
 
-std::string Spell::getHitChar(std::string casterName, std::string victimName,
+DisplayMessages Spell::getDisplayMessages(std::string casterName, std::string victimName,
                               std::string victimGender) {
-    std::string modifiedString =
-        formatUserDisplayStrings(hitchar, casterName, victimName, victimGender);
-    return modifiedString;
-}
-
-std::string Spell::getHitRoom(std::string casterName, std::string victimName,
-                              std::string victimGender) {
-    std::string modifiedString =
-        formatUserDisplayStrings(hitroom, casterName, victimName, victimGender);
-    return modifiedString;
-}
-
-std::string Spell::getHitVict(std::string casterName, std::string victimName,
-                              std::string victimGender) {
-    std::string modifiedString =
-        formatUserDisplayStrings(hitvict, casterName, victimName, victimGender);
-    return modifiedString;
-}
-
-std::string Spell::getMissRoom(std::string casterName, std::string victimName,
-                               std::string victimGender) {
-    std::string modifiedString = formatUserDisplayStrings(
-        missroom, casterName, victimName, victimGender);
-    return modifiedString;
-}
-
-std::string Spell::getMissChar(std::string casterName, std::string victimName,
-                               std::string victimGender) {
-    std::string modifiedString = formatUserDisplayStrings(
-        misschar, casterName, victimName, victimGender);
-    return modifiedString;
-}
-
-std::string Spell::getMissVict(std::string casterName, std::string victimName,
-                               std::string victimGender) {
-    std::string modifiedString = formatUserDisplayStrings(
-        missvict, casterName, victimName, victimGender);
-    return modifiedString;
+	DisplayMessages modifiedMessages;
+	modifiedMessages.hitchar = formatUserDisplayStrings(hitchar, casterName, victimName, victimGender);
+	modifiedMessages.hitroom = formatUserDisplayStrings(hitchar, casterName, victimName, victimGender);
+	modifiedMessages.hitvict = formatUserDisplayStrings(hitchar, casterName, victimName, victimGender);
+	modifiedMessages.misschar = formatUserDisplayStrings(hitchar, casterName, victimName, victimGender);
+	modifiedMessages.missroom = formatUserDisplayStrings(hitchar, casterName, victimName, victimGender);
+	modifiedMessages.missvict = formatUserDisplayStrings(hitchar, casterName, victimName, victimGender);
+	return modifiedMessages;
 }
 
 std::string Spell::getDammsg() { return dammsg; }
@@ -93,19 +57,16 @@ void Spell::setMinLevel(unsigned int minlevel) { this->minlevel = minlevel; }
 
 void Spell::setName(std::string name) { this->name = name; }
 
+void Spell::setDisplayMessages(DisplayMessages messages) {
+	this->messages.hitchar = messages.hitchar;
+	this->messages.hitroom = messages.hitroom;
+	this->messages.hitvict = messages.hitvict;
+	this->messages.missroom = messages.missroom;
+	this->messages.misschar = messages.misschar;
+	this->messages.missvict = messages.missvict;
+}
+
 void Spell::setDuration(int duration) { this->duration = duration; }
-
-void Spell::setHitChar(std::string hitchar) { this->hitchar = hitchar; }
-
-void Spell::setHitRoom(std::string hitroom) { this->hitroom = hitroom; }
-
-void Spell::setHitVict(std::string hitvict) { this->hitvict = hitvict; }
-
-void Spell::setMissRoom(std::string missroom) { this->missroom = missroom; }
-
-void Spell::setMissChar(std::string misschar) { this->misschar = misschar; }
-
-void Spell::setMissVict(std::string missvict) { this->missvict = missvict; }
 
 void Spell::setDammsg(std::string dammsg) { this->dammsg = dammsg; }
 

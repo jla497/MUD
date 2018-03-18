@@ -36,24 +36,28 @@ Spell SpellParser::parseSpell(YAML::Node node, Spell::SpellType type) const {
     if (node[DURATION]) {
         spell.setDuration(parseInt(node[DURATION]));
     }
+
+    DisplayMessages messages;
     if (node[HITCHAR]) {
-        spell.setHitChar(parseString(node[HITCHAR]));
+        messages.hitchar = parseString(node[HITCHAR]);
     }
     if (node[HITROOM]) {
-        spell.setHitRoom(parseString(node[HITROOM]));
+        messages.hitroom = parseString(node[HITROOM]);
     }
     if (node[HITVICT]) {
-        spell.setHitVict(parseString(node[HITVICT]));
+        messages.hitvict = parseString(node[HITVICT]);
     }
     if (node[MISSROOM]) {
-        spell.setMissRoom(parseString(node[MISSROOM]));
+        messages.missroom = parseString(node[MISSROOM]);
     }
     if (node[MISSCHAR]) {
-        spell.setMissChar(parseString(node[MISSCHAR]));
+        messages.misschar = parseString(node[MISSCHAR]);
     }
     if (node[MISSVICT]) {
-        spell.setMissVict(parseString(node[MISSVICT]));
+        messages.missvict = parseString(node[MISSVICT]);
     }
+    spell.setDisplayMessages(messages);
+    
     if (node[DAMMSG]) {
         spell.setDammsg(parseString(node[DAMMSG]));
     }

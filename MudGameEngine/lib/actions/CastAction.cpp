@@ -90,4 +90,20 @@ void CastAction::execute_impl() {
 //    }
 //}
 
+void CastAction::executeDefenseSpell(Spell spell) {
+	CombatComponent *combatComponent = characterPerformingAction.getCombatComponent();
+	charLevel = characterPerformingAction.getLevel();
+	charMana = characterPerformingAction.getMana();
+	if (spell.isEnoughMana(charMana) 
+		&& spell.isCharacterValidLevel(charLevel)) {
+
+		int healAmount = spell.calculateSpellEffect(charLevel);
+		combatComponent->heal(healAmount);
+	}
+}
+
+void CastAction::executeOffenseSpell(Spell spell) {
+
+}
+
 CastAction *CastAction::clone() { return new CastAction(*this); }
