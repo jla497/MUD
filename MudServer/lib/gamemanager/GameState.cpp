@@ -160,7 +160,7 @@ void GameState::doReset() {
 }
 
 Spell *GameState::getSpellByName(const spellName name) {
-    auto foundSpell = spellLookUp.find(name);
+    auto foundSpell = spellLookUp.find(boost::to_lower_copy(name));
     return foundSpell != spellLookUp.end() ? &foundSpell->second : nullptr;
 }
 

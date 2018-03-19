@@ -1,5 +1,6 @@
 
 #include "gamemanager/LutBuilder.h"
+#include <boost/algorithm/string.hpp>
 
 namespace mudserver {
 namespace gamemanager {
@@ -45,7 +46,7 @@ LutBuilder::createSpellLUT(std::vector<Spell> &spells) {
     map[decoySpell.getName()] = decoySpell;
     
     for (auto &spell : spells) {
-        map[spell.getName()] = spell;
+        map[boost::to_lower_copy(spell.getName())] = spell;
     }
     return map;
 }
