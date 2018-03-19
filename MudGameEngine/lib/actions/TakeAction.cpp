@@ -30,22 +30,22 @@ void TakeAction::execute_impl() {
     	auto nameOfObject = join(actionArguments, " ");    	
     	logger->debug("Trying to move " + nameOfObject + " to inventory");
 
-    	// // get object from room by name 
-    	// // TODO: method to take object by name
-    	// boost::optional<ObjectEntity> objectToTake = nullptr;
-    	// // if object is null, return error msg to players
-    	// if (objectToTake) {
-	    // 	// add to character's onjects
-	    // 	// characterPerformingAction.addObject(objectToTake);    		
-	    // 	gameManager.sendCharacterMessage<(
-    	// 		characterPerformingAction->getEntityId(),
-    	// 		"Object " + nameOfObject + " found in room");
-    	// } else {
-    	// 	gameManager.sendCharacterMessage<(
-    	// 		characterPerformingAction->getEntityId(),
-    	// 		"Object " + nameOfObject + " not found in room");
+    	// get object from room by name 
+    	// TODO: method to take object by name
+    	boost::optional<ObjectEntity> objectToTake = boost::none;
+    	// if object is null, return error msg to players
+    	if (objectToTake) {
+	    	// add to character's onjects
+	    	// characterPerformingAction.addObject(objectToTake);    		
+	    	gameManager.sendCharacterMessage(
+    			characterPerformingAction->getEntityId(),
+    			"Object found in room");
+    	} else {
+    		gameManager.sendCharacterMessage(
+    			characterPerformingAction->getEntityId(),
+    			"Object not found in room");
     		 
-    	// }
+    	}
 
     } else {
     	// error that you need to try and take something
