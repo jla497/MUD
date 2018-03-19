@@ -34,15 +34,15 @@ LutBuilder::createObjectLUT(std::vector<ObjectEntity> &objects) {
 
 std::map<spellName, Spell>
 LutBuilder::createSpellLUT(std::vector<Spell> &spells) {
-    std::map<spellName, Spells> map;
+    std::map<spellName, Spell> map;
     Spell swapSpell;
     swapSpell.setName("body swap");
-    swapSpell.setType(swap);
+    swapSpell.setType(Spell::SpellType::swap);
     map[swapSpell.getName()] = swapSpell;
 
     Spell decoySpell;
     decoySpell.setName("decoy");
-    decoySpell.setType(decoy);
+    decoySpell.setType(Spell::SpellType::decoy);
     map[decoySpell.getName()] = decoySpell;
     
     for (auto &spell : spells) {

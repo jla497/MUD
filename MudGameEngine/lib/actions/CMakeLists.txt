@@ -7,7 +7,7 @@ add_library(actions
 	AttackAction.cpp
 	NullAction.cpp
 	LookAction.cpp
-	SwapAction.cpp
+	CastAction.cpp
 	PrgmAction.cpp
 	SaveAction.cpp
     TimedAction.cpp

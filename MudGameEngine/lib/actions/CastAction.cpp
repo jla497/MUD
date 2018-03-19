@@ -1,14 +1,13 @@
 #include <boost/algorithm/string.hpp>
 #include <string>
 #include <vector>
+#include <memory>
 
-#include "actions/AttackAction.h"
-#include "gamemanager/GameManager.h"
+#include "actions/CastAction.h"
 #include "logging.h"
 
 
-//@Aram: I dont know how much you've implemented but this is roughly what I think could work in pseudocode.
-// 
+
 void CastAction::execute_impl() {
 	static auto logger = mudserver::logging::getLogger("SpellAction::execute");
 	auto &gameState = gameManager.getState();
@@ -27,19 +26,22 @@ void CastAction::execute_impl() {
         return;
     }
 
+    std::string spellName = "";
+    //vector containing character name that was passed in by player as argument:
+	std::vector<std::string> characterArg;
+	CharacterEntity *victim;
+
 	if (actionArguments.size() == 1) {
 		//spell name is only one word, player did not provide a character name as an arg
 		//get name of spell:
-		auto spellName = boost::to_lower_copy(actionArguments.at(0));
+		spellName = boost::to_lower_copy(actionArguments.at(0));
 	} else {
 		/*if the action arguments have more than 1 element, then:
 		1. Spell name is more than one word
 		2. Spell has another character's name as the last argument
 		*/
+
 		std::string lastElement = actionArguments.at(actionArguments.size() - 1);
-		//vector containing character name that was passed in by player as argument:
-		std::vector<std::string> characterArg;
-		CharacterEntity *victim = nullptr;
 		
 		//get all characters in room
 		auto allCharIdsInCurrentRoom = gameState.getCharactersInRoom(characterCurrentRoom);
@@ -48,7 +50,7 @@ void CastAction::execute_impl() {
 		if (!allCharIdsInCurrentRoom.empty()) {
 			for (auto characterID : allCharIdsInCurrentRoom) {
 				auto currentChar = gameState.getCharacterFromLUT(characterID);
-				auto currentCharShortDesc = currentChar.getShortDesc();
+				auto currentCharShortDesc = currentChar->getShortDesc();
 				if (boost::to_lower_copy(currentCharShortDesc) == boost::to_lower_copy(lastElement)) {
 					characterArg.push_back(currentCharShortDesc);
 					victim = currentChar;
@@ -58,7 +60,11 @@ void CastAction::execute_impl() {
 
 		if (characterArg.empty()) {
 			std::string joined = boost::algorithm::join(actionArguments, " ");
-			auto spellName = boost::to_lower_copy(joined);
+			spellName = boost::to_lower_copy(joined);
+		} else {
+			actionArguments.erase(actionArguments.end());
+			std::string joined = boost::algorithm::join(actionArguments, " ");
+			spellName = boost::to_lower_copy(joined);
 		}
 	}
 
@@ -74,20 +80,32 @@ void CastAction::execute_impl() {
 	}
 
 	//find type of spell
-	auto spellType = spell.getType();
+	auto spellType = spell->getType();
 
 	switch(spellType) {
-		case SpellType::defense:
-			executeDefenseSpell(spell);
-		case SpellType::offense:
-			executeOffenseSpell(spell, victim);
-		case SpellType::swap:
-			std::unique_pointer<SwapAction> swapAction = std::make_unique<SwapAction>(playerPerformingAction, characterArg, gameManager);
-			swapAction->execute();
+		case Spell::SpellType::defense:
+			executeDefenseSpell(*spell);
+		case Spell::SpellType::offense:
+			if (!victim) {
+				executeOffenseSpell(*spell, *victim);
+			} else {
+				logger->error("Victim is either not in the room or victim name is invalid...");
+				gameManager.sendCharacterMessage(
+					characterPerformingAction->getEntityId(),
+					"Victim is either not in the room or victim name is invalid...");
+		}
+			
+		case Spell::SpellType::swap:
+			{
+				SwapAction swapAction{playerPerformingAction, characterArg, gameManager};
+				swapAction.execute();
+			}	
 			break;
-		case SpellType::decoy:
-			std::unique_pointer<DecoyAction> decoyAction = std::make_unique<DecoyAction>(playerPerformingAction, actionArguments, gameManager);
-			decoyAction->execute();
+		case Spell::SpellType::decoy:
+			{
+				DecoyAction decoyAction{playerPerformingAction, actionArguments, gameManager};
+				decoyAction.execute();
+			}
 			break;
 		default:
 			logger->error("Not a valid spell...");
@@ -99,36 +117,30 @@ void CastAction::execute_impl() {
 	}
 }
 
-void CastAction::executeDefenseSpell(Spell spell) {
-	CombatComponent *combatComponent = characterPerformingAction.getCombatComponent();
-	charLevel = characterPerformingAction.getLevel();
-	charMana = characterPerformingAction.getMana();
+void CastAction::executeDefenseSpell(Spell &spell) {
+	CombatComponent *combatComponent = characterPerformingAction->getCombatComponent();
+	auto charLevel = characterPerformingAction->getLevel();
+	auto charMana = characterPerformingAction->getMana();
 	if (spell.isEnoughMana(charMana) 
 		&& spell.isCharacterValidLevel(charLevel)) {
-		int healAmount = spell.calculateSpellEffect(charLevel);
+		auto healAmount = spell.calculateSpellEffect(charLevel);
 		combatComponent->heal(healAmount);
 	}
 }
 
-void CastAction::executeOffenseSpell(Spell spell, CharacterEntity &victim) {
-	if (!victim) {
-		CombatComponent *combatComponent = victim->getCombatComponent();
-		charLevel = characterPerformingAction.getLevel();
-		charMana = characterPerformingAction.getMana();
-		if (spell.isEnoughMana(charMana) 
-			&& spell.isCharacterValidLevel(charLevel)) {
-			int dmgAmount = spell.calculateDamage(charLevel);
-			if(combatComponent->damage(dmgAmount)) {
-				//character was killed;
-				gameState.killCharacter(victim);
-			}
+void CastAction::executeOffenseSpell(Spell &spell, CharacterEntity &victim) {
+	auto &gameState = gameManager.getState();
+	CombatComponent *combatComponent = victim.getCombatComponent();
+	auto charLevel = characterPerformingAction->getLevel();
+	auto charMana = characterPerformingAction->getMana();
+	if (spell.isEnoughMana(charMana) 
+		&& spell.isCharacterValidLevel(charLevel)) {
+		auto dmgAmount = spell.calculateDamage(charLevel);
+		if(combatComponent->damage(dmgAmount)) {
+			//character was killed;
+			gameState.killCharacter(victim);
 		}
-	} else {
-		logger->error("Victim is either not in the room or victim name is invalid...");
-			gameManager.sendCharacterMessage(
-				characterPerformingAction->getEntityId(),
-				"Victim is either not in the room or victim name is invalid...");
-		}
+	}
 }
 
 CastAction *CastAction::clone() { return new CastAction(*this); }

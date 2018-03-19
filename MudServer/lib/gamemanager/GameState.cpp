@@ -1,4 +1,5 @@
 #include <boost/format.hpp>
+#include <boost/algorithm/string.hpp>
 #include <iostream>
 #include <memory>
 
@@ -43,8 +44,6 @@ void GameState::initRoomLUT() {
 }
 
 void GameState::initSpellLUT() {
-    parseSpellYamlFile();
-    addSpellsFromParser();
     LutBuilder lutBuilder;
     spellLookUp = lutBuilder.createSpellLUT(spells);
 }

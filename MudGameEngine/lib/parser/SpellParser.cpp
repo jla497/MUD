@@ -37,7 +37,7 @@ Spell SpellParser::parseSpell(YAML::Node node, Spell::SpellType type) const {
         spell.setDuration(parseInt(node[DURATION]));
     }
 
-    DisplayMessages messages;
+    Spell::DisplayMessages messages;
     if (node[HITCHAR]) {
         messages.hitchar = parseString(node[HITCHAR]);
     }

@@ -27,15 +27,15 @@ std::string Spell::getName() { return name; }
 
 int Spell::getDuration() { return duration; }
 
-DisplayMessages Spell::getDisplayMessages(std::string casterName, std::string victimName,
+Spell::DisplayMessages Spell::getDisplayMessages(std::string casterName, std::string victimName,
                               std::string victimGender) {
-	DisplayMessages modifiedMessages;
-	modifiedMessages.hitchar = formatUserDisplayStrings(hitchar, casterName, victimName, victimGender);
-	modifiedMessages.hitroom = formatUserDisplayStrings(hitchar, casterName, victimName, victimGender);
-	modifiedMessages.hitvict = formatUserDisplayStrings(hitchar, casterName, victimName, victimGender);
-	modifiedMessages.misschar = formatUserDisplayStrings(hitchar, casterName, victimName, victimGender);
-	modifiedMessages.missroom = formatUserDisplayStrings(hitchar, casterName, victimName, victimGender);
-	modifiedMessages.missvict = formatUserDisplayStrings(hitchar, casterName, victimName, victimGender);
+	Spell::DisplayMessages modifiedMessages;
+	modifiedMessages.hitchar = formatUserDisplayStrings(messages.hitchar, casterName, victimName, victimGender);
+	modifiedMessages.hitroom = formatUserDisplayStrings(messages.hitroom, casterName, victimName, victimGender);
+	modifiedMessages.hitvict = formatUserDisplayStrings(messages.hitvict, casterName, victimName, victimGender);
+	modifiedMessages.misschar = formatUserDisplayStrings(messages.misschar, casterName, victimName, victimGender);
+	modifiedMessages.missroom = formatUserDisplayStrings(messages.missroom, casterName, victimName, victimGender);
+	modifiedMessages.missvict = formatUserDisplayStrings(messages.missvict, casterName, victimName, victimGender);
 	return modifiedMessages;
 }
 
@@ -57,7 +57,7 @@ void Spell::setMinLevel(unsigned int minlevel) { this->minlevel = minlevel; }
 
 void Spell::setName(std::string name) { this->name = name; }
 
-void Spell::setDisplayMessages(DisplayMessages messages) {
+void Spell::setDisplayMessages(Spell::DisplayMessages messages) {
 	this->messages.hitchar = messages.hitchar;
 	this->messages.hitroom = messages.hitroom;
 	this->messages.hitvict = messages.hitvict;

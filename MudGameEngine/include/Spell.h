@@ -20,7 +20,7 @@ class Spell {
     	std::string hitroom = "";
     	std::string hitvict = "";
     	std::string missroom = "";
-    	std::string misscharm = "";
+    	std::string misschar = "";
     	std::string missvict = "";
 	};
 
