@@ -51,6 +51,8 @@ std::vector<std::string> CharacterEntity::getLongDesc() const {
 
 std::string CharacterEntity::getShortDesc() const { return m_shortDesc; }
 
+int CharacterEntity::getMana() const { return m_mana; }
+
 void CharacterEntity::addGold(unsigned int amount) { m_gold += amount; }
 
 void CharacterEntity::subtractGold(unsigned int amount) { m_gold -= amount; }

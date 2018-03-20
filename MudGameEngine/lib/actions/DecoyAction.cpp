@@ -60,3 +60,5 @@ void DecoyAction::execute_impl() {
         // decoy exists and will keep existing for this tick
     }
 }
+
+DecoyAction *DecoyAction::clone() { return new DecoyAction(*this); }

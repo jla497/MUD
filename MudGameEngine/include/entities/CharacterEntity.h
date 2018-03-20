@@ -29,6 +29,7 @@ class CharacterEntity : public Entity {
         ar &m_longDesc;
         ar &m_shortDesc;
         ar &combatComponent;
+        ar &m_mana;
     }
 
     std::vector<std::string> m_desc;
@@ -40,6 +41,7 @@ class CharacterEntity : public Entity {
     std::vector<std::string> m_longDesc;
     std::string m_shortDesc;
     std::map<int, ObjectEntity> m_objects;
+    int m_mana;
 
     CombatComponent combatComponent;
 
