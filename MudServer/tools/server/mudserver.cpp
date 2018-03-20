@@ -5,14 +5,17 @@
 #include <memory>
 #include <sstream>
 #include <unistd.h>
+#include <unordered_map>
 
 #include "Server.h"
+#include "commandparser/CommandParser.h"
 #include "configparser/ConfigParser.h"
 #include "connectionmanager/ConnectionManager.h"
 #include "gamemanager/GameManager.h"
 #include "logging.h"
 
 using networking::Port;
+using namespace mudserver::commandparser;
 
 int main(int argc, char *argv[]) {
     if (argc < 2) {

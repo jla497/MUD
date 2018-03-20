@@ -1,0 +1,13 @@
+
+requires_admin:
+    undefined: false
+    say: false
+    look: false
+    attack: false
+    move: false
+    program: true
+    timed: false
+    save: false
+    charmod: false
+    halt: true
+    swap: true

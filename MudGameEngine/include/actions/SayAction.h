@@ -11,6 +11,9 @@
 class SayAction : public Action {
   public:
     using Action::Action;
+
+    SayAction() = default;
+
     void execute_impl() override;
     std::unique_ptr<Action> clone() const override;
 

@@ -1,3 +1,4 @@
+
 cmake_minimum_required(VERSION 3.2)
 project(MudServer)
 
@@ -21,3 +22,4 @@ add_subdirectory(lib)
 add_subdirectory(tools)
 add_subdirectory(test)
 
+configure_file(admin.yml admin.yml COPYONLY)

@@ -48,6 +48,8 @@ class Action {
     void execute();
     virtual std::unique_ptr<Action> clone() const = 0;
 
+    static void registerAdminActions(const std::string &file);
+
   private:
     virtual void execute_impl() = 0;
     friend std::ostream &operator<<(std::ostream &os, const Action &action);

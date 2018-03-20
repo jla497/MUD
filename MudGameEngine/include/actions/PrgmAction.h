@@ -38,6 +38,8 @@ class PrgmAction : public Action {
     };
 
   public:
+    PrgmAction() = default;
+
     class PrgmParser {
 
         using OptValMap = std::unordered_map<std::string, std::string>;

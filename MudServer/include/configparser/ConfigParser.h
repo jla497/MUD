@@ -19,6 +19,7 @@ struct ConfigData {
     std::vector<std::string> spells;
     std::string configDir;
     std::string url;
+    std::string adminFile;
 };
 
 boost::optional<ConfigData> parseConfigFile(std::string filePath);

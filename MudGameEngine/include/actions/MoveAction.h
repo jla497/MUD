@@ -17,6 +17,9 @@ class MoveAction : public Action {
 
   public:
     using Action::Action;
+
+    MoveAction() = default;
+
     void execute_impl() override;
     std::unique_ptr<Action> clone() const override;
 

@@ -10,6 +10,9 @@ class SpellAction : public Action {
 
   public:
     using Action::Action;
+
+    SpellAction() = default;
+
     void execute() override;
     std::unique_ptr<Action> clone() const override;
 
