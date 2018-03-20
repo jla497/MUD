@@ -10,7 +10,7 @@ class SpellParser {
     std::vector<YAML::Node> data; // holds all data nodes
     bool is_loaded = false;
 
-    Spell parseSpell(YAML::Node node, Spell::SpellType type) const;
+    Spell parseSpell(const YAML::Node &node, Spell::SpellType type) const;
 
   public:
     // loads the YAML file into data (std::vector of YAML nodes)

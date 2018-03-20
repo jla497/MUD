@@ -6,7 +6,9 @@
 #include "actions/CastAction.h"
 #include "logging.h"
 
-
+std::unique_ptr<Action> CastAction::clone() const {
+    return std::make_unique<CastAction>(*this);
+}
 
 void CastAction::execute_impl() {
 	static auto logger = mudserver::logging::getLogger("SpellAction::execute");

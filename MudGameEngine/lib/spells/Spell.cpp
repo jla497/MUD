@@ -27,6 +27,7 @@ std::string Spell::getName() { return name; }
 
 int Spell::getDuration() { return duration; }
 
+
 Spell::DisplayMessages Spell::getDisplayMessages(std::string casterName, std::string victimName,
                               std::string victimGender) {
 	Spell::DisplayMessages modifiedMessages;
@@ -49,13 +50,13 @@ std::string Spell::getDamage() { return damage; }
 
 Spell::SpellType Spell::getType() { return type; }
 
-void Spell::setEffect(std::string effect) { this->effect = effect; }
+void Spell::setEffect(const std::string &effect) { this->effect = effect; }
 
 void Spell::setMana(int mana) { this->mana = mana; }
 
 void Spell::setMinLevel(unsigned int minlevel) { this->minlevel = minlevel; }
 
-void Spell::setName(std::string name) { this->name = name; }
+void Spell::setName(const std::string &name) { this->name = name; }
 
 void Spell::setDisplayMessages(Spell::DisplayMessages messages) {
 	this->messages.hitchar = messages.hitchar;
@@ -68,20 +69,20 @@ void Spell::setDisplayMessages(Spell::DisplayMessages messages) {
 
 void Spell::setDuration(int duration) { this->duration = duration; }
 
-void Spell::setDammsg(std::string dammsg) { this->dammsg = dammsg; }
+void Spell::setDammsg(const std::string &dammsg) { this->dammsg = dammsg; }
 
-void Spell::setWearoff(std::string wearoff) { this->wearoff = wearoff; }
+void Spell::setWearoff(const std::string &wearoff) { this->wearoff = wearoff; }
 
-void Spell::setImmchar(std::string immchar) { this->immchar = immchar; }
+void Spell::setImmchar(const std::string &immchar) { this->immchar = immchar; }
 
-void Spell::setDamage(std::string damage) { this->damage = damage; }
+void Spell::setDamage(const std::string &damage) { this->damage = damage; }
 
 void Spell::setType(Spell::SpellType type) { this->type = type; }
 
-std::string Spell::formatUserDisplayStrings(std::string displayString,
-                                            std::string casterName,
-                                            std::string victimName,
-                                            std::string victimGender) {
+std::string Spell::formatUserDisplayStrings(const std::string &displayString,
+                                            const std::string &casterName,
+                                            const std::string &victimName,
+                                            const std::string &victimGender) {
     std::string modifiedString = displayString;
     if (casterName.length() > 0) {
         boost::replace_all(modifiedString, "$n", casterName);
@@ -114,7 +115,7 @@ size_t Spell::findNthQuoteInEffects(size_t position, size_t nth) {
     if (effect.length() <= position) {
         return std::string::npos;
     }
-    size_t found_position = effect.find("'", position);
+    size_t found_position = effect.find('\'', position);
     if (nth == 0 || nth == 1 || found_position == std::string::npos) {
         return found_position;
     } else {
@@ -123,10 +124,8 @@ size_t Spell::findNthQuoteInEffects(size_t position, size_t nth) {
 }
 
 std::string Spell::getEffectsFormula() {
-    size_t start = std::string::npos;
-    size_t end = std::string::npos;
-    start = findNthQuoteInEffects(0, EFFECT_QUOTE_POSITION);
-    end = findNthQuoteInEffects(0, EFFECT_QUOTE_POSITION + 1);
+    size_t start = findNthQuoteInEffects(0, EFFECT_QUOTE_POSITION);
+    size_t end = findNthQuoteInEffects(0, EFFECT_QUOTE_POSITION + 1);
     if (start != std::string::npos && end != std::string::npos) {
         return effect.substr(start + 1, end - start - 1);
     } else {
@@ -158,17 +157,7 @@ int Spell::calculateDamage(unsigned int characterLevel) {
 }
 
 bool Spell::isCharacterValidLevel(unsigned int characterLevel) {
-    if (minlevel <= characterLevel) {
-        return true;
-    } else {
-        return false;
-    }
+    return minlevel <= characterLevel;
 }
 
-bool Spell::isEnoughMana(int characterMana) {
-    if (mana <= characterMana) {
-        return true;
-    } else {
-        return false;
-    }
-}
+bool Spell::isEnoughMana(int characterMana) { return mana <= characterMana; }

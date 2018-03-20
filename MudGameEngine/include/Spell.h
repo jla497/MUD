@@ -44,10 +44,10 @@ class Spell {
     Spell::SpellType getType();
 
     // setters
-    void setEffect(std::string effect);
+    void setEffect(const std::string &effect);
     void setMana(int mana);
     void setMinLevel(unsigned int minlevel);
-    void setName(std::string name);
+    void setName(const std::string &name);
     void setDuration(int duration);
     void setDisplayMessages(DisplayMessages messages);
     void setDammsg(std::string dammsg);
@@ -71,26 +71,26 @@ class Spell {
 
   private:
     std::string effect;
-    int mana;
-    unsigned int minlevel;
+    int mana{};
+    unsigned int minlevel{};
     std::string name;
-    int duration;
+    int duration{};
     std::string dammsg;
     std::string wearoff;
     std::string immchar;
     std::string damage;
-    Spell::SpellType type;
     DisplayMessages messages;
+    Spell::SpellType type = SpellType::other;
 
     static const int EFFECT_QUOTE_POSITION =
         7; // the quote position that precedes the heal/damage formula in effect
 
     // replaces string formatting specification symbols with character
     // information to display to player
-    std::string formatUserDisplayStrings(std::string displayString,
-                                         std::string casterName,
-                                         std::string victimName,
-                                         std::string victimGender);
+    std::string formatUserDisplayStrings(const std::string &displayString,
+                                         const std::string &casterName,
+                                         const std::string &victimName,
+                                         const std::string &victimGender);
 
     // finds the substring in the third column of Effect that contains formula
     // for heal/damage

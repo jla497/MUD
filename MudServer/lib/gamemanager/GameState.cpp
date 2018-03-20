@@ -1,7 +1,9 @@
+
 #include <boost/format.hpp>
 #include <boost/algorithm/string.hpp>
 #include <iostream>
 #include <memory>
+#include <stdexcept>
 
 #include "gamemanager/GameState.h"
 #include "logging.h"
@@ -88,7 +90,7 @@ void GameState::addCharacter(CharacterEntity &character, Id roomID) {
     if (roomIt != roomLookUp.end()) {
         addCharacterRoomRelationToLUT(id, roomIt->second.getId());
     } else {
-        throw "couldn't add character to room";
+        throw std::range_error("requested room does not exist");
     }
 }
 
