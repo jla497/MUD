@@ -9,6 +9,7 @@
 #include "entities/CharacterEntity.h"
 #include "gamemanager/Player.h"
 #include <unordered_map>
+#include <queue>
 
 class IState;
 namespace mudserver {
@@ -25,10 +26,10 @@ class CharacterController {
   protected:
     std::unordered_map<std::string, IState *> stateDict{};
     IState *current = nullptr;
-    Player *player;
-    CharacterEntity *entity;
-    std::string cmdString;
-    std::string argument;
+    Player *player = nullptr;
+    CharacterEntity *entity = nullptr;
+    std::queue<std::string> cmdStrings;
+    std::queue<std::string> messages;
 
   public:
     void init(GameState *state, CharacterEntity *entity, Player *plyer);
@@ -42,7 +43,8 @@ class CharacterController {
     CharacterEntity *getCharacter();
     void setCmdString(std::string cmd);
     std::string getCmdString();
-    void setArgument(std::string arg);
-    std::string getArgument();
+    void setMsg(std::string arg);
+    std::string getMsg();
+    std::queue<std::string> getAllMsgs();
 };
 #endif // ADVENTURE2018_CHARACTERCONTROLLER_H

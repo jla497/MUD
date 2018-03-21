@@ -10,7 +10,7 @@ void WaitState::update() {
     for (auto id : chIds) {
         auto character = state->getCharacterFromLUT(id);
         if (character->get_isPlayerCharacter()) {
-            //            stateMachine.change("interact");
+
             controller->setCmdString("say hello");
             controller->change("interact");
         }

@@ -218,12 +218,14 @@ void GameManager::sendCharacterMessage(UniqueId characterId,
     for(auto &controller : controllerQueue) {
         auto character = controller->getCharacter();
         if (character->getEntityId() == characterId) {
-            controller->setArgument(message);
 
             auto player = controller->getPlayer();
-            if(player) {
+            if(player != nullptr) {
                 auto conn = networking::Connection{player->getConnectionId()};
                 enqueueMessage(conn, std::move(message));
+            }else {
+                controller->setMsg(message);
+
             }
         }
     }

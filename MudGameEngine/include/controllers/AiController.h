@@ -13,6 +13,8 @@ class AiController : public CharacterController {
 
   public:
     using CharacterController::CharacterController;
+    void init(GameState *state, CharacterEntity *ent,
+              Player *plyer);
     void update() override;
 };
 
