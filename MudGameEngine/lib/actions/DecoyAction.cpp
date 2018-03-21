@@ -68,4 +68,3 @@ void DecoyAction::execute_impl() {
     }
 }
 
-DecoyAction *DecoyAction::clone() { return new DecoyAction(*this); }

@@ -50,10 +50,10 @@ class Spell {
     void setName(const std::string &name);
     void setDuration(int duration);
     void setDisplayMessages(DisplayMessages messages);
-    void setDammsg(std::string dammsg);
-    void setWearoff(std::string wearoff);
-    void setImmchar(std::string immchar);
-    void setDamage(std::string damage);
+    void setDammsg(const std::string &dammsg);
+    void setWearoff(const std::string &wearoff);
+    void setImmchar(const std::string &immchar);
+    void setDamage(const std::string &damage);
     void setType(Spell::SpellType type);
 
     // calculates the amount of damage or healing the spell will perform

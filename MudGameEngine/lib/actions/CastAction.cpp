@@ -144,5 +144,3 @@ void CastAction::executeOffenseSpell(Spell &spell, CharacterEntity &victim) {
 		}
 	}
 }
-
-CastAction *CastAction::clone() { return new CastAction(*this); }
