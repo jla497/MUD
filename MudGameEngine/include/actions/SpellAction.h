@@ -18,6 +18,6 @@ class SpellAction : public Action {
 
   protected:
     std::string description() const override { return u8"Spell action"; }
-}
+};
 
 #endif
