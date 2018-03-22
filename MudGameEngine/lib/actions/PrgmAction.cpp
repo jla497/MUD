@@ -43,7 +43,7 @@ void PrgmAction::execute_impl() {
 
     if (actionArguments.empty()) {
         logger->error("Not a valid Program command...");
-        gameManager.sendCharacterMessage(
+        gameManager->sendCharacterMessage(
             characterPerformingAction->getEntityId(),
             "Not a valid Program command...");
         return;
@@ -60,13 +60,13 @@ void PrgmAction::prgmNpc() {
     try {
         auto map = parser.parseOptValPairs(actionArguments);
         if (map.find(CHELP) != map.end()) {
-            gameManager.sendCharacterMessage(characterID, map[CHELP]);
+            gameManager->sendCharacterMessage(characterID, map[CHELP]);
             return;
         }
 
         if (map.find(MODIFY) != map.end()) {
 
-            auto &state = gameManager.getState();
+            auto &state = gameManager->getState();
             auto id = stoi(map.find(MODIFY)->second);
             auto character = state.getCharacterFromLUT(UniqueId{id});
             if (character == nullptr) {
@@ -78,8 +78,8 @@ void PrgmAction::prgmNpc() {
         }
 
     } catch (std::exception &e) {
-        gameManager.sendCharacterMessage(characterID,
-                                         "error parsing program options");
+        gameManager->sendCharacterMessage(characterID,
+                                          "error parsing program options");
         logger->debug("error parsing program options");
     }
 }

@@ -20,7 +20,7 @@ void AttackAction::execute_impl() {
     static auto logger = mudserver::logging::getLogger("AttackAction::execute");
 
     // get gamestate
-    auto &gameState = gameManager.getState();
+    auto &gameState = gameManager->getState();
 
     // get character who is attacking
     auto characterWhoIsAttacking = characterPerformingAction;
@@ -45,8 +45,8 @@ void AttackAction::execute_impl() {
     auto attackingCharactersUniqueId = characterWhoIsAttacking->getEntityId();
     if (actionArguments.empty()) {
         // user did not pass an attack target
-        gameManager.sendCharacterMessage(attackingCharactersUniqueId,
-                                         "Attack what?");
+        gameManager->sendCharacterMessage(attackingCharactersUniqueId,
+                                          "Attack what?");
         logger->info("No Target found");
         return;
     }
@@ -65,14 +65,14 @@ void AttackAction::execute_impl() {
             // calculate and apply attack effects
             characterWhoIsAttacking->getCombatComponent()->prepareToAttack();
             CombatSimulation::resolveCombatRound(*characterWhoIsAttacking,
-                                                 *currentEntity, gameManager);
+                                                 *currentEntity, *gameManager);
 
             // log hp of target
             logger->info(
                 nameOfAttackTarget + ": " +
                 currentEntity->getCombatComponent()->getHealthDescription());
             // display the targets hp to the attacker
-            gameManager.sendCharacterMessage(
+            gameManager->sendCharacterMessage(
                 attackingCharactersUniqueId,
                 nameOfAttackTarget + ": " +
                     currentEntity->getCombatComponent()
@@ -84,7 +84,7 @@ void AttackAction::execute_impl() {
 
     // if we didnt find the target tell the attacker
     logger->info("No Target found");
-    gameManager.sendCharacterMessage(attackingCharactersUniqueId,
-                                     "Attack failed: could not find " +
-                                         nameOfAttackTarget);
+    gameManager->sendCharacterMessage(attackingCharactersUniqueId,
+                                      "Attack failed: could not find " +
+                                          nameOfAttackTarget);
 }

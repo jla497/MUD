@@ -10,17 +10,6 @@
 #include <boost/algorithm/string.hpp>
 #include <boost/tokenizer.hpp>
 
-#include "actions/AttackAction.h"
-#include "actions/CharacterModAction.h"
-#include "actions/HaltAction.h"
-#include "actions/LookAction.h"
-#include "actions/MoveAction.h"
-#include "actions/NullAction.h"
-#include "actions/PrgmAction.h"
-#include "actions/SaveAction.h"
-#include "actions/SayAction.h"
-#include "actions/SwapAction.h"
-#include "actions/TimedAction.h"
 #include "commandparser/CommandParser.h"
 #include "resources/commands.h"
 
@@ -32,46 +21,27 @@ using boost::algorithm::to_lower_copy;
 
 using namespace resources::commands;
 
-static std::unordered_map<std::string, ActKeyword> actionLookup = { // NOLINT
-    {UNDEFINED, ActKeyword::undefined},
-    {SAY, ActKeyword::say},
-    {LOOK, ActKeyword::look},
-    {ATTACK, ActKeyword::attack},
-    {MOVE, ActKeyword::move},
-    {PROGRAM, ActKeyword::program},
-    {TIMED, ActKeyword::timed},
-    {SAVE, ActKeyword::save},
-    {CHARMOD, ActKeyword::charmod},
-    {HALT, ActKeyword::halt},
-    {SWAP, ActKeyword::swap}};
-
-using ActionGenerator = std::unique_ptr<Action> (*)(Player &,
-                                                    std::vector<std::string> &,
-                                                    gamemanager::GameManager &);
-
-template <typename T,
-          typename = std::enable_if<std::is_base_of<Action, T>::value>>
-std::unique_ptr<Action> generator(Player &player,
-                                  std::vector<std::string> &args,
-                                  gamemanager::GameManager &manager) {
-    return std::make_unique<T>(player, args, manager);
-};
-
-// FIXME: this should be an unordered_map, but some people don't have a
-// std::hash  specialization for enums in their old gcc/glibc
-const static std::map<ActKeyword, ActionGenerator> actionGenerators = {
-    // NOLINT
-    {ActKeyword::undefined, &generator<NullAction>},
-    {ActKeyword::say, &generator<SayAction>},
-    {ActKeyword::look, &generator<LookAction>},
-    {ActKeyword::attack, &generator<AttackAction>},
-    {ActKeyword::move, &generator<MoveAction>},
-    {ActKeyword::program, &generator<PrgmAction>},
-    {ActKeyword::timed, &generator<TimedAction>},
-    {ActKeyword::save, &generator<SaveAction>},
-    {ActKeyword::charmod, &generator<CharacterModAction>},
-    {ActKeyword::halt, &generator<HaltAction>},
-    {ActKeyword::swap, &generator<SwapAction>}};
+static auto actionLookup =
+    ([]() -> std::unordered_map<std::string, ActKeyword> { // NOLINT
+        std::unordered_map<std::string, ActKeyword> ret{
+            {UNDEFINED, ActKeyword::undefined},
+            {SAY, ActKeyword::say},
+            {LOOK, ActKeyword::look},
+            {ATTACK, ActKeyword::attack},
+            {MOVE, ActKeyword::move},
+            {PROGRAM, ActKeyword::program},
+            {TIMED, ActKeyword::timed},
+            {SAVE, ActKeyword::save},
+            {CHARMOD, ActKeyword::charmod},
+            {HALT, ActKeyword::halt},
+            {SWAP, ActKeyword::swap}};
+        if (ret.size() != static_cast<std::size_t>(ActKeyword::_N_ACTIONS_)) {
+            std::cerr << "You've added an ActKeyword but not added it to the "
+                         "map in commandparser.cpp. Fix it. Terminating.\n";
+            std::terminate();
+        }
+        return ret;
+    })();
 
 std::unique_ptr<Action>
 CommandParser::actionFromPlayerCommand(Player &player, StrView command,
@@ -90,8 +60,8 @@ CommandParser::actionFromPlayerCommand(Player &player, StrView command,
                                 ? ActKeyword::undefined
                                 : actionTypeIter->second;
 
-    return actionGenerators.at(actionType)(player, remainderOfTokens,
-                                           gameManager);
+    return Action::base(actionType)
+        ->clone(player, remainderOfTokens, gameManager);
 }
 
 std::pair<UsernameType, PasswordType>

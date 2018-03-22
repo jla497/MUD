@@ -20,7 +20,7 @@ void MoveAction::execute_impl() {
     // combat  unless they use some sort of flee spell)
     // if(characterPerformingAction->getCombatComponent()->getCombatState() ==
     // CombatStates::FIGHTING){
-    //     gameManager.sendCharacterMessage(
+    //     gameManager->sendCharacterMessage(
     //         characterPerformingAction->getEntityId(),
     //         "You cannot leave the room, you are in Combat!");
     //     return;
@@ -31,7 +31,7 @@ void MoveAction::execute_impl() {
         std::to_string(characterPerformingAction->getEntityId().getId()));
     logger->info(userinfo);
 
-    auto &gameState = gameManager.getState();
+    auto &gameState = gameManager->getState();
     RoomEntity *room =
         gameState.getCharacterLocation(*characterPerformingAction);
 
@@ -44,7 +44,7 @@ void MoveAction::execute_impl() {
 
     if (actionArguments.empty()) {
         logger->error("Not a valid move command...");
-        gameManager.sendCharacterMessage(
+        gameManager->sendCharacterMessage(
             characterPerformingAction->getEntityId(),
             "Not a valid move command...");
         return;
@@ -93,7 +93,9 @@ void MoveAction::execute_impl() {
         gameState.addCharacterRoomRelationToLUT(mCharacterPtr->getEntityId(),
                                                 nextRoom->getId());
 
-        LookAction{playerPerformingAction, {}, gameManager}.execute();
+        Action::base(ActKeyword::look)
+            ->clone(*playerPerformingAction, {}, *gameManager)
+            ->execute();
 
         logger->debug("MoveAction complete...");
         return;

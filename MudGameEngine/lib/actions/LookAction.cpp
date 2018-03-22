@@ -20,7 +20,7 @@ std::unique_ptr<Action> LookAction::clone() const {
 void LookAction::execute_impl() {
     static auto logger = mudserver::logging::getLogger("LookAction::execute");
 
-    auto &gameState = gameManager.getState();
+    auto &gameState = gameManager->getState();
 
     // get the room the player is in
     // TODO: Feel like this error checking could be rolled into the
@@ -46,7 +46,7 @@ void LookAction::execute_impl() {
         std::string roomDescs = join(roomDesc, " ");
         std::string roomExits = join(roomDirs, " ");
 
-        gameManager.sendCharacterMessage(
+        gameManager->sendCharacterMessage(
             characterPerformingAction->getEntityId(),
             boost::str(
                 boost::format{"%s: %s\n%s: %s\n%s: %s\n%s:\n %s\n%s:\n %s"} %
@@ -59,12 +59,12 @@ void LookAction::execute_impl() {
         // character
         // TODO: look at object
         // Can you look at players?
-        gameManager.sendCharacterMessage(
+        gameManager->sendCharacterMessage(
             characterPerformingAction->getEntityId(),
             "looked at object " + actionArguments.front());
     } else {
         // too many objects to look at, error message to player
-        gameManager.sendCharacterMessage(
+        gameManager->sendCharacterMessage(
             characterPerformingAction->getEntityId(),
             "Please type /'look/' or /'look <object>/'");
     }
@@ -74,7 +74,7 @@ std::string
 LookAction::getCharacterDescriptions(RoomEntity *characterCurrentRoom) {
     // TODO: when you look at a room the characters longdescs should be
     // displayed
-    auto &gameState = gameManager.getState();
+    auto &gameState = gameManager->getState();
     auto characterIds = gameState.getCharactersInRoom(characterCurrentRoom);
     std::vector<std::string> characterDescs{};
     std::vector<std::string> objectDescs{};

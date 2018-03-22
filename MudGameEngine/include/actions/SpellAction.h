@@ -13,7 +13,7 @@ class SpellAction : public Action {
 
     SpellAction() = default;
 
-    void execute() override;
+    void execute();
     std::unique_ptr<Action> clone() const override;
 
   protected:

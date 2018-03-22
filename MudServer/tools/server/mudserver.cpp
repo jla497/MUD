@@ -30,6 +30,8 @@ int main(int argc, char *argv[]) {
 
         mudserver::logging::setLogLevel(mudserver::logging::LogLevel::debug);
 
+        Action::registerAdminActions(configData->adminFile);
+
         mudserver::connection::ConnectionManager connectionManager{
             configData->serverPort};
 

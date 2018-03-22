@@ -7,7 +7,7 @@ requires_admin:
     move: false
     program: true
     timed: false
-    save: false
+    save: true
     charmod: false
     halt: true
     swap: true

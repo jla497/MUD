@@ -26,22 +26,6 @@ using gamemanager::Player;
 using gamemanager::UsernameType;
 using StrView = std::experimental::string_view;
 
-enum class ActKeyword {
-    undefined = 0,
-    say,
-    look,
-    attack,
-    move,
-    program,
-    timed,
-    save,
-    charmod,
-    halt,
-    swap,
-
-    _N_ACTIONS_
-};
-
 /**
  * Uses Factory pattern to create correct derived type of Action depending on
  * input.
