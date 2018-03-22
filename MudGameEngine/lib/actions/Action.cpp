@@ -105,6 +105,7 @@ inline void assertNotBase(const Action *action) {
 
 void Action::execute() {
     assertNotBase(this);
+	assert(playerPerformingAction != nullptr && gameManager != nullptr);
 
     // check if this is an admin action
     static auto logger = mudserver::logging::getLogger("Action::Action");
