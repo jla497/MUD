@@ -26,7 +26,7 @@ Spell SpellParser::parseSpell(const YAML::Node &node,
         spell.setEffect(parseString(node[EFFECT]));
     }
     if (node[MANA]) {
-        spell.setMana(parseInt(node[MANA]));
+        spell.setMana(parseUnsignedInt(node[MANA]));
     }
     if (node[MINLEVEL]) {
         spell.setMinLevel(parseUnsignedInt(node[MINLEVEL]));
@@ -37,24 +37,28 @@ Spell SpellParser::parseSpell(const YAML::Node &node,
     if (node[DURATION]) {
         spell.setDuration(parseInt(node[DURATION]));
     }
+
+    Spell::DisplayMessages messages;
     if (node[HITCHAR]) {
-        spell.setHitChar(parseString(node[HITCHAR]));
+        messages.hitchar = parseString(node[HITCHAR]);
     }
     if (node[HITROOM]) {
-        spell.setHitRoom(parseString(node[HITROOM]));
+        messages.hitroom = parseString(node[HITROOM]);
     }
     if (node[HITVICT]) {
-        spell.setHitVict(parseString(node[HITVICT]));
+        messages.hitvict = parseString(node[HITVICT]);
     }
     if (node[MISSROOM]) {
-        spell.setMissRoom(parseString(node[MISSROOM]));
+        messages.missroom = parseString(node[MISSROOM]);
     }
     if (node[MISSCHAR]) {
-        spell.setMissChar(parseString(node[MISSCHAR]));
+        messages.misschar = parseString(node[MISSCHAR]);
     }
     if (node[MISSVICT]) {
-        spell.setMissVict(parseString(node[MISSVICT]));
+        messages.missvict = parseString(node[MISSVICT]);
     }
+    spell.setDisplayMessages(messages);
+
     if (node[DAMMSG]) {
         spell.setDammsg(parseString(node[DAMMSG]));
     }
@@ -75,12 +79,10 @@ std::vector<Spell> SpellParser::getAllSpells() const {
     std::vector<Spell> spells;
     for (auto &document : data) {
         for (auto &node : document[DEFENSE]) {
-            spells.push_back(
-                parseSpell(node, Spell::SpellType::defense));
+            spells.push_back(parseSpell(node, Spell::SpellType::defense));
         }
         for (auto &node : document[OFFENSE]) {
-            spells.push_back(
-                parseSpell(node, Spell::SpellType::offense));
+            spells.push_back(parseSpell(node, Spell::SpellType::offense));
         }
         for (auto &node : document[OBJECT]) {
             spells.push_back(parseSpell(node, Spell::SpellType::object));
@@ -89,8 +91,7 @@ std::vector<Spell> SpellParser::getAllSpells() const {
             spells.push_back(parseSpell(node, Spell::SpellType::other));
         }
         for (auto &node : document[PERSONAL]) {
-            spells.push_back(
-                parseSpell(node, Spell::SpellType::personal));
+            spells.push_back(parseSpell(node, Spell::SpellType::personal));
         }
     }
     return spells;

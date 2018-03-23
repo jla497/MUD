@@ -11,7 +11,8 @@ CombatComponent::CombatComponent(int armor, int thac0, Roll damageRoll,
     this->maxHealth = CombatSimulation::calcRoll(maxHitPointRoll);
     this->currentHealth = this->maxHealth;
 }
-CombatComponent::CombatComponent() : CombatComponent(0, 0, {1, 1, 0},{1, 1, 0}){
+CombatComponent::CombatComponent()
+    : CombatComponent(0, 0, {1, 1, 0}, {1, 1, 0}) {
     // TODO: use default values from config rather than hardcoded values
 }
 
@@ -25,6 +26,7 @@ void CombatComponent::prepareToAttack() {
 
 void CombatComponent::setArmor(int armor) { this->armor = armor; }
 void CombatComponent::setThac0(int thac0) { this->thac0 = thac0; }
+<<<<<<< HEAD
 void CombatComponent::setEnemiesName(std::string enemiesName){
     this->enemiesName = enemiesName;
 }  
@@ -32,6 +34,11 @@ void CombatComponent::setOwnersName(std::string ownersName){
     this->ownersName = ownersName;
 }
 
+=======
+std::string CombatComponent::setEnemiesName(std::string enemiesName) {
+    this->enemiesName = enemiesName;
+}
+>>>>>>> origin/master
 void CombatComponent::setDamageRoll(Roll damageRollData) {
     this->damageRoll = damageRollData;
 }
@@ -60,12 +67,12 @@ void CombatComponent::damage(int damageAmount) {
         return;
     }
     currentHealth -= damageAmount;
-     if (currentHealth <= 0) {
+    if (currentHealth <= 0) {
         currentHealth = 0;
     }   
 }
 
-bool CombatComponent::isCharacterDead(){
+bool CombatComponent::isCharacterDead() {
     if (currentHealth <= 0) {
         return true;
     } else {

@@ -22,20 +22,18 @@ int CombatSimulation::calcRoundDamage(Roll damageRoll) {
     return netDamage;
 }
 
-void CombatSimulation::resolveCombatRound(
-    CharacterEntity &attacker,
-    CharacterEntity &defender, GameManager &gameManager) {
+void CombatSimulation::resolveCombatRound(CharacterEntity &attacker,
+                                          CharacterEntity &defender,
+                                          GameManager &gameManager) {
 
     // get fighters combat components
-    CombatComponent *attackersCombatComponent =
-        attacker.getCombatComponent();
-    CombatComponent *defendersCombatComponent =
-        defender.getCombatComponent();
+    CombatComponent *attackersCombatComponent = attacker.getCombatComponent();
+    CombatComponent *defendersCombatComponent = defender.getCombatComponent();
 
     if (attackersCombatComponent == defendersCombatComponent) {
         gameManager.sendCharacterMessage(attacker.getEntityId(),
-                                     "You cannot attack yourself!");
-        return;    
+                                         "You cannot attack yourself!");
+        return;
     }
 
     //if you are already in combat and are trying to attack someone
@@ -59,9 +57,9 @@ void CombatSimulation::resolveCombatRound(
     gameManager.sendCharacterMessage(defender.getEntityId(),
                                      "Starting combat round");
 
-    // set combat states of fighters to fighting    
+    // set combat states of fighters to fighting
     attackersCombatComponent->engageCombatState();
-    defendersCombatComponent->engageCombatState();   
+    defendersCombatComponent->engageCombatState();
 
     //store enemy names
     attackersCombatComponent->setEnemiesName(defendersCombatComponent->
@@ -78,14 +76,14 @@ void CombatSimulation::resolveCombatRound(
 
     // send messages to characters fighting
     gameManager.sendCharacterMessage(
-        attacker.getEntityId(),
-        "You attack " + defender.getShortDesc() +
-            " and do " + std::to_string(damageAmount) + " damage");
+        attacker.getEntityId(), "You attack " + defender.getShortDesc() +
+                                    " and do " + std::to_string(damageAmount) +
+                                    " damage");
 
     gameManager.sendCharacterMessage(
-        defender.getEntityId(),
-        "You are attacked by " + attacker.getShortDesc() +
-            " and take " + std::to_string(damageAmount) + " damage");
+        defender.getEntityId(), "You are attacked by " +
+                                    attacker.getShortDesc() + " and take " +
+                                    std::to_string(damageAmount) + " damage");
 
     // exit combat state and remove Character from world if the attacked dies
     if (enemyWasKilled) {
@@ -97,11 +95,10 @@ void CombatSimulation::resolveCombatRound(
         defendersCombatComponent->setEnemiesName(NULL_CHAR_NAME);
 
         gameManager.sendCharacterMessage(
-            attacker.getEntityId(),
-            "You killed " + defender.getShortDesc());
-        gameManager.sendCharacterMessage(
-            defender.getEntityId(),
-            "You were killed by " + attacker.getShortDesc());
+            attacker.getEntityId(), "You killed " + defender.getShortDesc());
+        gameManager.sendCharacterMessage(defender.getEntityId(),
+                                         "You were killed by " +
+                                             attacker.getShortDesc());
 
         // calculate rewards and give them to the attacker
         // TODO: have a formula/function for calculating rewards
