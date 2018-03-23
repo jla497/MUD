@@ -12,15 +12,8 @@ CombatComponent::CombatComponent(int armor, int thac0, Roll damageRoll,
     this->maxHealth = CombatSimulation::calcRoll(maxHitPointRoll);
     this->currentHealth = this->maxHealth;
 }
-CombatComponent::CombatComponent() {
-    // TODO: use default values from config
-    this->combatState = CombatStates::NOT_FIGHTING;
-    this->armor = 0;
-    this->thac0 = 0;
-    this->damageRoll = {1, 1, 0};
-    this->maxHitPointRoll = {1, 1, 0};
-    this->maxHealth = CombatSimulation::calcRoll(maxHitPointRoll);
-    this->currentHealth = this->maxHealth;
+CombatComponent::CombatComponent() : CombatComponent(0, 0, {1, 1, 0},{1, 1, 0}){
+    // TODO: use default values from config rather than hardcoded values
 }
 
 void CombatComponent::prepareToAttack() {
