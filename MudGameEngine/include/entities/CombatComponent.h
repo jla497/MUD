@@ -32,10 +32,8 @@ class CombatComponent : public CharacterComponent {
     CombatStates combatState;
     // The Roll use to calculate damage dealt.
     Roll damageRoll;
-    // the Roll used to calculate damage mitigated(my assumption, double check)
     Roll maxHitPointRoll;
-    // TODO: CombatAbilities class
-    // CombatAbility combatAbility = nullptr;
+    std::string enemiesName;
 
   public:
     CombatComponent(int armor, int thac0, Roll damageRoll,
@@ -44,10 +42,12 @@ class CombatComponent : public CharacterComponent {
     CombatStates getCombatState();
     void setArmor(int armor);
     void setThac0(int thac0);
+    std::string setEnemiesName(std::string enemiesName);  
     void setDamageRoll(Roll damageRoll);
     void setHitRoll(Roll maxHitPointRoll);
     int getArmor() const;
     int getThac0() const;
+    std::string getEnemiesName() const;
     Roll getDamageRoll() const;
     Roll getHitRoll() const;
     std::string getHealthDescription() const;
@@ -56,11 +56,9 @@ class CombatComponent : public CharacterComponent {
     CombatStates getCombatState() const;
     void engageCombatState();
     void endCombatState();
+    void getEnemy();
 
-    // TODO: redesigned/implement
     void prepareToAttack();
-    //void prepareToUseCombatAbility(CombatAbility& combatAbility);
-
     /*Damage the Character and return true if the character was killed */
     void damage(int damageAmount);
     void heal(int healAmount);

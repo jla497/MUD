@@ -1,4 +1,3 @@
-// #include "Roll.h"
 #include "entities/CombatComponent.h"
 #include "CombatSimulation.h"
 
@@ -26,6 +25,9 @@ void CombatComponent::prepareToAttack() {
 
 void CombatComponent::setArmor(int armor) { this->armor = armor; }
 void CombatComponent::setThac0(int thac0) { this->thac0 = thac0; }
+std::string CombatComponent::setEnemiesName(std::string enemiesName){
+    this->enemiesName = enemiesName;
+}  
 void CombatComponent::setDamageRoll(Roll damageRollData) {
     this->damageRoll = damageRollData;
 }
@@ -46,6 +48,7 @@ Roll CombatComponent::getDamageRoll() const { return damageRoll; }
 Roll CombatComponent::getHitRoll() const { return maxHitPointRoll; }
 int CombatComponent::getArmor() const { return armor; }
 int CombatComponent::getThac0() const { return thac0; }
+std::string CombatComponent::getEnemiesName() const { return enemiesName; }
 
 void CombatComponent::damage(int damageAmount) {
     if (damageAmount < 0) {
