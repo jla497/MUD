@@ -7,6 +7,8 @@
 #include "Roll.h"
 #include "entities/CharacterComponent.h"
 
+class CharacterEntity;
+
 enum class CombatStates { NOT_FIGHTING, FIGHTING };
 
 class CombatComponent : public CharacterComponent {
@@ -34,6 +36,7 @@ class CombatComponent : public CharacterComponent {
     Roll damageRoll;
     Roll maxHitPointRoll;
     std::string enemiesName;
+    std::string ownersName;
 
   public:
     CombatComponent(int armor, int thac0, Roll damageRoll,
@@ -42,12 +45,17 @@ class CombatComponent : public CharacterComponent {
     CombatStates getCombatState();
     void setArmor(int armor);
     void setThac0(int thac0);
-    std::string setEnemiesName(std::string enemiesName);  
+    void setEnemiesName(std::string enemiesName);
+    void setOwnersName(std::string ownersName);
+
     void setDamageRoll(Roll damageRoll);
     void setHitRoll(Roll maxHitPointRoll);
+
     int getArmor() const;
     int getThac0() const;
     std::string getEnemiesName() const;
+    std::string getOwnersName() const;  
+      
     Roll getDamageRoll() const;
     Roll getHitRoll() const;
     std::string getHealthDescription() const;

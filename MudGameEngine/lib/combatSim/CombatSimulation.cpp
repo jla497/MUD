@@ -1,5 +1,7 @@
 #include "CombatSimulation.h"
 
+#define NULL_CHAR_NAME ""
+
 int CombatSimulation::calcRoll(Roll roll) {
     int rollValue = 0;
     for (int i = 0; i < roll.numOfDie; ++i) {
@@ -36,6 +38,22 @@ void CombatSimulation::resolveCombatRound(
         return;    
     }
 
+    //if you are already in combat and are trying to attack someone
+    //who is not your enemy, exit out.
+    if(attackersCombatComponent->getEnemiesName() != NULL_CHAR_NAME &&
+        attackersCombatComponent->getEnemiesName() != defendersCombatComponent->getOwnersName()){
+        gameManager.sendCharacterMessage(attacker.getEntityId(),
+                                     "You are already fighting someone else");
+        return;   
+    }
+    //check if your enemy is already in combat with someone else
+    if(defendersCombatComponent->getEnemiesName() != NULL_CHAR_NAME &&
+        defendersCombatComponent->getEnemiesName() != attackersCombatComponent->getOwnersName()){
+        gameManager.sendCharacterMessage(attacker.getEntityId(),
+                                     "Your target is already fighting someone");
+        return;
+    }
+
     gameManager.sendCharacterMessage(attacker.getEntityId(),
                                      "Starting combat round");
     gameManager.sendCharacterMessage(defender.getEntityId(),
@@ -45,10 +63,12 @@ void CombatSimulation::resolveCombatRound(
     attackersCombatComponent->engageCombatState();
     defendersCombatComponent->engageCombatState();   
 
-    // TODO: use CombatAbilities rather than just raw roll values
-    // A CombatAbility should encapsulate the damage dealt along side any
-    // effects it might apply (ex a fireball might apply a burning effect on the
-    // target)
+    //store enemy names
+    attackersCombatComponent->setEnemiesName(defendersCombatComponent->
+        getOwnersName());
+    defendersCombatComponent->setEnemiesName(attackersCombatComponent->
+        getOwnersName());
+
     int damageAmount =
         calcRoundDamage(attackersCombatComponent->getDamageRoll());
 
@@ -71,6 +91,10 @@ void CombatSimulation::resolveCombatRound(
     if (enemyWasKilled) {
         attackersCombatComponent->endCombatState();
         defendersCombatComponent->endCombatState();
+
+        //clear enemy names
+        attackersCombatComponent->setEnemiesName(NULL_CHAR_NAME);
+        defendersCombatComponent->setEnemiesName(NULL_CHAR_NAME);
 
         gameManager.sendCharacterMessage(
             attacker.getEntityId(),
