@@ -89,6 +89,7 @@ class RoomEntity : public Entity {
     std::string removeEntity(unsigned int entityToRemove);
     void equipObject(ObjectEntity &object);
     boost::optional<ObjectEntity> takeObject(int id);
+    // boost::optional<ObjectEntity> takeObjectByName(const string& objName);
     std::map<int, ObjectEntity> getObjects();
 };
 

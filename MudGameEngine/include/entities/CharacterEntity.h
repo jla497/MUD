@@ -82,7 +82,7 @@ class CharacterEntity : public Entity {
     // Experience
     void incExp(unsigned int expPoints);
 
-    // Objects
+    // Objects    
     void equipObject(const ObjectEntity &object);
     ObjectEntity getObject(int id);
     std::map<int, ObjectEntity> getObjects();

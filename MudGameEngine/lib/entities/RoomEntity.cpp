@@ -76,4 +76,14 @@ boost::optional<ObjectEntity> RoomEntity::takeObject(int id) {
     return object;
 }
 
+// boost::optional<ObjectEntity> takeObjectByName(const string& objName) {
+//     for (auto const& obj : m_objects) {
+//         // compare object to name arg
+//         if (obj.second->getShortDesc() == objName) {
+//             return;
+//         }
+//     }
+//     return {};
+// }
+
 std::map<int, ObjectEntity> RoomEntity::getObjects() { return m_objects; };
