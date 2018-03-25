@@ -19,7 +19,7 @@ void ResetManager::applyResets(mudserver::gamemanager::GameState *state) {
             auto roomId = it->getRoomId();
             auto object = factory.buildObject(objectId);
             auto room = state->getRoomFromLUT(roomId);
-            room->equipObject(object);
+            room->addObject(object);
         }
 
         if (it->getAction() == "npc") {
@@ -70,7 +70,7 @@ ResetManager::populateNpcs(int limit, int npcTypeId,
 void ResetManager::equipNpcs(const ObjectEntity &object,
                              std::vector<CharacterEntity> &entities) {
     for (auto &npc : entities) {
-        npc.equipObject(object);
+        npc.addObject(object);
     }
 }
 
