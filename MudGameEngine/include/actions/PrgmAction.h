@@ -45,15 +45,15 @@ class PrgmAction : public Action {
       public:
         PrgmParser() = default;
 
-        void addArgument(std::string arg, std::string info) {
-            optionLookup[arg] = info;
+        void addArgument(const std::string &arg, std::string info) {
+            optionLookup[arg] = std::move(info);
         };
 
         std::string printHelp();
 
-        std::string getArgument(std::string arg);
+        std::string getArgument(const std::string &arg);
 
-        OptValMap parseOptValPairs(std::vector<std::string> args);
+        OptValMap parseOptValPairs(const std::vector<std::string> &args);
 
       private:
         static OptValMap optionLookup;
@@ -71,6 +71,6 @@ class PrgmAction : public Action {
 
   protected:
     std::string description() const override { return u8"Program action"; }
-    PrgmAction *clone() override;
+    std::unique_ptr<Action> clone() const override;
 };
 #endif

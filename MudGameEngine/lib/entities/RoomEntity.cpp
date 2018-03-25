@@ -1,4 +1,8 @@
+
 #include <algorithm>
+#include <memory>
+
+#include <boost/optional.hpp>
 
 #include "entities/RoomEntity.h"
 
@@ -61,15 +65,15 @@ std::string RoomEntity::removeEntity(unsigned int entityToRemove) {
 void RoomEntity::equipObject(ObjectEntity &object) {
     m_objects[object.getObjectTypeId()] = object;
 }
-ObjectEntity RoomEntity::getObject(int id) {
-    auto objectItr = m_objects.find(id);
-    if (objectItr != m_objects.end()) {
-        auto object = objectItr->second;
-        m_objects.erase(objectItr);
-        return object;
-    } else {
-        throw "no such object found";
+
+boost::optional<ObjectEntity> RoomEntity::takeObject(int id) {
+    auto it = m_objects.find(id);
+    if (it == m_objects.end()) {
+        return {};
     }
+    boost::optional<ObjectEntity> object{std::move(it->second)};
+    m_objects.erase(it);
+    return object;
 }
 
 std::map<int, ObjectEntity> RoomEntity::getObjects() { return m_objects; };

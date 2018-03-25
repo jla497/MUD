@@ -1,13 +1,17 @@
+
 #include "actions/MoveAction.h"
 #include "logging.h"
 #include <actions/LookAction.h>
+#include <memory>
 // #include "entities/CharacterEntity.h"
 // #include "entities/CombatComponent.h"
 
 std::vector<std::string> MoveAction::moveLookup = {"north", "south", "east",
                                                    "west"};
 
-MoveAction *MoveAction::clone() { return new MoveAction(*this); }
+std::unique_ptr<Action> MoveAction::clone() const {
+    return std::make_unique<MoveAction>(*this);
+}
 
 void MoveAction::execute_impl() {
     static auto logger = mudserver::logging::getLogger("Action::MoveAction");

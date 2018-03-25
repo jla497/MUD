@@ -27,6 +27,8 @@ CharacterEntity::CharacterEntity(
         std::stoi(tmpDamage.at(0)), std::stoi(tmpDamage.at(1)),
         tmpDamage.size() > 2 ? std::stoi(tmpDamage.at(2)) : 0};
 
+    // TODO: Moving out roll parsing to before calling the constructer
+    // so we can init the combat Component along with the other fields
     // init combat Component
     this->combatComponent.setArmor(armor);
     this->combatComponent.setThac0(thac0);
@@ -59,10 +61,12 @@ bool CharacterEntity::hasGold() const { return m_gold > 0; }
 
 void CharacterEntity::incExp(unsigned int expPoints) {
     m_exp += expPoints;
-    // calculateLevel();
+    calculateLevel();
 }
-
-void CharacterEntity::equipObject(ObjectEntity object) {
+void CharacterEntity::calculateLevel() {
+    // Ask for specs
+}
+void CharacterEntity::equipObject(const ObjectEntity &object) {
     m_objects[object.getObjectTypeId()] = object;
 }
 ObjectEntity CharacterEntity::getObject(int id) {
