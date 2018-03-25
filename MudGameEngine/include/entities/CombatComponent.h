@@ -15,39 +15,39 @@ class CombatComponent : public CharacterComponent {
     template <class Archive>
     void serialize(Archive &ar, const unsigned int version) {
         (void)version;
-        ar &m_maxHealth;
-        ar &m_maxHealth;
-        ar &m_currentHealth;
-        ar &m_armor;
-        ar &m_thac0;
-        ar &m_combatState;
-        ar &m_damageRollData;
-        ar &m_hitRollData;
+        ar &maxHealth;
+        ar &maxHealth;
+        ar &currentHealth;
+        ar &armor;
+        ar &thac0;
+        ar &combatState;
+        ar &damageRoll;
+        ar &maxHitPointRoll;
     }
 
-    int m_maxHealth;
-    int m_currentHealth;
-    int m_armor;
-    int m_thac0;
-    CombatStates m_combatState;
+    int maxHealth;
+    int currentHealth;
+    int armor;
+    int thac0;
+    CombatStates combatState;
     // The Roll use to calculate damage dealt.
-    Roll m_damageRollData;
-    // the Roll used to calculate damage mitigated(my assumption, double check)
-    Roll m_hitRollData;
-    // TODO: CombatAbilities class
-    // CombatAbility combatAbility = nullptr;
+    Roll damageRoll;
+    Roll maxHitPointRoll;
+    std::string enemiesName;
 
   public:
-    CombatComponent(int armor, int thac0, Roll m_damageRollData,
-                    Roll m_hitRollData);
+    CombatComponent(int armor, int thac0, Roll damageRoll,
+                    Roll maxHitPointRoll);
     CombatComponent();
     CombatStates getCombatState();
     void setArmor(int armor);
     void setThac0(int thac0);
-    void setDamageRoll(Roll damageRollData);
-    void setHitRoll(Roll hitRollData);
+    std::string setEnemiesName(std::string enemiesName);  
+    void setDamageRoll(Roll damageRoll);
+    void setHitRoll(Roll maxHitPointRoll);
     int getArmor() const;
     int getThac0() const;
+    std::string getEnemiesName() const;
     Roll getDamageRoll() const;
     Roll getHitRoll() const;
     std::string getHealthDescription() const;
@@ -56,13 +56,12 @@ class CombatComponent : public CharacterComponent {
     CombatStates getCombatState() const;
     void engageCombatState();
     void endCombatState();
+    void getEnemy();
 
-    // TODO: redesigned/implement
     void prepareToAttack();
-    // void prepareToUseCombatAbility(CombatAbility& combatAbility);
-
     /*Damage the Character and return true if the character was killed */
-    bool damage(int damageAmount);
+    void damage(int damageAmount);
     void heal(int healAmount);
+    bool isCharacterDead();
 };
 #endif
