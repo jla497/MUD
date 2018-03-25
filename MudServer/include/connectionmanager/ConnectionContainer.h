@@ -24,7 +24,7 @@ class ConnectionContainer {
 
   public:
     ConnectionContainer() = default;
-    ConnectionContainer(const networking::Connection &c);
+    explicit ConnectionContainer(const networking::Connection &c);
 
     bool getIsConnected() const;
 

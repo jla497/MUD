@@ -1,9 +1,13 @@
+
+#include <memory>
 #include <string>
 #include <vector>
 
 #include "actions/HaltAction.h"
 
-HaltAction *HaltAction::clone() { return new HaltAction(*this); }
+std::unique_ptr<Action> HaltAction::clone() const {
+    return std::make_unique<HaltAction>(*this);
+}
 
 void HaltAction::execute_impl() {
     gameManager.persistData();

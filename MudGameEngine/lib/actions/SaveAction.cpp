@@ -1,8 +1,12 @@
+
+#include <memory>
 #include <string>
 #include <vector>
 
 #include "actions/SaveAction.h"
 
-SaveAction *SaveAction::clone() { return new SaveAction(*this); }
+std::unique_ptr<Action> SaveAction::clone() const {
+    return std::make_unique<SaveAction>(*this);
+}
 
 void SaveAction::execute_impl() { gameManager.persistData(); }
