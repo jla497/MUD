@@ -22,16 +22,41 @@ namespace state{
     void InteractState::update() {
         auto dialogue = Dialogue();
         auto e = controller->getEvent();
-        if(e.type != event::EventType::undefined) {
-            auto newEntity = e.entity;
+        if(e.getType() != event::EventType::undefined) {
+            auto newEntity = e.getEntity();
             std::cout<<"in interactstate..."<<std::endl;
-            if(e.args.empty()) {
+            srand(time(0));
+            int randomval = rand() % 2;
+            if(randomval > 0) {
                 auto greeting = "say Hello "+newEntity->getShortDesc();
                 controller->setCmdString(greeting);
                 return;
-            }else {
-                //process args
+            }else{
+                auto e = event::Event{
+                        newEntity,
+                        event::EventType::startcombat,
+                        {}
+                };
+                controller->passEvent(e);
+                return;
             }
+
+        }else {
+            //check if anyone is still in room, if not pass alone event
+            auto room = state->getCharacterLocation(*entity);
+            auto chIds = state->getCharactersInRoom(room);
+            for (auto id : chIds) {
+                auto character = state->getCharacterFromLUT(id);
+                if (character->get_isPlayerCharacter()) {
+                    return;
+                }
+            }
+
+            auto e = event::Event{ nullptr,
+                                   event::EventType::alone,
+                                   {}
+                                 };
+        controller->passEvent(e);
         }
 
 //    auto msgs = controller->getAllMsgs();
@@ -67,16 +92,7 @@ namespace state{
 //        }
 //    }
 //
-//    auto room = state->getCharacterLocation(*entity);
-//    auto chIds = state->getCharactersInRoom(room);
-//    for (auto id : chIds) {
-//        auto character = state->getCharacterFromLUT(id);
-//        if (character->get_isPlayerCharacter()) {
-//            return;
-//        }
-//    }
-//
-//    controller->change("wait");
+
         return;
     }
     void InteractState::enter(){};

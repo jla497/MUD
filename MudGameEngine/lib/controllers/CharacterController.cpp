@@ -6,6 +6,7 @@
 #include "controllers/CharacterController.h"
 #include "gamemanager/GameState.h"
 #include "states/IState.h"
+#include "Event.h"
 
 void CharacterController::init(GameState *s, CharacterEntity *e,
                                Player *p) {
@@ -39,7 +40,7 @@ void CharacterController::passEvent(event::Event e) {
 
 event::Event CharacterController::getEvent() {
     if(eventQueue.empty()){
-        return event::Event{};
+        return event::Event{nullptr, event::EventType::undefined, {}};
     }
     auto e = eventQueue.top();
     eventQueue.pop();

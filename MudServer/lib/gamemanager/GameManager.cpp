@@ -78,11 +78,8 @@ void GameManager::mainLoop() {
 
         auto messages = connectionManager.sendToGameManager();
         processMessages(messages);
-        logger->debug("fetching commands...");
         fetchCntrlCmds();
-        logger->debug("performing actions...");
         performQueuedActions();
-        logger->debug("sending msgs...");
         swapQueuePtrs();
         sendMessagesToPlayers();
 
@@ -255,6 +252,12 @@ void GameManager::swapCharacters(UniqueId casterCharacterId,
 
 void GameManager::fetchCntrlCmds() {
     for(auto &controller : controllerQueue){
+        if(controller->getCharacter() == nullptr) {
+            //remove finished controllers
+            controllerQueue.erase(std::remove(controllerQueue.begin(), controllerQueue.end(),
+                                              controller),controllerQueue.end());
+        }
+
         controller->update();
         auto msg = controller->getCmdString();
         if(!msg.empty()) {

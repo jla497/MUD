@@ -8,10 +8,8 @@
 namespace state {
 
     void WaitState::update() {
-        std::cout<<"in waitstate..."<<std::endl;
         auto e = controller->getEvent();
-        std::cout<<"13"<<std::endl;
-        if(e.type != event::EventType::undefined) {
+        if(e.getType() != event::EventType::undefined) {
 
         }else {
             auto room = state->getCharacterLocation(*entity);
@@ -19,11 +17,10 @@ namespace state {
             for (auto id : chIds) {
                 auto character = state->getCharacterFromLUT(id);
                 if (character->get_isPlayerCharacter()) {
-                    controller->setCmdString("say hello");
-                    auto e = event::Event{};
-                    e.entity = character;
-                    e.type = event::EventType::interact;
-                    e.args = {"foo","bar"};
+                    auto e = event::Event{character,
+                                          event::EventType::interact,
+                                          {"foo"}
+                                         };
                     controller->passEvent(e);
                 }
             }
