@@ -17,36 +17,36 @@ protected:
 //        state.clearAreas();
     }
 
+    const unsigned int DEFAULT_ID = 1;
+    const std::string DEFAULT_NAME = "test";
+    std::vector<std::string> DEFAULT_DESC = {"test"};
+    std::vector<std::string> DEFAULT_KW = {"test"};
+    std::string DEFAULT_DIRECTION = "west";
+
 public:
     CharacterEntity createCharacter() {
         int armor = 1;
         std::string damage = "1d8+32";
-        std::vector<std::string> desc{};
-        desc.push_back("desc1");
         unsigned int exp = 1;
         int gold = 1;
         std::string hit = "1d1+30000";
-        std::vector<std::string> keywords{};
-        keywords.push_back("keyword1");
         unsigned int level = 1;
-        std::vector<std::string> longDesc{};
-        longDesc.push_back("desc1");
         std::string shortDesc = "test";
         int thac0 = 1;
-        // TODO typeId for player characters
-        auto character =
-                CharacterEntity(armor, damage, desc, exp, gold, hit, 0, keywords,
-                                level, longDesc, shortDesc, thac0);
-        return character;
+        return CharacterEntity{
+                armor, damage, DEFAULT_DESC, exp, gold,
+                hit, 0, DEFAULT_KW, level, DEFAULT_DESC,
+                shortDesc, thac0
+        };
     }
 
     RoomEntity createRoom() {
-        std::vector<std::string> desc{};
+        std::vector<std::string> desc = DEFAULT_DESC;
         std::vector<DoorEntity> doors{};
         std::vector<std::string> descExt{};
         std::vector<std::string> keywordsExt{};
-        std::string name = "testRoom";
-        unsigned int roomId = 1;
+        std::string name = DEFAULT_NAME;
+        unsigned int roomId = DEFAULT_ID;
         return RoomEntity{
                 desc,
                 doors,
@@ -64,9 +64,11 @@ public:
     }
 
     DoorEntity createDoor() {
-        std::vector<std::string> desc{};
         std::vector<std::string> keywords{};
-        return DoorEntity{desc, "direction", keywords, 0};
+        return DoorEntity{DEFAULT_DESC,
+                          DEFAULT_DIRECTION,
+                          DEFAULT_KW,
+                          DEFAULT_ID};
     }
 
     ObjectEntity createObject() {
@@ -76,8 +78,6 @@ public:
         std::string itemType = "none";
         std::vector<std::string> descExtra{};
         std::vector<std::string> keywordsExtra{};
-        std::vector<std::string> keywords{};
-        std::vector<std::string> longDesc{};
         std::string shortDesc = "short";
         std::vector<std::string> wearFlags{};
         int weight = 1;
@@ -88,8 +88,8 @@ public:
                 keywordsExtra,
                 objectTypeId,
                 itemType,
-                keywords,
-                longDesc,
+                DEFAULT_KW,
+                DEFAULT_DESC,
                 shortDesc,
                 wearFlags,
                 weight
@@ -99,6 +99,49 @@ public:
 
 };
 
-TEST_F(EntitiesTests, CreateArea) {
 
+/*************************************
+ * Area Tests
+ *************************************/
+
+/*************************************
+ * Character Tests
+ *************************************/
+
+/*************************************
+ * Door Tests
+ *************************************/
+
+TEST_F(EntitiesTests, GetDoorDirection) {
+    DoorEntity door = createDoor();
+    EXPECT_EQ(DEFAULT_DIRECTION, door.getDir());
 }
+
+/*************************************
+ * Object Tests
+ *************************************/
+
+/*************************************
+ * Room Tests
+ *************************************/
+
+TEST_F(EntitiesTests, GetRoomId) {
+    RoomEntity room = createRoom();
+    EXPECT_EQ(DEFAULT_ID, room.getId());
+}
+
+TEST_F(EntitiesTests, GetRoomName) {
+    RoomEntity room = createRoom();
+    EXPECT_EQ(DEFAULT_NAME, room.getName());
+}
+
+TEST_F(EntitiesTests, GetRoomDesc) {
+    RoomEntity room = createRoom();
+    EXPECT_EQ(DEFAULT_DESC, room.getDesc());
+}
+
+//TEST_F(EntitiesTests, GetDestRoomIdOf) {
+//    RoomEntity room = createRoom();
+//    EXPECT_EQ(DEFAULT_DESC, room.getDestRoomIdOf("west"));
+//}
+
