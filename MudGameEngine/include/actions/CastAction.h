@@ -26,7 +26,7 @@ class CastAction : public Action {
     //displays messages to players about the spell currently being casted
     void displayMessages(Spell &spell, bool isHit);
 
-    //helper function to display a message to the entire room except for the player who cast the spell
+    //helper function to display a message to the entire room except for the player who cast the spell and the victim
     void displayMessageToRoom(std::string message);
   protected:
     std::string description() const override { return u8"Cast action"; }

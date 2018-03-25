@@ -85,17 +85,11 @@ void CastAction::execute_impl() {
 
 	switch(spellType) {
 		case Spell::SpellType::defense:
-			gameManager.sendCharacterMessage(
-				characterPerformingAction->getEntityId(),
-				"Executing defense spell");
 			executeDefenseSpell(*spell);
 			break;
 
 		case Spell::SpellType::offense:
 			if (victim) {
-				gameManager.sendCharacterMessage(
-					characterPerformingAction->getEntityId(),
-					"Executing offense spell");
 				executeOffenseSpell(*spell);
 			} else {
 				logger->error("Victim is either not in the room or victim name is invalid...");
@@ -107,9 +101,6 @@ void CastAction::execute_impl() {
 			
 		case Spell::SpellType::swap:
 			{
-				gameManager.sendCharacterMessage(
-					characterPerformingAction->getEntityId(),
-					"Executing swap spell");
 				SwapAction swapAction{playerPerformingAction, characterArg, gameManager};
 				swapAction.execute();
 			}	
@@ -117,9 +108,6 @@ void CastAction::execute_impl() {
 
 		case Spell::SpellType::decoy:
 			{
-				gameManager.sendCharacterMessage(
-					characterPerformingAction->getEntityId(),
-					"Executing decoy spell");
 				DecoyAction decoyAction{playerPerformingAction, actionArguments, gameManager};
 				decoyAction.execute();
 			}
