@@ -51,11 +51,15 @@ std::vector<std::string> CharacterEntity::getLongDesc() const {
 
 std::string CharacterEntity::getShortDesc() const { return m_shortDesc; }
 
-int CharacterEntity::getMana() const { return m_mana; }
+unsigned int CharacterEntity::getMana() const { return m_mana; }
 
 void CharacterEntity::addGold(unsigned int amount) { m_gold += amount; }
 
 void CharacterEntity::subtractGold(unsigned int amount) { m_gold -= amount; }
+
+void CharacterEntity::addMana(unsigned int amount) { m_mana += amount; }
+
+void CharacterEntity::subtractMana(unsigned int amount) { m_mana -= amount; }
 
 bool CharacterEntity::hasGold() const { return m_gold > 0; }
 
@@ -83,6 +87,8 @@ std::map<int, ObjectEntity> CharacterEntity::getObjects() { return m_objects; }
 void CharacterEntity::setShortDesc(std::string name) {
     m_shortDesc = std::move(name);
 };
+
+
 
 CombatComponent *CharacterEntity::getCombatComponent() {
     return &combatComponent;

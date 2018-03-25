@@ -28,7 +28,7 @@ class Spell {
 
     // getters
     std::string getEffect();
-    int getMana();
+    unsigned int getMana();
     unsigned int getMinLevel();
     std::string getName();
     int getDuration();
@@ -45,7 +45,7 @@ class Spell {
 
     // setters
     void setEffect(const std::string &effect);
-    void setMana(int mana);
+    void setMana(unsigned int mana);
     void setMinLevel(unsigned int minlevel);
     void setName(const std::string &name);
     void setDuration(int duration);
@@ -67,11 +67,11 @@ class Spell {
     bool isCharacterValidLevel(unsigned int characterLevel);
 
     // returns true if character has enough mana to perform spell
-    bool isEnoughMana(int characterMana);
+    bool isEnoughMana(unsigned int characterMana);
 
   private:
     std::string effect;
-    int mana{};
+    unsigned int mana{};
     unsigned int minlevel{};
     std::string name;
     int duration{};

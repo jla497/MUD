@@ -19,7 +19,7 @@ Spell::Spell() {
 
 std::string Spell::getEffect() { return effect; }
 
-int Spell::getMana() { return mana; }
+unsigned int Spell::getMana() { return mana; }
 
 unsigned int Spell::getMinLevel() { return minlevel; }
 
@@ -52,7 +52,7 @@ Spell::SpellType Spell::getType() { return type; }
 
 void Spell::setEffect(const std::string &effect) { this->effect = effect; }
 
-void Spell::setMana(int mana) { this->mana = mana; }
+void Spell::setMana(unsigned int mana) { this->mana = mana; }
 
 void Spell::setMinLevel(unsigned int minlevel) { this->minlevel = minlevel; }
 
@@ -160,4 +160,4 @@ bool Spell::isCharacterValidLevel(unsigned int characterLevel) {
     return minlevel <= characterLevel;
 }
 
-bool Spell::isEnoughMana(int characterMana) { return mana <= characterMana; }
+bool Spell::isEnoughMana(unsigned int characterMana) { return mana <= characterMana; }

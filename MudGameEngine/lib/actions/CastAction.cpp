@@ -11,7 +11,7 @@ std::unique_ptr<Action> CastAction::clone() const {
 }
 
 void CastAction::execute_impl() {
-	static auto logger = mudserver::logging::getLogger("SpellAction::execute");
+	static auto logger = mudserver::logging::getLogger("CastAction::execute");
 	auto &gameState = gameManager.getState();
 	if (actionArguments.empty()) {
 		gameManager.sendCharacterMessage(
@@ -31,7 +31,6 @@ void CastAction::execute_impl() {
     std::string spellName = "";
     //vector containing character name that was passed in by player as argument:
 	std::vector<std::string> characterArg;
-	CharacterEntity *victim;
 
 	if (actionArguments.size() == 1) {
 		//spell name is only one word, player did not provide a character name as an arg
@@ -86,29 +85,46 @@ void CastAction::execute_impl() {
 
 	switch(spellType) {
 		case Spell::SpellType::defense:
+			gameManager.sendCharacterMessage(
+				characterPerformingAction->getEntityId(),
+				"Executing defense spell");
 			executeDefenseSpell(*spell);
+			break;
+
 		case Spell::SpellType::offense:
-			if (!victim) {
-				executeOffenseSpell(*spell, *victim);
+			if (victim) {
+				gameManager.sendCharacterMessage(
+					characterPerformingAction->getEntityId(),
+					"Executing offense spell");
+				executeOffenseSpell(*spell);
 			} else {
 				logger->error("Victim is either not in the room or victim name is invalid...");
 				gameManager.sendCharacterMessage(
 					characterPerformingAction->getEntityId(),
 					"Victim is either not in the room or victim name is invalid...");
-		}
+			}
+			break;
 			
 		case Spell::SpellType::swap:
 			{
+				gameManager.sendCharacterMessage(
+					characterPerformingAction->getEntityId(),
+					"Executing swap spell");
 				SwapAction swapAction{playerPerformingAction, characterArg, gameManager};
 				swapAction.execute();
 			}	
 			break;
+
 		case Spell::SpellType::decoy:
 			{
+				gameManager.sendCharacterMessage(
+					characterPerformingAction->getEntityId(),
+					"Executing decoy spell");
 				DecoyAction decoyAction{playerPerformingAction, actionArguments, gameManager};
 				decoyAction.execute();
 			}
 			break;
+
 		default:
 			logger->error("Not a valid spell...");
 			gameManager.sendCharacterMessage(
@@ -120,27 +136,137 @@ void CastAction::execute_impl() {
 }
 
 void CastAction::executeDefenseSpell(Spell &spell) {
+	static auto logger = mudserver::logging::getLogger("DefenseSpell::execute");
 	CombatComponent *combatComponent = characterPerformingAction->getCombatComponent();
-	auto charLevel = characterPerformingAction->getLevel();
-	auto charMana = characterPerformingAction->getMana();
-	if (spell.isEnoughMana(charMana) 
-		&& spell.isCharacterValidLevel(charLevel)) {
+
+	//defense spells affect only the char performing the action
+	//therefore, they are the "victim" of the spell
+	victim = characterPerformingAction; 
+
+	if (canExecuteSpell(spell)) {
+		displayMessages(spell, true);
+
+		auto charLevel = characterPerformingAction->getLevel();
 		auto healAmount = spell.calculateSpellEffect(charLevel);
 		combatComponent->heal(healAmount);
+		characterPerformingAction->subtractMana(spell.getMana());
 	}
 }
 
-void CastAction::executeOffenseSpell(Spell &spell, CharacterEntity &victim) {
+void CastAction::executeOffenseSpell(Spell &spell) {
+	static auto logger = mudserver::logging::getLogger("OffenseSpell::execute");
 	auto &gameState = gameManager.getState();
-	CombatComponent *combatComponent = victim.getCombatComponent();
-	auto charLevel = characterPerformingAction->getLevel();
-	auto charMana = characterPerformingAction->getMana();
-	if (spell.isEnoughMana(charMana) 
-		&& spell.isCharacterValidLevel(charLevel)) {
+	CombatComponent *combatComponent = victim->getCombatComponent();
+
+	if (canExecuteSpell(spell)) {
+		displayMessages(spell, true);
+
+		auto charLevel = characterPerformingAction->getLevel();
 		auto dmgAmount = spell.calculateDamage(charLevel);
 		if(combatComponent->damage(dmgAmount)) {
 			//character was killed;
-			gameState.killCharacter(victim);
+			gameState.killCharacter(*victim);
+		}
+		characterPerformingAction->subtractMana(spell.getMana());
+	}
+}
+
+bool CastAction::canExecuteSpell(Spell &spell) {
+	auto charLevel = characterPerformingAction->getLevel();
+	auto charMana = characterPerformingAction->getMana();
+
+	if (!spell.isCharacterValidLevel(charLevel)) {
+		gameManager.sendCharacterMessage(
+			characterPerformingAction->getEntityId(),
+			"Character needs to be at least level " + std::to_string(spell.getMinLevel()) + " to perform this spell...");
+		return false;
+	}
+
+	if (!spell.isEnoughMana(charMana)) {
+		gameManager.sendCharacterMessage(
+			characterPerformingAction->getEntityId(),
+			"Character only has " + std::to_string(charMana) 
+			+ "/" + std::to_string(spell.getMana()) + " mana to perform this spell...");
+		return false;
+	}
+
+	return true;
+}
+
+void CastAction::displayMessages(Spell &spell, bool isHit) {
+	std::string victimName = "";
+	if (victim) {
+		victimName = victim->getShortDesc();
+	}
+
+	Spell::DisplayMessages messages = spell.getDisplayMessages(characterPerformingAction->getShortDesc(),
+		victimName, "");
+
+	if (isHit) {
+		// spell has successfully hit target
+		if (spell.getType() != Spell::SpellType::defense && 
+			messages.hitchar.length() > 0) {
+			/* 
+			 if spell is of defense type, do not send this message
+			 this is because defense spells should affect the char performing the action
+			 which means the char performing the action is the "victim" of the spell
+			*/
+			gameManager.sendCharacterMessage(
+				characterPerformingAction->getEntityId(),
+				messages.hitchar);
+		}
+		if (messages.hitroom.length() > 0) {
+			displayMessageToRoom(messages.hitroom);
+		}
+		if (victim && messages.hitvict.length() > 0) { 
+			gameManager.sendCharacterMessage(
+				victim->getEntityId(),
+				messages.hitvict);
+		}
+	} else {
+		// spell missed the target
+		if (spell.getType() != Spell::SpellType::defense
+			&& messages.misschar.length() > 0) {
+
+			gameManager.sendCharacterMessage(
+				characterPerformingAction->getEntityId(),
+				messages.misschar);
+		}
+		if (messages.missroom.length() > 0) {
+			displayMessageToRoom(messages.missroom);
+		}
+		if (victim && messages.missvict.length() > 0) { 
+			gameManager.sendCharacterMessage(
+				victim->getEntityId(),
+				messages.missvict);
 		}
 	}
+}
+
+void CastAction::displayMessageToRoom(std::string message) {
+	static auto logger = mudserver::logging::getLogger("CastAction::displayMessages");
+	auto &gameState = gameManager.getState();
+	auto currentRoom = gameState.getCharacterLocation(*characterPerformingAction);
+	//get the ids of all characters in the room:
+	auto charactersInRoom = gameState.getCharactersInRoom(currentRoom);
+    if (charactersInRoom.empty()) {
+        logger->debug("Room has no characters...");
+        return;
+    }
+
+    // send the message to all the players in the room EXCEPT for 
+    // the character peforming the action, and the victim (if there is one)
+    for (auto character : charactersInRoom) {
+    	if (!(character == characterPerformingAction->getEntityId())) {
+    		//check if victim exists before accessing victim's id
+    		if (victim) {
+    			if (!(character == victim->getEntityId())) {
+    				//only send the message if current character is not the victim
+    				gameManager.sendCharacterMessage(character, message);
+    			}
+    		} else {
+    			gameManager.sendCharacterMessage(character, message);
+    		}
+    	}
+    }
 }

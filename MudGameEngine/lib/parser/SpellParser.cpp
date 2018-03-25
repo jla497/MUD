@@ -26,7 +26,7 @@ Spell SpellParser::parseSpell(const YAML::Node &node,
         spell.setEffect(parseString(node[EFFECT]));
     }
     if (node[MANA]) {
-        spell.setMana(parseInt(node[MANA]));
+        spell.setMana(parseUnsignedInt(node[MANA]));
     }
     if (node[MINLEVEL]) {
         spell.setMinLevel(parseUnsignedInt(node[MINLEVEL]));
