@@ -6,12 +6,16 @@
 #define ADVENTURE2018_INTERACTSTATE_H
 
 #include "IState.h"
+#include "Event.h"
 
-class InteractState : public IState {
-  public:
-    using IState::IState;
-    void update() override;
-    void enter() override;
-    void exit() override;
-};
+namespace state{
+    class InteractState : public IState {
+    public:
+        using IState::IState;
+        void update() override;
+        void enter() override;
+        void exit() override;
+        StateType getType() override;
+    };
+}
 #endif // ADVENTURE2018_INTERACTSTATE_H

@@ -59,3 +59,10 @@ std::ostream &operator<<(std::ostream &os, const Action &action) {
     os << "]" << std::endl;
     return os;
 }
+
+CharacterEntity* Action::getPerformingEntity() {
+    return characterPerformingAction;
+}
+std::vector<std::string> Action::getArgs() {
+    return actionArguments;
+}

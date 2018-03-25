@@ -6,13 +6,18 @@
 #define ADVENTURE2018_WAITSTATE_H
 
 #include "states/IState.h"
+#include "Event.h"
 
-class WaitState : public IState {
+namespace state{
 
-  public:
-    using IState::IState;
-    void update() override;
-    void enter() override;
-    void exit() override;
-};
+    class WaitState : public IState {
+
+    public:
+        using IState::IState;
+        void update() override;
+        void enter() override;
+        void exit() override;
+        StateType getType() override;
+    };
+}
 #endif // ADVENTURE2018_WAITSTATE_H

@@ -34,6 +34,10 @@ class Action {
            std::vector<std::string> actionArguments,
            mudserver::gamemanager::GameManager &gameManager);
 
+    CharacterEntity* getPerformingEntity();
+    std::vector<std::string> getArgs();
+
+
     /**
      * Actions are designed to be placed in a queue. When the queue is
      * processed, execute() is called on the actions. As they have reference to

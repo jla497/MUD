@@ -6,7 +6,7 @@
 #include <sstream>
 #include <thread>
 #include <vector>
-
+#include <typeinfo>
 #include <boost/format.hpp>
 #include <boost/optional.hpp>
 
@@ -77,10 +77,12 @@ void GameManager::mainLoop() {
         }
 
         auto messages = connectionManager.sendToGameManager();
-
         processMessages(messages);
+        logger->debug("fetching commands...");
         fetchCntrlCmds();
+        logger->debug("performing actions...");
         performQueuedActions();
+        logger->debug("sending msgs...");
         swapQueuePtrs();
         sendMessagesToPlayers();
 
@@ -224,7 +226,7 @@ void GameManager::sendCharacterMessage(UniqueId characterId,
                 auto conn = networking::Connection{player->getConnectionId()};
                 enqueueMessage(conn, std::move(message));
             }else {
-                controller->setMsg(message);
+               //do nothing
 
             }
         }

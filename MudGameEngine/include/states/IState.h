@@ -8,6 +8,7 @@
 #include "controllers/CharacterController.h"
 #include "entities/CharacterEntity.h"
 #include "gamemanager/GameState.h"
+#include "Event.h"
 
 namespace mudserver {
 namespace gamemanager {
@@ -15,20 +16,30 @@ class GameState;
 }
 }
 
-using mudserver::gamemanager::GameState;
+namespace state {
+    using mudserver::gamemanager::GameState;
+    enum class StateType {
+        undefined = 0,
+        combat,
+        interact,
+        wait,
+        end
+    };
 
-class IState {
+    class IState {
 
-  public:
-    IState(GameState *state, CharacterEntity *entity,
-           CharacterController *controller);
-    virtual void update() = 0;
-    virtual void enter() = 0;
-    virtual void exit() = 0;
+    public:
+        IState(GameState *state, CharacterEntity *entity,
+               CharacterController *controller);
+        virtual void update() = 0;
+        virtual void enter() = 0;
+        virtual void exit() = 0;
+        virtual StateType getType() = 0;
 
-  protected:
-    GameState *state;
-    CharacterEntity *entity;
-    CharacterController *controller;
-};
+    protected:
+        GameState *state;
+        CharacterEntity *entity;
+        CharacterController *controller;
+    };
+}
 #endif // ADVENTURE2018_ISTATE_H

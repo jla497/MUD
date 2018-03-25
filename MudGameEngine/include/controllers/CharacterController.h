@@ -7,11 +7,16 @@
 
 #include "entities/CharacterEntity.h"
 #include "entities/CharacterEntity.h"
+#include "Event.h"
 #include "gamemanager/Player.h"
 #include <unordered_map>
 #include <queue>
 
-class IState;
+namespace state {
+    enum class StateType;
+    class IState;
+}
+
 namespace mudserver {
 namespace gamemanager {
 class GameState;
@@ -24,27 +29,24 @@ using mudserver::gamemanager::Player;
 class CharacterController {
 
   protected:
-    std::unordered_map<std::string, IState *> stateDict{};
-    IState *current = nullptr;
+    GameState *state = nullptr;
     Player *player = nullptr;
     CharacterEntity *entity = nullptr;
     std::queue<std::string> cmdStrings;
-    std::queue<std::string> messages;
+    std::priority_queue<event::Event> eventQueue;
 
   public:
     void init(GameState *state, CharacterEntity *entity, Player *plyer);
     virtual void update() = 0;
-    void add(std::string key, IState *state);
-    void remove(std::string id);
-    void change(std::string id);
+    void passEvent(event::Event e);
+    event::Event getEvent();
     void setPlayer(Player *player);
     Player *getPlayer();
     void setCharacter(CharacterEntity *entity);
     CharacterEntity *getCharacter();
     void setCmdString(std::string cmd);
     std::string getCmdString();
-    void setMsg(std::string arg);
-    std::string getMsg();
-    std::queue<std::string> getAllMsgs();
+
+
 };
 #endif // ADVENTURE2018_CHARACTERCONTROLLER_H
