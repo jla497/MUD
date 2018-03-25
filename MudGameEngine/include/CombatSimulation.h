@@ -11,7 +11,7 @@ void resolveCombatRound(CharacterEntity &playerWhoIsAttacking,
                         CharacterEntity &playerWhoIsBeingAttacking,
                         GameManager &gameManager);
 
-int calcRoundDamage(Roll damageRoll, Roll hitRoll);
+int calcRoundDamage(Roll damageRoll);
 int calcRoll(Roll roll);
 int calcMaxPossibleRoll(Roll roll);
 

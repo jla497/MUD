@@ -151,7 +151,9 @@ void CastAction::executeOffenseSpell(Spell &spell) {
 
 		auto charLevel = characterPerformingAction->getLevel();
 		auto dmgAmount = spell.calculateDamage(charLevel);
-		if(combatComponent->damage(dmgAmount)) {
+
+		combatComponent->damage(dmgAmount);
+		if(combatComponent->isCharacterDead()) {
 			//character was killed;
 			gameState.killCharacter(*victim);
 		}

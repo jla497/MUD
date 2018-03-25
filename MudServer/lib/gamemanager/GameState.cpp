@@ -84,8 +84,7 @@ void GameState::addCharacter(CharacterEntity &character) {
 void GameState::addCharacter(CharacterEntity &character, Id roomID) {
     auto id = character.getEntityId();
     characterLookUp[id] = std::move(character);
-    // TODO: implement a configurable default spawn point
-    // currently just takes the first room loaded
+
     auto roomIt = roomLookUp.find(roomID);
     if (roomIt != roomLookUp.end()) {
         addCharacterRoomRelationToLUT(id, roomIt->second.getId());
@@ -166,11 +165,10 @@ Spell *GameState::getSpellByName(const spellName name) {
 }
 
 void GameState::killCharacter(const CharacterEntity &character) {
-    // remove from play
-    // TODO: uncomment and integrate once branches have been merged
+    // remove character from play
     removeCharacterByUniqueId(character.getEntityId());
 
-    // if the character is controlled by a player notify them
+    // notify the characters controller
 }
 
 } // namespace gamemanager
