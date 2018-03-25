@@ -1,6 +1,6 @@
 
-#include <boost/format.hpp>
 #include <boost/algorithm/string.hpp>
+#include <boost/format.hpp>
 #include <iostream>
 #include <memory>
 #include <stdexcept>

@@ -4,10 +4,11 @@
 #include <boost/bimap.hpp>
 #include <deque>
 #include <memory>
-#include <unordered_map>
 #include <string>
+#include <unordered_map>
 
 #include "Player.h"
+#include "Spell.h"
 #include "UniqueId.h"
 #include "entities/AreaEntity.h"
 #include "entities/CharacterEntity.h"
@@ -16,7 +17,6 @@
 #include "entities/ObjectEntity.h"
 #include "entities/RoomEntity.h"
 #include "entities/ShopEntity.h"
-#include "Spell.h"
 namespace mudserver {
 namespace gamemanager {
 
@@ -32,8 +32,7 @@ class LutBuilder {
     createObjectLUT(std::vector<ObjectEntity> &mVector);
     std::unordered_map<roomId, RoomEntity>
     createLUT(std::deque<RoomEntity> &mVector);
-    std::map<spellName, Spell> 
-    createSpellLUT(std::vector<Spell> &mVector);
+    std::map<spellName, Spell> createSpellLUT(std::vector<Spell> &mVector);
 };
 
 } // namespace gamemanager

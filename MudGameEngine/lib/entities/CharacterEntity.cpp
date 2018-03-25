@@ -92,8 +92,6 @@ void CharacterEntity::setShortDesc(std::string name) {
     m_shortDesc = std::move(name);
 };
 
-
-
 CombatComponent *CharacterEntity::getCombatComponent() {
     return &combatComponent;
 }

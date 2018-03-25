@@ -80,7 +80,7 @@ class CharacterEntity : public Entity {
     void subtractGold(unsigned int amount);
     bool hasGold() const;
 
-    //Mana
+    // Mana
     void addMana(unsigned int amount);
     void subtractMana(unsigned int amount);
 

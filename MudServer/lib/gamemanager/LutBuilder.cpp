@@ -44,7 +44,7 @@ LutBuilder::createSpellLUT(std::vector<Spell> &spells) {
     decoySpell.setName("decoy");
     decoySpell.setType(Spell::SpellType::decoy);
     map[decoySpell.getName()] = decoySpell;
-    
+
     for (auto &spell : spells) {
         map[boost::to_lower_copy(spell.getName())] = spell;
     }

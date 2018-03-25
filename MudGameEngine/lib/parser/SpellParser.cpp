@@ -58,7 +58,7 @@ Spell SpellParser::parseSpell(const YAML::Node &node,
         messages.missvict = parseString(node[MISSVICT]);
     }
     spell.setDisplayMessages(messages);
-    
+
     if (node[DAMMSG]) {
         spell.setDammsg(parseString(node[DAMMSG]));
     }

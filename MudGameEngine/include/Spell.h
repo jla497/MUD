@@ -16,13 +16,13 @@ class Spell {
     };
 
     struct DisplayMessages {
-		std::string hitchar = "";
-    	std::string hitroom = "";
-    	std::string hitvict = "";
-    	std::string missroom = "";
-    	std::string misschar = "";
-    	std::string missvict = "";
-	};
+        std::string hitchar = "";
+        std::string hitroom = "";
+        std::string hitvict = "";
+        std::string missroom = "";
+        std::string misschar = "";
+        std::string missvict = "";
+    };
 
     Spell();
 
@@ -33,9 +33,10 @@ class Spell {
     std::string getName();
     int getDuration();
 
-    //returns the display messages with correctly formatted strings
-    DisplayMessages getDisplayMessages(std::string casterName, std::string victimName,
-                           std::string victimGender);
+    // returns the display messages with correctly formatted strings
+    DisplayMessages getDisplayMessages(std::string casterName,
+                                       std::string victimName,
+                                       std::string victimGender);
 
     std::string getDammsg();
     std::string getWearoff();

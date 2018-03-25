@@ -11,6 +11,7 @@
 #include <boost/tokenizer.hpp>
 
 #include "actions/AttackAction.h"
+#include "actions/CastAction.h"
 #include "actions/CharacterModAction.h"
 #include "actions/HaltAction.h"
 #include "actions/LookAction.h"
@@ -21,7 +22,6 @@
 #include "actions/SayAction.h"
 #include "actions/SwapAction.h"
 #include "actions/TimedAction.h"
-#include "actions/CastAction.h"
 #include "commandparser/CommandParser.h"
 #include "resources/commands.h"
 
