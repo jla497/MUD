@@ -6,7 +6,7 @@
 
 #include "entities/RoomEntity.h"
 // REMOVE 
-#include "entities/ObjectEntity.h"
+// #include "entities/ObjectEntity.h"
 //
 
 RoomEntity::RoomEntity(const std::vector<std::string> &desc,
@@ -17,9 +17,9 @@ RoomEntity::RoomEntity(const std::vector<std::string> &desc,
     : Entity::Entity(), m_desc(desc), m_doors(doors),
       m_name(name), m_extDesc{descExt, keywordsExt}, m_roomId(roomId) {
 
-    // !!! REMOVE: For testing only
-    ObjectEntity testObject{{"attribute"}, 2, {}, {}, 3, "useless type", {}, {}, "a uesless obj", {}, 5};
-    addObject(testObject);
+    // REMOVE: For testing only
+    // ObjectEntity testObject{{"attribute"}, 22, {}, {}, 3, "useless type", {}, {"a shroomy thing", "not really useful"}, "mushroom", {}, 55};
+    // addObject(testObject);
 }
 
 unsigned int RoomEntity::getId() const { return m_roomId; }

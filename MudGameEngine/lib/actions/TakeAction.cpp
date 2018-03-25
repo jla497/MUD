@@ -50,7 +50,7 @@ void TakeAction::execute_impl() {
     	// error that you need to try and take something
     	gameManager.sendCharacterMessage(
             characterPerformingAction->getEntityId(),
-            "Please type /'take/' <object>/'");
+            "Please type 'take <object's short description (before colon)>'");
     } 
 
 }
