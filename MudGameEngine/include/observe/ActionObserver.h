@@ -26,7 +26,9 @@ class ActionObserver : public Observer<Action>{
    //init map of characterentity to charactercontroller
     std::map<CharacterEntity*, CharacterController*> characterToControllers;
     GameState* gameState;
-public:
+    std::vector<CharacterEntity*> CharactersInRoom(Action* action);
+
+        public:
     ActionObserver(std::vector<CharacterController*> *controllers, GameState *gameState );
     void receiveEvent(Action* source) override;
     void visit(AttackAction* action);

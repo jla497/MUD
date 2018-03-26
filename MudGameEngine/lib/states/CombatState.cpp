@@ -36,7 +36,7 @@ namespace state{
         }
 
         auto e = controller->getEvent();
-        if(e.getEntity() != nullptr && e.getType() != event::EventType::undefined) {
+        if(e.getEntity() != nullptr && e.getType() == event::EventType::startcombat) {
             auto newEntity = e.getEntity();
             targetEntity = newEntity;
             std::cout<<"in combatstate..."<<std::endl;

@@ -24,41 +24,30 @@ void ActionObserver::receiveEvent(Action *source) {
 }
 
 void ActionObserver::visit(AttackAction* action) {
-    auto attacker = action->getPerformingEntity();
+    auto characters = CharactersInRoom(action);
+    if(characters.size() < 1) {
+        return;
+    }
     auto args = action->getArgs();
-    if (args.size() < 1) {
+    if(args.size() < 1) {
         return;
     }
 
-    auto room = gameState->getCharacterLocation(*attacker);
-    if (!room) {
-        return;
-    }
-
-    //--get ids of characters in the attackers room
-    auto IDsOfCharactersInRoom =
-            gameState->getCharactersInRoom(room);
-    if (IDsOfCharactersInRoom.empty()) {
-        return;
-    }
-
-    auto attackerId = attacker->getEntityId();
-    auto nameOfAttackTarget = args[0];
+    auto nameOfTarget = args[0];
 
     // see if the target is in the same room as the attacker
-    for (auto characterID : IDsOfCharactersInRoom) {
-        auto currentEntity = gameState->getCharacterFromLUT(characterID);
-        if (!currentEntity)
-            return;
+    for (auto currentEntity : characters) {
 
         auto shortDescOfCurrentCharacter = currentEntity->getShortDesc();
         if (boost::to_lower_copy(shortDescOfCurrentCharacter) ==
-            boost::to_lower_copy(nameOfAttackTarget)){
+            boost::to_lower_copy(nameOfTarget)) {
 
             auto itr = characterToControllers.find(currentEntity);
-            if(itr != characterToControllers.end()) {
+            if (itr != characterToControllers.end()) {
+
+                auto sender = action->getPerformingEntity();
                 auto e = event::Event{
-                        attacker,
+                        sender,
                         event::EventType::startcombat,
                         {}
                 };
@@ -71,8 +60,80 @@ void ActionObserver::visit(AttackAction* action) {
     }
 }
 
-void ActionObserver::visit(MoveAction* action){
+void ActionObserver::visit(MoveAction* action) {
+    auto characters = CharactersInRoom(action);
+    if(characters.size() < 1) {
+        return;
+    }
+
+    auto sender = action->getPerformingEntity();
+    for(auto currentEntity : characters) {
+        auto itr = characterToControllers.find(currentEntity);
+        if (itr != characterToControllers.end()) {
+            auto e = event::Event{
+                    sender,
+                    event::EventType::interact,
+                    {}
+                 };
+
+            auto controller = itr->second;
+            controller->passEvent(e);
+        }
+    }
 }
 
 void ActionObserver::visit(SayAction* action){
+    auto characters = CharactersInRoom(action);
+    if(characters.size() < 1) {
+        return;
+    }
+
+    auto sender = action->getPerformingEntity();
+    auto args = action->getArgs();
+    for(auto currentEntity : characters) {
+        auto itr = characterToControllers.find(currentEntity);
+        if (itr != characterToControllers.end()) {
+            auto e = event::Event{
+                    sender,
+                    event::EventType::say,
+                    args
+            };
+
+            auto controller = itr->second;
+            controller->passEvent(e);
+        }
+    }
+}
+
+
+std::vector<CharacterEntity*> ActionObserver::CharactersInRoom(Action* action) {
+    auto sender = action->getPerformingEntity();
+    std::vector<CharacterEntity*> characters{};
+
+    auto room = gameState->getCharacterLocation(*sender);
+    if (!room) {
+        return characters;
+    }
+
+    //--get ids of characters in the attackers room
+    auto IDsOfCharactersInRoom =
+            gameState->getCharactersInRoom(room);
+    if (IDsOfCharactersInRoom.empty()) {
+        return characters;
+    }
+
+    // see if the target is in the same room as the attacker
+    for (auto characterID : IDsOfCharactersInRoom) {
+        if(characterID == sender->getEntityId()) {
+            continue;
+        }
+
+        auto currentEntity = gameState->getCharacterFromLUT(characterID);
+        if (!currentEntity)
+            return characters;
+
+        characters.push_back(currentEntity);
+    }
+
+    return characters;
 }

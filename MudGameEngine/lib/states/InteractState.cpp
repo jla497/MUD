@@ -12,74 +12,51 @@ namespace state{
 
     using Tokenizer = boost::tokenizer<boost::char_separator<char>>;
 
-//for each action
-//if attack action. auto nameOfAttackTarget = boost::join(actionArguments, " ");
-//get attacker
-
-//if say action. auto see if recipient is you. find speaker
-
-
     void InteractState::update() {
         auto dialogue = Dialogue();
         auto e = controller->getEvent();
-        if(e.getType() != event::EventType::undefined) {
-            auto newEntity = e.getEntity();
-            std::cout<<"in interactstate..."<<std::endl;
-            auto greeting = "say Hello "+newEntity->getShortDesc();
-            controller->setCmdString(greeting);
-            return;
-        }else {
-            //check if anyone is still in room, if not pass alone event
-            auto room = state->getCharacterLocation(*entity);
-            auto chIds = state->getCharactersInRoom(room);
-            for (auto id : chIds) {
-                auto character = state->getCharacterFromLUT(id);
-                if (character->get_isPlayerCharacter()) {
-                    return;
-                }
+//        std::cout << "in interactstate..." << std::endl;
+
+        switch (e.getType()) {
+
+            case event::EventType::interact: {
+                auto newEntity = e.getEntity();
+                auto greeting = "say Hello " + newEntity->getShortDesc();
+                controller->setCmdString(greeting);
+                break;
             }
 
-            auto e = event::Event{ nullptr,
-                                   event::EventType::alone,
-                                   {}
-                                 };
-        controller->passEvent(e);
+            case event::EventType::say: {
+                auto tokens = e.getArgs();
+                for (auto &token : tokens) {
+                    auto response = dialogue.getResponse(token);
+                    if (!response.empty()) {
+                        controller->setCmdString(response);
+                    }
+                }
+                break;
+            }
+
+            case event::EventType::undefined: {
+                auto room = state->getCharacterLocation(*entity);
+                auto chIds = state->getCharactersInRoom(room);
+                for (auto id : chIds) {
+                    auto character = state->getCharacterFromLUT(id);
+                    if (character->get_isPlayerCharacter()) {
+                        return;
+                    }
+                }
+
+                auto e = event::Event{nullptr,
+                                      event::EventType::alone,
+                                      {}
+                };
+                controller->passEvent(e);
+            }
+            default:
+                std::cout << "not a valid option" << std::endl;
+                //do nothing
         }
-
-//    auto msgs = controller->getAllMsgs();
-//    auto mCharacter = controller->getCharacter();
-//    auto mCharacterName = mCharacter->getShortDesc();
-//    boost::algorithm::to_lower(mCharacterName);
-//
-//    while (!msgs.empty()) {
-//        auto argString = msgs.front();
-//        msgs.pop();
-//
-//        if(argString.empty()) {
-//            continue;
-//        }
-//
-//        std::vector<std::string> tokens;
-//        //get sender's name
-//        boost::split(tokens, argString, boost::is_any_of(" "));
-//        auto recipient = tokens[1];
-//        //message not for this NPC
-//        if( recipient != mCharacterName) {
-//            continue;
-//        }
-//
-//        auto senderName = tokens[0];
-//        boost::erase_all(senderName, ":");
-//
-//        for(auto & token : tokens) {
-//            auto response = dialogue.getResponse(token);
-//            if(!response.empty()) {
-//                controller->setCmdString(response);
-//            }
-//        }
-//    }
-//
-
         return;
     }
     void InteractState::enter(){};
