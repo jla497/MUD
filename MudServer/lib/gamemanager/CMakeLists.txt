@@ -40,6 +40,7 @@ target_link_libraries(gamemanager
     persistence
     controllers
     states
+    observer
 )
 
 set_target_properties(gamemanager

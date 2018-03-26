@@ -9,6 +9,7 @@
 #include "entities/CharacterEntity.h"
 #include "gamemanager/GameManager.h"
 #include "logging.h"
+#include "observe/ActionObserver.h"
 
 std::unique_ptr<Action> AttackAction::clone() const {
     return std::make_unique<AttackAction>(*this);
@@ -79,6 +80,7 @@ void AttackAction::execute_impl() {
                     currentEntity->getCombatComponent()
                         ->getHealthDescription());
 
+            notify(this);
             return;
         }
     }
@@ -88,4 +90,9 @@ void AttackAction::execute_impl() {
     gameManager.sendCharacterMessage(attackingCharactersUniqueId,
                                      "Attack failed: could not find " +
                                          nameOfAttackTarget);
+
+}
+
+void AttackAction::accept(ActionObserver *observer) {
+    observer->visit(this);
 }

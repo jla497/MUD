@@ -5,6 +5,8 @@
 #include "gamemanager/GameManager.h"
 #include "logging.h"
 #include "controllers/CharacterController.h"
+#include "observe/ActionObserver.h"
+#include "observe/Observable.h"
 
 // FIXME: this should possibly work on the enum keyword rather than the
 // description string
@@ -22,16 +24,6 @@ void Action::execute() {
     // check if this is an admin action
     static auto logger = mudserver::logging::getLogger("Action::Action");
 
-//    auto &playerService = gameManager.getPlayerService();
-//    auto characterId =
-//        playerService.playerToCharacter(playerPerformingAction.getId());
-//    if(characterId){
-//        characterPerformingAction =
-//                gameManager.getState().getCharacterFromLUT(*characterId);
-//    }
-
-    // check if action is admin action and if character has an administrator
-    // role
     if (Action::isAdminAction[description()]) {
         if (playerPerformingAction.hasAdminPrivilege()) {
             execute_impl();
@@ -48,6 +40,7 @@ void Action::execute() {
         timeRemaining--;
         gameManager.addActionToQueue(clone());
     }
+
 }
 std::ostream &operator<<(std::ostream &os, const Action &action) {
     os << action.description() << ", [";
@@ -63,4 +56,8 @@ CharacterEntity* Action::getPerformingEntity() {
 }
 std::vector<std::string> Action::getArgs() {
     return actionArguments;
+}
+
+void Action::accept(ActionObserver *observer) {
+
 }

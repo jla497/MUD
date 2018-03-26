@@ -12,8 +12,10 @@ class Player;
 #include "entities/Entity.h"
 #include "gamemanager/GameManager.h"
 #include "gamemanager/Player.h"
+#include "observe/Observable.h"
 
 using mudserver::gamemanager::Player;
+class ActionObserver;
 
 /**
  * The Action class defines the interface that all actions implement.
@@ -21,7 +23,7 @@ using mudserver::gamemanager::Player;
  * own an ordered collection of arguments to the action that determine what it
  * actually affects.
  */
-class Action {
+class Action : public Observable<Action> {
     using Tick = int;
     static std::unordered_map<std::string, bool> isAdminAction;
 
@@ -29,16 +31,15 @@ class Action {
     Action(CharacterController &controller,
            std::vector<std::string> actionArguments,
            mudserver::gamemanager::GameManager &gameManager);
-    
+
     CharacterEntity* getPerformingEntity();
     std::vector<std::string> getArgs();
-
     Action(const Action &) = default;
     Action &operator=(const Action &) = default;
     Action(Action &&) = default;
     Action &operator=(Action &&) = default;
     virtual ~Action() = default;
-
+    virtual void accept(ActionObserver *observer);
 
     /**
      * Actions are designed to be placed in a queue. When the queue is

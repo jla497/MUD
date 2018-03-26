@@ -25,22 +25,9 @@ namespace state{
         if(e.getType() != event::EventType::undefined) {
             auto newEntity = e.getEntity();
             std::cout<<"in interactstate..."<<std::endl;
-            srand(time(0));
-            int randomval = rand() % 2;
-            if(randomval > 0) {
-                auto greeting = "say Hello "+newEntity->getShortDesc();
-                controller->setCmdString(greeting);
-                return;
-            }else{
-                auto e = event::Event{
-                        newEntity,
-                        event::EventType::startcombat,
-                        {}
-                };
-                controller->passEvent(e);
-                return;
-            }
-
+            auto greeting = "say Hello "+newEntity->getShortDesc();
+            controller->setCmdString(greeting);
+            return;
         }else {
             //check if anyone is still in room, if not pass alone event
             auto room = state->getCharacterLocation(*entity);

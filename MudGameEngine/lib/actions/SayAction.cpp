@@ -11,6 +11,7 @@
 #include "actions/SayAction.h"
 #include "logging.h"
 #include "resources/ActionMessages.h"
+#include "observe/ActionObserver.h"
 
 using boost::algorithm::join;
 namespace actmess = mudserver::resources::actions;
@@ -61,4 +62,9 @@ void SayAction::execute_impl() {
                                          : speakingCharacterDesc) %
                                     messageSentByPlayer));
     }
+    notify(this);
+}
+
+void SayAction::accept(ActionObserver *observer) {
+    observer->visit(this);
 }

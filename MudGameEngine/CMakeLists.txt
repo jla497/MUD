@@ -23,6 +23,6 @@ add_subdirectory(tools)
 
 # link yaml-cpp library
 
-add_library(yaml-cpp STATIC IMPORTED include/reset/ResetManager.h include/resources/DialogueStrings.h lib/event/Event.cpp)
+add_library(yaml-cpp STATIC IMPORTED include/reset/ResetManager.h include/resources/DialogueStrings.h lib/event/Event.cpp EventListener.h)
 
 add_dependencies(yaml-cpp project_yamlcpp)

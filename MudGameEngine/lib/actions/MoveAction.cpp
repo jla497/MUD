@@ -1,5 +1,6 @@
 
 #include "actions/MoveAction.h"
+#include "observe/ActionObserver.h"
 #include "logging.h"
 #include <actions/LookAction.h>
 #include <memory>
@@ -93,8 +94,12 @@ void MoveAction::execute_impl() {
                                                 nextRoom->getId());
 
         LookAction{controller, {}, gameManager}.execute();
-
+        notify(this);
         logger->debug("MoveAction complete...");
         return;
     }
+}
+
+void MoveAction::accept(ActionObserver *observer) {
+    observer->visit(this);
 }

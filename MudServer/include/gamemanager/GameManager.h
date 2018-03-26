@@ -17,6 +17,7 @@
 #include "entities/CharacterEntity.h"
 #include "entities/Entity.h"
 #include "persistence/PersistenceService.h"
+#include "observe/ActionObserver.h"
 
 namespace mudserver {
 namespace gamemanager {
@@ -133,7 +134,7 @@ class GameManager {
     void swapQueuePtrs();
     void addActionToQueue(std::unique_ptr<Action> action);
 
-    void fetchCntrlCmds();
+    void fetchCntrlCmds(ActionObserver *observer);
 };
 
 } // namespace gamemanager

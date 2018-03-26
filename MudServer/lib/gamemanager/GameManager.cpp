@@ -18,6 +18,7 @@
 #include "persistence/PersistenceService.h"
 #include "resources/PlayerCharacterDefaults.h"
 #include "controllers/AiController.h"
+#include "observe/ActionObserver.h"
 
 namespace mudserver {
 namespace gamemanager {
@@ -65,6 +66,7 @@ void GameManager::mainLoop() {
             controllerQueue.push_back(controller);
         }
         logger->debug("done creating npc controllers");
+        ActionObserver actionObserver{&controllerQueue, &gameState};
     // queue of characterControllers
 
     while (!done) {
@@ -78,7 +80,7 @@ void GameManager::mainLoop() {
 
         auto messages = connectionManager.sendToGameManager();
         processMessages(messages);
-        fetchCntrlCmds();
+        fetchCntrlCmds(&actionObserver);
         performQueuedActions();
         swapQueuePtrs();
         sendMessagesToPlayers();
@@ -250,7 +252,7 @@ void GameManager::swapCharacters(UniqueId casterCharacterId,
     // gameState.swapCharacters(casterCharacterId, targetCharacterId);
 }
 
-void GameManager::fetchCntrlCmds() {
+void GameManager::fetchCntrlCmds(ActionObserver *observer) {
     for(auto &controller : controllerQueue){
         if(controller->getCharacter() == nullptr) {
             //remove finished controllers
@@ -263,6 +265,7 @@ void GameManager::fetchCntrlCmds() {
         if(!msg.empty()) {
             auto action =
                     commandParser.actionFromPlayerCommand(*controller, msg, *this);
+            action->subscribe(observer);
             enqueueAction(std::move(action));
         }
     }
