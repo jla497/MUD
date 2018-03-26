@@ -36,39 +36,47 @@ namespace state{
         }
 
         auto e = controller->getEvent();
-        if(e.getEntity() != nullptr && e.getType() == event::EventType::startcombat) {
-            auto newEntity = e.getEntity();
-            targetEntity = newEntity;
-            std::cout<<"in combatstate..."<<std::endl;
-            auto cmd = "attack "+newEntity->getShortDesc();
-            controller->setCmdString(cmd);
-
-            return;
-        }else {
-            //targetentity is not dead
-            if(targetEntity != nullptr){
-                assert(targetEntity != nullptr);
-                //check if anyone is still in room, if not pass alone event
-                auto room = state->getCharacterLocation(*entity);
-                auto chIds = state->getCharactersInRoom(room);
-                for (auto id : chIds) {
-                    auto character = state->getCharacterFromLUT(id);
-                    if(character->getEntityId() == targetEntity->getEntityId()){
-                        auto cmd = "attack "+targetEntity->getShortDesc();
-                        controller->setCmdString(cmd);
-                        return;
-                    }
-                }
-
+        switch(e.getType()) {
+            case event::EventType::startcombat: {
+                auto newEntity = e.getEntity();
+                targetEntity = newEntity;
+                std::cout<<"in combatstate..."<<std::endl;
+                auto cmd = "attack "+newEntity->getShortDesc();
+                controller->setCmdString(cmd);
+                break;
             }
 
-            //attacker no longer in room, can either create pursue state. But too much work
-            auto e = event::Event{ nullptr,
-                                   event::EventType::interact,
-                                   {}
-            };
-            controller->passEvent(e);
+            case event::EventType::undefined: {
+                std::cout<<"combatstate undefined event..."<<std::endl;
+                if(targetEntity != nullptr){
+                    //check if anyone is still in room, if not pass alone event
+                    auto room = state->getCharacterLocation(*entity);
+                    auto chIds = state->getCharactersInRoom(room);
+                    for (auto id : chIds) {
+                        auto character = state->getCharacterFromLUT(id);
+                        if(character->getEntityId() == targetEntity->getEntityId()){
+                            auto cmd = "attack "+targetEntity->getShortDesc();
+                            controller->setCmdString(cmd);
+                            return;
+                        }
+                    }
+
+                }
+                std::cout<<"lin 65"<<std::endl;
+                //attacker no longer in room, can either create pursue state. But too much work
+                auto e = event::Event{ nullptr,
+                                       event::EventType::endcombat,
+                                       {}
+                };
+                controller->passEvent(e);
+                break;
+            }
+
+            default: {
+                //do nothing
+            }
         }
+
         return;
     }
 
