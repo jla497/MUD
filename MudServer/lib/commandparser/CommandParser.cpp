@@ -32,19 +32,18 @@ using boost::algorithm::to_lower_copy;
 
 using namespace resources::commands;
 
-static std::unordered_map<std::string, ActKeyword> actionLookup =
-    { // NOLINT
-        {UNDEFINED, ActKeyword::undefined},
-        {SAY, ActKeyword::say},
-        {LOOK, ActKeyword::look},
-        {ATTACK, ActKeyword::attack},
-        {MOVE, ActKeyword::move},
-        {PROGRAM, ActKeyword::program},
-        {TIMED, ActKeyword::timed},
-        {SAVE, ActKeyword::save},
-        {CHARMOD, ActKeyword::charmod},
-        {HALT, ActKeyword::halt},
-        {SWAP, ActKeyword::swap}};
+static std::unordered_map<std::string, ActKeyword> actionLookup = { // NOLINT
+    {UNDEFINED, ActKeyword::undefined},
+    {SAY, ActKeyword::say},
+    {LOOK, ActKeyword::look},
+    {ATTACK, ActKeyword::attack},
+    {MOVE, ActKeyword::move},
+    {PROGRAM, ActKeyword::program},
+    {TIMED, ActKeyword::timed},
+    {SAVE, ActKeyword::save},
+    {CHARMOD, ActKeyword::charmod},
+    {HALT, ActKeyword::halt},
+    {SWAP, ActKeyword::swap}};
 
 using ActionGenerator = std::unique_ptr<Action> (*)(CharacterController &,
                                                     std::vector<std::string> &,
@@ -75,7 +74,8 @@ const static std::map<ActKeyword, ActionGenerator> actionGenerators = {
     {ActKeyword::swap, &generator<SwapAction>}};
 
 std::unique_ptr<Action>
-CommandParser::actionFromPlayerCommand(CharacterController &controller, StrView command,
+CommandParser::actionFromPlayerCommand(CharacterController &controller,
+                                       StrView command,
                                        gamemanager::GameManager &gameManager) {
     Tokenizer tokens{command};
     auto tokenIterator = tokens.begin();

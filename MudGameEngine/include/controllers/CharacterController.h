@@ -6,17 +6,16 @@
 #define ADVENTURE2018_CHARACTERCONTROLLER_H
 
 #include "entities/CharacterEntity.h"
-#include "entities/CharacterEntity.h"
 #include "gamemanager/Player.h"
-#include <unordered_map>
 #include <queue>
+#include <unordered_map>
 
 class IState;
 namespace mudserver {
 namespace gamemanager {
 class GameState;
 }
-}
+} // namespace mudserver
 
 using mudserver::gamemanager::GameState;
 using mudserver::gamemanager::Player;

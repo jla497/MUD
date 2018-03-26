@@ -11,13 +11,13 @@
 #include <boost/optional.hpp>
 
 #include "connectionmanager/ConnectionManager.h"
+#include "controllers/AiController.h"
 #include "controllers/CharacterController.h"
 #include "entities/CharacterEntity.h"
 #include "gamemanager/GameManager.h"
 #include "logging.h"
 #include "persistence/PersistenceService.h"
 #include "resources/PlayerCharacterDefaults.h"
-#include "controllers/AiController.h"
 
 namespace mudserver {
 namespace gamemanager {
@@ -54,17 +54,18 @@ void GameManager::mainLoop() {
     nextAQueuePtr = &actionsB;
 
     gameState.doReset();
-        //get chars from each room, make ai controller for each npc and insert into controller
-        //queue. Note if Player field is a nullptr, this should be taken as a npc controller
-        auto npcs = gameState.getAllNpcs();
-        assert(!npcs.empty());
-        for(auto npc : npcs) {
-            auto controller = new AiController();
-            controller->init(&gameState, npc, nullptr);
+    // get chars from each room, make ai controller for each npc and insert into
+    // controller queue. Note if Player field is a nullptr, this should be taken
+    // as a npc controller
+    auto npcs = gameState.getAllNpcs();
+    assert(!npcs.empty());
+    for (auto npc : npcs) {
+        auto controller = new AiController();
+        controller->init(&gameState, npc, nullptr);
 
-            controllerQueue.push_back(controller);
-        }
-        logger->debug("done creating npc controllers");
+        controllerQueue.push_back(controller);
+    }
+    logger->debug("done creating npc controllers");
     // queue of characterControllers
 
     while (!done) {
@@ -215,17 +216,16 @@ GameState &GameManager::getState() { return gameState; }
 
 void GameManager::sendCharacterMessage(UniqueId characterId,
                                        std::string message) {
-    for(auto &controller : controllerQueue) {
+    for (auto &controller : controllerQueue) {
         auto character = controller->getCharacter();
         if (character->getEntityId() == characterId) {
 
             auto player = controller->getPlayer();
-            if(player != nullptr) {
+            if (player != nullptr) {
                 auto conn = networking::Connection{player->getConnectionId()};
                 enqueueMessage(conn, std::move(message));
-            }else {
+            } else {
                 controller->setMsg(message);
-
             }
         }
     }
@@ -252,12 +252,12 @@ void GameManager::swapCharacters(UniqueId casterCharacterId,
 }
 
 void GameManager::fetchCntrlCmds() {
-    for(auto &controller : controllerQueue){
+    for (auto &controller : controllerQueue) {
         controller->update();
         auto msg = controller->getCmdString();
-        if(!msg.empty()) {
+        if (!msg.empty()) {
             auto action =
-                    commandParser.actionFromPlayerCommand(*controller, msg, *this);
+                commandParser.actionFromPlayerCommand(*controller, msg, *this);
             enqueueAction(std::move(action));
         }
     }

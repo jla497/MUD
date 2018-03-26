@@ -2,16 +2,15 @@
 // Created by jla497 on 11/03/18.
 //
 
-#include <queue>
 #include "controllers/CharacterController.h"
 #include "gamemanager/GameState.h"
 #include "states/IState.h"
+#include <queue>
 
 void CharacterController::init(GameState *state, CharacterEntity *ent,
                                Player *plyer) {
     entity = ent;
     player = plyer;
-
 }
 
 void CharacterController::add(std::string key, IState *state) {
@@ -25,7 +24,7 @@ void CharacterController::change(std::string id) {
     auto itr = stateDict.find(id);
     if (itr != stateDict.end()) {
         current = itr->second;
-        std::cout<<"switched state to "+id<<std::endl;
+        std::cout << "switched state to " + id << std::endl;
     }
 }
 
@@ -45,10 +44,7 @@ std::string CharacterController::getCmdString() {
     return res;
 }
 
-
-void CharacterController::setMsg(std::string msg) {
-    messages.push(msg);
-}
+void CharacterController::setMsg(std::string msg) { messages.push(msg); }
 
 std::string CharacterController::getMsg() {
     auto res = messages.front();
