@@ -20,8 +20,8 @@
 #include "actions/SaveAction.h"
 #include "actions/SayAction.h"
 #include "actions/SwapAction.h"
-#include "actions/TimedAction.h"
 #include "actions/TakeAction.h"
+#include "actions/TimedAction.h"
 #include "commandparser/CommandParser.h"
 #include "resources/commands.h"
 
@@ -34,18 +34,12 @@ using boost::algorithm::to_lower_copy;
 using namespace resources::commands;
 
 static std::unordered_map<std::string, ActKeyword> actionLookup = { // NOLINT
-    {UNDEFINED, ActKeyword::undefined},
-    {SAY, ActKeyword::say},
-    {LOOK, ActKeyword::look},
-    {ATTACK, ActKeyword::attack},
-    {MOVE, ActKeyword::move},
-    {PROGRAM, ActKeyword::program},
-    {TIMED, ActKeyword::timed},
-    {SAVE, ActKeyword::save},
-    {CHARMOD, ActKeyword::charmod},
-    {HALT, ActKeyword::halt},
-    {SWAP, ActKeyword::swap},
-    {TAKE, ActKeyword::take}};
+    {UNDEFINED, ActKeyword::undefined}, {SAY, ActKeyword::say},
+    {LOOK, ActKeyword::look},           {ATTACK, ActKeyword::attack},
+    {MOVE, ActKeyword::move},           {PROGRAM, ActKeyword::program},
+    {TIMED, ActKeyword::timed},         {SAVE, ActKeyword::save},
+    {CHARMOD, ActKeyword::charmod},     {HALT, ActKeyword::halt},
+    {SWAP, ActKeyword::swap},           {TAKE, ActKeyword::take}};
 
 using ActionGenerator = std::unique_ptr<Action> (*)(Player &,
                                                     std::vector<std::string> &,
