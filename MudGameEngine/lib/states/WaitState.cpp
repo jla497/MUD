@@ -8,24 +8,35 @@
 namespace state {
 
     void WaitState::update() {
-        auto e = controller->getEvent();
-        if(e.getType() != event::EventType::undefined) {
 
-        }else {
-            auto room = state->getCharacterLocation(*entity);
-            auto chIds = state->getCharactersInRoom(room);
-            for (auto id : chIds) {
-                auto character = state->getCharacterFromLUT(id);
-                if (character->get_isPlayerCharacter()) {
-                    auto e = event::Event{character,
-                                          event::EventType::interact,
-                                          {"foo"}
-                                         };
-                    controller->passEvent(e);
-                }
+        //if a player in same room switch state
+        auto room = state->getCharacterLocation(*entity);
+        auto chIds = state->getCharactersInRoom(room);
+        for (auto id : chIds) {
+            auto character = state->getCharacterFromLUT(id);
+            if (character->get_isPlayerCharacter()) {
+                auto e = event::Event{character,
+                                      event::EventType::interact,
+                                      {"foo"}
+                                     };
+                controller->passEvent(e);
+                return;
             }
         }
 
+        //randomly move
+        srand(time(NULL));
+        auto chance = rand() % 5;
+        if(chance > 3) {
+            //find valid direction
+            auto directions = room->getDirs();
+            auto numOfDirs = directions.size();
+            auto directionIndex = rand() % numOfDirs;
+
+            auto moveTo = directions[directionIndex];
+            controller->setCmdString("move "+moveTo);
+            std::cout<<entity->getShortDesc()<<" moved "<<moveTo<<std::endl;
+        }
     }
     void WaitState::enter(){};
     void WaitState::exit(){};

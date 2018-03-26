@@ -4,10 +4,10 @@
 
 #include "states/Dialogue.h"
 std::unordered_map<std::string, std::string> Dialogue::dialogueMap = {
-        {"hey hello", "say hello"},
-        {"who where from", "say I am %me" },
-        {"give stuff give things", "say you cant have my stuff"},
-        {"idiot, stupid, dumb", "say kick your self"}
+        {"hey hello", "hello"},
+        {"who","I am %shortdescription" },
+        {"give stuff demand things", "you cant have my stuff"},
+        {"idiot, stupid, dumb", "kick your self"}
 };
 
 std::string Dialogue::getResponse(std::string arg) {
