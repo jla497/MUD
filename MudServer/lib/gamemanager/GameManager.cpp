@@ -55,9 +55,9 @@ void GameManager::mainLoop() {
 
     gameState.doReset();
     // get chars from each room, make ai controller for each npc and insert into
-    // controller
-    // queue. Note if Player field is a nullptr, this should be taken as a npc
-    // controller
+    // controller queue. Note if Player field is a nullptr, this should be taken
+    // as a npc controller
+
     auto npcs = gameState.getAllNpcs();
     assert(!npcs.empty());
     for (auto npc : npcs) {
