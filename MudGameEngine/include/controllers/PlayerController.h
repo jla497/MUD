@@ -5,8 +5,8 @@
 #ifndef ADVENTURE2018_PLAYERCONTROLLER_H
 #define ADVENTURE2018_PLAYERCONTROLLER_H
 
-#include "controllers/CharacterController.h"
 #include "Event.h"
+#include "controllers/CharacterController.h"
 
 class PlayerController : public CharacterController {
 

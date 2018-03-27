@@ -1,7 +1,7 @@
 
 #include "actions/MoveAction.h"
-#include "observe/ActionObserver.h"
 #include "logging.h"
+#include "observe/ActionObserver.h"
 #include <actions/LookAction.h>
 #include <memory>
 // #include "entities/CharacterEntity.h"
@@ -100,6 +100,4 @@ void MoveAction::execute_impl() {
     }
 }
 
-void MoveAction::accept(ActionObserver *observer) {
-    observer->visit(this);
-}
+void MoveAction::accept(ActionObserver *observer) { observer->visit(this); }

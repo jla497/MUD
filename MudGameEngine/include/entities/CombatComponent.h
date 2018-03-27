@@ -42,7 +42,7 @@ class CombatComponent : public CharacterComponent {
     CombatStates getCombatState();
     void setArmor(int armor);
     void setThac0(int thac0);
-    std::string setEnemiesName(std::string enemiesName);  
+    std::string setEnemiesName(std::string enemiesName);
     void setDamageRoll(Roll damageRoll);
     void setHitRoll(Roll maxHitPointRoll);
     int getArmor() const;

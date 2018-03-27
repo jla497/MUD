@@ -3,8 +3,8 @@
 //
 
 #include "states/IState.h"
-namespace state{
-    IState::IState(GameState *state, CharacterEntity *entity,
-                   CharacterController *controller)
-            : state(state), entity(entity), controller(controller) {}
+namespace state {
+IState::IState(GameState *state, CharacterEntity *entity,
+               CharacterController *controller)
+    : state(state), entity(entity), controller(controller) {}
 }

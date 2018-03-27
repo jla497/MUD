@@ -7,16 +7,12 @@
 
 #include "Observer.h"
 
-template <typename T>
-class Observable{
-    Observer<T>* observer;
-public:
-    void notify(T* source) {
-        observer->receiveEvent(source);
-    }
+template <typename T> class Observable {
+    Observer<T> *observer;
 
-    void subscribe(Observer<T>* o){
-        observer = o;
-    }
+  public:
+    void notify(T *source) { observer->receiveEvent(source); }
+
+    void subscribe(Observer<T> *o) { observer = o; }
 };
-#endif //ADVENTURE2018_OBSERVABLE_H
+#endif // ADVENTURE2018_OBSERVABLE_H

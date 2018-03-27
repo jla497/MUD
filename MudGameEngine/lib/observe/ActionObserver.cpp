@@ -11,25 +11,24 @@
 #include "gamemanager/GameState.h"
 #include <boost/algorithm/string.hpp>
 
-ActionObserver:: ActionObserver(std::vector<CharacterController*> *controllers, GameState *state ){
-    for(auto& controller : *controllers) {
+ActionObserver::ActionObserver(std::vector<CharacterController *> *controllers,
+                               GameState *state) {
+    for (auto &controller : *controllers) {
         assert(controller->getCharacter() != nullptr);
         characterToControllers[controller->getCharacter()] = controller;
     }
     gameState = state;
 }
 
-void ActionObserver::receiveEvent(Action *source) {
-    source->accept(this);
-}
+void ActionObserver::receiveEvent(Action *source) { source->accept(this); }
 
-void ActionObserver::visit(AttackAction* action) {
+void ActionObserver::visit(AttackAction *action) {
     auto characters = CharactersInRoom(action);
-    if(characters.size() < 1) {
+    if (characters.size() < 1) {
         return;
     }
     auto args = action->getArgs();
-    if(args.size() < 1) {
+    if (args.size() < 1) {
         return;
     }
 
@@ -46,11 +45,8 @@ void ActionObserver::visit(AttackAction* action) {
             if (itr != characterToControllers.end()) {
 
                 auto sender = action->getPerformingEntity();
-                auto e = event::Event{
-                        sender,
-                        event::EventType::startcombat,
-                        {}
-                };
+                auto e =
+                    event::Event{sender, event::EventType::startcombat, {}};
 
                 auto controller = itr->second;
                 controller->passEvent(e);
@@ -60,21 +56,17 @@ void ActionObserver::visit(AttackAction* action) {
     }
 }
 
-void ActionObserver::visit(MoveAction* action) {
+void ActionObserver::visit(MoveAction *action) {
     auto characters = CharactersInRoom(action);
-    if(characters.size() < 1) {
+    if (characters.size() < 1) {
         return;
     }
 
     auto sender = action->getPerformingEntity();
-    for(auto currentEntity : characters) {
+    for (auto currentEntity : characters) {
         auto itr = characterToControllers.find(currentEntity);
         if (itr != characterToControllers.end()) {
-            auto e = event::Event{
-                    sender,
-                    event::EventType::interact,
-                    {}
-                 };
+            auto e = event::Event{sender, event::EventType::interact, {}};
 
             auto controller = itr->second;
             controller->passEvent(e);
@@ -82,22 +74,18 @@ void ActionObserver::visit(MoveAction* action) {
     }
 }
 
-void ActionObserver::visit(SayAction* action){
+void ActionObserver::visit(SayAction *action) {
     auto characters = CharactersInRoom(action);
-    if(characters.size() < 1) {
+    if (characters.size() < 1) {
         return;
     }
 
     auto sender = action->getPerformingEntity();
     auto args = action->getArgs();
-    for(auto currentEntity : characters) {
+    for (auto currentEntity : characters) {
         auto itr = characterToControllers.find(currentEntity);
         if (itr != characterToControllers.end()) {
-            auto e = event::Event{
-                    sender,
-                    event::EventType::say,
-                    args
-            };
+            auto e = event::Event{sender, event::EventType::say, args};
 
             auto controller = itr->second;
             controller->passEvent(e);
@@ -105,10 +93,10 @@ void ActionObserver::visit(SayAction* action){
     }
 }
 
-
-std::vector<CharacterEntity*> ActionObserver::CharactersInRoom(Action* action) {
+std::vector<CharacterEntity *>
+ActionObserver::CharactersInRoom(Action *action) {
     auto sender = action->getPerformingEntity();
-    std::vector<CharacterEntity*> characters{};
+    std::vector<CharacterEntity *> characters{};
 
     auto room = gameState->getCharacterLocation(*sender);
     if (!room) {
@@ -116,15 +104,14 @@ std::vector<CharacterEntity*> ActionObserver::CharactersInRoom(Action* action) {
     }
 
     //--get ids of characters in the attackers room
-    auto IDsOfCharactersInRoom =
-            gameState->getCharactersInRoom(room);
+    auto IDsOfCharactersInRoom = gameState->getCharactersInRoom(room);
     if (IDsOfCharactersInRoom.empty()) {
         return characters;
     }
 
     // see if the target is in the same room as the attacker
     for (auto characterID : IDsOfCharactersInRoom) {
-        if(characterID == sender->getEntityId()) {
+        if (characterID == sender->getEntityId()) {
             continue;
         }
 

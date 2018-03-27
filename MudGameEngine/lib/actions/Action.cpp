@@ -2,9 +2,9 @@
 #include <ostream>
 
 #include "actions/Action.h"
+#include "controllers/CharacterController.h"
 #include "gamemanager/GameManager.h"
 #include "logging.h"
-#include "controllers/CharacterController.h"
 #include "observe/ActionObserver.h"
 #include "observe/Observable.h"
 
@@ -18,7 +18,7 @@ Action::Action(CharacterController &controller,
                mudserver::gamemanager::GameManager &gameManager)
     : controller(controller), playerPerformingAction{*(controller.getPlayer())},
       actionArguments{std::move(actionArguments)}, gameManager{gameManager},
-characterPerformingAction(controller.getCharacter()){}
+      characterPerformingAction(controller.getCharacter()) {}
 
 void Action::execute() {
     // check if this is an admin action
@@ -40,7 +40,6 @@ void Action::execute() {
         timeRemaining--;
         gameManager.addActionToQueue(clone());
     }
-
 }
 std::ostream &operator<<(std::ostream &os, const Action &action) {
     os << action.description() << ", [";
@@ -51,13 +50,9 @@ std::ostream &operator<<(std::ostream &os, const Action &action) {
     return os;
 }
 
-CharacterEntity* Action::getPerformingEntity() {
+CharacterEntity *Action::getPerformingEntity() {
     return characterPerformingAction;
 }
-std::vector<std::string> Action::getArgs() {
-    return actionArguments;
-}
+std::vector<std::string> Action::getArgs() { return actionArguments; }
 
-void Action::accept(ActionObserver *observer) {
-
-}
+void Action::accept(ActionObserver *observer) {}

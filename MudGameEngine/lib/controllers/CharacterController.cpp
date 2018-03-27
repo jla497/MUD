@@ -2,14 +2,13 @@
 // Created by jla497 on 11/03/18.
 //
 
-#include <queue>
 #include "controllers/CharacterController.h"
+#include "Event.h"
 #include "gamemanager/GameState.h"
 #include "states/IState.h"
-#include "Event.h"
+#include <queue>
 
-void CharacterController::init(GameState *s, CharacterEntity *e,
-                               Player *p) {
+void CharacterController::init(GameState *s, CharacterEntity *e, Player *p) {
     entity = e;
     player = p;
     state = s;
@@ -26,7 +25,7 @@ void CharacterController::setCmdString(std::string cmd) {
 }
 
 std::string CharacterController::getCmdString() {
-    if(cmdStrings.empty()) {
+    if (cmdStrings.empty()) {
         return "";
     }
     auto res = cmdStrings.front();
@@ -34,12 +33,10 @@ std::string CharacterController::getCmdString() {
     return res;
 }
 
-void CharacterController::passEvent(event::Event e) {
-    eventQueue.push(e);
-}
+void CharacterController::passEvent(event::Event e) { eventQueue.push(e); }
 
 event::Event CharacterController::getEvent() {
-    if(eventQueue.empty()){
+    if (eventQueue.empty()) {
         return event::Event{nullptr, event::EventType::undefined, {}};
     }
     auto e = eventQueue.top();

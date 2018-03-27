@@ -6,10 +6,10 @@
 #include "MockConnectionManager.h"
 #include "MockGameManager.h"
 #include "commandparser/CommandParser.h"
-#include "entities/CharacterEntity.h"
-#include "gamemanager/GameState.h"
 #include "controllers/CharacterController.h"
 #include "controllers/PlayerController.h"
+#include "entities/CharacterEntity.h"
+#include "gamemanager/GameState.h"
 
 #include "actions/AttackAction.h"
 #include "actions/MoveAction.h"

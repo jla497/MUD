@@ -5,16 +5,16 @@
 #ifndef ADVENTURE2018_CHARACTERCONTROLLER_H
 #define ADVENTURE2018_CHARACTERCONTROLLER_H
 
-#include "entities/CharacterEntity.h"
-#include "entities/CharacterEntity.h"
 #include "Event.h"
+#include "entities/CharacterEntity.h"
+#include "entities/CharacterEntity.h"
 #include "gamemanager/Player.h"
-#include <unordered_map>
 #include <queue>
+#include <unordered_map>
 
 namespace state {
-    enum class StateType;
-    class IState;
+enum class StateType;
+class IState;
 }
 
 namespace mudserver {
@@ -46,7 +46,5 @@ class CharacterController {
     CharacterEntity *getCharacter();
     void setCmdString(std::string cmd);
     std::string getCmdString();
-
-
 };
 #endif // ADVENTURE2018_CHARACTERCONTROLLER_H

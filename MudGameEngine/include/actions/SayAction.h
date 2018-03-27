@@ -16,6 +16,7 @@ class SayAction : public Action {
     void execute_impl() override;
     std::unique_ptr<Action> clone() const override;
     void accept(ActionObserver *observer) override;
+
   protected:
     std::string description() const override { return u8"Say action"; }
 };

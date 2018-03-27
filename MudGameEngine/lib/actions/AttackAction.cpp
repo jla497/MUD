@@ -90,9 +90,6 @@ void AttackAction::execute_impl() {
     gameManager.sendCharacterMessage(attackingCharactersUniqueId,
                                      "Attack failed: could not find " +
                                          nameOfAttackTarget);
-
 }
 
-void AttackAction::accept(ActionObserver *observer) {
-    observer->visit(this);
-}
+void AttackAction::accept(ActionObserver *observer) { observer->visit(this); }

@@ -16,8 +16,8 @@
 #include "connectionmanager/ConnectionManager.h"
 #include "entities/CharacterEntity.h"
 #include "entities/Entity.h"
-#include "persistence/PersistenceService.h"
 #include "observe/ActionObserver.h"
+#include "persistence/PersistenceService.h"
 
 namespace mudserver {
 namespace gamemanager {

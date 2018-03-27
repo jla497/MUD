@@ -9,30 +9,31 @@
 #include <vector>
 
 namespace event {
-    enum class EventType {
-        undefined = 0,
-        died_self,
-        startcombat,
-        endcombat,
-        say,
-        interact,
-        alone
-    };
+enum class EventType {
+    undefined = 0,
+    died_self,
+    startcombat,
+    endcombat,
+    say,
+    interact,
+    alone
+};
 
-    class Event {
-        CharacterEntity* entity = nullptr;
-        EventType type = EventType::undefined;
-        std::vector<std::string> args{};
-    public:
-        Event();
-        Event(CharacterEntity* e, EventType event, std::vector<std::string> a);
-        CharacterEntity* getEntity();
-        EventType  getType();
-        std::vector<std::string> getArgs();
+class Event {
+    CharacterEntity *entity = nullptr;
+    EventType type = EventType::undefined;
+    std::vector<std::string> args{};
 
-        friend bool operator< (Event const& a, Event const&b) {
-            return a.type < b.type;
-        }
-    };
+  public:
+    Event();
+    Event(CharacterEntity *e, EventType event, std::vector<std::string> a);
+    CharacterEntity *getEntity();
+    EventType getType();
+    std::vector<std::string> getArgs();
+
+    friend bool operator<(Event const &a, Event const &b) {
+        return a.type < b.type;
+    }
+};
 }
-#endif //ADVENTURE2018_EVENT_H
+#endif // ADVENTURE2018_EVENT_H

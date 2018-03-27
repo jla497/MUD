@@ -10,8 +10,8 @@
 
 #include "actions/SayAction.h"
 #include "logging.h"
-#include "resources/ActionMessages.h"
 #include "observe/ActionObserver.h"
+#include "resources/ActionMessages.h"
 
 using boost::algorithm::join;
 namespace actmess = mudserver::resources::actions;
@@ -65,6 +65,4 @@ void SayAction::execute_impl() {
     notify(this);
 }
 
-void SayAction::accept(ActionObserver *observer) {
-    observer->visit(this);
-}
+void SayAction::accept(ActionObserver *observer) { observer->visit(this); }

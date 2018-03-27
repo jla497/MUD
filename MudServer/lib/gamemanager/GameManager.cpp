@@ -1,24 +1,24 @@
 #include <algorithm>
+#include <boost/format.hpp>
+#include <boost/optional.hpp>
 #include <cassert>
 #include <iomanip>
 #include <iostream>
 #include <memory>
 #include <sstream>
 #include <thread>
-#include <vector>
 #include <typeinfo>
-#include <boost/format.hpp>
-#include <boost/optional.hpp>
+#include <vector>
 
 #include "connectionmanager/ConnectionManager.h"
+#include "controllers/AiController.h"
 #include "controllers/CharacterController.h"
 #include "entities/CharacterEntity.h"
 #include "gamemanager/GameManager.h"
 #include "logging.h"
+#include "observe/ActionObserver.h"
 #include "persistence/PersistenceService.h"
 #include "resources/PlayerCharacterDefaults.h"
-#include "controllers/AiController.h"
-#include "observe/ActionObserver.h"
 
 namespace mudserver {
 namespace gamemanager {
@@ -55,18 +55,20 @@ void GameManager::mainLoop() {
     nextAQueuePtr = &actionsB;
 
     gameState.doReset();
-        //get chars from each room, make ai controller for each npc and insert into controller
-        //queue. Note if Player field is a nullptr, this should be taken as a npc controller
-        auto npcs = gameState.getAllNpcs();
-        assert(!npcs.empty());
-        for(auto npc : npcs) {
-            auto controller = new AiController();
-            controller->init(&gameState, npc, nullptr);
+    // get chars from each room, make ai controller for each npc and insert into
+    // controller
+    // queue. Note if Player field is a nullptr, this should be taken as a npc
+    // controller
+    auto npcs = gameState.getAllNpcs();
+    assert(!npcs.empty());
+    for (auto npc : npcs) {
+        auto controller = new AiController();
+        controller->init(&gameState, npc, nullptr);
 
-            controllerQueue.push_back(controller);
-        }
-        logger->debug("done creating npc controllers");
-        ActionObserver actionObserver{&controllerQueue, &gameState};
+        controllerQueue.push_back(controller);
+    }
+    logger->debug("done creating npc controllers");
+    ActionObserver actionObserver{&controllerQueue, &gameState};
     // queue of characterControllers
 
     while (!done) {
@@ -216,17 +218,16 @@ GameState &GameManager::getState() { return gameState; }
 
 void GameManager::sendCharacterMessage(UniqueId characterId,
                                        std::string message) {
-    for(auto &controller : controllerQueue) {
+    for (auto &controller : controllerQueue) {
         auto character = controller->getCharacter();
         if (character->getEntityId() == characterId) {
 
             auto player = controller->getPlayer();
-            if(player != nullptr) {
+            if (player != nullptr) {
                 auto conn = networking::Connection{player->getConnectionId()};
                 enqueueMessage(conn, std::move(message));
-            }else {
-               //do nothing
-
+            } else {
+                // do nothing
             }
         }
     }
@@ -253,18 +254,20 @@ void GameManager::swapCharacters(UniqueId casterCharacterId,
 }
 
 void GameManager::fetchCntrlCmds(ActionObserver *observer) {
-    for(auto &controller : controllerQueue){
-        if(controller->getCharacter() == nullptr) {
-            //remove finished controllers
-            controllerQueue.erase(std::remove(controllerQueue.begin(), controllerQueue.end(),
-                                              controller),controllerQueue.end());
+    for (auto &controller : controllerQueue) {
+        if (controller->getCharacter() == nullptr) {
+            // remove finished controllers
+            controllerQueue.erase(std::remove(controllerQueue.begin(),
+                                              controllerQueue.end(),
+                                              controller),
+                                  controllerQueue.end());
         }
 
         controller->update();
         auto msg = controller->getCmdString();
-        if(!msg.empty()) {
+        if (!msg.empty()) {
             auto action =
-                    commandParser.actionFromPlayerCommand(*controller, msg, *this);
+                commandParser.actionFromPlayerCommand(*controller, msg, *this);
             action->subscribe(observer);
             enqueueAction(std::move(action));
         }

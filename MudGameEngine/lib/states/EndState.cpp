@@ -11,14 +11,9 @@
 
 namespace state {
 
-    void EndState::update() {
-        std::cout<<"in endState..."<<std::endl;
+void EndState::update() { std::cout << "in endState..." << std::endl; }
+void EndState::enter(){};
+void EndState::exit(){};
 
-    }
-    void EndState::enter(){};
-    void EndState::exit(){};
-
-    StateType EndState::getType() {
-        return StateType::wait;
-    }
+StateType EndState::getType() { return StateType::wait; }
 }

@@ -32,7 +32,7 @@ class Action : public Observable<Action> {
            std::vector<std::string> actionArguments,
            mudserver::gamemanager::GameManager &gameManager);
 
-    CharacterEntity* getPerformingEntity();
+    CharacterEntity *getPerformingEntity();
     std::vector<std::string> getArgs();
     Action(const Action &) = default;
     Action &operator=(const Action &) = default;
