@@ -37,14 +37,13 @@ void CombatState::update() {
     case event::EventType::startcombat: {
         auto newEntity = e.getEntity();
         targetEntity = newEntity;
-        std::cout << "in combatstate..." << std::endl;
+        //        std::cout << "in combatstate..." << std::endl;
         auto cmd = "attack " + newEntity->getShortDesc();
         controller->setCmdString(cmd);
         break;
     }
 
     case event::EventType::undefined: {
-        std::cout << "combatstate undefined event..." << std::endl;
         if (targetEntity != nullptr) {
             // check if anyone is still in room, if not pass alone event
             auto room = state->getCharacterLocation(*entity);
@@ -58,7 +57,6 @@ void CombatState::update() {
                 }
             }
         }
-        std::cout << "lin 65" << std::endl;
         // attacker no longer in room, can either create pursue state. But too
         // much work
         auto e = event::Event{nullptr, event::EventType::endcombat, {}};

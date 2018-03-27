@@ -15,16 +15,15 @@ using Tokenizer = boost::tokenizer<boost::char_separator<char>>;
 void InteractState::update() {
     auto dialogue = Dialogue();
     auto e = controller->getEvent();
-    //        std::cout << "in interactstate..." << std::endl;
 
     switch (e.getType()) {
 
-    case event::EventType::interact: {
-        auto newEntity = e.getEntity();
-        auto greeting = "say Hello " + newEntity->getShortDesc();
-        controller->setCmdString(greeting);
-        break;
-    }
+    //    case event::EventType::interact: {
+    //        auto newEntity = e.getEntity();
+    //        auto greeting = "say Hello " + newEntity->getShortDesc();
+    //        controller->setCmdString(greeting);
+    //        break;
+    //    }
 
     case event::EventType::say: {
         auto tokens = e.getArgs();
@@ -42,17 +41,13 @@ void InteractState::update() {
         auto chIds = state->getCharactersInRoom(room);
         for (auto id : chIds) {
             auto character = state->getCharacterFromLUT(id);
-            if (character->get_isPlayerCharacter()) {
+            if (!(character->getEntityId() == entity->getEntityId())) {
                 return;
             }
         }
-
         auto e = event::Event{nullptr, event::EventType::alone, {}};
         controller->passEvent(e);
     }
-    default:
-        std::cout << "not a valid option" << std::endl;
-        // do nothing
     }
     return;
 }

@@ -11,7 +11,7 @@
 
 namespace state {
 
-void EndState::update() { std::cout << "in endState..." << std::endl; }
+void EndState::update() {}
 void EndState::enter(){};
 void EndState::exit(){};
 
