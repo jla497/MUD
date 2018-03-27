@@ -17,11 +17,6 @@
 
 #include <yaml-cpp/yaml.h>
 
-/*
- * FIXME
- * This class is basically just a namespace.
- * None of the parse* methods make use of `this`.
- */
 
 class YamlParser {
 

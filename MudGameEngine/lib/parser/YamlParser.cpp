@@ -143,10 +143,11 @@ std::vector<DoorEntity> YamlParser::getAllDoors(YAML::Node roomNode) const {
      * This can apply for every function that looks like this.
      */
 
-    std::for_each(roomNode[DOORS_ENT].begin(), roomNode[DOORS_ENT].end(),
-                  [&](YAML::Node node) { doors.push_back(parseDoor(node)); });
-
+    for (auto node : roomNode[DOORS_ENT]) {
+        doors.push_back(parseDoor(node));
+    }
     return doors;
+
 }
 
 RoomEntity YamlParser::parseRoom(YAML::Node roomNode) const {
@@ -184,28 +185,25 @@ ShopEntity YamlParser::parseShop(YAML::Node shopNode) const {
 std::vector<CharacterEntity> YamlParser::getAllNPCS() const {
     std::vector<CharacterEntity> npcs;
     for (auto &document : data) {
-        std::for_each(document[NPCS_ENT].begin(), document[NPCS_ENT].end(),
-                      [&](YAML::Node node) { npcs.push_back(parseNPC(node)); });
+        for (auto &node : document[NPCS_ENT]) {
+            npcs.push_back(parseNPC(node));
+        }
     }
     return npcs;
 }
 
 std::vector<ObjectEntity> YamlParser::getAllObjects() const {
     std::vector<ObjectEntity> objects;
-    for (auto &document : data) {
-        for (auto &node : document[OBJECTS_ENT]) {
-            objects.push_back(parseObject(node));
-        }
+    for (auto &node : data[0][OBJECTS_ENT]) {
+        objects.push_back(parseObject(node));
     }
     return objects;
 }
 
 std::vector<Reset> YamlParser::getAllResets() const {
     std::vector<Reset> resets;
-    for (auto &document : data) {
-        for (auto &node : document[RESETS_ENT]) {
-            resets.push_back(parseReset(node));
-        }
+    for (auto &node : data[0][RESETS_ENT]) {
+        resets.push_back(parseReset(node));
     }
     return resets;
 }
@@ -214,60 +212,26 @@ void YamlParser::getAllHelps() const {}
 
 std::vector<ShopEntity> YamlParser::getAllShops() const {
     std::vector<ShopEntity> shops;
-    for (auto &document : data) {
-        if (document[SHOPS_ENT]) {
-            for (auto &node : document[SHOPS_ENT]) {
-                shops.push_back(parseShop(node));
-            }
+    if (data[0][SHOPS_ENT]) {
+        for (auto &node : data[0][SHOPS_ENT]) {
+            shops.push_back(parseShop(node));
         }
     }
     return shops;
 }
 
 std::deque<RoomEntity> YamlParser::getAllRooms() const {
-    // need Room constructor
     std::deque<RoomEntity> rooms;
-    // iterate through all rooms in data and add them to list/vector of rooms
-    for (auto &document : data) {
-        for (auto &node : document[ROOMS_ENT]) {
-            rooms.push_back(parseRoom(node));
-        }
+    for (auto &node : data[0][ROOMS_ENT]) {
+        rooms.push_back(parseRoom(node));
     }
     return rooms;
 }
 
 AreaEntity YamlParser::getArea() const {
-    // FIXME this function is horribly broken and doesn't do what you want it to
-    // do
-    // warning: 'rooms' used after it was moved [bugprone-use-after-move]
-    // FIXME
-    // FIXME
-    // FIXME
-    // FIXME
-    // FIXME
-    // FIXME
-    // FIXME
-    // FIXME
-    // FIXME
-    // FIXME
-    // FIXME
-    // FIXME
-    // FIXME
-    // FIXME
-    // FIXME
-    // FIXME
-    // FIXME
-    // FIXME
-    // FIXME
-    // FIXME
-    // i have no idea what you intended this to do, so i can't fix it myself
-
-    AreaEntity area;
     auto rooms = getAllRooms();
-    for (auto &document : data) {
-        auto name = document[AREA_ENT][NAME].as<std::string>();
-        area = {name, std::move(rooms)};
-    }
+    auto name = parseString(data[0][AREA_ENT][NAME]);
+    AreaEntity area{name, rooms};
     return area;
 }
 

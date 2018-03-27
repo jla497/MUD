@@ -1,6 +1,7 @@
 #include "YamlParser.h"
 #include "entities/Entity.h"
 #include "entities/RoomEntity.h"
+#include "entities/CharacterEntity.h"
 #include "gamemanager/LutBuilder.h"
 #include "reset/Reset.h"
 #include <gtest/gtest.h>
@@ -25,7 +26,15 @@ class ParserTests : public testing::Test {
     YamlParser parser{};
 };
 
-TEST_F(ParserTests, TestGetAllNPCS) { auto npcs = parser.getAllNPCS(); }
+TEST_F(ParserTests, TestGetAllNPCS) { 
+    auto npcs = parser.getAllNPCS(); 
+    CharacterEntity littleBoPeep = npcs.at(0);
+    std::vector<std::string> description;
+    description.push_back("A silly little girl, with blonde hair and sad blue eyes. She really wants");
+    description.push_back("to find her sheep.");
+    EXPECT_EQ(littleBoPeep.getDesc().at(0), description.at(0));
+    EXPECT_EQ(littleBoPeep.getDesc().at(1), description.at(1));
+}
 
 TEST_F(ParserTests, TestGetAllObjects) {
     auto objects = parser.getAllObjects();
