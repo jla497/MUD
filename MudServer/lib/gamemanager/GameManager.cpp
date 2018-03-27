@@ -104,38 +104,55 @@ void GameManager::loadPersistedData() {
     playerService = persistenceService.loadPlayerService();
 }
 
-Player *GameManager::getPlayerFromLogin(const gameAndUserInterface &message) {
-    static auto logger = logging::getLogger("GameManager::getPlayerFromLogin");
+Player *GameManager::getActivePlayer(const gameAndUserInterface &message) {
+    static auto logger = logging::getLogger("GameManager::getActivePlayer");
 
     // look up player from ID
     auto connectionId = message.conn.id;
     logger->debug(std::to_string(connectionId) + ": " + message.text);
 
     auto player = playerService.getPlayerByConnection(connectionId);
-    if (!player) {
-        auto uAndP = commandParser.identifiersFromIdentifyCommand(message.text);
-        if (!uAndP.first.empty()) {
-            player = playerService.identify(uAndP.first, uAndP.second);
-            if (!player) {
-                auto addPlayerResult =
-                    playerService.addPlayer(uAndP.first, uAndP.second);
-                if (addPlayerResult == AddPlayerResult::playerAdded) {
-                    player = playerService.identify(uAndP.first, uAndP.second);
-                } else if (addPlayerResult == AddPlayerResult::playerExists) {
-                    enqueueMessage(message.conn, INCORRECT_IDENT);
-                }
-            }
-            if (player) {
-                playerService.setPlayerConnection(player->getId(),
-                                                  message.conn.id);
-                enqueueMessage(message.conn, LOGIN_SUCCESS);
-                return player;
-            }
-        }
 
+    if (!player) {
+        player = playerFromLogin(message, player);
+    }
+
+    if (player) {
+        playerService.setPlayerConnection(player->getId(), message.conn.id);
+        enqueueMessage(message.conn, LOGIN_SUCCESS);
+    }
+
+    return player;
+}
+
+Player *GameManager::playerFromLogin(const gameAndUserInterface &message,
+                                     Player *player) {
+    auto userPassPair =
+        commandParser.identifiersFromIdentifyCommand(message.text);
+
+    if (userPassPair.first.empty()) {
         enqueueMessage(message.conn, PLEASE_LOGIN);
         return nullptr;
     }
+
+    player = playerService.identify(userPassPair.first, userPassPair.second);
+
+    if (!player) {
+        auto addPlayerResult =
+            playerService.addPlayer(userPassPair.first, userPassPair.second);
+
+        switch (addPlayerResult) {
+        case AddPlayerResult::playerAdded:
+            player =
+                playerService.identify(userPassPair.first, userPassPair.second);
+            break;
+        case AddPlayerResult::playerExists:
+        case AddPlayerResult::playerInvalid:
+            enqueueMessage(message.conn, INCORRECT_IDENT);
+            break;
+        }
+    }
+
     return player;
 }
 
@@ -146,7 +163,7 @@ void GameManager::processMessages(
     for (const auto &message : messages) {
         enqueueMessage(message.conn, message.text);
 
-        auto player = getPlayerFromLogin(message);
+        auto player = getActivePlayer(message);
         logger->debug(std::to_string(message.conn.id) + ": " + message.text);
 
         if (!player)
