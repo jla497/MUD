@@ -75,7 +75,8 @@ const static std::map<ActKeyword, ActionGenerator> actionGenerators = {
     {ActKeyword::swap, &generator<SwapAction>}};
 
 std::unique_ptr<Action>
-CommandParser::actionFromPlayerCommand(CharacterController &controller, StrView command,
+CommandParser::actionFromPlayerCommand(CharacterController &controller,
+                                       StrView command,
                                        gamemanager::GameManager &gameManager) {
     Tokenizer tokens{command};
     auto tokenIterator = tokens.begin();

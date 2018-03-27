@@ -167,9 +167,9 @@ void GameState::killCharacter(const CharacterEntity &character) {
     // notify the characters controller
 }
 
-std::vector<CharacterEntity*> GameState::getAllNpcs() {
-    std::vector<CharacterEntity*> npcs;
-    for(auto &pair: characterLookUp) {
+std::vector<CharacterEntity *> GameState::getAllNpcs() {
+    std::vector<CharacterEntity *> npcs;
+    for (auto &pair : characterLookUp) {
         npcs.push_back(&pair.second);
     }
     return npcs;

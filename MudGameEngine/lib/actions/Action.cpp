@@ -2,9 +2,9 @@
 #include <ostream>
 
 #include "actions/Action.h"
+#include "controllers/CharacterController.h"
 #include "gamemanager/GameManager.h"
 #include "logging.h"
-#include "controllers/CharacterController.h"
 
 // FIXME: this should possibly work on the enum keyword rather than the
 // description string
@@ -16,19 +16,19 @@ Action::Action(CharacterController &controller,
                mudserver::gamemanager::GameManager &gameManager)
     : controller(controller), playerPerformingAction{*(controller.getPlayer())},
       actionArguments{std::move(actionArguments)}, gameManager{gameManager},
-characterPerformingAction(controller.getCharacter()){}
+      characterPerformingAction(controller.getCharacter()) {}
 
 void Action::execute() {
     // check if this is an admin action
     static auto logger = mudserver::logging::getLogger("Action::Action");
 
-//    auto &playerService = gameManager.getPlayerService();
-//    auto characterId =
-//        playerService.playerToCharacter(playerPerformingAction.getId());
-//    if(characterId){
-//        characterPerformingAction =
-//                gameManager.getState().getCharacterFromLUT(*characterId);
-//    }
+    //    auto &playerService = gameManager.getPlayerService();
+    //    auto characterId =
+    //        playerService.playerToCharacter(playerPerformingAction.getId());
+    //    if(characterId){
+    //        characterPerformingAction =
+    //                gameManager.getState().getCharacterFromLUT(*characterId);
+    //    }
 
     // check if action is admin action and if character has an administrator
     // role

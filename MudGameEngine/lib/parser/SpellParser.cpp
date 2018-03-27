@@ -75,12 +75,10 @@ std::vector<Spell> SpellParser::getAllSpells() const {
     std::vector<Spell> spells;
     for (auto &document : data) {
         for (auto &node : document[DEFENSE]) {
-            spells.push_back(
-                parseSpell(node, Spell::SpellType::defense));
+            spells.push_back(parseSpell(node, Spell::SpellType::defense));
         }
         for (auto &node : document[OFFENSE]) {
-            spells.push_back(
-                parseSpell(node, Spell::SpellType::offense));
+            spells.push_back(parseSpell(node, Spell::SpellType::offense));
         }
         for (auto &node : document[OBJECT]) {
             spells.push_back(parseSpell(node, Spell::SpellType::object));
@@ -89,8 +87,7 @@ std::vector<Spell> SpellParser::getAllSpells() const {
             spells.push_back(parseSpell(node, Spell::SpellType::other));
         }
         for (auto &node : document[PERSONAL]) {
-            spells.push_back(
-                parseSpell(node, Spell::SpellType::personal));
+            spells.push_back(parseSpell(node, Spell::SpellType::personal));
         }
     }
     return spells;

@@ -5,8 +5,8 @@
 #include <boost/algorithm/string.hpp>
 #include <boost/tokenizer.hpp>
 
-#include "states/InteractState.h"
 #include "states/Dialogue.h"
+#include "states/InteractState.h"
 
 using Tokenizer = boost::tokenizer<boost::char_separator<char>>;
 
@@ -22,25 +22,25 @@ void InteractState::update() {
         auto argString = msgs.front();
         msgs.pop();
 
-        if(argString.empty()) {
+        if (argString.empty()) {
             continue;
         }
 
         std::vector<std::string> tokens;
-        //get sender's name
+        // get sender's name
         boost::split(tokens, argString, boost::is_any_of(" "));
         auto recipient = tokens[1];
-        //message not for this NPC
-        if( recipient != mCharacterName) {
+        // message not for this NPC
+        if (recipient != mCharacterName) {
             continue;
         }
 
         auto senderName = tokens[0];
         boost::erase_all(senderName, ":");
 
-        for(auto & token : tokens) {
+        for (auto &token : tokens) {
             auto response = dialogue.getResponse(token);
-            if(!response.empty()) {
+            if (!response.empty()) {
                 controller->setCmdString(response);
             }
         }

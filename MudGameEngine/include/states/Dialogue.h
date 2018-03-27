@@ -10,7 +10,7 @@ class Dialogue {
 
     static std::unordered_map<std::string, std::string> dialogueMap;
 
-public:
+  public:
     std::string getResponse(std::string arg);
     void setDialogue(std::string arg, std::string response);
 };

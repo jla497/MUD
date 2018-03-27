@@ -6,4 +6,4 @@
 
 IState::IState(GameState *state, CharacterEntity *entity,
                CharacterController *controller)
-        : state(state), entity(entity), controller(controller) {}
+    : state(state), entity(entity), controller(controller) {}

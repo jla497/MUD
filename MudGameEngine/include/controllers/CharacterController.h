@@ -8,8 +8,8 @@
 #include "entities/CharacterEntity.h"
 #include "entities/CharacterEntity.h"
 #include "gamemanager/Player.h"
-#include <unordered_map>
 #include <queue>
+#include <unordered_map>
 
 class IState;
 namespace mudserver {
