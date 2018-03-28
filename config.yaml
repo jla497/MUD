@@ -1,14 +1,13 @@
 SERVER:
   port: 4000
   areas:
-  - /home/jla497/CLionProjects/adventure2018/MudGameEngine/lib/dataFiles/detailed_smurf.yml
-  - /home/jla497/CLionProjects/adventure2018/MudGameEngine/lib/dataFiles/detailed_midgaard.yml
-  - /home/jla497/CLionProjects/adventure2018/MudGameEngine/lib/dataFiles/detailed_mgoose.yml
+  - MudGameEngine/lib/dataFiles/detailed_smurf.yml
+  - MudGameEngine/lib/dataFiles/detailed_midgaard.yml
+  - MudGameEngine/lib/dataFiles/detailed_mgoose.yml
   spells:
-  - /home/jla497/CLionProjects/adventure2018/MudGameEngine/lib/dataFiles/spells.yml
+  - MudGameEngine/lib/dataFiles/spells.yml
   config_dir: config
   url: localhost
 CLIENT:
   port: 4000
   url: localhost
-
