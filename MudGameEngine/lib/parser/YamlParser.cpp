@@ -204,10 +204,8 @@ ShopEntity YamlParser::parseShop(const YAML::Node &shopNode) const {
 
 std::vector<CharacterEntity> YamlParser::getAllNPCS() const {
     std::vector<CharacterEntity> npcs;
-    for (auto &document : data) {
-        for (auto &node : document[NPCS_ENT]) {
-            npcs.push_back(parseNPC(node));
-        }
+    for (auto &node : data[0][NPCS_ENT]) {
+        npcs.push_back(parseNPC(node));
     }
     return npcs;
 }
