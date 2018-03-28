@@ -12,10 +12,17 @@ protected:
     }
 
     const int DEFAULT_WEIGHT = 1;
+    const int DEFAULT_ARMOR = 1;
+    const int DEFAULT_GOLD = 1;
+    const int DEFAULT_THAC0 = 1;
+    const unsigned int DEFAULT_EXP = 1;
     const unsigned int DEFAULT_ID = 1;
     const unsigned int DEFAULT_COST = 1;
     const unsigned int DEFAULT_OTYPEID = 1;
+    const unsigned int DEFAULT_LEVEL = 1;
     const std::string DEFAULT_NAME = "test";
+    const std::string DEFAULT_DMG = "1d8+32";
+    const std::string DEFAULT_HIT = "1d1+30000";
     std::vector<std::string> DEFAULT_DESC = {"test"};
     std::vector<std::string> DEFAULT_KW = {"test"};
     std::string DEFAULT_DIRECTION = "west";
@@ -28,17 +35,13 @@ protected:
 
 public:
     CharacterEntity createCharacter() {
-        int armor = 1;
-        std::string damage = "1d8+32";
-        unsigned int exp = 1;
-        int gold = 1;
-        std::string hit = "1d1+30000";
-        unsigned int level = 1;
-        int thac0 = 1;
         return CharacterEntity{
-                armor, damage, DEFAULT_DESC, exp, gold,
-                hit, 0, DEFAULT_KW, level, DEFAULT_DESC,
-                DEFAULT_SHORTDESC, thac0
+                DEFAULT_ARMOR, DEFAULT_DMG,
+                DEFAULT_DESC, DEFAULT_EXP,
+                DEFAULT_GOLD, DEFAULT_HIT,
+                0, DEFAULT_KW, DEFAULT_LEVEL,
+                DEFAULT_DESC, DEFAULT_SHORTDESC,
+                DEFAULT_THAC0
         };
     }
 
