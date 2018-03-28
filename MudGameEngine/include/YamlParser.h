@@ -27,8 +27,8 @@ class YamlParser {
     // calls constructors of each object and adds data to each respective object
     CharacterEntity parseNPC(const YAML::Node &npcNode) const;
     ObjectEntity parseObject(const YAML::Node &objectNode) const;
-    Reset parseReset(const YAML::Node &resetNode) const; 
-    void parseHelp(const YAML::Node &helpNode) const;   
+    Reset parseReset(const YAML::Node &resetNode) const;
+    void parseHelp(const YAML::Node &helpNode) const;
     RoomEntity parseRoom(const YAML::Node &roomNode) const;
     ShopEntity parseShop(const YAML::Node &shopNode) const;
     DoorEntity parseDoor(const YAML::Node &doorNode) const;

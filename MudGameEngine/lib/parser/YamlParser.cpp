@@ -148,7 +148,8 @@ DoorEntity YamlParser::parseDoor(const YAML::Node &doorNode) const {
     return {desc, dir, keywords, to};
 }
 
-std::vector<DoorEntity> YamlParser::getAllDoors(const YAML::Node &roomNode) const {
+std::vector<DoorEntity>
+YamlParser::getAllDoors(const YAML::Node &roomNode) const {
     std::vector<DoorEntity> doors;
     // iterate through all doors in room and add them to list/vector of doors
 
@@ -167,7 +168,6 @@ std::vector<DoorEntity> YamlParser::getAllDoors(const YAML::Node &roomNode) cons
         doors.push_back(parseDoor(node));
     }
     return doors;
-
 }
 
 RoomEntity YamlParser::parseRoom(const YAML::Node &roomNode) const {
