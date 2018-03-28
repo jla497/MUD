@@ -23,7 +23,7 @@ bool YamlParser::loadYamlFile(const std::string &path) {
     return true;
 }
 
-CharacterEntity YamlParser::parseNPC(YAML::Node npcNode) const {
+CharacterEntity YamlParser::parseNPC(const YAML::Node &npcNode) const {
     auto armor = npcNode[ARMOR].as<int>();
     auto damage = npcNode[DAMAGE].as<std::string>();
 
@@ -55,7 +55,7 @@ CharacterEntity YamlParser::parseNPC(YAML::Node npcNode) const {
             npcTypeId, keywords, level,       longdesc, shortDesc, thac0};
 }
 
-ObjectEntity YamlParser::parseObject(YAML::Node objectNode) const {
+ObjectEntity YamlParser::parseObject(const YAML::Node &objectNode) const {
     std::vector<std::string> attributes;
     std::transform(objectNode[ATTRIBUTES].begin(), objectNode[ATTRIBUTES].end(),
                    std::back_inserter(attributes), parseString);
@@ -99,20 +99,40 @@ ObjectEntity YamlParser::parseObject(YAML::Node objectNode) const {
             shortdesc,    wearFlags, weight};
 }
 
-Reset YamlParser::parseReset(YAML::Node resetNode) const {
+Reset YamlParser::parseReset(const YAML::Node &resetNode) const {
     auto id = resetNode[ID].as<int>();
     auto action = resetNode[ACTION].as<std::string>();
-    auto comment = resetNode[COMMENT].as<std::string>("");
-    auto state = resetNode[STATE].as<std::string>("");
-    auto slot = resetNode[SLOT].as<int>(-1);
-    auto limit = resetNode[LIMIT].as<int>(-1);
-    auto roomID = resetNode[ROOM].as<int>(-1);
+
+    std::string comment = "";
+    if (resetNode[COMMENT]) {
+        comment = resetNode[COMMENT].as<std::string>();
+    }
+
+    std::string state = "";
+    if (resetNode[STATE]) {
+        state = resetNode[STATE].as<std::string>();
+    }
+
+    int slot = -1;
+    if (resetNode[SLOT]) {
+        slot = resetNode[SLOT].as<int>();
+    }
+
+    int limit = -1;
+    if (resetNode[LIMIT]) {
+        limit = resetNode[LIMIT].as<int>();
+    }
+
+    int roomID = -1;
+    if (resetNode[ROOM]) {
+        roomID = resetNode[ROOM].as<int>();
+    }
     return {id, action, comment, state, slot, limit, roomID};
 }
 
-void YamlParser::parseHelp(YAML::Node helpNode) const { (void)helpNode; }
+void YamlParser::parseHelp(const YAML::Node &helpNode) const { (void)helpNode; }
 
-DoorEntity YamlParser::parseDoor(YAML::Node doorNode) const {
+DoorEntity YamlParser::parseDoor(const YAML::Node &doorNode) const {
     std::vector<std::string> desc;
     std::transform(doorNode[DESC].begin(), doorNode[DESC].end(),
                    std::back_inserter(desc), parseString);
@@ -128,7 +148,7 @@ DoorEntity YamlParser::parseDoor(YAML::Node doorNode) const {
     return {desc, dir, keywords, to};
 }
 
-std::vector<DoorEntity> YamlParser::getAllDoors(YAML::Node roomNode) const {
+std::vector<DoorEntity> YamlParser::getAllDoors(const YAML::Node &roomNode) const {
     std::vector<DoorEntity> doors;
     // iterate through all doors in room and add them to list/vector of doors
 
@@ -150,7 +170,7 @@ std::vector<DoorEntity> YamlParser::getAllDoors(YAML::Node roomNode) const {
 
 }
 
-RoomEntity YamlParser::parseRoom(YAML::Node roomNode) const {
+RoomEntity YamlParser::parseRoom(const YAML::Node &roomNode) const {
     std::vector<std::string> desc;
     std::transform(roomNode[DESC].begin(), roomNode[DESC].end(),
                    std::back_inserter(desc), parseString);
@@ -177,7 +197,7 @@ RoomEntity YamlParser::parseRoom(YAML::Node roomNode) const {
     return {desc, doors, descExt, keywordsExt, name, roomId};
 }
 
-ShopEntity YamlParser::parseShop(YAML::Node shopNode) const {
+ShopEntity YamlParser::parseShop(const YAML::Node &shopNode) const {
     (void)shopNode;
     return {};
 }
