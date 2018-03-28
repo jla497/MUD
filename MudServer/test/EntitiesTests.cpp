@@ -17,6 +17,7 @@ protected:
     const int DEFAULT_THAC0 = 1;
     const unsigned int DEFAULT_EXP = 1;
     const unsigned int DEFAULT_ID = 1;
+    const unsigned int DEFAULT_TYPEID = 1;
     const unsigned int DEFAULT_COST = 1;
     const unsigned int DEFAULT_OTYPEID = 1;
     const unsigned int DEFAULT_LEVEL = 1;
@@ -39,9 +40,9 @@ public:
                 DEFAULT_ARMOR, DEFAULT_DMG,
                 DEFAULT_DESC, DEFAULT_EXP,
                 DEFAULT_GOLD, DEFAULT_HIT,
-                0, DEFAULT_KW, DEFAULT_LEVEL,
-                DEFAULT_DESC, DEFAULT_SHORTDESC,
-                DEFAULT_THAC0
+                DEFAULT_TYPEID, DEFAULT_KW,
+                DEFAULT_LEVEL, DEFAULT_DESC,
+                DEFAULT_SHORTDESC, DEFAULT_THAC0
         };
     }
 
@@ -99,10 +100,60 @@ TEST_F(EntitiesTests, GetAllRooms) {
     EXPECT_EQ(area.getAllRooms().size(), 1);
 }
 
-
 /*************************************
  * Character Tests
  *************************************/
+
+TEST_F(EntitiesTests, GetCharacterDesc) {
+    CharacterEntity c = createCharacter();
+    EXPECT_EQ(DEFAULT_DESC, c.getDesc());
+}
+
+TEST_F(EntitiesTests, GetCharacterShortDesc) {
+    CharacterEntity c = createCharacter();
+    EXPECT_EQ(DEFAULT_SHORTDESC, c.getShortDesc());
+}
+
+TEST_F(EntitiesTests, GetCharacterExp) {
+    CharacterEntity c = createCharacter();
+    EXPECT_EQ(DEFAULT_EXP, c.getExp());
+}
+
+TEST_F(EntitiesTests, GetCharacterGold) {
+    CharacterEntity c = createCharacter();
+    EXPECT_EQ(DEFAULT_GOLD, c.getGold());
+}
+
+TEST_F(EntitiesTests, GetTypeId) {
+    CharacterEntity c = createCharacter();
+    EXPECT_EQ(DEFAULT_TYPEID, c.getTypeId());
+}
+
+TEST_F(EntitiesTests, AddGoldToCharacter) {
+    CharacterEntity c = createCharacter();
+    c.addGold(500);
+    EXPECT_EQ(DEFAULT_GOLD+500, c.getGold());
+}
+
+TEST_F(EntitiesTests, SubtractGoldFromCharacter) {
+    CharacterEntity c = createCharacter();
+    c.subtractGold(500);
+    EXPECT_EQ(DEFAULT_GOLD-500, c.getGold());
+}
+
+TEST_F(EntitiesTests, EquipObjectToCharacter) {
+    CharacterEntity c = createCharacter();
+    c.equipObject(createObject());
+    EXPECT_EQ(1, c.getObjects().size());
+}
+
+TEST_F(EntitiesTests, SetCharacterShortDesc) {
+    std::string newName = "Name";
+    CharacterEntity c = createCharacter();
+    c.setShortDesc(newName);
+    EXPECT_EQ(newName, c.getShortDesc());
+}
+
 
 /*************************************
  * Door Tests
@@ -123,13 +174,13 @@ TEST_F(EntitiesTests, GetObjectTypeId) {
             object.getObjectTypeId());
 }
 
-TEST_F(EntitiesTests, GetShortDesc) {
+TEST_F(EntitiesTests, GetObjectShortDesc) {
 ObjectEntity object = createObject();
 EXPECT_EQ(DEFAULT_SHORTDESC,
         object.getShortDesc());
 }
 
-TEST_F(EntitiesTests, GetLongDesc) {
+TEST_F(EntitiesTests, GetObjectLongDesc) {
 ObjectEntity object = createObject();
 EXPECT_EQ(DEFAULT_DESC,
         object.getLongDesc());
@@ -160,8 +211,15 @@ TEST_F(EntitiesTests, GetDestRoomIdOf) {
     EXPECT_EQ(id, DEFAULT_ID);
 }
 
-TEST_F(EntitiesTests, GetDirs) {
+TEST_F(EntitiesTests, GetRoomDirs) {
     RoomEntity room = createRoom();
     std::vector<std::string> dirs = room.getDirs();
     EXPECT_EQ(dirs.size(), 1);
+}
+
+TEST_F(EntitiesTests, EquipObjectToRoom) {
+    RoomEntity room = createRoom();
+    ObjectEntity obj = createObject();
+    room.equipObject(obj);
+    EXPECT_EQ(1, room.getObjects().size());
 }
