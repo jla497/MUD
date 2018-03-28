@@ -15,32 +15,29 @@ class Spell {
         other
     };
 
+    struct DisplayMessages {
+        std::string hitchar = "";
+        std::string hitroom = "";
+        std::string hitvict = "";
+        std::string missroom = "";
+        std::string misschar = "";
+        std::string missvict = "";
+    };
+
     Spell();
 
     // getters
     std::string getEffect();
-    int getMana();
+    unsigned int getMana();
     unsigned int getMinLevel();
     std::string getName();
     int getDuration();
-    std::string getHitChar(const std::string &casterName,
-                           const std::string &victimName,
-                           const std::string &victimGender);
-    std::string getHitRoom(const std::string &casterName,
-                           const std::string &victimName,
-                           const std::string &victimGender);
-    std::string getHitVict(const std::string &casterName,
-                           const std::string &victimName,
-                           const std::string &victimGender);
-    std::string getMissRoom(const std::string &casterName,
-                            const std::string &victimName,
-                            const std::string &victimGender);
-    std::string getMissChar(const std::string &casterName,
-                            const std::string &victimName,
-                            const std::string &victimGender);
-    std::string getMissVict(const std::string &casterName,
-                            const std::string &victimName,
-                            const std::string &victimGender);
+
+    // returns the display messages with correctly formatted strings
+    DisplayMessages getDisplayMessages(std::string casterName,
+                                       std::string victimName,
+                                       std::string victimGender);
+
     std::string getDammsg();
     std::string getWearoff();
     std::string getImmchar();
@@ -49,16 +46,11 @@ class Spell {
 
     // setters
     void setEffect(const std::string &effect);
-    void setMana(int mana);
+    void setMana(unsigned int mana);
     void setMinLevel(unsigned int minlevel);
     void setName(const std::string &name);
     void setDuration(int duration);
-    void setHitChar(const std::string &hitchar);
-    void setHitRoom(const std::string &hitroom);
-    void setHitVict(const std::string &hitvict);
-    void setMissRoom(const std::string &missroom);
-    void setMissChar(const std::string &misschar);
-    void setMissVict(const std::string &missvict);
+    void setDisplayMessages(DisplayMessages messages);
     void setDammsg(const std::string &dammsg);
     void setWearoff(const std::string &wearoff);
     void setImmchar(const std::string &immchar);
@@ -76,24 +68,19 @@ class Spell {
     bool isCharacterValidLevel(unsigned int characterLevel);
 
     // returns true if character has enough mana to perform spell
-    bool isEnoughMana(int characterMana);
+    bool isEnoughMana(unsigned int characterMana);
 
   private:
     std::string effect;
-    int mana{};
+    unsigned int mana{};
     unsigned int minlevel{};
     std::string name;
     int duration{};
-    std::string hitchar;
-    std::string hitroom;
-    std::string hitvict;
-    std::string missroom;
-    std::string misschar;
-    std::string missvict;
     std::string dammsg;
     std::string wearoff;
     std::string immchar;
     std::string damage;
+    DisplayMessages messages;
     Spell::SpellType type = SpellType::other;
 
     static const int EFFECT_QUOTE_POSITION =
