@@ -95,9 +95,14 @@ public:
  * Area Tests
  *************************************/
 
-TEST_F(EntitiesTests, GetAllRooms) {
+TEST_F(EntitiesTests, GetAreaName) {
     AreaEntity area = createArea();
-    EXPECT_EQ(area.getAllRooms().size(), 1);
+    EXPECT_EQ(DEFAULT_NAME, area.getName());
+}
+
+TEST_F(EntitiesTests, GetAllRoomsFromArea) {
+    AreaEntity area = createArea();
+    EXPECT_EQ(1, area.getAllRooms().size());
 }
 
 /*************************************
@@ -154,6 +159,22 @@ TEST_F(EntitiesTests, SetCharacterShortDesc) {
     EXPECT_EQ(newName, c.getShortDesc());
 }
 
+TEST_F(EntitiesTests, GetCharacterKeyWords) {
+    CharacterEntity c = createCharacter();
+    EXPECT_EQ(DEFAULT_KW, c.getKeywords());
+}
+
+TEST_F(EntitiesTests, GetCharacterLevel) {
+    CharacterEntity c = createCharacter();
+    EXPECT_EQ(DEFAULT_LEVEL, c.getLevel());
+}
+
+//TODO: Update when levels is properly implemented
+TEST_F(EntitiesTests, IncrementCharacterExp) {
+    CharacterEntity c = createCharacter();
+    c.incExp(100);
+    EXPECT_EQ(DEFAULT_EXP+100, c.getExp());
+}
 
 /*************************************
  * Door Tests
