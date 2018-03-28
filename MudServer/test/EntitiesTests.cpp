@@ -2,26 +2,29 @@
 
 #include "connectionmanager/ConnectionManager.h"
 #include "gamemanager/GameManager.h"
-#include "gamemanager/GameState.h"
 
 class EntitiesTests : public testing::Test {
 protected:
     virtual void SetUp() {
-//        state.parseAreaYamlFile(
-//                "MudGameEngine/lib/dataFiles/detailed_smurf.yml");
-//        state.initRoomLUT();
     }
 
     virtual void TearDown() {
-//        state.clearCharacterRoomLUT();
-//        state.clearAreas();
     }
 
+    const int DEFAULT_WEIGHT = 1;
     const unsigned int DEFAULT_ID = 1;
+    const unsigned int DEFAULT_COST = 1;
+    const unsigned int DEFAULT_OTYPEID = 1;
     const std::string DEFAULT_NAME = "test";
     std::vector<std::string> DEFAULT_DESC = {"test"};
     std::vector<std::string> DEFAULT_KW = {"test"};
     std::string DEFAULT_DIRECTION = "west";
+    std::string DEFAULT_SHORTDESC = "test";
+    std::string DEFAULT_ITEMTYPE = "test";
+    std::vector<std::string> DEFAULT_DESCEXT = {"test"};
+    std::vector<std::string> DEFAULT_KWEXT = {"test"};
+    std::vector<std::string> DEFAULT_ATTR = {"none"};
+    std::vector<std::string> DEFAULT_WEARFLAGS = {"none"};
 
 public:
     CharacterEntity createCharacter() {
@@ -31,40 +34,35 @@ public:
         int gold = 1;
         std::string hit = "1d1+30000";
         unsigned int level = 1;
-        std::string shortDesc = "test";
         int thac0 = 1;
         return CharacterEntity{
                 armor, damage, DEFAULT_DESC, exp, gold,
                 hit, 0, DEFAULT_KW, level, DEFAULT_DESC,
-                shortDesc, thac0
+                DEFAULT_SHORTDESC, thac0
         };
     }
 
     RoomEntity createRoom() {
-        std::vector<std::string> desc = DEFAULT_DESC;
-        std::vector<DoorEntity> doors{};
-        std::vector<std::string> descExt{};
-        std::vector<std::string> keywordsExt{};
-        std::string name = DEFAULT_NAME;
-        unsigned int roomId = DEFAULT_ID;
+        std::vector<DoorEntity> doors(1, createDoor());
         return RoomEntity{
-                desc,
+                DEFAULT_DESC,
                 doors,
-                descExt,
-                keywordsExt,
-                name,
-                roomId
+                DEFAULT_DESCEXT,
+                DEFAULT_KWEXT,
+                DEFAULT_NAME,
+                DEFAULT_ID
         };
     }
 
     AreaEntity createArea() {
-        std::string name = "testArea";
-        std::deque<RoomEntity> rooms{};
-        return AreaEntity{};
+        std::deque<RoomEntity> rooms{1, createRoom()};
+        return AreaEntity{
+                DEFAULT_NAME,
+                rooms
+        };
     }
 
     DoorEntity createDoor() {
-        std::vector<std::string> keywords{};
         return DoorEntity{DEFAULT_DESC,
                           DEFAULT_DIRECTION,
                           DEFAULT_KW,
@@ -72,37 +70,32 @@ public:
     }
 
     ObjectEntity createObject() {
-        std::vector<std::string> attributes{};
-        unsigned int cost = 1;
-        unsigned int objectTypeId = 1;
-        std::string itemType = "none";
-        std::vector<std::string> descExtra{};
-        std::vector<std::string> keywordsExtra{};
-        std::string shortDesc = "short";
-        std::vector<std::string> wearFlags{};
-        int weight = 1;
         return ObjectEntity{
-                attributes,
-                cost,
-                descExtra,
-                keywordsExtra,
-                objectTypeId,
-                itemType,
+                DEFAULT_ATTR,
+                DEFAULT_COST,
+                DEFAULT_DESCEXT,
+                DEFAULT_KWEXT,
+                DEFAULT_OTYPEID,
+                DEFAULT_ITEMTYPE,
                 DEFAULT_KW,
                 DEFAULT_DESC,
-                shortDesc,
-                wearFlags,
-                weight
+                DEFAULT_SHORTDESC,
+                DEFAULT_WEARFLAGS,
+                DEFAULT_WEIGHT
         };
     }
-
-
 };
 
 
 /*************************************
  * Area Tests
  *************************************/
+
+TEST_F(EntitiesTests, GetAllRooms) {
+    AreaEntity area = createArea();
+    EXPECT_EQ(area.getAllRooms().size(), 1);
+}
+
 
 /*************************************
  * Character Tests
@@ -120,6 +113,24 @@ TEST_F(EntitiesTests, GetDoorDirection) {
 /*************************************
  * Object Tests
  *************************************/
+
+TEST_F(EntitiesTests, GetObjectTypeId) {
+    ObjectEntity object = createObject();
+    EXPECT_EQ(DEFAULT_OTYPEID,
+            object.getObjectTypeId());
+}
+
+TEST_F(EntitiesTests, GetShortDesc) {
+ObjectEntity object = createObject();
+EXPECT_EQ(DEFAULT_SHORTDESC,
+        object.getShortDesc());
+}
+
+TEST_F(EntitiesTests, GetLongDesc) {
+ObjectEntity object = createObject();
+EXPECT_EQ(DEFAULT_DESC,
+        object.getLongDesc());
+}
 
 /*************************************
  * Room Tests
@@ -140,8 +151,14 @@ TEST_F(EntitiesTests, GetRoomDesc) {
     EXPECT_EQ(DEFAULT_DESC, room.getDesc());
 }
 
-//TEST_F(EntitiesTests, GetDestRoomIdOf) {
-//    RoomEntity room = createRoom();
-//    EXPECT_EQ(DEFAULT_DESC, room.getDestRoomIdOf("west"));
-//}
+TEST_F(EntitiesTests, GetDestRoomIdOf) {
+    RoomEntity room = createRoom();
+    unsigned int id = room.getDestRoomIdOf(DEFAULT_DIRECTION);
+    EXPECT_EQ(id, DEFAULT_ID);
+}
 
+TEST_F(EntitiesTests, GetDirs) {
+    RoomEntity room = createRoom();
+    std::vector<std::string> dirs = room.getDirs();
+    EXPECT_EQ(dirs.size(), 1);
+}
