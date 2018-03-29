@@ -8,10 +8,8 @@ MudProtocol::MudProtocol(){}
 MudProtocol::MudProtocol(const unsigned int max_buf) : maxBufSize(max_buf) {}
 
 void MudProtocol::receive(std::string str) {
-    for (auto &c : str) {
-        inBuffer.append(1, c);
-    }
-
+    
+    inBuffer.append(str);
     inBuffer.append("\n");
 }
 
