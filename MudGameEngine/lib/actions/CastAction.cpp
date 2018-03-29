@@ -108,13 +108,14 @@ void CastAction::execute_impl() {
         break;
 
     case Spell::SpellType::swap: {
-        SwapAction swapAction{playerPerformingAction, characterArg,
+
+        SwapAction swapAction{controller, characterArg,
                               gameManager};
         swapAction.execute();
     } break;
 
     case Spell::SpellType::decoy: {
-        DecoyAction decoyAction{playerPerformingAction, actionArguments,
+        DecoyAction decoyAction{controller, actionArguments,
                                 gameManager};
         decoyAction.execute();
     } break;
