@@ -5,8 +5,10 @@
 class SpellTests : public testing::Test {
     void SetUp() override {
         Spell spell;
-        spell.setHitChar(
-            "$N's armor begins to glow softly as it is enhanced by a cantrip.");
+        Spell::DisplayMessages messages;
+        messages.hitchar =
+            "$N's armor begins to glow softly as it is enhanced by a cantrip.";
+        spell.setDisplayMessages(messages);
         spells.push_back(spell);
         parser.loadYamlFile("MudGameEngine/lib/dataFiles/spells.yml");
     }
@@ -26,8 +28,9 @@ TEST_F(SpellTests, TestLoadYamlFile) {
 TEST_F(SpellTests, TestGetAllSpells) { auto spells = parser.getAllSpells(); }
 
 TEST_F(SpellTests, TestGetHitCharVictimName) {
-    std::string hitChar = spells.at(0).getHitChar("", "Smurf", "");
+    Spell::DisplayMessages testMessage =
+        spells.at(0).getDisplayMessages("", "Smurf", "");
     EXPECT_EQ(
         "Smurf's armor begins to glow softly as it is enhanced by a cantrip.",
-        hitChar);
+        testMessage.hitchar);
 }

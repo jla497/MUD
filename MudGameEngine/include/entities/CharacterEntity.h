@@ -28,6 +28,7 @@ class CharacterEntity : public Entity {
         ar &m_longDesc;
         ar &m_shortDesc;
         ar &combatComponent;
+        ar &m_mana;
     }
 
     std::vector<std::string> m_desc;
@@ -39,6 +40,7 @@ class CharacterEntity : public Entity {
     std::vector<std::string> m_longDesc;
     std::string m_shortDesc;
     std::map<int, ObjectEntity> m_objects;
+    unsigned int m_mana = 100;
 
     CombatComponent combatComponent;
 
@@ -64,11 +66,10 @@ class CharacterEntity : public Entity {
     unsigned int getLevel() const;
     std::vector<std::string> getLongDesc() const;
     std::string getShortDesc() const;
-    int getMana() const;
+    unsigned int getMana() const;
 
     // Setters
     void setShortDesc(std::string name);
-    void setMana(int mana);
 
     // Combat
     CombatComponent *getCombatComponent();
@@ -77,6 +78,10 @@ class CharacterEntity : public Entity {
     void addGold(unsigned int amount);
     void subtractGold(unsigned int amount);
     bool hasGold() const;
+
+    // Mana
+    void addMana(unsigned int amount);
+    void subtractMana(unsigned int amount);
 
     // Experience
     void incExp(unsigned int expPoints);

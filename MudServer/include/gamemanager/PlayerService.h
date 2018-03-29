@@ -18,12 +18,7 @@ namespace gamemanager {
 
 using PcBmType = boost::bimap<PlayerId, UniqueId>;
 
-enum class AddPlayerResult {
-    playerAdded,
-    playerExists,
-    playerInvalid,
-    _NUM_RESULTS_
-};
+enum class AddPlayerResult { playerAdded, playerExists, playerInvalid };
 
 class PlayerService {
   private:
@@ -36,7 +31,6 @@ class PlayerService {
     PcBmType playerCharacterBimap;
 
     friend class boost::serialization::access;
-
     template <class Archive>
     void serialize(Archive &ar, const unsigned int version) {
         (void)version;
@@ -50,12 +44,11 @@ class PlayerService {
 
   public:
     PlayerService();
+
     Player *getPlayerById(PlayerId playerId);
     PlayerId getPlayerIdByName(const UsernameType &username);
     Player *getPlayerByConnection(networking::ConnectionId connectionId);
-    networking::ConnectionId setPlayerConnection(PlayerId playerId);
-    void setPlayerConnection(PlayerId playerId,
-                             networking::ConnectionId connectionId);
+
     Player *identify(UsernameType username, PasswordType password);
     AddPlayerResult addPlayer(UsernameType username, PasswordType password);
 
@@ -78,7 +71,11 @@ class PlayerService {
      * @param playerId the player's id
      */
     CharacterEntity createPlayerCharacter(PlayerId playerId);
+
     networking::ConnectionId getPlayerConnection(PlayerId playerId);
+
+    void setPlayerConnection(PlayerId playerId,
+                             networking::ConnectionId connectionId);
 
     /**
      * Updates the values in the playerCharacterBimap.
@@ -90,6 +87,10 @@ class PlayerService {
     CharacterController *playerToController(PlayerId playerId);
 
     CharacterController *createController(PlayerId playerId);
+
+    bool userAndPassAreValid(UsernameType basic_string,
+                             PasswordType basicString);
+
 };
 
 } // namespace gamemanager
