@@ -40,7 +40,7 @@ void ResetManager::applyResets(mudserver::gamemanager::GameState *state) {
             addNpcsToRooms(entities, roomId, state);
 
             previousNpcIds.clear();
-            for(auto &entity : entities) {
+            for (auto &entity : entities) {
                 previousNpcIds.push_back(entity.getEntityId());
             }
         }

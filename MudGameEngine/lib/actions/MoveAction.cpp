@@ -18,8 +18,8 @@ void MoveAction::execute_impl() {
 
     // characters cannot move between rooms while they are in
     // combat  unless they use some sort of flee action)
-    if(characterPerformingAction->getCombatComponent()->getCombatState() ==
-    CombatStates::FIGHTING){
+    if (characterPerformingAction->getCombatComponent()->getCombatState() ==
+        CombatStates::FIGHTING) {
         gameManager.sendCharacterMessage(
             characterPerformingAction->getEntityId(),
             "You cannot leave the room, you are in Combat!");

@@ -4,12 +4,10 @@
 #include "gamemanager/GameManager.h"
 
 class EntitiesTests : public testing::Test {
-protected:
-    virtual void SetUp() {
-    }
+  protected:
+    virtual void SetUp() {}
 
-    virtual void TearDown() {
-    }
+    virtual void TearDown() {}
 
     const int DEFAULT_WEIGHT = 1;
     const int DEFAULT_ARMOR = 1;
@@ -34,62 +32,38 @@ protected:
     std::vector<std::string> DEFAULT_ATTR = {"none"};
     std::vector<std::string> DEFAULT_WEARFLAGS = {"none"};
 
-public:
+  public:
     CharacterEntity createCharacter() {
         return CharacterEntity{
-                DEFAULT_ARMOR, DEFAULT_DMG,
-                DEFAULT_DESC, DEFAULT_EXP,
-                DEFAULT_GOLD, DEFAULT_HIT,
-                DEFAULT_TYPEID, DEFAULT_KW,
-                DEFAULT_LEVEL, DEFAULT_DESC,
-                DEFAULT_SHORTDESC, DEFAULT_THAC0
-        };
+            DEFAULT_ARMOR, DEFAULT_DMG,  DEFAULT_DESC,      DEFAULT_EXP,
+            DEFAULT_GOLD,  DEFAULT_HIT,  DEFAULT_TYPEID,    DEFAULT_KW,
+            DEFAULT_LEVEL, DEFAULT_DESC, DEFAULT_SHORTDESC, DEFAULT_THAC0};
     }
 
     RoomEntity createRoom() {
         std::vector<DoorEntity> doors(1, createDoor());
-        return RoomEntity{
-                DEFAULT_DESC,
-                doors,
-                DEFAULT_DESCEXT,
-                DEFAULT_KWEXT,
-                DEFAULT_NAME,
-                DEFAULT_ID
-        };
+        return RoomEntity{DEFAULT_DESC,  doors,        DEFAULT_DESCEXT,
+                          DEFAULT_KWEXT, DEFAULT_NAME, DEFAULT_ID};
     }
 
     AreaEntity createArea() {
         std::deque<RoomEntity> rooms{1, createRoom()};
-        return AreaEntity{
-                DEFAULT_NAME,
-                rooms
-        };
+        return AreaEntity{DEFAULT_NAME, rooms};
     }
 
     DoorEntity createDoor() {
-        return DoorEntity{DEFAULT_DESC,
-                          DEFAULT_DIRECTION,
-                          DEFAULT_KW,
+        return DoorEntity{DEFAULT_DESC, DEFAULT_DIRECTION, DEFAULT_KW,
                           DEFAULT_ID};
     }
 
     ObjectEntity createObject() {
         return ObjectEntity{
-                DEFAULT_ATTR,
-                DEFAULT_COST,
-                DEFAULT_DESCEXT,
-                DEFAULT_KWEXT,
-                DEFAULT_OTYPEID,
-                DEFAULT_ITEMTYPE,
-                DEFAULT_KW,
-                DEFAULT_DESC,
-                DEFAULT_SHORTDESC,
-                DEFAULT_WEARFLAGS,
-                DEFAULT_WEIGHT
-        };
+            DEFAULT_ATTR,      DEFAULT_COST,    DEFAULT_DESCEXT,
+            DEFAULT_KWEXT,     DEFAULT_OTYPEID, DEFAULT_ITEMTYPE,
+            DEFAULT_KW,        DEFAULT_DESC,    DEFAULT_SHORTDESC,
+            DEFAULT_WEARFLAGS, DEFAULT_WEIGHT};
     }
 };
-
 
 /*************************************
  * Area Tests
@@ -137,13 +111,13 @@ TEST_F(EntitiesTests, GetTypeId) {
 TEST_F(EntitiesTests, AddGoldToCharacter) {
     CharacterEntity c = createCharacter();
     c.addGold(500);
-    EXPECT_EQ(DEFAULT_GOLD+500, c.getGold());
+    EXPECT_EQ(DEFAULT_GOLD + 500, c.getGold());
 }
 
 TEST_F(EntitiesTests, SubtractGoldFromCharacter) {
     CharacterEntity c = createCharacter();
     c.subtractGold(500);
-    EXPECT_EQ(DEFAULT_GOLD-500, c.getGold());
+    EXPECT_EQ(DEFAULT_GOLD - 500, c.getGold());
 }
 
 TEST_F(EntitiesTests, EquipObjectToCharacter) {
@@ -169,11 +143,11 @@ TEST_F(EntitiesTests, GetCharacterLevel) {
     EXPECT_EQ(DEFAULT_LEVEL, c.getLevel());
 }
 
-//TODO: Update when levels is properly implemented
+// TODO: Update when levels is properly implemented
 TEST_F(EntitiesTests, IncrementCharacterExp) {
     CharacterEntity c = createCharacter();
     c.incExp(100);
-    EXPECT_EQ(DEFAULT_EXP+100, c.getExp());
+    EXPECT_EQ(DEFAULT_EXP + 100, c.getExp());
 }
 
 /*************************************
@@ -191,20 +165,17 @@ TEST_F(EntitiesTests, GetDoorDirection) {
 
 TEST_F(EntitiesTests, GetObjectTypeId) {
     ObjectEntity object = createObject();
-    EXPECT_EQ(DEFAULT_OTYPEID,
-            object.getObjectTypeId());
+    EXPECT_EQ(DEFAULT_OTYPEID, object.getObjectTypeId());
 }
 
 TEST_F(EntitiesTests, GetObjectShortDesc) {
-ObjectEntity object = createObject();
-EXPECT_EQ(DEFAULT_SHORTDESC,
-        object.getShortDesc());
+    ObjectEntity object = createObject();
+    EXPECT_EQ(DEFAULT_SHORTDESC, object.getShortDesc());
 }
 
 TEST_F(EntitiesTests, GetObjectLongDesc) {
-ObjectEntity object = createObject();
-EXPECT_EQ(DEFAULT_DESC,
-        object.getLongDesc());
+    ObjectEntity object = createObject();
+    EXPECT_EQ(DEFAULT_DESC, object.getLongDesc());
 }
 
 /*************************************

@@ -26,10 +26,10 @@ void CombatComponent::prepareToAttack() {
 
 void CombatComponent::setArmor(int armor) { this->armor = armor; }
 void CombatComponent::setThac0(int thac0) { this->thac0 = thac0; }
-void CombatComponent::setEnemiesName(std::string enemiesName){
+void CombatComponent::setEnemiesName(std::string enemiesName) {
     this->enemiesName = enemiesName;
-}  
-void CombatComponent::setOwnersName(std::string ownersName){
+}
+void CombatComponent::setOwnersName(std::string ownersName) {
     this->ownersName = ownersName;
 }
 
@@ -54,7 +54,7 @@ Roll CombatComponent::getHitRoll() const { return maxHitPointRoll; }
 int CombatComponent::getArmor() const { return armor; }
 int CombatComponent::getThac0() const { return thac0; }
 std::string CombatComponent::getEnemiesName() const { return enemiesName; }
-std::string CombatComponent::getOwnersName() const { return ownersName; } 
+std::string CombatComponent::getOwnersName() const { return ownersName; }
 
 void CombatComponent::damage(int damageAmount) {
     if (damageAmount < 0) {

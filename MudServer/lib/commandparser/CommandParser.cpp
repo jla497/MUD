@@ -33,18 +33,19 @@ using boost::algorithm::to_lower_copy;
 
 using namespace resources::commands;
 
-static std::unordered_map<std::string, ActKeyword> actionLookup = { // NOLINT
-    {UNDEFINED, ActKeyword::undefined},
-    {SAY, ActKeyword::say},
-    {LOOK, ActKeyword::look},
-    {ATTACK, ActKeyword::attack},
-    {MOVE, ActKeyword::move},
-    {PROGRAM, ActKeyword::program},
-    {TIMED, ActKeyword::timed},
-    {SAVE, ActKeyword::save},
-    {CHARMOD, ActKeyword::charmod},
-    {HALT, ActKeyword::halt},
-    {CAST, ActKeyword::cast}};
+static std::unordered_map<std::string, ActKeyword> actionLookup =
+    { // NOLINT
+        {UNDEFINED, ActKeyword::undefined},
+        {SAY, ActKeyword::say},
+        {LOOK, ActKeyword::look},
+        {ATTACK, ActKeyword::attack},
+        {MOVE, ActKeyword::move},
+        {PROGRAM, ActKeyword::program},
+        {TIMED, ActKeyword::timed},
+        {SAVE, ActKeyword::save},
+        {CHARMOD, ActKeyword::charmod},
+        {HALT, ActKeyword::halt},
+        {CAST, ActKeyword::cast}};
 
 using ActionGenerator = std::unique_ptr<Action> (*)(Player &,
                                                     std::vector<std::string> &,

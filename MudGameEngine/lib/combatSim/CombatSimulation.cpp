@@ -36,19 +36,21 @@ void CombatSimulation::resolveCombatRound(CharacterEntity &attacker,
         return;
     }
 
-    //if you are already in combat and are trying to attack someone
-    //who is not your enemy, exit out.
-    if(attackersCombatComponent->getEnemiesName() != NULL_CHAR_NAME &&
-        attackersCombatComponent->getEnemiesName() != defendersCombatComponent->getOwnersName()){
-        gameManager.sendCharacterMessage(attacker.getEntityId(),
-                                     "You are already fighting someone else");
-        return;   
+    // if you are already in combat and are trying to attack someone
+    // who is not your enemy, exit out.
+    if (attackersCombatComponent->getEnemiesName() != NULL_CHAR_NAME &&
+        attackersCombatComponent->getEnemiesName() !=
+            defendersCombatComponent->getOwnersName()) {
+        gameManager.sendCharacterMessage(
+            attacker.getEntityId(), "You are already fighting someone else");
+        return;
     }
-    //check if your enemy is already in combat with someone else
-    if(defendersCombatComponent->getEnemiesName() != NULL_CHAR_NAME &&
-        defendersCombatComponent->getEnemiesName() != attackersCombatComponent->getOwnersName()){
-        gameManager.sendCharacterMessage(attacker.getEntityId(),
-                                     "Your target is already fighting someone");
+    // check if your enemy is already in combat with someone else
+    if (defendersCombatComponent->getEnemiesName() != NULL_CHAR_NAME &&
+        defendersCombatComponent->getEnemiesName() !=
+            attackersCombatComponent->getOwnersName()) {
+        gameManager.sendCharacterMessage(
+            attacker.getEntityId(), "Your target is already fighting someone");
         return;
     }
 
@@ -61,11 +63,11 @@ void CombatSimulation::resolveCombatRound(CharacterEntity &attacker,
     attackersCombatComponent->engageCombatState();
     defendersCombatComponent->engageCombatState();
 
-    //store enemy names
-    attackersCombatComponent->setEnemiesName(defendersCombatComponent->
-        getOwnersName());
-    defendersCombatComponent->setEnemiesName(attackersCombatComponent->
-        getOwnersName());
+    // store enemy names
+    attackersCombatComponent->setEnemiesName(
+        defendersCombatComponent->getOwnersName());
+    defendersCombatComponent->setEnemiesName(
+        attackersCombatComponent->getOwnersName());
 
     int damageAmount =
         calcRoundDamage(attackersCombatComponent->getDamageRoll());
@@ -90,7 +92,7 @@ void CombatSimulation::resolveCombatRound(CharacterEntity &attacker,
         attackersCombatComponent->endCombatState();
         defendersCombatComponent->endCombatState();
 
-        //clear enemy names
+        // clear enemy names
         attackersCombatComponent->setEnemiesName(NULL_CHAR_NAME);
         defendersCombatComponent->setEnemiesName(NULL_CHAR_NAME);
 
