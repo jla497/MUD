@@ -62,7 +62,6 @@ class CombatComponent : public CharacterComponent {
     CombatStates getCombatState() const;
     void engageCombatState();
     void endCombatState();
-    void getEnemy();
 
     void prepareToAttack();
     /*Damage the Character and return true if the character was killed */
