@@ -3,7 +3,7 @@
 namespace mudserver {
 namespace connection {
 
-MudProtocol::MudProtocol(){}
+MudProtocol::MudProtocol() {}
 
 MudProtocol::MudProtocol(const unsigned int max_buf) : maxBufSize(max_buf) {}
 

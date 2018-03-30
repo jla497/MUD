@@ -22,8 +22,7 @@ class ResetManager {
     std::vector<CharacterEntity>
     populateNpcs(int limit, int npcTypeId,
                  mudserver::gamemanager::GameState *state);
-    void equipNpcs(const ObjectEntity &object,
-                   std::vector<UniqueId> &NpcIds,
+    void equipNpcs(const ObjectEntity &object, std::vector<UniqueId> &NpcIds,
                    mudserver::gamemanager::GameState *state);
     void addNpcsToRooms(std::vector<CharacterEntity> &entities, int roomId,
                         mudserver::gamemanager::GameState *state);

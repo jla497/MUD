@@ -34,6 +34,7 @@ CharacterEntity::CharacterEntity(
     this->combatComponent.setThac0(thac0);
     this->combatComponent.setDamageRoll(m_damageRollData);
     this->combatComponent.setHitRoll(m_hitRollData);
+    this->combatComponent.setOwnersName(m_shortDesc);
 }
 
 std::vector<std::string> CharacterEntity::getDesc() const { return m_desc; }
