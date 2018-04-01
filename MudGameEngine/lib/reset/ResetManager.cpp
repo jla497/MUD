@@ -71,7 +71,7 @@ void ResetManager::equipNpcs(const ObjectEntity &object,
                              mudserver::gamemanager::GameState *state) {
     for (auto &npcId : NpcIds) {
         auto entity = state->getCharacterFromLUT(npcId);
-        entity->equipObject(object);
+        entity->addObject(object);
     }
 }
 
