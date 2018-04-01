@@ -11,37 +11,16 @@ std::unique_ptr<Action> DecoyAction::clone() const {
 void DecoyAction::execute_impl() {
     static auto logger = mudserver::logging::getLogger("Action::DecoyAction");
 
-    std::string userinfo(
-        "userid: " +
-        std::to_string(characterPerformingAction->getEntityId().getId()));
-    logger->info(userinfo);
-
-    // get room char is in
-    auto &gameState = gameManager.getState();
-    RoomEntity *room =
-        gameState.getCharacterLocation(*characterPerformingAction);
-
-    if (!room) {
-        logger->error("Character not found in any room...");
+    // Decoy has been made, wati until time is up
+    if (timeRemaining > 0) {
         return;
     }
-    std::string roomInfo("roomid: " + std::to_string(room->getId()));
-    logger->info(roomInfo);
+    
+    // Decoy time is up, destroy decoy object in room
+    else if (timeRemaining == 0) {
+        //room->removeEntity
+    }
 
-    // get decoy spell information; spell may not be one word
-    // std::string spellName = "";
-    // for (word : actionArguments) {
-    // 	spellName += word + " ";
-    // }
-    // spellName = spellName.substr(0, spellName.size()-1); //cut last space
-    // boost::algorithm::to_lower(spellName);
-    // auto spell = gameState.getSpellByName(spellName);
-    // if (spell = nullptr) {
-    // 	logger->debug("Spell not found, cast nothing. Maybe add error msg?");
-    // 	return;
-    // }
-
-    // Process Spell
     // First time only, set the time according to spell object
     if (timeRemaining == -1) {
         // timeRemaining = spell.getDuration(); // no spell info
@@ -68,3 +47,21 @@ void DecoyAction::execute_impl() {
         // decoy exists and will keep existing for this tick
     }
 }
+
+
+
+
+    // is this even valid anymore?
+    // std::string userinfo(
+    //     "userid: " +
+    //     std::to_string(characterPerformingAction->getEntityId().getId()));    
+// auto &gameState = gameManager.getState();
+//     RoomEntity *room =
+//         gameState.getCharacterLocation(*characterPerformingAction);
+
+//     if (!room) {
+//         logger->error("Character not found in any room...");
+//         return;
+//     }
+//     std::string roomInfo("roomid: " + std::to_string(room->getId()));
+//     logger->info(roomInfo);
