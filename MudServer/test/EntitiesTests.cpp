@@ -122,7 +122,7 @@ TEST_F(EntitiesTests, SubtractGoldFromCharacter) {
 
 TEST_F(EntitiesTests, EquipObjectToCharacter) {
     CharacterEntity c = createCharacter();
-    c.equipObject(createObject());
+    c.addObject(createObject());
     EXPECT_EQ(1, c.getObjects().size());
 }
 
@@ -212,6 +212,6 @@ TEST_F(EntitiesTests, GetRoomDirs) {
 TEST_F(EntitiesTests, EquipObjectToRoom) {
     RoomEntity room = createRoom();
     ObjectEntity obj = createObject();
-    room.equipObject(obj);
+    room.addObject(obj);
     EXPECT_EQ(1, room.getObjects().size());
 }
