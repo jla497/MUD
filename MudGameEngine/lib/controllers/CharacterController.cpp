@@ -7,6 +7,8 @@
 #include "states/IState.h"
 #include <queue>
 
+#include "logging.h"
+
 void CharacterController::init(GameState *state, CharacterEntity *ent,
                                Player *plyer) {
     entity = ent;
@@ -38,10 +40,13 @@ void CharacterController::setCmdString(std::string cmd) {
     cmdStrings.push(cmd);
 }
 
-std::string CharacterController::getCmdString() {
-    auto res = cmdStrings.front();
-    cmdStrings.pop();
-    return res;
+std::string CharacterController::getCmdString() {    
+    if (!cmdStrings.empty()) {
+        auto res = cmdStrings.front();
+        cmdStrings.pop();        
+        return res;
+    } 
+    return "";
 }
 
 void CharacterController::setMsg(std::string msg) { messages.push(msg); }
