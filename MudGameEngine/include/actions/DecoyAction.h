@@ -24,6 +24,12 @@ class DecoyAction : public Action {
   private:
     UniqueId ourDecoyId; // bind the decoy made by this Action
 
+    bool canExecuteSpell(CharacterEntity *characterPerformingAction);
+
+
+	const int DEFAULT_TIME_REMAINING = 12;
+	const unsigned int MANA_COST = 2;
+
   protected:
     std::string description() const override { return u8"Decoy action"; }
     const unsigned int MAX_LOOK_ARGS = 0;

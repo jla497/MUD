@@ -54,6 +54,8 @@ class ObjectEntity : public Entity {
     std::vector<std::string> getExtraKeyword() const;
 
     std::vector<std::string> getExtraDesc() const;
+
+    void setShortDesc(const std::string &shortDesc);
 };
 
 #endif
