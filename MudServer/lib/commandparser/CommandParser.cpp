@@ -11,6 +11,7 @@
 #include <boost/tokenizer.hpp>
 
 #include "actions/AttackAction.h"
+#include "actions/CastAction.h"
 #include "actions/CharacterModAction.h"
 #include "actions/HaltAction.h"
 #include "actions/LookAction.h"
@@ -44,7 +45,7 @@ static std::unordered_map<std::string, ActKeyword> actionLookup =
         {SAVE, ActKeyword::save},
         {CHARMOD, ActKeyword::charmod},
         {HALT, ActKeyword::halt},
-        {SWAP, ActKeyword::swap}};
+        {CAST, ActKeyword::cast}};
 
 using ActionGenerator = std::unique_ptr<Action> (*)(Player &,
                                                     std::vector<std::string> &,
@@ -72,7 +73,7 @@ const static std::map<ActKeyword, ActionGenerator> actionGenerators = {
     {ActKeyword::save, &generator<SaveAction>},
     {ActKeyword::charmod, &generator<CharacterModAction>},
     {ActKeyword::halt, &generator<HaltAction>},
-    {ActKeyword::swap, &generator<SwapAction>}};
+    {ActKeyword::cast, &generator<CastAction>}};
 
 std::unique_ptr<Action>
 CommandParser::actionFromPlayerCommand(Player &player, StrView command,
