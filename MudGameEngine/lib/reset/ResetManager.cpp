@@ -19,7 +19,7 @@ void ResetManager::applyResets(mudserver::gamemanager::GameState *state) {
             auto roomId = reset.getRoomId();
             auto object = factory.buildObject(objectId);
             auto room = state->getRoomFromLUT(roomId);
-            room->equipObject(object);
+            room->addObject(object);
         }
 
         if (reset.getAction() == "npc") {

@@ -13,6 +13,7 @@ add_library(actions
     TimedAction.cpp
 	HaltAction.cpp
 	SwapAction.cpp)
+	TakeAction.cpp)
 
 set_target_properties(actions
 	PROPERTIES

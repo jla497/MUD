@@ -38,6 +38,7 @@ constexpr const char *CHARMOD = u8"character";
 constexpr const char *HALT = u8"halt";
 constexpr const char *SWAP = u8"swap";
 constexpr const char *CAST = u8"cast";
+constexpr const char *TAKE = u8"take";
 
 } // namespace commands
 } // namespace resources

@@ -38,6 +38,7 @@ enum class ActKeyword {
     halt,
     swap,
     cast,
+    take,
 
     _N_ACTIONS_
 };
