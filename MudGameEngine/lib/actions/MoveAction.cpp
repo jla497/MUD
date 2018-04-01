@@ -4,7 +4,7 @@
 #include <actions/LookAction.h>
 #include <memory>
 // #include "entities/CharacterEntity.h"
-// #include "entities/CombatComponent.h"
+#include "entities/CombatComponent.h"
 
 std::vector<std::string> MoveAction::moveLookup = {"north", "south", "east",
                                                    "west"};
@@ -16,15 +16,15 @@ std::unique_ptr<Action> MoveAction::clone() const {
 void MoveAction::execute_impl() {
     static auto logger = mudserver::logging::getLogger("Action::MoveAction");
 
-    // TODO: players in combat cannot move between rooms while they are in
-    // combat  unless they use some sort of flee spell)
-    // if(characterPerformingAction->getCombatComponent()->getCombatState() ==
-    // CombatStates::FIGHTING){
-    //     gameManager.sendCharacterMessage(
-    //         characterPerformingAction->getEntityId(),
-    //         "You cannot leave the room, you are in Combat!");
-    //     return;
-    // }
+    // characters cannot move between rooms while they are in
+    // combat  unless they use some sort of flee action)
+    if (characterPerformingAction->getCombatComponent()->getCombatState() ==
+        CombatStates::FIGHTING) {
+        gameManager.sendCharacterMessage(
+            characterPerformingAction->getEntityId(),
+            "You cannot leave the room, you are in Combat!");
+        return;
+    }
 
     std::string userinfo(
         "userid: " +
