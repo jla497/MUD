@@ -6,9 +6,8 @@
 #include <unordered_map>
 
 #include "actions/Action.h"
-#include "entities/CharacterEntity.h"
 
-#include "actions/Action.h"
+#include "controllers/CharacterController.h"
 #include "entities/CharacterEntity.h"
 #include "gamemanager/Player.h"
 
@@ -63,7 +62,7 @@ class CommandParser {
      * @return the generated Action (will be a derived class)
      */
     std::unique_ptr<Action>
-    actionFromPlayerCommand(Player &player, StrView command,
+    actionFromPlayerCommand(CharacterController &controller, StrView command,
                             gamemanager::GameManager &gameManager);
     std::pair<UsernameType, PasswordType>
     identifiersFromIdentifyCommand(StrView command);

@@ -11,6 +11,8 @@
 #include <boost/optional.hpp>
 
 #include "connectionmanager/ConnectionManager.h"
+#include "controllers/AiController.h"
+#include "controllers/CharacterController.h"
 #include "entities/CharacterEntity.h"
 #include "gamemanager/GameManager.h"
 #include "logging.h"
@@ -42,17 +44,31 @@ GameManager::GameManager(connection::ConnectionManager &connMan,
 void GameManager::mainLoop() {
     static auto logger = logging::getLogger("GameManager::mainLoop");
     logger->info("Entered main game loop");
-
     loadPersistedData();
 
     using clock = std::chrono::high_resolution_clock;
 
-    currentAQueuePtr = &actionsA;
-    nextAQueuePtr = &actionsB;
     // point currentActionQueuePtr to actionQueueA
     // point nextActionQueuePtr to actionQueueB
+    currentAQueuePtr = &actionsA;
+    nextAQueuePtr = &actionsB;
 
     gameState.doReset();
+    // get chars from each room, make ai controller for each npc and insert into
+    // controller queue. Note if Player field is a nullptr, this should be taken
+    // as a npc controller
+
+    auto npcs = gameState.getAllNpcs();
+    assert(!npcs.empty());
+    for (auto npc : npcs) {
+        auto controller = new AiController();
+        controller->init(&gameState, npc, nullptr);
+
+        controllerQueue.push_back(controller);
+    }
+    logger->debug("done creating npc controllers");
+    // queue of characterControllers
+
     while (!done) {
         auto startTime = clock::now();
 
@@ -65,7 +81,7 @@ void GameManager::mainLoop() {
         auto messages = connectionManager.sendToGameManager();
 
         processMessages(messages);
-
+        fetchCntrlCmds();
         performQueuedActions();
         swapQueuePtrs();
         sendMessagesToPlayers();
@@ -160,14 +176,22 @@ void GameManager::processMessages(
             // state
             auto newCharacter =
                 playerService.createPlayerCharacter(player->getId());
+            newCharacter.set_isPlayerCharacter();
             gameState.addCharacter(newCharacter);
         }
 
-        // parse message into verb/object
-        auto action =
-            commandParser.actionFromPlayerCommand(*player, message.text, *this);
+        auto charController = playerService.playerToController(player->getId());
 
-        enqueueAction(std::move(action));
+        if (!charController) {
+            charController = playerService.createController(player->getId());
+            characterId = playerService.playerToCharacter(player->getId());
+            auto pCharacter = gameState.getCharacterFromLUT(*characterId);
+            auto gameStatePtr = &gameState;
+            charController->init(gameStatePtr, pCharacter, player);
+        }
+
+        charController->setCmdString(message.text);
+        controllerQueue.push_back(charController);
     }
 }
 
@@ -210,11 +234,18 @@ GameState &GameManager::getState() { return gameState; }
 
 void GameManager::sendCharacterMessage(UniqueId characterId,
                                        std::string message) {
-    auto playerId = playerService.characterToPlayer(characterId);
-    auto player = playerService.getPlayerById(playerId);
-    if (player) {
-        auto conn = networking::Connection{player->getConnectionId()};
-        enqueueMessage(conn, std::move(message));
+    for (auto &controller : controllerQueue) {
+        auto character = controller->getCharacter();
+        if (character->getEntityId() == characterId) {
+
+            auto player = controller->getPlayer();
+            if (player != nullptr) {
+                auto conn = networking::Connection{player->getConnectionId()};
+                enqueueMessage(conn, std::move(message));
+            } else {
+                controller->setMsg(message);
+            }
+        }
     }
 }
 
@@ -223,6 +254,7 @@ PlayerService &GameManager::getPlayerService() { return playerService; }
 void GameManager::haltServer() {
     logging::getLogger("GameManager::haltServer()")
         ->info("Shutting down server...");
+
     done = true;
 }
 
@@ -237,5 +269,16 @@ void GameManager::swapCharacters(UniqueId casterCharacterId,
     // gameState.swapCharacters(casterCharacterId, targetCharacterId);
 }
 
+void GameManager::fetchCntrlCmds() {
+    for (auto &controller : controllerQueue) {
+        controller->update();
+        auto msg = controller->getCmdString();
+        if (!msg.empty()) {
+            auto action =
+                commandParser.actionFromPlayerCommand(*controller, msg, *this);
+            enqueueAction(std::move(action));
+        }
+    }
+}
 } // namespace gamemanager
 } // namespace mudserver

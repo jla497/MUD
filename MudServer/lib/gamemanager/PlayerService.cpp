@@ -93,7 +93,7 @@ CharacterEntity PlayerService::createPlayerCharacter(PlayerId playerId) {
                               std::vector<std::string>{},
                               testShortDesc,
                               pc::THAC0};
-
+    character.set_isPlayerCharacter();
     playerCharacterBimap.insert(
         PcBmType::value_type(playerId, character.getEntityId()));
     return character;
@@ -130,4 +130,17 @@ void PlayerService::updatePlayerCharacterMapping(PlayerId playerId,
     if (it != playerCharacterBimap.left.end()) {
         playerCharacterBimap.left.replace_data(it, characterId);
     }
+}
+
+CharacterController *PlayerService::playerToController(PlayerId playerId) {
+    auto entry = controllers.find(playerId);
+    if (entry != controllers.end()) {
+        return entry->second.get();
+    }
+}
+
+CharacterController *PlayerService::createController(PlayerId playerId) {
+    auto controller = std::make_unique<PlayerController>();
+    controllers[playerId] = std::move(controller);
+    return playerToController(playerId);
 }

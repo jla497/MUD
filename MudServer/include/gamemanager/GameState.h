@@ -93,6 +93,7 @@ class GameState {
 
     Spell *getSpellByName(const spellName name);
     void killCharacter(const CharacterEntity &character);
+    std::vector<CharacterEntity *> getAllNpcs();
 };
 
 } // namespace gamemanager

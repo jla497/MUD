@@ -12,10 +12,6 @@ class Player;
 #include "entities/Entity.h"
 #include "gamemanager/GameManager.h"
 #include "gamemanager/Player.h"
-#include <memory>
-#include <string>
-#include <unordered_map>
-#include <vector>
 
 using mudserver::gamemanager::Player;
 
@@ -30,7 +26,7 @@ class Action {
     static std::unordered_map<std::string, bool> isAdminAction;
 
   public:
-    Action(Player &playerPerformingAction,
+    Action(CharacterController &controller,
            std::vector<std::string> actionArguments,
            mudserver::gamemanager::GameManager &gameManager);
 
@@ -59,5 +55,6 @@ class Action {
     std::vector<std::string> actionArguments;
     mudserver::gamemanager::GameManager &gameManager;
     Tick timeRemaining = -1;
+    CharacterController &controller;
 };
 #endif

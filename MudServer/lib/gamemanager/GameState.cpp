@@ -5,9 +5,10 @@
 #include <memory>
 #include <stdexcept>
 
+#include "controllers/AiController.h"
+#include "controllers/CharacterController.h"
 #include "gamemanager/GameState.h"
 #include "logging.h"
-
 namespace mudserver {
 namespace gamemanager {
 
@@ -169,6 +170,14 @@ void GameState::killCharacter(const CharacterEntity &character) {
     removeCharacterByUniqueId(character.getEntityId());
 
     // notify the characters controller
+}
+
+std::vector<CharacterEntity *> GameState::getAllNpcs() {
+    std::vector<CharacterEntity *> npcs;
+    for (auto &pair : characterLookUp) {
+        npcs.push_back(&pair.second);
+    }
+    return npcs;
 }
 
 } // namespace gamemanager

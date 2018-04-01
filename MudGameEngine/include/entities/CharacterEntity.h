@@ -14,7 +14,6 @@ class CombatComponent;
 class CharacterEntity : public Entity {
   private:
     bool isPlayerCharacter = false;
-
     friend class boost::serialization::access;
     template <class Archive>
     void serialize(Archive &ar, const unsigned int version) {
@@ -91,5 +90,8 @@ class CharacterEntity : public Entity {
     void equipObject(const ObjectEntity &object);
     ObjectEntity getObject(int id);
     std::map<int, ObjectEntity> getObjects();
+
+    void set_isPlayerCharacter();
+    bool get_isPlayerCharacter();
 };
 #endif

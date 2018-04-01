@@ -33,30 +33,28 @@ using boost::algorithm::to_lower_copy;
 
 using namespace resources::commands;
 
-static std::unordered_map<std::string, ActKeyword> actionLookup =
-    { // NOLINT
-        {UNDEFINED, ActKeyword::undefined},
-        {SAY, ActKeyword::say},
-        {LOOK, ActKeyword::look},
-        {ATTACK, ActKeyword::attack},
-        {MOVE, ActKeyword::move},
-        {PROGRAM, ActKeyword::program},
-        {TIMED, ActKeyword::timed},
-        {SAVE, ActKeyword::save},
-        {CHARMOD, ActKeyword::charmod},
-        {HALT, ActKeyword::halt},
-        {CAST, ActKeyword::cast}};
-
-using ActionGenerator = std::unique_ptr<Action> (*)(Player &,
+static std::unordered_map<std::string, ActKeyword> actionLookup = { // NOLINT
+    {UNDEFINED, ActKeyword::undefined},
+    {SAY, ActKeyword::say},
+    {LOOK, ActKeyword::look},
+    {ATTACK, ActKeyword::attack},
+    {MOVE, ActKeyword::move},
+    {PROGRAM, ActKeyword::program},
+    {TIMED, ActKeyword::timed},
+    {SAVE, ActKeyword::save},
+    {CHARMOD, ActKeyword::charmod},
+    {HALT, ActKeyword::halt},
+    {CAST, ActKeyword::cast}};
+using ActionGenerator = std::unique_ptr<Action> (*)(CharacterController &,
                                                     std::vector<std::string> &,
                                                     gamemanager::GameManager &);
 
 template <typename T,
           typename = std::enable_if<std::is_base_of<Action, T>::value>>
-std::unique_ptr<Action> generator(Player &player,
+std::unique_ptr<Action> generator(CharacterController &controller,
                                   std::vector<std::string> &args,
                                   gamemanager::GameManager &manager) {
-    return std::make_unique<T>(player, args, manager);
+    return std::make_unique<T>(controller, args, manager);
 };
 
 // FIXME: this should be an unordered_map, but some people don't have a
@@ -76,9 +74,9 @@ const static std::map<ActKeyword, ActionGenerator> actionGenerators = {
     {ActKeyword::cast, &generator<CastAction>}};
 
 std::unique_ptr<Action>
-CommandParser::actionFromPlayerCommand(Player &player, StrView command,
+CommandParser::actionFromPlayerCommand(CharacterController &controller,
+                                       StrView command,
                                        gamemanager::GameManager &gameManager) {
-
     Tokenizer tokens{command};
     auto tokenIterator = tokens.begin();
     auto actionTypeIter = actionLookup.find(to_lower_copy(*tokenIterator));
@@ -92,7 +90,7 @@ CommandParser::actionFromPlayerCommand(Player &player, StrView command,
                                 ? ActKeyword::undefined
                                 : actionTypeIter->second;
 
-    return actionGenerators.at(actionType)(player, remainderOfTokens,
+    return actionGenerators.at(actionType)(controller, remainderOfTokens,
                                            gameManager);
 }
 
