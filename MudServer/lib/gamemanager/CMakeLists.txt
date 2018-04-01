@@ -38,6 +38,8 @@ target_link_libraries(gamemanager
     factory
     administrator
     persistence
+    controllers
+    states
 )
 
 set_target_properties(gamemanager

@@ -34,6 +34,7 @@ CharacterEntity::CharacterEntity(
     this->combatComponent.setThac0(thac0);
     this->combatComponent.setDamageRoll(m_damageRollData);
     this->combatComponent.setHitRoll(m_hitRollData);
+    this->combatComponent.setOwnersName(m_shortDesc);
 }
 
 std::vector<std::string> CharacterEntity::getDesc() const { return m_desc; }
@@ -53,9 +54,15 @@ std::vector<std::string> CharacterEntity::getLongDesc() const {
 
 std::string CharacterEntity::getShortDesc() const { return m_shortDesc; }
 
+unsigned int CharacterEntity::getMana() const { return m_mana; }
+
 void CharacterEntity::addGold(unsigned int amount) { m_gold += amount; }
 
 void CharacterEntity::subtractGold(unsigned int amount) { m_gold -= amount; }
+
+void CharacterEntity::addMana(unsigned int amount) { m_mana += amount; }
+
+void CharacterEntity::subtractMana(unsigned int amount) { m_mana -= amount; }
 
 bool CharacterEntity::hasGold() const { return m_gold > 0; }
 
@@ -90,3 +97,6 @@ void CharacterEntity::setShortDesc(std::string name) {
 CombatComponent *CharacterEntity::getCombatComponent() {
     return &combatComponent;
 }
+
+void CharacterEntity::set_isPlayerCharacter() { isPlayerCharacter = true; }
+bool CharacterEntity::get_isPlayerCharacter() { return isPlayerCharacter; }

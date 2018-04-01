@@ -65,7 +65,7 @@ void SwapAction::execute_impl() {
             gameManager.sendCharacterMessage(
                 casterId, "You swapped with " + swapTarget->getShortDesc());
             gameManager.sendCharacterMessage(targetId,
-                                             "You have been swapped with" +
+                                             "You have been swapped with " +
                                                  swapInitiater->getShortDesc());
             gameManager.swapCharacters(casterId, targetId);
             return;

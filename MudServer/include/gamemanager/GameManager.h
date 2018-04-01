@@ -52,6 +52,7 @@ class GameManager {
     std::queue<std::unique_ptr<Action>> actionsB;
     std::queue<std::unique_ptr<Action>> *currentAQueuePtr;
     std::queue<std::unique_ptr<Action>> *nextAQueuePtr;
+    std::vector<CharacterController *> controllerQueue;
 
     /**
      * Process a collection of messages from the server, taking various actions
@@ -82,7 +83,10 @@ class GameManager {
      */
     void performQueuedActions();
 
-    Player *getPlayerFromLogin(const connection::gameAndUserInterface &message);
+    Player *getActivePlayer(const connection::gameAndUserInterface &message);
+
+    Player *playerFromLogin(const connection::gameAndUserInterface &message,
+                            Player *player);
 
   public:
     /**
@@ -131,6 +135,8 @@ class GameManager {
 
     void swapQueuePtrs();
     void addActionToQueue(std::unique_ptr<Action> action);
+
+    void fetchCntrlCmds();
 };
 
 } // namespace gamemanager

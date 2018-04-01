@@ -11,12 +11,6 @@ Spell::Spell() {
     name = "";
     duration = -1; // need to signify that if there's no duration, spell will
                    // last (FIXME in future)
-    hitchar = "";
-    hitroom = "";
-    hitvict = "";
-    missroom = "";
-    misschar = "";
-    missvict = "";
     dammsg = "";
     wearoff = "";
     immchar = "";
@@ -25,7 +19,7 @@ Spell::Spell() {
 
 std::string Spell::getEffect() { return effect; }
 
-int Spell::getMana() { return mana; }
+unsigned int Spell::getMana() { return mana; }
 
 unsigned int Spell::getMinLevel() { return minlevel; }
 
@@ -33,52 +27,23 @@ std::string Spell::getName() { return name; }
 
 int Spell::getDuration() { return duration; }
 
-std::string Spell::getHitChar(const std::string &casterName,
-                              const std::string &victimName,
-                              const std::string &victimGender) {
-    std::string modifiedString =
-        formatUserDisplayStrings(hitchar, casterName, victimName, victimGender);
-    return modifiedString;
-}
-
-std::string Spell::getHitRoom(const std::string &casterName,
-                              const std::string &victimName,
-                              const std::string &victimGender) {
-    std::string modifiedString =
-        formatUserDisplayStrings(hitroom, casterName, victimName, victimGender);
-    return modifiedString;
-}
-
-std::string Spell::getHitVict(const std::string &casterName,
-                              const std::string &victimName,
-                              const std::string &victimGender) {
-    std::string modifiedString =
-        formatUserDisplayStrings(hitvict, casterName, victimName, victimGender);
-    return modifiedString;
-}
-
-std::string Spell::getMissRoom(const std::string &casterName,
-                               const std::string &victimName,
-                               const std::string &victimGender) {
-    std::string modifiedString = formatUserDisplayStrings(
-        missroom, casterName, victimName, victimGender);
-    return modifiedString;
-}
-
-std::string Spell::getMissChar(const std::string &casterName,
-                               const std::string &victimName,
-                               const std::string &victimGender) {
-    std::string modifiedString = formatUserDisplayStrings(
-        misschar, casterName, victimName, victimGender);
-    return modifiedString;
-}
-
-std::string Spell::getMissVict(const std::string &casterName,
-                               const std::string &victimName,
-                               const std::string &victimGender) {
-    std::string modifiedString = formatUserDisplayStrings(
-        missvict, casterName, victimName, victimGender);
-    return modifiedString;
+Spell::DisplayMessages Spell::getDisplayMessages(std::string casterName,
+                                                 std::string victimName,
+                                                 std::string victimGender) {
+    Spell::DisplayMessages modifiedMessages;
+    modifiedMessages.hitchar = formatUserDisplayStrings(
+        messages.hitchar, casterName, victimName, victimGender);
+    modifiedMessages.hitroom = formatUserDisplayStrings(
+        messages.hitroom, casterName, victimName, victimGender);
+    modifiedMessages.hitvict = formatUserDisplayStrings(
+        messages.hitvict, casterName, victimName, victimGender);
+    modifiedMessages.misschar = formatUserDisplayStrings(
+        messages.misschar, casterName, victimName, victimGender);
+    modifiedMessages.missroom = formatUserDisplayStrings(
+        messages.missroom, casterName, victimName, victimGender);
+    modifiedMessages.missvict = formatUserDisplayStrings(
+        messages.missvict, casterName, victimName, victimGender);
+    return modifiedMessages;
 }
 
 std::string Spell::getDammsg() { return dammsg; }
@@ -93,31 +58,22 @@ Spell::SpellType Spell::getType() { return type; }
 
 void Spell::setEffect(const std::string &effect) { this->effect = effect; }
 
-void Spell::setMana(int mana) { this->mana = mana; }
+void Spell::setMana(unsigned int mana) { this->mana = mana; }
 
 void Spell::setMinLevel(unsigned int minlevel) { this->minlevel = minlevel; }
 
 void Spell::setName(const std::string &name) { this->name = name; }
 
+void Spell::setDisplayMessages(Spell::DisplayMessages messages) {
+    this->messages.hitchar = messages.hitchar;
+    this->messages.hitroom = messages.hitroom;
+    this->messages.hitvict = messages.hitvict;
+    this->messages.missroom = messages.missroom;
+    this->messages.misschar = messages.misschar;
+    this->messages.missvict = messages.missvict;
+}
+
 void Spell::setDuration(int duration) { this->duration = duration; }
-
-void Spell::setHitChar(const std::string &hitchar) { this->hitchar = hitchar; }
-
-void Spell::setHitRoom(const std::string &hitroom) { this->hitroom = hitroom; }
-
-void Spell::setHitVict(const std::string &hitvict) { this->hitvict = hitvict; }
-
-void Spell::setMissRoom(const std::string &missroom) {
-    this->missroom = missroom;
-}
-
-void Spell::setMissChar(const std::string &misschar) {
-    this->misschar = misschar;
-}
-
-void Spell::setMissVict(const std::string &missvict) {
-    this->missvict = missvict;
-}
 
 void Spell::setDammsg(const std::string &dammsg) { this->dammsg = dammsg; }
 
@@ -210,4 +166,6 @@ bool Spell::isCharacterValidLevel(unsigned int characterLevel) {
     return minlevel <= characterLevel;
 }
 
-bool Spell::isEnoughMana(int characterMana) { return mana <= characterMana; }
+bool Spell::isEnoughMana(unsigned int characterMana) {
+    return mana <= characterMana;
+}
