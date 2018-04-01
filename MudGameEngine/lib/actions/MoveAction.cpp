@@ -4,7 +4,7 @@
 #include <actions/LookAction.h>
 #include <memory>
 // #include "entities/CharacterEntity.h"
-// #include "entities/CombatComponent.h"
+#include "entities/CombatComponent.h"
 
 std::vector<std::string> MoveAction::moveLookup = {"north", "south", "east",
                                                    "west"};
@@ -16,15 +16,15 @@ std::unique_ptr<Action> MoveAction::clone() const {
 void MoveAction::execute_impl() {
     static auto logger = mudserver::logging::getLogger("Action::MoveAction");
 
-    // TODO: players in combat cannot move between rooms while they are in
-    // combat  unless they use some sort of flee spell)
-    // if(characterPerformingAction->getCombatComponent()->getCombatState() ==
-    // CombatStates::FIGHTING){
-    //     gameManager.sendCharacterMessage(
-    //         characterPerformingAction->getEntityId(),
-    //         "You cannot leave the room, you are in Combat!");
-    //     return;
-    // }
+    // characters cannot move between rooms while they are in
+    // combat  unless they use some sort of flee action)
+    if (characterPerformingAction->getCombatComponent()->getCombatState() ==
+        CombatStates::FIGHTING) {
+        gameManager.sendCharacterMessage(
+            characterPerformingAction->getEntityId(),
+            "You cannot leave the room, you are in Combat!");
+        return;
+    }
 
     std::string userinfo(
         "userid: " +
@@ -70,18 +70,17 @@ void MoveAction::execute_impl() {
             return;
         }
 
-        logger->info("got nextRoomId...");
         // get nextroom
         auto nextRoom = gameState.getRoomFromLUT(nextRoomId);
         // Room with nextRoomId does not exist
         if (!nextRoom) {
-            logger->warning("nextRoom is null...");
+            logger->error("nextRoom is null...");
             return;
         }
 
         std::string nextRoomIdStr("next room id: " +
                                   std::to_string(nextRoom->getId()));
-        logger->info(nextRoomIdStr);
+        logger->debug(nextRoomIdStr);
         // move the playerCharacter from the current room to the next room
         auto characterId = characterPerformingAction->getEntityId().getId();
 
@@ -93,7 +92,7 @@ void MoveAction::execute_impl() {
         gameState.addCharacterRoomRelationToLUT(mCharacterPtr->getEntityId(),
                                                 nextRoom->getId());
 
-        LookAction{playerPerformingAction, {}, gameManager}.execute();
+        LookAction{controller, {}, gameManager}.execute();
 
         logger->debug("MoveAction complete...");
         return;

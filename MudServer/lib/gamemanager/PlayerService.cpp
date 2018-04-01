@@ -22,15 +22,24 @@ AddPlayerResult PlayerService::addPlayer(UsernameType username,
         return AddPlayerResult::playerExists;
     }
 
+    if (!userAndPassAreValid(username, password)) {
+        return AddPlayerResult::playerInvalid;
+    }
+
     PlayerId id = getNextPlayerId();
     Player player{id, username, std::move(password)};
-    // if (!players.size()) {
-    player.getAdminPrivilege();
-    //}
+    if (!players.size()) {
+        player.getAdminPrivilege();
+    }
     playerIdByName[username] = id;
     players.emplace(std::make_pair(id, player));
 
     return AddPlayerResult::playerAdded;
+}
+
+bool PlayerService::userAndPassAreValid(UsernameType username,
+                                        PasswordType password) {
+    return (username != "" && password != "");
 }
 
 PlayerId PlayerService::getNextPlayerId() { return ++nextPlayerId; }
@@ -84,11 +93,12 @@ CharacterEntity PlayerService::createPlayerCharacter(PlayerId playerId) {
                               std::vector<std::string>{},
                               testShortDesc,
                               pc::THAC0};
-
+    character.set_isPlayerCharacter();
     playerCharacterBimap.insert(
         PcBmType::value_type(playerId, character.getEntityId()));
     return character;
 }
+
 void PlayerService::setPlayerConnection(PlayerId playerId,
                                         networking::ConnectionId connectionId) {
     playerIdByConnection[connectionId] = playerId;
@@ -120,4 +130,17 @@ void PlayerService::updatePlayerCharacterMapping(PlayerId playerId,
     if (it != playerCharacterBimap.left.end()) {
         playerCharacterBimap.left.replace_data(it, characterId);
     }
+}
+
+CharacterController *PlayerService::playerToController(PlayerId playerId) {
+    auto entry = controllers.find(playerId);
+    if (entry != controllers.end()) {
+        return entry->second.get();
+    }
+}
+
+CharacterController *PlayerService::createController(PlayerId playerId) {
+    auto controller = std::make_unique<PlayerController>();
+    controllers[playerId] = std::move(controller);
+    return playerToController(playerId);
 }

@@ -7,12 +7,13 @@ add_library(actions
 	AttackAction.cpp
 	NullAction.cpp
 	LookAction.cpp
-	SwapAction.cpp
+	CastAction.cpp
 	PrgmAction.cpp
 	SaveAction.cpp
     TimedAction.cpp
 	HaltAction.cpp
-	TakeAction.cpp)
+	TakeAction.cpp
+	SwapAction.cpp)
 
 set_target_properties(actions
 	PROPERTIES

@@ -11,7 +11,8 @@ CombatComponent::CombatComponent(int armor, int thac0, Roll damageRoll,
     this->maxHealth = CombatSimulation::calcRoll(maxHitPointRoll);
     this->currentHealth = this->maxHealth;
 }
-CombatComponent::CombatComponent() : CombatComponent(0, 0, {1, 1, 0},{1, 1, 0}){
+CombatComponent::CombatComponent()
+    : CombatComponent(0, 0, {1, 1, 0}, {1, 1, 0}) {
     // TODO: use default values from config rather than hardcoded values
 }
 
@@ -25,9 +26,13 @@ void CombatComponent::prepareToAttack() {
 
 void CombatComponent::setArmor(int armor) { this->armor = armor; }
 void CombatComponent::setThac0(int thac0) { this->thac0 = thac0; }
-std::string CombatComponent::setEnemiesName(std::string enemiesName){
+void CombatComponent::setEnemiesName(std::string enemiesName) {
     this->enemiesName = enemiesName;
-}  
+}
+void CombatComponent::setOwnersName(std::string ownersName) {
+    this->ownersName = ownersName;
+}
+
 void CombatComponent::setDamageRoll(Roll damageRollData) {
     this->damageRoll = damageRollData;
 }
@@ -49,25 +54,19 @@ Roll CombatComponent::getHitRoll() const { return maxHitPointRoll; }
 int CombatComponent::getArmor() const { return armor; }
 int CombatComponent::getThac0() const { return thac0; }
 std::string CombatComponent::getEnemiesName() const { return enemiesName; }
+std::string CombatComponent::getOwnersName() const { return ownersName; }
 
 void CombatComponent::damage(int damageAmount) {
     if (damageAmount < 0) {
-        //heal(damageAmount * -1);
         return;
     }
     currentHealth -= damageAmount;
-     if (currentHealth <= 0) {
+    if (currentHealth <= 0) {
         currentHealth = 0;
     }   
-    // if (currentHealth <= 0) {
-    //     currentHealth = 0;
-    //     return true;
-    // } else {
-    //     return false;
-    // }
 }
 
-bool CombatComponent::isCharacterDead(){
+bool CombatComponent::isCharacterDead() {
     if (currentHealth <= 0) {
         return true;
     } else {
@@ -77,7 +76,6 @@ bool CombatComponent::isCharacterDead(){
 
 void CombatComponent::heal(int healAmount) {
     if (healAmount < 0) {
-        //damage(healAmount * -1);
         return;
     }
     currentHealth += healAmount;

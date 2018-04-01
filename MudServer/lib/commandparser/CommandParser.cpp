@@ -11,6 +11,7 @@
 #include <boost/tokenizer.hpp>
 
 #include "actions/AttackAction.h"
+#include "actions/CastAction.h"
 #include "actions/CharacterModAction.h"
 #include "actions/HaltAction.h"
 #include "actions/LookAction.h"
@@ -45,18 +46,18 @@ static std::unordered_map<std::string, ActKeyword> actionLookup = { // NOLINT
     {CHARMOD, ActKeyword::charmod},
     {HALT, ActKeyword::halt},
     {SWAP, ActKeyword::swap},
-    {TAKE, ActKeyword::take}};
-
-using ActionGenerator = std::unique_ptr<Action> (*)(Player &,
+    {TAKE, ActKeyword::take},
+    {CAST, ActKeyword::cast}};
+using ActionGenerator = std::unique_ptr<Action> (*)(CharacterController &,
                                                     std::vector<std::string> &,
                                                     gamemanager::GameManager &);
 
 template <typename T,
           typename = std::enable_if<std::is_base_of<Action, T>::value>>
-std::unique_ptr<Action> generator(Player &player,
+std::unique_ptr<Action> generator(CharacterController &controller,
                                   std::vector<std::string> &args,
                                   gamemanager::GameManager &manager) {
-    return std::make_unique<T>(player, args, manager);
+    return std::make_unique<T>(controller, args, manager);
 };
 
 // FIXME: this should be an unordered_map, but some people don't have a
@@ -74,12 +75,13 @@ const static std::map<ActKeyword, ActionGenerator> actionGenerators = {
     {ActKeyword::charmod, &generator<CharacterModAction>},
     {ActKeyword::halt, &generator<HaltAction>},
     {ActKeyword::swap, &generator<SwapAction>},
-    {ActKeyword::take, &generator<TakeAction>}};
+    {ActKeyword::take, &generator<TakeAction>},
+    {ActKeyword::cast, &generator<CastAction>}};
 
 std::unique_ptr<Action>
-CommandParser::actionFromPlayerCommand(Player &player, StrView command,
+CommandParser::actionFromPlayerCommand(CharacterController &controller,
+                                       StrView command,
                                        gamemanager::GameManager &gameManager) {
-
     Tokenizer tokens{command};
     auto tokenIterator = tokens.begin();
     auto actionTypeIter = actionLookup.find(to_lower_copy(*tokenIterator));
@@ -93,7 +95,7 @@ CommandParser::actionFromPlayerCommand(Player &player, StrView command,
                                 ? ActKeyword::undefined
                                 : actionTypeIter->second;
 
-    return actionGenerators.at(actionType)(player, remainderOfTokens,
+    return actionGenerators.at(actionType)(controller, remainderOfTokens,
                                            gameManager);
 }
 
