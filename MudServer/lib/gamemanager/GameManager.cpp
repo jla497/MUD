@@ -118,7 +118,6 @@ Player *GameManager::getActivePlayer(const gameAndUserInterface &message) {
 
     if (player) {
         playerService.setPlayerConnection(player->getId(), message.conn.id);
-        enqueueMessage(message.conn, LOGIN_SUCCESS);
     }
 
     return player;
@@ -144,6 +143,7 @@ Player *GameManager::playerFromLogin(const gameAndUserInterface &message,
         case AddPlayerResult::playerAdded:
             player =
                 playerService.identify(userPassPair.first, userPassPair.second);
+                enqueueMessage(message.conn, LOGIN_SUCCESS);
             break;
         case AddPlayerResult::playerExists:
         case AddPlayerResult::playerInvalid:
