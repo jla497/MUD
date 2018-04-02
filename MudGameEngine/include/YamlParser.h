@@ -17,12 +17,6 @@
 
 #include <yaml-cpp/yaml.h>
 
-/*
- * FIXME
- * This class is basically just a namespace.
- * None of the parse* methods make use of `this`.
- */
-
 class YamlParser {
 
   private:
@@ -30,17 +24,17 @@ class YamlParser {
     bool is_loaded = false;
 
     // calls constructors of each object and adds data to each respective object
-    CharacterEntity parseNPC(YAML::Node npcNode) const;
-    ObjectEntity parseObject(YAML::Node objectNode) const;
-    Reset parseReset(YAML::Node resetNode) const; // needs reset constructor
-    void parseHelp(YAML::Node helpNode) const;    // needs help constructor
-    RoomEntity parseRoom(YAML::Node roomNode) const;
-    ShopEntity parseShop(YAML::Node shopNode) const;
-    DoorEntity parseDoor(YAML::Node doorNode) const;
+    CharacterEntity parseNPC(const YAML::Node &npcNode) const;
+    ObjectEntity parseObject(const YAML::Node &objectNode) const;
+    Reset parseReset(const YAML::Node &resetNode) const;
+    void parseHelp(const YAML::Node &helpNode) const;
+    RoomEntity parseRoom(const YAML::Node &roomNode) const;
+    ShopEntity parseShop(const YAML::Node &shopNode) const;
+    DoorEntity parseDoor(const YAML::Node &doorNode) const;
 
     std::deque<RoomEntity> getAllRooms() const;
     // get all doors in the current room
-    std::vector<DoorEntity> getAllDoors(YAML::Node roomNode) const;
+    std::vector<DoorEntity> getAllDoors(const YAML::Node &roomNode) const;
 
   public:
     // loads the YAML file into data (std::vector of YAML nodes)

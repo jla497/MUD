@@ -1,5 +1,6 @@
 
 #include "gamemanager/LutBuilder.h"
+#include <boost/algorithm/string.hpp>
 
 namespace mudserver {
 namespace gamemanager {
@@ -30,5 +31,25 @@ LutBuilder::createObjectLUT(std::vector<ObjectEntity> &objects) {
     }
     return map;
 }
+
+std::map<spellName, Spell>
+LutBuilder::createSpellLUT(std::vector<Spell> &spells) {
+    std::map<spellName, Spell> map;
+    Spell swapSpell;
+    swapSpell.setName("body swap");
+    swapSpell.setType(Spell::SpellType::swap);
+    map[swapSpell.getName()] = swapSpell;
+
+    Spell decoySpell;
+    decoySpell.setName("decoy");
+    decoySpell.setType(Spell::SpellType::decoy);
+    map[decoySpell.getName()] = decoySpell;
+
+    for (auto &spell : spells) {
+        map[boost::to_lower_copy(spell.getName())] = spell;
+    }
+    return map;
+}
+
 } // namespace gamemanager
 } // namespace mudserver

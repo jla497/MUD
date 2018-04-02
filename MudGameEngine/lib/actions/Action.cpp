@@ -7,7 +7,9 @@
 #include <utility>
 #include <vector>
 
+#include "actions/Action.h"
 #include "actions/AttackAction.h"
+#include "actions/CastAction.h"
 #include "actions/CharacterModAction.h"
 #include "actions/DecoyAction.h"
 #include "actions/HaltAction.h"
@@ -17,9 +19,9 @@
 #include "actions/PrgmAction.h"
 #include "actions/SaveAction.h"
 #include "actions/SayAction.h"
-#include "actions/SpellAction.h"
 #include "actions/SwapAction.h"
 #include "actions/TimedAction.h"
+#include "controllers/CharacterController.h"
 #include "gamemanager/GameManager.h"
 #include "logging.h"
 
@@ -58,7 +60,9 @@ const Action *Action::base(ActKeyword keyword) {
             makeBase<SaveAction>(ActKeyword::save),
             makeBase<CharacterModAction>(ActKeyword::charmod),
             makeBase<HaltAction>(ActKeyword::halt),
-            makeBase<SwapAction>(ActKeyword::swap)};
+            makeBase<SwapAction>(ActKeyword::swap),
+            makeBase<CastAction>(ActKeyword::cast),
+            makeBase<DecoyAction>(ActKeyword::decoy)};
         std::vector<std::unique_ptr<Action>> ret{
             std::make_move_iterator(std::begin(array)),
             std::make_move_iterator(std::end(array))};
@@ -78,19 +82,19 @@ bool Action::requiresAdmin() const { return isAdmin; }
 void Action::setAdmin(bool admin) const { isAdmin = admin; }
 
 std::unique_ptr<Action>
-Action::clone(Player &playerPerformingAction,
+Action::clone(CharacterController &controller,
               std::vector<std::string> actionArguments,
               mudserver::gamemanager::GameManager &gameManager) const {
     auto ret = clone();
-    ret->initialize(playerPerformingAction, std::move(actionArguments),
-                    gameManager);
+    ret->initialize(controller, std::move(actionArguments), gameManager);
     return ret;
 }
 
-void Action::initialize(Player &playerPerformingAction,
+void Action::initialize(CharacterController &controller,
                         std::vector<std::string> actionArguments,
                         mudserver::gamemanager::GameManager &gameManager) {
-    this->playerPerformingAction = &playerPerformingAction;
+    this->controller = &controller;
+    this->playerPerformingAction = controller.getPlayer();
     this->gameManager = &gameManager;
     this->actionArguments = std::move(actionArguments);
 }
@@ -155,7 +159,8 @@ void Action::registerAdminActions(const std::string &file) {
             generatePair(undefined), generatePair(say),  generatePair(look),
             generatePair(attack),    generatePair(move), generatePair(program),
             generatePair(timed),     generatePair(save), generatePair(charmod),
-            generatePair(halt),      generatePair(swap)};
+            generatePair(halt),      generatePair(swap), generatePair(cast),
+            generatePair(decoy)};
         if (ret.size() != static_cast<std::size_t>(ActKeyword::_N_ACTIONS_)) {
             std::cerr << "You've added an ActKeyword but not added it to the "
                          "admin map in action.cpp. Fix it. Terminating.\n";

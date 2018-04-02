@@ -13,7 +13,7 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/lib")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wno-expansion-to-defined")
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -fno-omit-frame-pointer \
     -fsanitize=address -fsanitize=undefined -fno-sanitize=vptr \
-    -fsanitize-address-use-after-scope")
+    -fsanitize-address-use-after-scope -fno-limit-debug-info")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O2 -march=native")
 
 add_subdirectory(googletest/googlemock)
@@ -29,6 +29,7 @@ add_subdirectory(MudGameEngine)
 add_subdirectory(MudServer)
 add_subdirectory(Client)
 add_subdirectory(Logging)
+add_subdirectory(test)
+add_subdirectory(locales)
 
 configure_file(config.yaml config.yaml COPYONLY)
-

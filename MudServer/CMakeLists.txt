@@ -14,12 +14,7 @@ set(CMAKE_CXX_FLAGS
 
 link_directories(${LIBRARY_OUTPUT_PATH})
 
-#add_library(yaml-cpp STATIC IMPORTED)
-
-#add_dependencies(yaml-cpp project_yamlcpp)
-
 add_subdirectory(lib)
 add_subdirectory(tools)
-add_subdirectory(test)
 
 configure_file(admin.yml admin.yml COPYONLY)

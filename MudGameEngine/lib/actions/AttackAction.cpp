@@ -42,6 +42,7 @@ void AttackAction::execute_impl() {
     if (IDsOfCharactersInRoom.empty()) {
         return;
     }
+
     auto attackingCharactersUniqueId = characterWhoIsAttacking->getEntityId();
     if (actionArguments.empty()) {
         // user did not pass an attack target

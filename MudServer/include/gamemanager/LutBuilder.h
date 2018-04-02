@@ -4,9 +4,11 @@
 #include <boost/bimap.hpp>
 #include <deque>
 #include <memory>
+#include <string>
 #include <unordered_map>
 
 #include "Player.h"
+#include "Spell.h"
 #include "UniqueId.h"
 #include "entities/AreaEntity.h"
 #include "entities/CharacterEntity.h"
@@ -20,6 +22,8 @@ namespace gamemanager {
 
 using roomId = unsigned int;
 using Id = unsigned int;
+using spellName = std::string;
+
 class LutBuilder {
   public:
     std::map<Id, CharacterEntity>
@@ -28,6 +32,7 @@ class LutBuilder {
     createObjectLUT(std::vector<ObjectEntity> &mVector);
     std::unordered_map<roomId, RoomEntity>
     createLUT(std::deque<RoomEntity> &mVector);
+    std::map<spellName, Spell> createSpellLUT(std::vector<Spell> &mVector);
 };
 
 } // namespace gamemanager

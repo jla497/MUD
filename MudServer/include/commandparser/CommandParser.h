@@ -6,9 +6,8 @@
 #include <unordered_map>
 
 #include "actions/Action.h"
-#include "entities/CharacterEntity.h"
 
-#include "actions/Action.h"
+#include "controllers/CharacterController.h"
 #include "entities/CharacterEntity.h"
 #include "gamemanager/Player.h"
 
@@ -25,6 +24,11 @@ using gamemanager::PasswordType;
 using gamemanager::Player;
 using gamemanager::UsernameType;
 using StrView = std::experimental::string_view;
+
+enum class AliasReturnCode { SUCCESS, INVALID_KEYWORD, ALIAS_EXISTS };
+
+AliasReturnCode registerCommandAlias(ActKeyword keyword,
+                                     const std::string &alias);
 
 /**
  * Uses Factory pattern to create correct derived type of Action depending on
@@ -46,7 +50,7 @@ class CommandParser {
      * @return the generated Action (will be a derived class)
      */
     std::unique_ptr<Action>
-    actionFromPlayerCommand(Player &player, StrView command,
+    actionFromPlayerCommand(CharacterController &controller, StrView command,
                             gamemanager::GameManager &gameManager);
     std::pair<UsernameType, PasswordType>
     identifiersFromIdentifyCommand(StrView command);

@@ -54,6 +54,7 @@ void DecoyAction::execute_impl() {
             ourDecoyId =
                 newDecoy->getEntityId(); // to bind decoy to this action obj
             gameState.addCharacter(*newDecoy, room->getId());
+
             logger->debug("decoy added in room " +
                           std::to_string(room->getId()));
         } else {

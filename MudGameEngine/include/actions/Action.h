@@ -1,6 +1,7 @@
 #ifndef ACTION_H
 #define ACTION_H
 
+#include "controllers/CharacterController.h"
 #include "entities/CharacterEntity.h"
 #include "entities/Entity.h"
 #include <memory>
@@ -29,6 +30,8 @@ enum class ActKeyword {
     charmod,
     halt,
     swap,
+    cast,
+    decoy,
 
     _N_ACTIONS_
 };
@@ -64,7 +67,7 @@ class Action {
     void execute();
     virtual std::unique_ptr<Action> clone() const = 0;
     std::unique_ptr<Action>
-    clone(Player &playerPerformingAction,
+    clone(CharacterController &controller,
           std::vector<std::string> actionArguments,
           mudserver::gamemanager::GameManager &gameManager) const;
 
@@ -76,12 +79,13 @@ class Action {
     virtual void execute_impl() = 0;
     friend std::ostream &operator<<(std::ostream &os, const Action &action);
 
-    void initialize(Player &playerPerformingAction,
+    void initialize(CharacterController &controller,
                     std::vector<std::string> actionArguments,
                     mudserver::gamemanager::GameManager &gameManager);
 
   protected:
     CharacterEntity *characterPerformingAction = nullptr;
+    CharacterController *controller = nullptr;
     Player *playerPerformingAction = nullptr;
     std::vector<std::string> actionArguments;
     mudserver::gamemanager::GameManager *gameManager = nullptr;
