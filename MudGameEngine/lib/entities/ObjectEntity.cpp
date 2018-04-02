@@ -50,3 +50,7 @@ std::vector<std::string> ObjectEntity::getExtraKeyword() const {
 std::vector<std::string> ObjectEntity::getExtraDesc() const {
     return m_extra.desc;
 }
+
+void ObjectEntity::setShortDesc(const std::string &shortDesc) {
+    m_shortDesc = shortDesc;
+}

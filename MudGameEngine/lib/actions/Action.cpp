@@ -162,7 +162,7 @@ void Action::registerAdminActions(const std::string &file) {
             generatePair(attack),    generatePair(move), generatePair(program),
             generatePair(timed),     generatePair(save), generatePair(charmod),
             generatePair(halt),      generatePair(swap), generatePair(cast),
-            generatePair(decoy), generatePair(take)};
+            generatePair(decoy),     generatePair(take)};
         if (ret.size() != static_cast<std::size_t>(ActKeyword::_N_ACTIONS_)) {
             std::cerr << "You've added an ActKeyword but not added it to the "
                          "admin map in action.cpp. Fix it. Terminating.\n";
