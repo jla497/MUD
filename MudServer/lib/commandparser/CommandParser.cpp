@@ -21,8 +21,8 @@
 #include "actions/SaveAction.h"
 #include "actions/SayAction.h"
 #include "actions/SwapAction.h"
-#include "actions/TimedAction.h"
 #include "actions/TakeAction.h"
+#include "actions/TimedAction.h"
 #include "commandparser/CommandParser.h"
 #include "resources/commands.h"
 

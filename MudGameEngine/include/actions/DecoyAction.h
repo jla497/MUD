@@ -26,9 +26,8 @@ class DecoyAction : public Action {
 
     bool canExecuteSpell(CharacterEntity *characterPerformingAction);
 
-
-	const int DEFAULT_TIME_REMAINING = 12;
-	const unsigned int MANA_COST = 2;
+    const int DEFAULT_TIME_REMAINING = 12;
+    const unsigned int MANA_COST = 2;
 
   protected:
     std::string description() const override { return u8"Decoy action"; }

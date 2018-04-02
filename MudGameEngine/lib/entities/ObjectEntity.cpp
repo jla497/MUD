@@ -52,5 +52,5 @@ std::vector<std::string> ObjectEntity::getExtraDesc() const {
 }
 
 void ObjectEntity::setShortDesc(const std::string &shortDesc) {
-  m_shortDesc = shortDesc;
+    m_shortDesc = shortDesc;
 }

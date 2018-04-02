@@ -91,7 +91,7 @@ class RoomEntity : public Entity {
     void removeObject(boost::optional<ObjectEntity> &object);
     void removeObject(UniqueId objectToRmvId);
     boost::optional<ObjectEntity> takeObject(int id);
-    boost::optional<ObjectEntity> takeObjectByName(const std::string& objName);
+    boost::optional<ObjectEntity> takeObjectByName(const std::string &objName);
     std::map<int, ObjectEntity> getObjects();
 };
 
