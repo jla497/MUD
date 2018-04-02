@@ -80,6 +80,18 @@ void RoomEntity::removeObject(boost::optional<ObjectEntity> &object) {
     m_objects.erase(it);
 }
 
+void RoomEntity::removeObject(UniqueId objectToRmvId) {
+    std::map<int, ObjectEntity>::iterator it;
+    for (auto const& obj : m_objects) {
+        // compare object to name arg
+        if (obj.second.getEntityId() == objectToRmvId) {
+            it = m_objects.find(obj.second.getObjectTypeId());
+            m_objects.erase(it);
+            return;
+        }
+    }
+}
+
 boost::optional<ObjectEntity> RoomEntity::takeObject(int id) {
     auto it = m_objects.find(id);
     if (it == m_objects.end()) {

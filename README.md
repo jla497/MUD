@@ -34,6 +34,7 @@ Client:
 - swap < character > (swap's the player's character with < character >)
 - save (saves the state of the game to disk)
 - halt (halt's the game server and saves to disk)
+- cast decoy (creates a decoy object in same room; allows caster to flee)
 - program --help (gives help!)
 - program --modify < npc id > --gold < number > (adds gold to npc)
 - program --modify < npc id > --experience < number > (adds exp to npc)
