@@ -11,6 +11,9 @@
 class SwapAction : public Action {
   public:
     using Action::Action;
+
+    SwapAction() = default;
+
     void execute_impl() override;
     std::unique_ptr<Action> clone() const override;
 

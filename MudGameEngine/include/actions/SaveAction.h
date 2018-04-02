@@ -10,6 +10,9 @@
 class SaveAction : public Action {
   public:
     using Action::Action;
+
+    SaveAction() = default;
+
     void execute_impl() override;
 
   protected:

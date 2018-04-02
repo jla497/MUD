@@ -1,3 +1,4 @@
+
 cmake_minimum_required(VERSION 3.2)
 project(MudServer)
 
@@ -16,3 +17,4 @@ link_directories(${LIBRARY_OUTPUT_PATH})
 add_subdirectory(lib)
 add_subdirectory(tools)
 
+configure_file(admin.yml admin.yml COPYONLY)

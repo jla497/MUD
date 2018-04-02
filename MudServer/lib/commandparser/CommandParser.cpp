@@ -10,18 +10,6 @@
 #include <boost/algorithm/string.hpp>
 #include <boost/tokenizer.hpp>
 
-#include "actions/AttackAction.h"
-#include "actions/CastAction.h"
-#include "actions/CharacterModAction.h"
-#include "actions/HaltAction.h"
-#include "actions/LookAction.h"
-#include "actions/MoveAction.h"
-#include "actions/NullAction.h"
-#include "actions/PrgmAction.h"
-#include "actions/SaveAction.h"
-#include "actions/SayAction.h"
-#include "actions/SwapAction.h"
-#include "actions/TimedAction.h"
 #include "commandparser/CommandParser.h"
 #include "i18n/i18n.h"
 #include "resources/commands.h"
@@ -53,18 +41,6 @@ static auto actionLookup =
         return ret;
     })();
 
-using ActionGenerator = std::unique_ptr<Action> (*)(CharacterController &,
-                                                    std::vector<std::string> &,
-                                                    gamemanager::GameManager &);
-
-template <typename T,
-          typename = std::enable_if<std::is_base_of<Action, T>::value>>
-std::unique_ptr<Action> generator(CharacterController &controller,
-                                  std::vector<std::string> &args,
-                                  gamemanager::GameManager &manager) {
-    return std::make_unique<T>(controller, args, manager);
-};
-
 template <typename T, typename = std::enable_if<std::is_enum<T>::value>>
 bool operator>=(T a, T b) {
     using U = typename std::underlying_type<T>::type;
@@ -84,24 +60,6 @@ AliasReturnCode registerCommandalias(ActKeyword keyword,
     return AliasReturnCode::SUCCESS;
 }
 
-// FIXME: this should be an unordered_map, but some people don't have a
-// std::hash  specialization for enums in their old gcc/glibc
-const static std::map<ActKeyword, ActionGenerator> actionGenerators =
-    { // NOLINT
-      // NOLINT
-        {ActKeyword::undefined, &generator<NullAction>},
-        {ActKeyword::say, &generator<SayAction>},
-        {ActKeyword::look, &generator<LookAction>},
-        {ActKeyword::attack, &generator<AttackAction>},
-        {ActKeyword::move, &generator<MoveAction>},
-        {ActKeyword::program, &generator<PrgmAction>},
-        {ActKeyword::timed, &generator<TimedAction>},
-        {ActKeyword::save, &generator<SaveAction>},
-        {ActKeyword::charmod, &generator<CharacterModAction>},
-        {ActKeyword::halt, &generator<HaltAction>},
-        {ActKeyword::swap, &generator<SwapAction>},
-        {ActKeyword::cast, &generator<CastAction>}};
-
 std::unique_ptr<Action>
 CommandParser::actionFromPlayerCommand(CharacterController &controller,
                                        StrView command,
@@ -119,8 +77,8 @@ CommandParser::actionFromPlayerCommand(CharacterController &controller,
                                 ? ActKeyword::undefined
                                 : actionTypeIter->second;
 
-    return actionGenerators.at(actionType)(controller, remainderOfTokens,
-                                           gameManager);
+    return Action::base(actionType)
+        ->clone(controller, remainderOfTokens, gameManager);
 }
 
 std::pair<UsernameType, PasswordType>

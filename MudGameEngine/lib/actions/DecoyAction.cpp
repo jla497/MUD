@@ -17,7 +17,7 @@ void DecoyAction::execute_impl() {
     logger->info(userinfo);
 
     // get room char is in
-    auto &gameState = gameManager.getState();
+    auto &gameState = gameManager->getState();
     RoomEntity *room =
         gameState.getCharacterLocation(*characterPerformingAction);
 

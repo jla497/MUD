@@ -7,8 +7,8 @@ SERVER:
   spells:
   - MudGameEngine/lib/dataFiles/spells.yml
   config_dir: config
+  admin: MudServer/admin.yml
   url: localhost
 CLIENT:
   port: 4000
   url: localhost
-
