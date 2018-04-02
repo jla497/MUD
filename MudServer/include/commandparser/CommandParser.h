@@ -25,23 +25,10 @@ using gamemanager::Player;
 using gamemanager::UsernameType;
 using StrView = std::experimental::string_view;
 
-enum class ActKeyword {
-    undefined = 0,
-    say,
-    look,
-    attack,
-    move,
-    program,
-    timed,
-    save,
-    charmod,
-    halt,
-    swap,
-    take,
-    cast,
+enum class AliasReturnCode { SUCCESS, INVALID_KEYWORD, ALIAS_EXISTS };
 
-    _N_ACTIONS_
-};
+AliasReturnCode registerCommandAlias(ActKeyword keyword,
+                                     const std::string &alias);
 
 /**
  * Uses Factory pattern to create correct derived type of Action depending on

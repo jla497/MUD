@@ -10,6 +10,6 @@ std::unique_ptr<Action> HaltAction::clone() const {
 }
 
 void HaltAction::execute_impl() {
-    gameManager.persistData();
-    gameManager.haltServer();
+    gameManager->persistData();
+    gameManager->haltServer();
 }

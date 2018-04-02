@@ -40,12 +40,12 @@ void CharacterController::setCmdString(std::string cmd) {
     cmdStrings.push(cmd);
 }
 
-std::string CharacterController::getCmdString() {    
+std::string CharacterController::getCmdString() {
     if (!cmdStrings.empty()) {
         auto res = cmdStrings.front();
-        cmdStrings.pop();        
+        cmdStrings.pop();
         return res;
-    } 
+    }
     return "";
 }
 

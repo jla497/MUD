@@ -21,6 +21,7 @@ target_link_libraries(mudserver gamemanager)
 target_link_libraries(mudserver logging)
 target_link_libraries(mudserver parser)
 target_link_libraries(mudserver configparser)
+target_link_libraries(mudserver i18n)
 
 set_target_properties(mudserver
                       PROPERTIES

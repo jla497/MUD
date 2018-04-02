@@ -31,6 +31,8 @@ class CharacterController {
     std::queue<std::string> messages;
 
   public:
+    virtual ~CharacterController() = default;
+
     void init(GameState *state, CharacterEntity *entity, Player *plyer);
     virtual void update() = 0;
     void add(std::string key, IState *state);

@@ -90,7 +90,6 @@ class PlayerService {
 
     bool userAndPassAreValid(UsernameType basic_string,
                              PasswordType basicString);
-
 };
 
 } // namespace gamemanager

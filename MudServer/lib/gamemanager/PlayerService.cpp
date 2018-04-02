@@ -137,6 +137,7 @@ CharacterController *PlayerService::playerToController(PlayerId playerId) {
     if (entry != controllers.end()) {
         return entry->second.get();
     }
+    return nullptr;
 }
 
 CharacterController *PlayerService::createController(PlayerId playerId) {

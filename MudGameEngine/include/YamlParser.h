@@ -17,7 +17,6 @@
 
 #include <yaml-cpp/yaml.h>
 
-
 class YamlParser {
 
   private:

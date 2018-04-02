@@ -24,6 +24,9 @@ class LookAction : public Action {
 
   public:
     using Action::Action;
+
+    LookAction() = default;
+
     void execute_impl() override;
     std::unique_ptr<Action> clone() const override;
 

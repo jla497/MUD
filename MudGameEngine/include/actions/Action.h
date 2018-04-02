@@ -1,6 +1,14 @@
 #ifndef ACTION_H
 #define ACTION_H
 
+#include "controllers/CharacterController.h"
+#include "entities/CharacterEntity.h"
+#include "entities/Entity.h"
+#include <memory>
+#include <string>
+#include <unordered_map>
+#include <vector>
+
 namespace mudserver {
 namespace gamemanager {
 class GameManager;
@@ -8,12 +16,26 @@ class Player;
 } // namespace gamemanager
 } // namespace mudserver
 
-#include "entities/CharacterEntity.h"
-#include "entities/Entity.h"
-#include "gamemanager/GameManager.h"
-#include "gamemanager/Player.h"
-
 using mudserver::gamemanager::Player;
+
+enum class ActKeyword {
+    undefined = 0,
+    say,
+    look,
+    attack,
+    move,
+    program,
+    timed,
+    save,
+    charmod,
+    halt,
+    swap,
+    cast,
+    decoy,
+    take,
+
+    _N_ACTIONS_
+};
 
 /**
  * The Action class defines the interface that all actions implement.
@@ -23,18 +45,20 @@ using mudserver::gamemanager::Player;
  */
 class Action {
     using Tick = int;
-    static std::unordered_map<std::string, bool> isAdminAction;
 
   public:
-    Action(CharacterController &controller,
-           std::vector<std::string> actionArguments,
-           mudserver::gamemanager::GameManager &gameManager);
+    // return const so execute() cannot be called on a base action
+    static const Action *base(ActKeyword keyword);
 
+    Action() = default;
     Action(const Action &) = default;
     Action &operator=(const Action &) = default;
     Action(Action &&) = default;
     Action &operator=(Action &&) = default;
     virtual ~Action() = default;
+
+    bool requiresAdmin() const;
+    void setAdmin(bool admin) const;
 
     /**
      * Actions are designed to be placed in a queue. When the queue is
@@ -43,18 +67,31 @@ class Action {
      */
     void execute();
     virtual std::unique_ptr<Action> clone() const = 0;
+    std::unique_ptr<Action>
+    clone(CharacterController &controller,
+          std::vector<std::string> actionArguments,
+          mudserver::gamemanager::GameManager &gameManager) const;
+
+    static void registerAdminActions(const std::string &file);
 
   private:
+    mutable bool isAdmin = true;
+
     virtual void execute_impl() = 0;
     friend std::ostream &operator<<(std::ostream &os, const Action &action);
 
+    void initialize(CharacterController &controller,
+                    std::vector<std::string> actionArguments,
+                    mudserver::gamemanager::GameManager &gameManager);
+
   protected:
-    virtual std::string description() const = 0;
     CharacterEntity *characterPerformingAction = nullptr;
-    Player &playerPerformingAction;
+    CharacterController *controller = nullptr;
+    Player *playerPerformingAction = nullptr;
     std::vector<std::string> actionArguments;
-    mudserver::gamemanager::GameManager &gameManager;
+    mudserver::gamemanager::GameManager *gameManager = nullptr;
     Tick timeRemaining = -1;
-    CharacterController &controller;
+
+    virtual std::string description() const = 0;
 };
 #endif
