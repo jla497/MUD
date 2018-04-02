@@ -14,9 +14,10 @@ std::unordered_map<std::string, bool> Action::isAdminAction = {
 Action::Action(CharacterController &controller,
                std::vector<std::string> actionArguments,
                mudserver::gamemanager::GameManager &gameManager)
-    : controller(controller), playerPerformingAction{*(controller.getPlayer())},
-      actionArguments{std::move(actionArguments)}, gameManager{gameManager},
-      characterPerformingAction(controller.getCharacter()) {}
+    : controller(controller), gameManager{gameManager},
+      characterPerformingAction(controller.getCharacter()),
+      playerPerformingAction{*(controller.getPlayer())},
+      actionArguments{std::move(actionArguments)} {}
 
 void Action::execute() {
     // check if this is an admin action

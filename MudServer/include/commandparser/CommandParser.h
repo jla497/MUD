@@ -42,6 +42,11 @@ enum class ActKeyword {
     _N_ACTIONS_
 };
 
+enum class AliasReturnCode { SUCCESS, INVALID_KEYWORD, ALIAS_EXISTS };
+
+AliasReturnCode registerCommandAlias(ActKeyword keyword,
+                                     const std::string &alias);
+
 /**
  * Uses Factory pattern to create correct derived type of Action depending on
  * input.

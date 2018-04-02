@@ -13,7 +13,6 @@ set_target_properties(chatclient
 find_package(Boost 1.58 COMPONENTS system REQUIRED)
 find_package(Curses REQUIRED)
 find_package(Threads REQUIRED)
-find_package(yaml-cpp)
 include_directories(
   ${Boost_INCLUDE_DIR}
   ${CURSES_INCLUDE_DIR}

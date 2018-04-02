@@ -50,11 +50,11 @@ class Action {
 
   protected:
     virtual std::string description() const = 0;
+    CharacterController &controller;
+    mudserver::gamemanager::GameManager &gameManager;
     CharacterEntity *characterPerformingAction = nullptr;
     Player &playerPerformingAction;
     std::vector<std::string> actionArguments;
-    mudserver::gamemanager::GameManager &gameManager;
     Tick timeRemaining = -1;
-    CharacterController &controller;
 };
 #endif

@@ -125,8 +125,8 @@ class Server {
     class ConnectionHandlerImpl final : public ConnectionHandler {
       public:
         ConnectionHandlerImpl(C onConnect, D onDisconnect)
-            : onConnect{std::move(onConnect)},
-              onDisconnect{std::move(onDisconnect)} {}
+            : onConnect{std::move(onConnect)}, onDisconnect{
+                                                   std::move(onDisconnect)} {}
         void handleConnect(Connection c) override { onConnect(c); }
         void handleDisconnect(Connection c) override { onDisconnect(c); }
 

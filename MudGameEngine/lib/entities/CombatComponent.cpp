@@ -63,7 +63,7 @@ void CombatComponent::damage(int damageAmount) {
     currentHealth -= damageAmount;
     if (currentHealth <= 0) {
         currentHealth = 0;
-    }   
+    }
 }
 
 bool CombatComponent::isCharacterDead() {
