@@ -41,4 +41,4 @@ void WaitState::enter(){};
 void WaitState::exit(){};
 
 StateType WaitState::getType() { return StateType::wait; }
-}
+} // namespace state

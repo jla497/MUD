@@ -8,8 +8,8 @@
 #include "states/InteractState.h"
 #include "states/WaitState.h"
 
-using state::StateType;
 using event::EventType;
+using state::StateType;
 
 void AiController::init(GameState *state, CharacterEntity *ent, Player *plyer) {
 

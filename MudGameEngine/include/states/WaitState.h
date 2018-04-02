@@ -19,5 +19,5 @@ class WaitState : public IState {
     void exit() override;
     StateType getType() override;
 };
-}
+} // namespace state
 #endif // ADVENTURE2018_WAITSTATE_H

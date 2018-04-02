@@ -16,4 +16,4 @@ void EndState::enter(){};
 void EndState::exit(){};
 
 StateType EndState::getType() { return StateType::wait; }
-}
+} // namespace state

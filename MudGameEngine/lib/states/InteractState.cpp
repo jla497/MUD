@@ -18,12 +18,12 @@ void InteractState::update() {
 
     switch (e.getType()) {
 
-    //    case event::EventType::interact: {
-    //        auto newEntity = e.getEntity();
-    //        auto greeting = "say Hello " + newEntity->getShortDesc();
-    //        controller->setCmdString(greeting);
-    //        break;
-    //    }
+        //    case event::EventType::interact: {
+        //        auto newEntity = e.getEntity();
+        //        auto greeting = "say Hello " + newEntity->getShortDesc();
+        //        controller->setCmdString(greeting);
+        //        break;
+        //    }
 
     case event::EventType::say: {
         auto tokens = e.getArgs();
@@ -54,4 +54,4 @@ void InteractState::update() {
 void InteractState::enter(){};
 void InteractState::exit(){};
 StateType InteractState::getType() { return StateType::interact; }
-}
+} // namespace state

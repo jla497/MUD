@@ -17,7 +17,7 @@ namespace mudserver {
 namespace gamemanager {
 class GameState;
 }
-}
+} // namespace mudserver
 
 using mudserver::gamemanager::GameState;
 

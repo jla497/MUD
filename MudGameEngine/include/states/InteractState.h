@@ -17,5 +17,5 @@ class InteractState : public IState {
     void exit() override;
     StateType getType() override;
 };
-}
+} // namespace state
 #endif // ADVENTURE2018_INTERACTSTATE_H

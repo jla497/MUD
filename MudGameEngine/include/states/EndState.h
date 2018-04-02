@@ -16,5 +16,5 @@ class EndState : public IState {
     void exit() override;
     StateType getType() override;
 };
-}
+} // namespace state
 #endif // ADVENTURE2018_ENDSTATE_H

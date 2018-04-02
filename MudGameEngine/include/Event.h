@@ -35,5 +35,5 @@ class Event {
         return a.type < b.type;
     }
 };
-}
+} // namespace event
 #endif // ADVENTURE2018_EVENT_H

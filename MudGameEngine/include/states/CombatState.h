@@ -18,5 +18,5 @@ class CombatState : public IState {
     void exit() override;
     StateType getType() override;
 };
-}
+} // namespace state
 #endif // ADVENTURE2018_COMBATSTATE_H

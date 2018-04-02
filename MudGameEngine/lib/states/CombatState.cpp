@@ -75,4 +75,4 @@ void CombatState::update() {
 void CombatState::enter(){};
 void CombatState::exit(){};
 StateType CombatState::getType() { return StateType::combat; }
-}
+} // namespace state

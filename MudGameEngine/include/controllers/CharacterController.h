@@ -7,7 +7,6 @@
 
 #include "Event.h"
 #include "entities/CharacterEntity.h"
-#include "entities/CharacterEntity.h"
 #include "gamemanager/Player.h"
 #include <queue>
 #include <unordered_map>
@@ -15,13 +14,13 @@
 namespace state {
 enum class StateType;
 class IState;
-}
+} // namespace state
 
 namespace mudserver {
 namespace gamemanager {
 class GameState;
 }
-}
+} // namespace mudserver
 
 using mudserver::gamemanager::GameState;
 using mudserver::gamemanager::Player;

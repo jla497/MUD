@@ -14,7 +14,7 @@ namespace mudserver {
 namespace gamemanager {
 class GameState;
 }
-}
+} // namespace mudserver
 
 namespace state {
 using mudserver::gamemanager::GameState;
@@ -35,5 +35,5 @@ class IState {
     CharacterEntity *entity;
     CharacterController *controller;
 };
-}
+} // namespace state
 #endif // ADVENTURE2018_ISTATE_H

@@ -16,4 +16,4 @@ CharacterEntity *Event::getEntity() { return entity; };
 
 EventType Event::getType() { return type; }
 std::vector<std::string> Event::getArgs() { return args; }
-}
+} // namespace event
