@@ -19,8 +19,9 @@ void DecoyAction::execute_impl() {
         return;
     }
 
-    auto &gameState = gameManager.getState();
-    auto characterCurrentRoom =
+    // get room char is in
+    auto &gameState = gameManager->getState();
+    RoomEntity *characterCurrentRoom =
         gameState.getCharacterLocation(*characterPerformingAction);
 
     // Decoy time is up, destroy decoy object in room
@@ -54,7 +55,7 @@ void DecoyAction::execute_impl() {
     ourDecoyId = decoyObject.getEntityId();
     characterCurrentRoom->addObject(decoyObject);
 
-    gameManager.sendCharacterMessage(
+    gameManager->sendCharacterMessage(
         characterPerformingAction->getEntityId(),
         "You have created a decoy called " + decoyObject.getShortDesc() +
             " in room " + characterCurrentRoom->getName());
@@ -67,7 +68,7 @@ void DecoyAction::execute_impl() {
 bool DecoyAction::canExecuteSpell(CharacterEntity *characterPerformingAction) {
     if (unsigned int charMana =
             characterPerformingAction->getMana() < DecoyAction::MANA_COST) {
-        gameManager.sendCharacterMessage(
+        gameManager->sendCharacterMessage(
             characterPerformingAction->getEntityId(),
             "You only have " + std::to_string(charMana) + "/" +
                 std::to_string(DecoyAction::MANA_COST) +

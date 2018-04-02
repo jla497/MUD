@@ -12,9 +12,9 @@ std::unique_ptr<Action> CastAction::clone() const {
 
 void CastAction::execute_impl() {
     static auto logger = mudserver::logging::getLogger("CastAction::execute");
-    auto &gameState = gameManager.getState();
+    auto &gameState = gameManager->getState();
     if (actionArguments.empty()) {
-        gameManager.sendCharacterMessage(
+        gameManager->sendCharacterMessage(
             characterPerformingAction->getEntityId(),
             "Please enter a spell name.");
         logger->debug("No spell name found...");
@@ -81,7 +81,7 @@ void CastAction::execute_impl() {
 
     if (!spell) {
         logger->error("Not a valid spell...");
-        gameManager.sendCharacterMessage(
+        gameManager->sendCharacterMessage(
             characterPerformingAction->getEntityId(), "Not a valid spell...");
         return;
     }
@@ -100,7 +100,7 @@ void CastAction::execute_impl() {
         } else {
             logger->error("Victim is either not in the room or victim name is "
                           "invalid...");
-            gameManager.sendCharacterMessage(
+            gameManager->sendCharacterMessage(
                 characterPerformingAction->getEntityId(),
                 "Victim is either not in the room or victim name is "
                 "invalid...");
@@ -108,19 +108,20 @@ void CastAction::execute_impl() {
         break;
 
     case Spell::SpellType::swap: {
-
-        SwapAction swapAction{controller, characterArg, gameManager};
-        swapAction.execute();
+        Action::base(ActKeyword::swap)
+            ->clone(*controller, characterArg, *gameManager)
+            ->execute();
     } break;
 
     case Spell::SpellType::decoy: {
-        DecoyAction decoyAction{controller, actionArguments, gameManager};
-        decoyAction.execute();
+        Action::base(ActKeyword::decoy)
+            ->clone(*controller, characterArg, *gameManager)
+            ->execute();
     } break;
 
     default:
         logger->error("Not a valid spell...");
-        gameManager.sendCharacterMessage(
+        gameManager->sendCharacterMessage(
             characterPerformingAction->getEntityId(), "Not a valid spell...");
         return;
     }
@@ -147,7 +148,7 @@ void CastAction::executeDefenseSpell(Spell &spell) {
 
 void CastAction::executeOffenseSpell(Spell &spell) {
     static auto logger = mudserver::logging::getLogger("OffenseSpell::execute");
-    auto &gameState = gameManager.getState();
+    auto &gameState = gameManager->getState();
     CombatComponent *combatComponent = victim->getCombatComponent();
 
     if (canExecuteSpell(spell)) {
@@ -170,7 +171,7 @@ bool CastAction::canExecuteSpell(Spell &spell) {
     auto charMana = characterPerformingAction->getMana();
 
     if (!spell.isCharacterValidLevel(charLevel)) {
-        gameManager.sendCharacterMessage(
+        gameManager->sendCharacterMessage(
             characterPerformingAction->getEntityId(),
             "Character needs to be at least level " +
                 std::to_string(spell.getMinLevel()) +
@@ -179,7 +180,7 @@ bool CastAction::canExecuteSpell(Spell &spell) {
     }
 
     if (!spell.isEnoughMana(charMana)) {
-        gameManager.sendCharacterMessage(
+        gameManager->sendCharacterMessage(
             characterPerformingAction->getEntityId(),
             "Character only has " + std::to_string(charMana) + "/" +
                 std::to_string(spell.getMana()) +
@@ -210,30 +211,30 @@ void CastAction::displayMessages(Spell &spell, bool isHit) {
              which means the char performing the action is the "victim" of the
              spell
             */
-            gameManager.sendCharacterMessage(
+            gameManager->sendCharacterMessage(
                 characterPerformingAction->getEntityId(), messages.hitchar);
         }
         if (messages.hitroom.length() > 0) {
             displayMessageToRoom(messages.hitroom);
         }
         if (victim && messages.hitvict.length() > 0) {
-            gameManager.sendCharacterMessage(victim->getEntityId(),
-                                             messages.hitvict);
+            gameManager->sendCharacterMessage(victim->getEntityId(),
+                                              messages.hitvict);
         }
     } else {
         // spell missed the target
         if (spell.getType() != Spell::SpellType::defense &&
             messages.misschar.length() > 0) {
 
-            gameManager.sendCharacterMessage(
+            gameManager->sendCharacterMessage(
                 characterPerformingAction->getEntityId(), messages.misschar);
         }
         if (messages.missroom.length() > 0) {
             displayMessageToRoom(messages.missroom);
         }
         if (victim && messages.missvict.length() > 0) {
-            gameManager.sendCharacterMessage(victim->getEntityId(),
-                                             messages.missvict);
+            gameManager->sendCharacterMessage(victim->getEntityId(),
+                                              messages.missvict);
         }
     }
 }
@@ -241,7 +242,7 @@ void CastAction::displayMessages(Spell &spell, bool isHit) {
 void CastAction::displayMessageToRoom(std::string message) {
     static auto logger =
         mudserver::logging::getLogger("CastAction::displayMessages");
-    auto &gameState = gameManager.getState();
+    auto &gameState = gameManager->getState();
     auto currentRoom =
         gameState.getCharacterLocation(*characterPerformingAction);
     // get the ids of all characters in the room:
@@ -260,10 +261,10 @@ void CastAction::displayMessageToRoom(std::string message) {
                 if (!(character == victim->getEntityId())) {
                     // only send the message if current character is not the
                     // victim
-                    gameManager.sendCharacterMessage(character, message);
+                    gameManager->sendCharacterMessage(character, message);
                 }
             } else {
-                gameManager.sendCharacterMessage(character, message);
+                gameManager->sendCharacterMessage(character, message);
             }
         }
     }

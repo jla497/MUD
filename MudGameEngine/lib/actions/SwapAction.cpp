@@ -19,16 +19,16 @@ void SwapAction::execute_impl() {
 
     // Swap is done, revert swap made
     else if (timeRemaining == 0) {
-        gameManager.swapCharacters(casterId, targetId);
-        gameManager.sendCharacterMessage(
+        gameManager->swapCharacters(casterId, targetId);
+        gameManager->sendCharacterMessage(
             casterId, "You have returned to your original body");
-        gameManager.sendCharacterMessage(
+        gameManager->sendCharacterMessage(
             targetId, "You have returned to your original body");
         return;
     }
 
     // Timer hasn't been set yet, start the initial swap
-    auto &gameState = gameManager.getState();
+    auto &gameState = gameManager->getState();
     auto swapInitiater = characterPerformingAction;
     auto characterCurrentRoom = gameState.getCharacterLocation(*swapInitiater);
     if (!characterCurrentRoom) {
@@ -44,8 +44,8 @@ void SwapAction::execute_impl() {
     }
     auto swappingPlayerId = swapInitiater->getEntityId();
     if (actionArguments.empty()) {
-        gameManager.sendCharacterMessage(swappingPlayerId,
-                                         "Specify swap target?");
+        gameManager->sendCharacterMessage(swappingPlayerId,
+                                          "Specify swap target?");
         logger->debug("No Target found");
         return;
     }
@@ -62,17 +62,17 @@ void SwapAction::execute_impl() {
             casterId = swapInitiater->getEntityId();
             targetId = swapTarget->getEntityId();
             timeRemaining = MAX_SWAP_TICKS;
-            gameManager.sendCharacterMessage(
+            gameManager->sendCharacterMessage(
                 casterId, "You swapped with " + swapTarget->getShortDesc());
-            gameManager.sendCharacterMessage(targetId,
-                                             "You have been swapped with " +
-                                                 swapInitiater->getShortDesc());
-            gameManager.swapCharacters(casterId, targetId);
+            gameManager->sendCharacterMessage(
+                targetId,
+                "You have been swapped with" + swapInitiater->getShortDesc());
+            gameManager->swapCharacters(casterId, targetId);
             return;
         }
     }
 
     logger->debug("No Target found");
-    gameManager.sendCharacterMessage(
+    gameManager->sendCharacterMessage(
         swappingPlayerId, "Swap failed: could not find " + nameOfSwapTarget);
 }

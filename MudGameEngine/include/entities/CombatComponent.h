@@ -40,6 +40,8 @@ class CombatComponent : public CharacterComponent {
     CombatComponent(int armor, int thac0, Roll damageRoll,
                     Roll maxHitPointRoll);
     CombatComponent();
+    virtual ~CombatComponent() = default;
+
     void setArmor(int armor);
     void setThac0(int thac0);
     void setEnemiesName(std::string enemiesName);

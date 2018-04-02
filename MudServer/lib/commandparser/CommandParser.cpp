@@ -10,20 +10,8 @@
 #include <boost/algorithm/string.hpp>
 #include <boost/tokenizer.hpp>
 
-#include "actions/AttackAction.h"
-#include "actions/CastAction.h"
-#include "actions/CharacterModAction.h"
-#include "actions/HaltAction.h"
-#include "actions/LookAction.h"
-#include "actions/MoveAction.h"
-#include "actions/NullAction.h"
-#include "actions/PrgmAction.h"
-#include "actions/SaveAction.h"
-#include "actions/SayAction.h"
-#include "actions/SwapAction.h"
-#include "actions/TakeAction.h"
-#include "actions/TimedAction.h"
 #include "commandparser/CommandParser.h"
+#include "i18n/i18n.h"
 #include "resources/commands.h"
 
 namespace mudserver {
@@ -34,50 +22,44 @@ using boost::algorithm::to_lower_copy;
 
 using namespace resources::commands;
 
-static std::unordered_map<std::string, ActKeyword> actionLookup = { // NOLINT
-    {UNDEFINED, ActKeyword::undefined},
-    {SAY, ActKeyword::say},
-    {LOOK, ActKeyword::look},
-    {ATTACK, ActKeyword::attack},
-    {MOVE, ActKeyword::move},
-    {PROGRAM, ActKeyword::program},
-    {TIMED, ActKeyword::timed},
-    {SAVE, ActKeyword::save},
-    {CHARMOD, ActKeyword::charmod},
-    {HALT, ActKeyword::halt},
-    {CAST, ActKeyword::cast},
-    {SWAP, ActKeyword::swap},
-    {TAKE, ActKeyword::take}};
+static auto actionLookup =
+    ([]() -> std::unordered_map<std::string, ActKeyword> { // NOLINT
+        i18n::init();
+        std::unordered_map<std::string, ActKeyword> ret = {
+            {i18n::get(StrKey::ACTION_UNDEFINED), ActKeyword::undefined},
+            {i18n::get(StrKey::ACTION_SAY), ActKeyword::say},
+            {i18n::get(StrKey::ACTION_LOOK), ActKeyword::look},
+            {i18n::get(StrKey::ACTION_ATTACK), ActKeyword::attack},
+            {i18n::get(StrKey::ACTION_MOVE), ActKeyword::move},
+            {i18n::get(StrKey::ACTION_PROGRAM), ActKeyword::program},
+            {i18n::get(StrKey::ACTION_TIMED), ActKeyword::timed},
+            {i18n::get(StrKey::ACTION_SAVE), ActKeyword::save},
+            {i18n::get(StrKey::ACTION_CHARMOD), ActKeyword::charmod},
+            {i18n::get(StrKey::ACTION_HALT), ActKeyword::halt},
+            {i18n::get(StrKey::ACTION_SWAP), ActKeyword::swap},
+            {i18n::get(StrKey::ACTION_CAST), ActKeyword::cast},
+            {i18n::get(StrKey::ACTION_TAKE), ActKeyword::take}};
+        return ret;
+    })();
 
-using ActionGenerator = std::unique_ptr<Action> (*)(CharacterController &,
-                                                    std::vector<std::string> &,
-                                                    gamemanager::GameManager &);
+template <typename T, typename = std::enable_if<std::is_enum<T>::value>>
+bool operator>=(T a, T b) {
+    using U = typename std::underlying_type<T>::type;
+    return static_cast<U>(a) >= static_cast<U>(b);
+}
 
-template <typename T,
-          typename = std::enable_if<std::is_base_of<Action, T>::value>>
-std::unique_ptr<Action> generator(CharacterController &controller,
-                                  std::vector<std::string> &args,
-                                  gamemanager::GameManager &manager) {
-    return std::make_unique<T>(controller, args, manager);
-};
-
-// FIXME: this should be an unordered_map, but some people don't have a
-// std::hash  specialization for enums in their old gcc/glibc
-const static std::map<ActKeyword, ActionGenerator> actionGenerators = {
-    // NOLINT
-    {ActKeyword::undefined, &generator<NullAction>},
-    {ActKeyword::say, &generator<SayAction>},
-    {ActKeyword::look, &generator<LookAction>},
-    {ActKeyword::attack, &generator<AttackAction>},
-    {ActKeyword::move, &generator<MoveAction>},
-    {ActKeyword::program, &generator<PrgmAction>},
-    {ActKeyword::timed, &generator<TimedAction>},
-    {ActKeyword::save, &generator<SaveAction>},
-    {ActKeyword::charmod, &generator<CharacterModAction>},
-    {ActKeyword::halt, &generator<HaltAction>},
-    {ActKeyword::cast, &generator<CastAction>},
-    {ActKeyword::swap, &generator<SwapAction>},
-    {ActKeyword::take, &generator<TakeAction>}};
+AliasReturnCode registerCommandalias(ActKeyword keyword,
+                                     const std::string &alias) {
+    if (keyword >= ActKeyword::_N_ACTIONS_) {
+        return AliasReturnCode::INVALID_KEYWORD;
+    }
+    auto it = actionLookup.find(alias);
+    if (it != actionLookup.end()) {
+        return AliasReturnCode::ALIAS_EXISTS;
+    }
+    actionLookup.emplace(alias, keyword);
+    return AliasReturnCode::SUCCESS;
+}
 
 std::unique_ptr<Action>
 CommandParser::actionFromPlayerCommand(CharacterController &controller,
@@ -96,8 +78,8 @@ CommandParser::actionFromPlayerCommand(CharacterController &controller,
                                 ? ActKeyword::undefined
                                 : actionTypeIter->second;
 
-    return actionGenerators.at(actionType)(controller, remainderOfTokens,
-                                           gameManager);
+    return Action::base(actionType)
+        ->clone(controller, remainderOfTokens, gameManager);
 }
 
 std::pair<UsernameType, PasswordType>

@@ -14,9 +14,9 @@ std::unique_ptr<Action> CharacterModAction::clone() const {
 }
 
 void CharacterModAction::execute_impl() {
-    auto characterId = gameManager.getPlayerService().playerToCharacter(
-        playerPerformingAction.getId());
-    auto character = gameManager.getState().getCharacterFromLUT(*characterId);
+    auto characterId = gameManager->getPlayerService().playerToCharacter(
+        playerPerformingAction->getId());
+    auto character = gameManager->getState().getCharacterFromLUT(*characterId);
 
     switch (actionArguments.size()) {
 
@@ -40,7 +40,7 @@ void CharacterModAction::execute_impl() {
 }
 
 void CharacterModAction::showCharacterName(const CharacterEntity &character) {
-    gameManager.sendCharacterMessage(
+    gameManager->sendCharacterMessage(
         character.getEntityId(),
         (boost::format(mes::YOURNAME) % character.getShortDesc()).str());
 }

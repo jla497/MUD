@@ -22,7 +22,7 @@ std::unique_ptr<Action> SayAction::clone() const {
 void SayAction::execute_impl() {
     static auto logger = mudserver::logging::getLogger("SayAction::execute");
 
-    auto &gameState = gameManager.getState();
+    auto &gameState = gameManager->getState();
 
     //--get the room the player is in
     auto characterCurrentRoom =
@@ -54,7 +54,7 @@ void SayAction::execute_impl() {
 
     // send the message to all the players in the room
     for (auto characterID : characterIdsInRoom) {
-        gameManager.sendCharacterMessage(
+        gameManager->sendCharacterMessage(
             characterID, boost::str(boost::format{"%s: %s"} %
                                     (speakingCharacterId == characterID
                                          ? "You"

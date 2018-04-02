@@ -15,7 +15,7 @@ std::unique_ptr<Action> TakeAction::clone() const {
 void TakeAction::execute_impl() {
     static auto logger = mudserver::logging::getLogger("Action::TakeAction");
 
-    auto &gameState = gameManager.getState();
+    auto &gameState = gameManager->getState();
 
     auto characterCurrentRoom =
         gameState.getCharacterLocation(*characterPerformingAction);
@@ -34,21 +34,21 @@ void TakeAction::execute_impl() {
             characterCurrentRoom->takeObjectByName(nameOfObject);
 
         if (objectToTake != boost::none) {
-            gameManager.sendCharacterMessage(
+            gameManager->sendCharacterMessage(
                 characterPerformingAction->getEntityId(),
                 nameOfObject + " taken from room");
 
             characterPerformingAction->addObject(*objectToTake);
             characterCurrentRoom->removeObject(objectToTake);
         } else {
-            gameManager.sendCharacterMessage(
+            gameManager->sendCharacterMessage(
                 characterPerformingAction->getEntityId(),
                 nameOfObject + " not found in room");
         }
 
     } else {
         // error that you need to try and take something
-        gameManager.sendCharacterMessage(
+        gameManager->sendCharacterMessage(
             characterPerformingAction->getEntityId(),
             "Please type 'take <object's short description (before colon)>'");
     }

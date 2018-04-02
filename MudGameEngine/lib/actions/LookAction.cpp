@@ -21,7 +21,7 @@ void LookAction::execute_impl() {
 
     logger->debug("LookAction::Start");
 
-    auto &gameState = gameManager.getState();
+    auto &gameState = gameManager->getState();
 
     // get the room the player is in
     // TODO: Feel like this error checking could be rolled into the
@@ -47,7 +47,7 @@ void LookAction::execute_impl() {
         std::string roomDescs = join(roomDesc, " ");
         std::string roomExits = join(roomDirs, " ");
 
-        gameManager.sendCharacterMessage(
+        gameManager->sendCharacterMessage(
             characterPerformingAction->getEntityId(),
             boost::str(
                 boost::format{"%s: %s\n%s: %s\n%s: %s\n%s:\n %s\n%s:\n %s"} %
@@ -58,13 +58,13 @@ void LookAction::execute_impl() {
 
     } else if (actionArguments.size() == MAX_LOOK_ARGS) {
 
-        gameManager.sendCharacterMessage(
+        gameManager->sendCharacterMessage(
             characterPerformingAction->getEntityId(),
             getDescriptionOfTargetCharacter(actionArguments.front(),
                                             characterCurrentRoom));
     } else {
         // too many objects to look at, error message to player
-        gameManager.sendCharacterMessage(
+        gameManager->sendCharacterMessage(
             characterPerformingAction->getEntityId(),
             "Please type /'look/' or /'look <object>/'");
     }
@@ -75,7 +75,7 @@ void LookAction::execute_impl() {
 std::string
 LookAction::getDescriptionOfCharactersInRoom(RoomEntity *characterCurrentRoom) {
     logger->debug("getDescriptionOfCharactersInRoom::Start");
-    auto &gameState = gameManager.getState();
+    auto &gameState = gameManager->getState();
     auto characterIds = gameState.getCharactersInRoom(characterCurrentRoom);
     std::vector<std::string> characterDescs{};
     std::vector<std::string> objectDescs{};
@@ -129,7 +129,7 @@ LookAction::getDescriptionOfTargetCharacter(std::string nameOfTarget,
     if (nameOfTarget.empty()) {
         return "";
     }
-    auto &gameState = gameManager.getState();
+    auto &gameState = gameManager->getState();
     auto characterIds = gameState.getCharactersInRoom(characterCurrentRoom);
     if (characterIds.empty()) {
         return nameOfTarget + " not found";

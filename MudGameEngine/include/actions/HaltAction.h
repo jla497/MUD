@@ -10,6 +10,9 @@
 class HaltAction : public Action {
   public:
     using Action::Action;
+
+    HaltAction() = default;
+
     void execute_impl() override;
 
   protected:
