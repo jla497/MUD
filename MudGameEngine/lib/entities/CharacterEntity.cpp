@@ -27,11 +27,14 @@ CharacterEntity::CharacterEntity(
         std::stoi(tmpDamage.at(0)), std::stoi(tmpDamage.at(1)),
         tmpDamage.size() > 2 ? std::stoi(tmpDamage.at(2)) : 0};
 
+    // TODO: Moving out roll parsing to before calling the constructer
+    // so we can init the combat Component along with the other fields
     // init combat Component
     this->combatComponent.setArmor(armor);
     this->combatComponent.setThac0(thac0);
     this->combatComponent.setDamageRoll(m_damageRollData);
     this->combatComponent.setHitRoll(m_hitRollData);
+    this->combatComponent.setOwnersName(m_shortDesc);
 }
 
 std::vector<std::string> CharacterEntity::getDesc() const { return m_desc; }
@@ -51,18 +54,26 @@ std::vector<std::string> CharacterEntity::getLongDesc() const {
 
 std::string CharacterEntity::getShortDesc() const { return m_shortDesc; }
 
+unsigned int CharacterEntity::getMana() const { return m_mana; }
+
 void CharacterEntity::addGold(unsigned int amount) { m_gold += amount; }
 
 void CharacterEntity::subtractGold(unsigned int amount) { m_gold -= amount; }
+
+void CharacterEntity::addMana(unsigned int amount) { m_mana += amount; }
+
+void CharacterEntity::subtractMana(unsigned int amount) { m_mana -= amount; }
 
 bool CharacterEntity::hasGold() const { return m_gold > 0; }
 
 void CharacterEntity::incExp(unsigned int expPoints) {
     m_exp += expPoints;
-    // calculateLevel();
+    calculateLevel();
 }
-
-void CharacterEntity::equipObject(ObjectEntity object) {
+void CharacterEntity::calculateLevel() {
+    // Ask for specs
+}
+void CharacterEntity::equipObject(const ObjectEntity &object) {
     m_objects[object.getObjectTypeId()] = object;
 }
 ObjectEntity CharacterEntity::getObject(int id) {
@@ -85,3 +96,6 @@ void CharacterEntity::setShortDesc(std::string name) {
 CombatComponent *CharacterEntity::getCombatComponent() {
     return &combatComponent;
 }
+
+void CharacterEntity::set_isPlayerCharacter() { isPlayerCharacter = true; }
+bool CharacterEntity::get_isPlayerCharacter() { return isPlayerCharacter; }

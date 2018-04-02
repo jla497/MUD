@@ -11,6 +11,7 @@
 #include <boost/tokenizer.hpp>
 
 #include "actions/AttackAction.h"
+#include "actions/CastAction.h"
 #include "actions/CharacterModAction.h"
 #include "actions/HaltAction.h"
 #include "actions/LookAction.h"
@@ -47,29 +48,31 @@ static auto actionLookup =
             {i18n::get(StrKey::ACTION_SAVE), ActKeyword::save},
             {i18n::get(StrKey::ACTION_CHARMOD), ActKeyword::charmod},
             {i18n::get(StrKey::ACTION_HALT), ActKeyword::halt},
-            {i18n::get(StrKey::ACTION_SWAP), ActKeyword::swap}};
+            {i18n::get(StrKey::ACTION_SWAP), ActKeyword::swap},
+            {i18n::get(StrKey::ACTION_CAST), ActKeyword::cast}};
         return ret;
     })();
 
-using ActionGenerator = std::unique_ptr<Action> (*)(Player &,
+using ActionGenerator = std::unique_ptr<Action> (*)(CharacterController &,
                                                     std::vector<std::string> &,
                                                     gamemanager::GameManager &);
 
 template <typename T,
           typename = std::enable_if<std::is_base_of<Action, T>::value>>
-std::unique_ptr<Action> generator(Player &player,
+std::unique_ptr<Action> generator(CharacterController &controller,
                                   std::vector<std::string> &args,
                                   gamemanager::GameManager &manager) {
-    return std::make_unique<T>(player, args, manager);
+    return std::make_unique<T>(controller, args, manager);
 };
 
-template<typename T, typename = std::enable_if<std::is_enum<T>::value>>
+template <typename T, typename = std::enable_if<std::is_enum<T>::value>>
 bool operator>=(T a, T b) {
     using U = typename std::underlying_type<T>::type;
     return static_cast<U>(a) >= static_cast<U>(b);
 }
 
-AliasReturnCode registerCommandalias(ActKeyword keyword, const std::string &alias) {
+AliasReturnCode registerCommandalias(ActKeyword keyword,
+                                     const std::string &alias) {
     if (keyword >= ActKeyword::_N_ACTIONS_) {
         return AliasReturnCode::INVALID_KEYWORD;
     }
@@ -77,15 +80,15 @@ AliasReturnCode registerCommandalias(ActKeyword keyword, const std::string &alia
     if (it != actionLookup.end()) {
         return AliasReturnCode::ALIAS_EXISTS;
     }
-	actionLookup.emplace(alias, keyword);
+    actionLookup.emplace(alias, keyword);
     return AliasReturnCode::SUCCESS;
 }
 
 // FIXME: this should be an unordered_map, but some people don't have a
 // std::hash  specialization for enums in their old gcc/glibc
 const static std::map<ActKeyword, ActionGenerator> actionGenerators =
-    {   // NOLINT
-        // NOLINT
+    { // NOLINT
+      // NOLINT
         {ActKeyword::undefined, &generator<NullAction>},
         {ActKeyword::say, &generator<SayAction>},
         {ActKeyword::look, &generator<LookAction>},
@@ -96,12 +99,13 @@ const static std::map<ActKeyword, ActionGenerator> actionGenerators =
         {ActKeyword::save, &generator<SaveAction>},
         {ActKeyword::charmod, &generator<CharacterModAction>},
         {ActKeyword::halt, &generator<HaltAction>},
-        {ActKeyword::swap, &generator<SwapAction>}};
+        {ActKeyword::swap, &generator<SwapAction>},
+        {ActKeyword::cast, &generator<CastAction>}};
 
 std::unique_ptr<Action>
-CommandParser::actionFromPlayerCommand(Player &player, StrView command,
+CommandParser::actionFromPlayerCommand(CharacterController &controller,
+                                       StrView command,
                                        gamemanager::GameManager &gameManager) {
-
     Tokenizer tokens{command};
     auto tokenIterator = tokens.begin();
     auto actionTypeIter = actionLookup.find(to_lower_copy(*tokenIterator));
@@ -115,7 +119,7 @@ CommandParser::actionFromPlayerCommand(Player &player, StrView command,
                                 ? ActKeyword::undefined
                                 : actionTypeIter->second;
 
-    return actionGenerators.at(actionType)(player, remainderOfTokens,
+    return actionGenerators.at(actionType)(controller, remainderOfTokens,
                                            gameManager);
 }
 

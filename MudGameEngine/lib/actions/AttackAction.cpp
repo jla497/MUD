@@ -1,4 +1,6 @@
+
 #include <boost/algorithm/string.hpp>
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -8,7 +10,9 @@
 #include "gamemanager/GameManager.h"
 #include "logging.h"
 
-AttackAction *AttackAction::clone() { return new AttackAction(*this); }
+std::unique_ptr<Action> AttackAction::clone() const {
+    return std::make_unique<AttackAction>(*this);
+}
 
 class CombatComponent;
 class CharacterEntity;
@@ -38,6 +42,7 @@ void AttackAction::execute_impl() {
     if (IDsOfCharactersInRoom.empty()) {
         return;
     }
+
     auto attackingCharactersUniqueId = characterWhoIsAttacking->getEntityId();
     if (actionArguments.empty()) {
         // user did not pass an attack target

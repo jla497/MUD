@@ -13,13 +13,19 @@
  */
 class LookAction : public Action {
 
-    std::string getCharacterDescriptions(RoomEntity *characterCurrentRoom);
-    std::string getObjectDescriptions(RoomEntity *characterCurrentRoom);
+    std::string
+    getDescriptionOfCharactersInRoom(RoomEntity *characterCurrentRoom);
+    std::string getDescriptionOfObjectsInRoom(RoomEntity *characterCurrentRoom);
+    std::string
+    getDescriptionOfTargetCharacter(std::string nameOfTarget,
+                                    RoomEntity *characterCurrentRoom);
+    std::string
+    getStringFromStringVector(std::vector<std::string> stringVector);
 
   public:
     using Action::Action;
     void execute_impl() override;
-    LookAction *clone() override;
+    std::unique_ptr<Action> clone() const override;
 
   protected:
     std::string description() const override { return u8"Look action"; }

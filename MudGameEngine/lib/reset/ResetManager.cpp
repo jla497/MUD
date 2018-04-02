@@ -1,52 +1,54 @@
 //
 // Created by jla497 on 01/03/18.
 //
-#include "reset/ResetManager.h"
-#include "gamemanager/GameState.h"
 
-ResetManager::ResetManager(std::vector<Reset> resets) : resets(resets) {}
+#include <cassert>
+
+#include "gamemanager/GameState.h"
+#include "reset/ResetManager.h"
+
+ResetManager::ResetManager(const std::vector<Reset> &resets) : resets(resets) {}
 
 void ResetManager::applyResets(mudserver::gamemanager::GameState *state) {
     auto factory = state->getFactory();
+    std::vector<UniqueId> previousNpcIds{};
+    for (auto &reset : resets) {
 
-    for (auto it = resets.begin(); it != resets.end(); ++it) {
-
-        if (it->getAction() == "object") {
-            auto objectId = it->getTypeId();
-            auto roomId = it->getRoomId();
+        if (reset.getAction() == "object") {
+            auto objectId = reset.getTypeId();
+            auto roomId = reset.getRoomId();
             auto object = factory.buildObject(objectId);
             auto room = state->getRoomFromLUT(roomId);
             room->equipObject(object);
         }
 
-        if (it->getAction() == "npc") {
+        if (reset.getAction() == "npc") {
 
-            auto npcTypeId = it->getTypeId();
-            auto roomId = it->getRoomId();
-            auto limit = it->getLimit();
+            auto npcTypeId = reset.getTypeId();
+            auto roomId = reset.getRoomId();
+            auto limit = reset.getLimit();
             auto numOfExistingNpcs =
                 getNumOfNpcsInRoom(roomId, npcTypeId, state);
             limit = limit - numOfExistingNpcs;
-
             if (limit <= 0) {
                 continue;
             }
+
             assert(npcTypeId > 0 && roomId > 0 && limit > 0);
-
             auto entities = populateNpcs(limit, npcTypeId, state);
-
-            it++;
-            if (it != resets.end()) {
-                if (it->getAction() == "give") {
-                    auto objectId = it->getTypeId();
-                    auto object = factory.buildObject(objectId);
-                    equipNpcs(object, entities);
-                }
-            }
-
-            it--;
             // add characters to the room
             addNpcsToRooms(entities, roomId, state);
+
+            previousNpcIds.clear();
+            for (auto &entity : entities) {
+                previousNpcIds.push_back(entity.getEntityId());
+            }
+        }
+
+        if (reset.getAction() == "give") {
+            auto objectId = reset.getTypeId();
+            auto object = factory.buildObject(objectId);
+            equipNpcs(object, previousNpcIds, state);
         }
     }
 }
@@ -64,10 +66,12 @@ ResetManager::populateNpcs(int limit, int npcTypeId,
     return entities;
 }
 
-void ResetManager::equipNpcs(ObjectEntity object,
-                             std::vector<CharacterEntity> &entities) {
-    for (auto &npc : entities) {
-        npc.equipObject(object);
+void ResetManager::equipNpcs(const ObjectEntity &object,
+                             std::vector<UniqueId> &NpcIds,
+                             mudserver::gamemanager::GameState *state) {
+    for (auto &npcId : NpcIds) {
+        auto entity = state->getCharacterFromLUT(npcId);
+        entity->equipObject(object);
     }
 }
 
@@ -77,7 +81,8 @@ void ResetManager::addNpcsToRooms(std::vector<CharacterEntity> &entities,
     for (auto &npc : entities) {
         try {
             state->addCharacter(npc, roomId);
-        } catch (std::exception e) {
+        } catch (const std::range_error &e) {
+            // TODO log it
         }
     }
 }

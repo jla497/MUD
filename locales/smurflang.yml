@@ -14,3 +14,4 @@ strings:
   ACTION_HALT: smurfhalt
   # commented out for a test that checks for `swap` deferring to DEFAULT_LANG
   # ACTION_SWAP: smurfswap
+  ACTION_CAST: smurfcast

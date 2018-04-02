@@ -14,6 +14,6 @@ class HaltAction : public Action {
 
   protected:
     std::string description() const override { return u8"Halt action"; }
-    HaltAction *clone() override;
+    std::unique_ptr<Action> clone() const override;
 };
 #endif // HALTACTION_H

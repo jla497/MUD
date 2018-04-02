@@ -1,9 +1,12 @@
-#include <boost/algorithm/string/join.hpp>
-#include <boost/format.hpp>
+
+#include <memory>
 #include <numeric>
 #include <sstream>
 #include <string>
 #include <vector>
+
+#include <boost/algorithm/string/join.hpp>
+#include <boost/format.hpp>
 
 #include "actions/SayAction.h"
 #include "logging.h"
@@ -12,7 +15,9 @@
 using boost::algorithm::join;
 namespace actmess = mudserver::resources::actions;
 
-SayAction *SayAction::clone() { return new SayAction(*this); }
+std::unique_ptr<Action> SayAction::clone() const {
+    return std::make_unique<SayAction>(*this);
+}
 
 void SayAction::execute_impl() {
     static auto logger = mudserver::logging::getLogger("SayAction::execute");

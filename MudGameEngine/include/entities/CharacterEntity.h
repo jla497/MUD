@@ -14,7 +14,6 @@ class CombatComponent;
 class CharacterEntity : public Entity {
   private:
     bool isPlayerCharacter = false;
-
     friend class boost::serialization::access;
     template <class Archive>
     void serialize(Archive &ar, const unsigned int version) {
@@ -29,17 +28,19 @@ class CharacterEntity : public Entity {
         ar &m_longDesc;
         ar &m_shortDesc;
         ar &combatComponent;
+        ar &m_mana;
     }
 
     std::vector<std::string> m_desc;
-    unsigned int m_exp;
-    int m_gold;
-    unsigned int m_typeId; // npcs have types, what to do for players?
+    unsigned int m_exp{};
+    int m_gold{};
+    unsigned int m_typeId{}; // npcs have types, what to do for players?
     std::vector<std::string> m_keywords;
     unsigned int m_level{};
     std::vector<std::string> m_longDesc;
     std::string m_shortDesc;
     std::map<int, ObjectEntity> m_objects;
+    unsigned int m_mana = 100;
 
     CombatComponent combatComponent;
 
@@ -65,11 +66,10 @@ class CharacterEntity : public Entity {
     unsigned int getLevel() const;
     std::vector<std::string> getLongDesc() const;
     std::string getShortDesc() const;
-    int getMana() const;
+    unsigned int getMana() const;
 
     // Setters
     void setShortDesc(std::string name);
-    void setMana(int mana);
 
     // Combat
     CombatComponent *getCombatComponent();
@@ -79,12 +79,19 @@ class CharacterEntity : public Entity {
     void subtractGold(unsigned int amount);
     bool hasGold() const;
 
+    // Mana
+    void addMana(unsigned int amount);
+    void subtractMana(unsigned int amount);
+
     // Experience
     void incExp(unsigned int expPoints);
 
     // Objects
-    void equipObject(ObjectEntity object);
+    void equipObject(const ObjectEntity &object);
     ObjectEntity getObject(int id);
     std::map<int, ObjectEntity> getObjects();
+
+    void set_isPlayerCharacter();
+    bool get_isPlayerCharacter();
 };
 #endif

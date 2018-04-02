@@ -1,10 +1,14 @@
+
+#include <boost/algorithm/string.hpp>
 #include <boost/format.hpp>
 #include <iostream>
 #include <memory>
+#include <stdexcept>
 
+#include "controllers/AiController.h"
+#include "controllers/CharacterController.h"
 #include "gamemanager/GameState.h"
 #include "logging.h"
-
 namespace mudserver {
 namespace gamemanager {
 
@@ -24,6 +28,7 @@ void GameState::initFromYaml(std::vector<std::string> areaFilenames,
         parseSpellYamlFile(std::move(spellFilename));
         addSpellsFromParser();
     }
+    initSpellLUT();
 
     factory = std::unique_ptr<EntityFactory>(areaParser.makeFactory());
     factory->init();
@@ -39,6 +44,11 @@ void GameState::initRoomLUT() {
         LutBuilder lutBuilder;
         roomLookUp = lutBuilder.createLUT(rooms);
     }
+}
+
+void GameState::initSpellLUT() {
+    LutBuilder lutBuilder;
+    spellLookUp = lutBuilder.createSpellLUT(spells);
 }
 
 void GameState::parseSpellYamlFile(std::string filename) {
@@ -75,13 +85,12 @@ void GameState::addCharacter(CharacterEntity &character) {
 void GameState::addCharacter(CharacterEntity &character, Id roomID) {
     auto id = character.getEntityId();
     characterLookUp[id] = std::move(character);
-    // TODO: implement a configurable default spawn point
-    // currently just takes the first room loaded
+
     auto roomIt = roomLookUp.find(roomID);
     if (roomIt != roomLookUp.end()) {
         addCharacterRoomRelationToLUT(id, roomIt->second.getId());
     } else {
-        throw "couldn't add character to room";
+        throw std::range_error("requested room does not exist");
     }
 }
 
@@ -151,20 +160,24 @@ void GameState::doReset() {
     resetManager.applyResets(this);
 }
 
-Spell *GameState::getSpellByName(const std::string spellName) {
-    auto foundSpell =
-        std::find_if(spells.begin(), spells.end(), [spellName](Spell &tmp) {
-            return tmp.getName() == spellName;
-        });
-    return foundSpell != spells.end() ? &*foundSpell : nullptr;
+Spell *GameState::getSpellByName(const spellName name) {
+    auto foundSpell = spellLookUp.find(boost::to_lower_copy(name));
+    return foundSpell != spellLookUp.end() ? &foundSpell->second : nullptr;
 }
 
 void GameState::killCharacter(const CharacterEntity &character) {
-    // remove from play
-    // TODO: uncomment and integrate once branches have been merged
+    // remove character from play
     removeCharacterByUniqueId(character.getEntityId());
 
-    // if the character is controlled by a player notify them
+    // notify the characters controller
+}
+
+std::vector<CharacterEntity *> GameState::getAllNpcs() {
+    std::vector<CharacterEntity *> npcs;
+    for (auto &pair : characterLookUp) {
+        npcs.push_back(&pair.second);
+    }
+    return npcs;
 }
 
 } // namespace gamemanager

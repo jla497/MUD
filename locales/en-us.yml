@@ -11,3 +11,4 @@ strings:
   ACTION_CHARMOD: charmod
   ACTION_HALT: halt
   ACTION_SWAP: swap
+  ACTION_CAST: cast
