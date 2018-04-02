@@ -73,7 +73,8 @@ void CharacterEntity::incExp(unsigned int expPoints) {
 void CharacterEntity::calculateLevel() {
     // Ask for specs
 }
-void CharacterEntity::equipObject(const ObjectEntity &object) {
+
+void CharacterEntity::addObject(const ObjectEntity &object) {
     m_objects[object.getObjectTypeId()] = object;
 }
 ObjectEntity CharacterEntity::getObject(int id) {

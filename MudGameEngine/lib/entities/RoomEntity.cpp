@@ -5,6 +5,9 @@
 #include <boost/optional.hpp>
 
 #include "entities/RoomEntity.h"
+// REMOVE
+// #include "entities/ObjectEntity.h"
+//
 
 RoomEntity::RoomEntity(const std::vector<std::string> &desc,
                        const std::vector<DoorEntity> &doors,
@@ -12,7 +15,13 @@ RoomEntity::RoomEntity(const std::vector<std::string> &desc,
                        const std::vector<std::string> &keywordsExt,
                        const std::string &name, unsigned int roomId)
     : Entity::Entity(), m_desc(desc), m_doors(doors),
-      m_name(name), m_extDesc{descExt, keywordsExt}, m_roomId(roomId) {}
+      m_name(name), m_extDesc{descExt, keywordsExt}, m_roomId(roomId) {
+
+    // REMOVE: For testing only
+    // ObjectEntity testObject{{"attribute"}, 22, {}, {}, 3, "useless type", {},
+    // {"a shroomy thing", "not really useful"}, "mushroom", {}, 55};
+    // addObject(testObject);
+}
 
 unsigned int RoomEntity::getId() const { return m_roomId; }
 
@@ -62,8 +71,14 @@ std::string RoomEntity::removeEntity(unsigned int entityToRemove) {
     return {};
 }
 
-void RoomEntity::equipObject(ObjectEntity &object) {
+void RoomEntity::addObject(ObjectEntity &object) {
     m_objects[object.getObjectTypeId()] = object;
+}
+
+void RoomEntity::removeObject(boost::optional<ObjectEntity> &object) {
+    std::map<int, ObjectEntity>::iterator it;
+    it = m_objects.find(object->getObjectTypeId());
+    m_objects.erase(it);
 }
 
 boost::optional<ObjectEntity> RoomEntity::takeObject(int id) {
@@ -74,6 +89,17 @@ boost::optional<ObjectEntity> RoomEntity::takeObject(int id) {
     boost::optional<ObjectEntity> object{std::move(it->second)};
     m_objects.erase(it);
     return object;
+}
+
+boost::optional<ObjectEntity>
+RoomEntity::takeObjectByName(const std::string &objName) {
+    for (auto const &obj : m_objects) {
+        // compare object to name arg
+        if (obj.second.getShortDesc() == objName) {
+            return obj.second;
+        }
+    }
+    return boost::none;
 }
 
 std::map<int, ObjectEntity> RoomEntity::getObjects() { return m_objects; };

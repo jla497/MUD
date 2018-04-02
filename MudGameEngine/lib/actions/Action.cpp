@@ -20,6 +20,7 @@
 #include "actions/SaveAction.h"
 #include "actions/SayAction.h"
 #include "actions/SwapAction.h"
+#include "actions/TakeAction.h"
 #include "actions/TimedAction.h"
 #include "controllers/CharacterController.h"
 #include "gamemanager/GameManager.h"
@@ -62,7 +63,8 @@ const Action *Action::base(ActKeyword keyword) {
             makeBase<HaltAction>(ActKeyword::halt),
             makeBase<SwapAction>(ActKeyword::swap),
             makeBase<CastAction>(ActKeyword::cast),
-            makeBase<DecoyAction>(ActKeyword::decoy)};
+            makeBase<DecoyAction>(ActKeyword::decoy),
+            makeBase<TakeAction>(ActKeyword::take)};
         std::vector<std::unique_ptr<Action>> ret{
             std::make_move_iterator(std::begin(array)),
             std::make_move_iterator(std::end(array))};
@@ -160,7 +162,7 @@ void Action::registerAdminActions(const std::string &file) {
             generatePair(attack),    generatePair(move), generatePair(program),
             generatePair(timed),     generatePair(save), generatePair(charmod),
             generatePair(halt),      generatePair(swap), generatePair(cast),
-            generatePair(decoy)};
+            generatePair(decoy), generatePair(take)};
         if (ret.size() != static_cast<std::size_t>(ActKeyword::_N_ACTIONS_)) {
             std::cerr << "You've added an ActKeyword but not added it to the "
                          "admin map in action.cpp. Fix it. Terminating.\n";

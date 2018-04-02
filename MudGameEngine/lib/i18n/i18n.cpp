@@ -22,7 +22,8 @@ static std::unordered_map<std::string, StrKey> keyStrMap = { // NOLINT
     map(ACTION_UNDEFINED), map(ACTION_SAY),  map(ACTION_LOOK),
     map(ACTION_ATTACK),    map(ACTION_MOVE), map(ACTION_PROGRAM),
     map(ACTION_TIMED),     map(ACTION_SAVE), map(ACTION_CHARMOD),
-    map(ACTION_HALT),      map(ACTION_SWAP), map(ACTION_CAST)};
+    map(ACTION_HALT),      map(ACTION_SWAP), map(ACTION_CAST),
+    map(ACTION_TAKE)};
 
 #undef map
 

@@ -32,6 +32,7 @@ enum class ActKeyword {
     swap,
     cast,
     decoy,
+    take,
 
     _N_ACTIONS_
 };

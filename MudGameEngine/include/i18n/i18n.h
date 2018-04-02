@@ -29,6 +29,7 @@ enum class StrKey : int {
     ACTION_HALT,
     ACTION_SWAP,
     ACTION_CAST,
+    ACTION_TAKE,
 
     _N_STRINGS_
 };

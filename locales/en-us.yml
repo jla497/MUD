@@ -12,3 +12,4 @@ strings:
   ACTION_HALT: halt
   ACTION_SWAP: swap
   ACTION_CAST: cast
+  ACTION_TAKE: take

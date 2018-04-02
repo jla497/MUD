@@ -19,7 +19,7 @@ void ResetManager::applyResets(mudserver::gamemanager::GameState *state) {
             auto roomId = reset.getRoomId();
             auto object = factory.buildObject(objectId);
             auto room = state->getRoomFromLUT(roomId);
-            room->equipObject(object);
+            room->addObject(object);
         }
 
         if (reset.getAction() == "npc") {
@@ -71,7 +71,7 @@ void ResetManager::equipNpcs(const ObjectEntity &object,
                              mudserver::gamemanager::GameState *state) {
     for (auto &npcId : NpcIds) {
         auto entity = state->getCharacterFromLUT(npcId);
-        entity->equipObject(object);
+        entity->addObject(object);
     }
 }
 

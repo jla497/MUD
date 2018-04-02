@@ -37,7 +37,8 @@ static auto actionLookup =
             {i18n::get(StrKey::ACTION_CHARMOD), ActKeyword::charmod},
             {i18n::get(StrKey::ACTION_HALT), ActKeyword::halt},
             {i18n::get(StrKey::ACTION_SWAP), ActKeyword::swap},
-            {i18n::get(StrKey::ACTION_CAST), ActKeyword::cast}};
+            {i18n::get(StrKey::ACTION_CAST), ActKeyword::cast},
+            {i18n::get(StrKey::ACTION_TAKE), ActKeyword::take}};
         return ret;
     })();
 

@@ -87,7 +87,7 @@ class CharacterEntity : public Entity {
     void incExp(unsigned int expPoints);
 
     // Objects
-    void equipObject(const ObjectEntity &object);
+    void addObject(const ObjectEntity &object);
     ObjectEntity getObject(int id);
     std::map<int, ObjectEntity> getObjects();
 

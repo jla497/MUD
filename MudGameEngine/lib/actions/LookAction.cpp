@@ -107,9 +107,13 @@ LookAction::getDescriptionOfObjectsInRoom(RoomEntity *characterCurrentRoom) {
     std::vector<std::string> objectDescs{};
     std::ostringstream desc("");
     for (auto &obj : objects) {
+        auto shortDesc = obj.second.getShortDesc();
+        objectDescs.push_back(shortDesc + ":");
         desc << getStringFromStringVector(obj.second.getLongDesc());
         // TODO: do all objects have longDesc?
         // desc << (obj.second.getShortDesc());
+        // objectDescs.push_back(desc + "\n");
+
         objectDescs.push_back(desc.str() + "\n");
     }
     std::string objDescs = join(objectDescs, " ");
