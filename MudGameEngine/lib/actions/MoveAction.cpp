@@ -1,6 +1,7 @@
 
 #include "actions/MoveAction.h"
 #include "logging.h"
+#include "observe/ActionObserver.h"
 #include <actions/LookAction.h>
 #include <memory>
 // #include "entities/CharacterEntity.h"
@@ -96,7 +97,10 @@ void MoveAction::execute_impl() {
             ->clone(*controller, {}, *gameManager)
             ->execute();
 
+        notify(this);
         logger->debug("MoveAction complete...");
         return;
     }
 }
+
+void MoveAction::accept(ActionObserver *observer) { observer->visit(this); }

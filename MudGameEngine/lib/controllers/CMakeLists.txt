@@ -8,7 +8,7 @@ set_target_properties(controllers
         LINKER_LANGUAGE CXX
         CXX_STANDARD 14)
 
-target_link_libraries(controllers entity states gamemanager)
+target_link_libraries(controllers entity states gamemanager event)
 
 install(TARGETS	controllers
         ARCHIVE DESTINATION lib)

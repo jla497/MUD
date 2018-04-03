@@ -1,15 +1,16 @@
 //
-// Created by jla497 on 11/03/18.
+// Created by jla497 on 25/03/18.
 //
 
-#ifndef ADVENTURE2018_INTERACTSTATE_H
-#define ADVENTURE2018_INTERACTSTATE_H
-
+#ifndef ADVENTURE2018_COMBATSTATE_H
+#define ADVENTURE2018_COMBATSTATE_H
 #include "Event.h"
 #include "IState.h"
 
 namespace state {
-class InteractState : public IState {
+class CombatState : public IState {
+    CharacterEntity *targetEntity;
+
   public:
     using IState::IState;
     void update() override;
@@ -18,4 +19,4 @@ class InteractState : public IState {
     StateType getType() override;
 };
 } // namespace state
-#endif // ADVENTURE2018_INTERACTSTATE_H
+#endif // ADVENTURE2018_COMBATSTATE_H

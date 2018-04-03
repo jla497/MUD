@@ -1,14 +1,14 @@
 #include <algorithm>
+#include <boost/format.hpp>
+#include <boost/optional.hpp>
 #include <cassert>
 #include <iomanip>
 #include <iostream>
 #include <memory>
 #include <sstream>
 #include <thread>
+#include <typeinfo>
 #include <vector>
-
-#include <boost/format.hpp>
-#include <boost/optional.hpp>
 
 #include "connectionmanager/ConnectionManager.h"
 #include "controllers/AiController.h"
@@ -16,6 +16,7 @@
 #include "entities/CharacterEntity.h"
 #include "gamemanager/GameManager.h"
 #include "logging.h"
+#include "observe/ActionObserver.h"
 #include "persistence/PersistenceService.h"
 #include "resources/PlayerCharacterDefaults.h"
 
@@ -57,7 +58,6 @@ void GameManager::mainLoop() {
     // get chars from each room, make ai controller for each npc and insert into
     // controller queue. Note if Player field is a nullptr, this should be taken
     // as a npc controller
-
     auto npcs = gameState.getAllNpcs();
     assert(!npcs.empty());
     for (auto npc : npcs) {
@@ -67,7 +67,7 @@ void GameManager::mainLoop() {
         controllerQueue.push_back(controller);
     }
     logger->debug("done creating npc controllers");
-    // queue of characterControllers
+    ActionObserver actionObserver{&controllerQueue, &gameState};
 
     while (!done) {
         auto startTime = clock::now();
@@ -79,9 +79,8 @@ void GameManager::mainLoop() {
         }
 
         auto messages = connectionManager.sendToGameManager();
-
         processMessages(messages);
-        fetchCntrlCmds();
+        fetchCntrlCmds(&actionObserver);
         performQueuedActions();
         swapQueuePtrs();
         sendMessagesToPlayers();
@@ -243,7 +242,7 @@ void GameManager::sendCharacterMessage(UniqueId characterId,
                 auto conn = networking::Connection{player->getConnectionId()};
                 enqueueMessage(conn, std::move(message));
             } else {
-                controller->setMsg(message);
+                // do nothing
             }
         }
     }
@@ -269,13 +268,22 @@ void GameManager::swapCharacters(UniqueId casterCharacterId,
     // gameState.swapCharacters(casterCharacterId, targetCharacterId);
 }
 
-void GameManager::fetchCntrlCmds() {
+void GameManager::fetchCntrlCmds(ActionObserver *observer) {
     for (auto &controller : controllerQueue) {
+        if (controller->getCharacter() == nullptr) {
+            // remove finished controllers
+            controllerQueue.erase(std::remove(controllerQueue.begin(),
+                                              controllerQueue.end(),
+                                              controller),
+                                  controllerQueue.end());
+        }
+
         controller->update();
         auto msg = controller->getCmdString();
         if (!msg.empty()) {
             auto action =
                 commandParser.actionFromPlayerCommand(*controller, msg, *this);
+            action->subscribe(observer);
             enqueueAction(std::move(action));
         }
     }

@@ -3,31 +3,15 @@
 //
 
 #include "controllers/CharacterController.h"
+#include "Event.h"
 #include "gamemanager/GameState.h"
 #include "states/IState.h"
 #include <queue>
 
-#include "logging.h"
-
-void CharacterController::init(GameState *state, CharacterEntity *ent,
-                               Player *plyer) {
-    entity = ent;
-    player = plyer;
-}
-
-void CharacterController::add(std::string key, IState *state) {
-    stateDict[key] = state;
-}
-
-void CharacterController::remove(std::string id) { stateDict.erase(id); }
-
-void CharacterController::change(std::string id) {
-    current->exit();
-    auto itr = stateDict.find(id);
-    if (itr != stateDict.end()) {
-        current = itr->second;
-        std::cout << "switched state to " + id << std::endl;
-    }
+void CharacterController::init(GameState *s, CharacterEntity *e, Player *p) {
+    entity = e;
+    player = p;
+    state = s;
 }
 
 void CharacterController::setPlayer(Player *plyer) { player = plyer; }
@@ -49,17 +33,13 @@ std::string CharacterController::getCmdString() {
     return "";
 }
 
-void CharacterController::setMsg(std::string msg) { messages.push(msg); }
+void CharacterController::passEvent(event::Event e) { eventQueue.push(e); }
 
-std::string CharacterController::getMsg() {
-    auto res = messages.front();
-    messages.pop();
-    return res;
-}
-
-std::queue<std::string> CharacterController::getAllMsgs() {
-    auto res = messages;
-    std::queue<std::string> empty;
-    messages.swap(empty);
-    return res;
+event::Event CharacterController::getEvent() {
+    if (eventQueue.empty()) {
+        return event::Event{nullptr, event::EventType::undefined, {}};
+    }
+    auto e = eventQueue.top();
+    eventQueue.pop();
+    return e;
 }

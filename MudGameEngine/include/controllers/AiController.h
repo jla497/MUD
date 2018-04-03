@@ -5,11 +5,20 @@
 #ifndef ADVENTURE2018_AICONTROLLER_H
 #define ADVENTURE2018_AICONTROLLER_H
 
-#include <unordered_map>
+#include <map>
+#include <queue>
 
+#include "Event.h"
 #include "controllers/CharacterController.h"
+#include "states/IState.h"
 
 class AiController : public CharacterController {
+  private:
+    std::map<state::StateType, state::IState *> stateDict{};
+    state::IState *currentState = nullptr;
+    std::map<state::StateType,
+             std::vector<std::pair<event::EventType, state::StateType>>>
+        rules;
 
   public:
     using CharacterController::CharacterController;

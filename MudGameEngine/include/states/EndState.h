@@ -1,17 +1,14 @@
 //
-// Created by jla497 on 11/03/18.
+// Created by jla497 on 25/03/18.
 //
 
-#ifndef ADVENTURE2018_WAITSTATE_H
-#define ADVENTURE2018_WAITSTATE_H
-
+#ifndef ADVENTURE2018_ENDSTATE_H
+#define ADVENTURE2018_ENDSTATE_H
 #include "Event.h"
-#include "states/IState.h"
+#include "IState.h"
 
 namespace state {
-
-class WaitState : public IState {
-
+class EndState : public IState {
   public:
     using IState::IState;
     void update() override;
@@ -20,4 +17,4 @@ class WaitState : public IState {
     StateType getType() override;
 };
 } // namespace state
-#endif // ADVENTURE2018_WAITSTATE_H
+#endif // ADVENTURE2018_ENDSTATE_H

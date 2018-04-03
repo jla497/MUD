@@ -5,6 +5,7 @@
 #ifndef ADVENTURE2018_ISTATE_H
 #define ADVENTURE2018_ISTATE_H
 
+#include "Event.h"
 #include "controllers/CharacterController.h"
 #include "entities/CharacterEntity.h"
 #include "gamemanager/GameState.h"
@@ -15,7 +16,9 @@ class GameState;
 }
 } // namespace mudserver
 
+namespace state {
 using mudserver::gamemanager::GameState;
+enum class StateType { undefined = 0, combat, interact, wait, end };
 
 class IState {
 
@@ -25,10 +28,12 @@ class IState {
     virtual void update() = 0;
     virtual void enter() = 0;
     virtual void exit() = 0;
+    virtual StateType getType() = 0;
 
   protected:
     GameState *state;
     CharacterEntity *entity;
     CharacterController *controller;
 };
+} // namespace state
 #endif // ADVENTURE2018_ISTATE_H

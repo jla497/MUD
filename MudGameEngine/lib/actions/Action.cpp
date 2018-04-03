@@ -25,6 +25,11 @@
 #include "controllers/CharacterController.h"
 #include "gamemanager/GameManager.h"
 #include "logging.h"
+#include "controllers/CharacterController.h"
+#include "gamemanager/GameManager.h"
+#include "logging.h"
+#include "observe/ActionObserver.h"
+#include "observe/Observable.h"
 
 using UActKeyword = std::underlying_type_t<ActKeyword>;
 
@@ -128,6 +133,7 @@ void Action::execute() {
     // role
     if (isAdmin) {
         if (playerPerformingAction->hasAdminPrivilege()) {
+
             execute_impl();
         } else {
             logger->warning("Player " + playerPerformingAction->getUsername() +
@@ -182,3 +188,9 @@ void Action::registerAdminActions(const std::string &file) {
 }
 
 #undef generatePair
+CharacterEntity *Action::getPerformingEntity() {
+    return characterPerformingAction;
+}
+std::vector<std::string> Action::getArgs() { return actionArguments; }
+
+void Action::accept(ActionObserver *observer) {}
