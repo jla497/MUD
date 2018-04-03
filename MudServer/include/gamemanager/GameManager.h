@@ -16,6 +16,7 @@
 #include "connectionmanager/ConnectionManager.h"
 #include "entities/CharacterEntity.h"
 #include "entities/Entity.h"
+#include "observe/ActionObserver.h"
 #include "persistence/PersistenceService.h"
 
 namespace mudserver {
@@ -136,7 +137,7 @@ class GameManager {
     void swapQueuePtrs();
     void addActionToQueue(std::unique_ptr<Action> action);
 
-    void fetchCntrlCmds();
+    void fetchCntrlCmds(ActionObserver *observer);
 };
 
 } // namespace gamemanager

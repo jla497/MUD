@@ -26,6 +26,7 @@ void CombatComponent::prepareToAttack() {
 
 void CombatComponent::setArmor(int armor) { this->armor = armor; }
 void CombatComponent::setThac0(int thac0) { this->thac0 = thac0; }
+
 void CombatComponent::setEnemiesName(std::string enemiesName) {
     this->enemiesName = enemiesName;
 }

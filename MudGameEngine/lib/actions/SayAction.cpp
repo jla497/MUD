@@ -10,6 +10,7 @@
 
 #include "actions/SayAction.h"
 #include "logging.h"
+#include "observe/ActionObserver.h"
 #include "resources/ActionMessages.h"
 
 using boost::algorithm::join;
@@ -61,4 +62,7 @@ void SayAction::execute_impl() {
                                          : speakingCharacterDesc) %
                                     messageSentByPlayer));
     }
+    notify(this);
 }
+
+void SayAction::accept(ActionObserver *observer) { observer->visit(this); }

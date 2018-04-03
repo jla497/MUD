@@ -16,7 +16,14 @@ class Player;
 } // namespace gamemanager
 } // namespace mudserver
 
+#include "entities/CharacterEntity.h"
+#include "entities/Entity.h"
+#include "gamemanager/GameManager.h"
+#include "gamemanager/Player.h"
+#include "observe/Observable.h"
+
 using mudserver::gamemanager::Player;
+class ActionObserver;
 
 enum class ActKeyword {
     undefined = 0,
@@ -43,7 +50,7 @@ enum class ActKeyword {
  * own an ordered collection of arguments to the action that determine what it
  * actually affects.
  */
-class Action {
+class Action : public Observable<Action> {
     using Tick = int;
 
   public:
@@ -51,11 +58,15 @@ class Action {
     static const Action *base(ActKeyword keyword);
 
     Action() = default;
+    CharacterEntity *getPerformingEntity();
+    std::vector<std::string> getArgs();
+
     Action(const Action &) = default;
     Action &operator=(const Action &) = default;
     Action(Action &&) = default;
     Action &operator=(Action &&) = default;
     virtual ~Action() = default;
+    virtual void accept(ActionObserver *observer);
 
     bool requiresAdmin() const;
     void setAdmin(bool admin) const;
