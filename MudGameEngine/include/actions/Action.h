@@ -4,6 +4,7 @@
 #include "controllers/CharacterController.h"
 #include "entities/CharacterEntity.h"
 #include "entities/Entity.h"
+#include "observe/Observable.h"
 #include <memory>
 #include <string>
 #include <unordered_map>
@@ -16,11 +17,6 @@ class Player;
 } // namespace gamemanager
 } // namespace mudserver
 
-#include "entities/CharacterEntity.h"
-#include "entities/Entity.h"
-#include "gamemanager/GameManager.h"
-#include "gamemanager/Player.h"
-#include "observe/Observable.h"
 
 using mudserver::gamemanager::Player;
 class ActionObserver;
