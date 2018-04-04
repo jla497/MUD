@@ -25,9 +25,6 @@
 #include "controllers/CharacterController.h"
 #include "gamemanager/GameManager.h"
 #include "logging.h"
-#include "controllers/CharacterController.h"
-#include "gamemanager/GameManager.h"
-#include "logging.h"
 #include "observe/ActionObserver.h"
 #include "observe/Observable.h"
 

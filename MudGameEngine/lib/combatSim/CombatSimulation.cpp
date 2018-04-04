@@ -34,7 +34,6 @@ void CombatSimulation::resolveCombatRound(CharacterEntity &attacker,
         gameManager.sendCharacterMessage(attacker.getEntityId(),
                                          "You cannot attack yourself!");
         return;
-
     }
 
     // if you are already in combat and are trying to attack someone
@@ -69,7 +68,6 @@ void CombatSimulation::resolveCombatRound(CharacterEntity &attacker,
         defendersCombatComponent->getOwnersName());
     defendersCombatComponent->setEnemiesName(
         attackersCombatComponent->getOwnersName());
-
 
     int damageAmount =
         calcRoundDamage(attackersCombatComponent->getDamageRoll());
