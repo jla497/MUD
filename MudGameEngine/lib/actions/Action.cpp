@@ -118,16 +118,16 @@ void Action::execute() {
     assertNotBase(this);
     // also check that they didn't do something like
     // Action::base(keyword)->clone();
-    assert(playerPerformingAction != nullptr && gameManager != nullptr);
-
+    playerPerformingAction = controller->getPlayer();
+    //AiController will have playerPerformingAction assigned to a nullptr
+    assert( gameManager != nullptr);
+    assert(controller != nullptr);
     // check if this is an admin action
     static auto logger = mudserver::logging::getLogger("Action::Action");
-
-    auto &playerService = gameManager->getPlayerService();
     auto characterId =
-        playerService.playerToCharacter(playerPerformingAction->getId());
+       controller->getCharacter()->getEntityId();
     characterPerformingAction =
-        gameManager->getState().getCharacterFromLUT(*characterId);
+        gameManager->getState().getCharacterFromLUT(characterId);
 
     // check if action is admin action and if character has an administrator
     // role
