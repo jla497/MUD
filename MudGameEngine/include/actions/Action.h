@@ -17,7 +17,6 @@ class Player;
 } // namespace gamemanager
 } // namespace mudserver
 
-
 using mudserver::gamemanager::Player;
 class ActionObserver;
 
